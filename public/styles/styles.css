@@ -1,0 +1,137 @@
+:root {
+  --white: #fff;
+  --off-white: #d3c993;
+  --off-gray: #708b90;
+  --off-black: #201f1c;
+
+  --off-yellow: #d2d27e;
+  --off-orange: #de9e26;
+
+  --dk-blue: #3a3a48;
+  --off-blue: #406182;
+  --lt-blue: #9db7c0;
+
+  --dk-green: #405440;
+  --off-green: #4d654d;
+  --lt-green: #a1c8a1;
+
+  --dk-purple: #554157;
+  --off-purple: #86427e;
+  --lt-purple: #c2a5c2;
+
+  --error-red: #d31c1c;
+
+  --font-text: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  background: linear-gradient(05deg, var(--off-green), var(--off-gray));
+  color: var(--off-black);
+  font-family: var(--font-text);
+  font-size: 1rem;
+}
+
+h1,
+h2 {
+  /* margin-bottom: 1rem; */
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.card {
+  height: fit-content;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  border-radius: 1rem;
+  box-shadow: inset 0 0.125rem 0.5rem var(--off-green);
+  margin: 1rem;
+  padding: 1.25rem;
+}
+
+.home-image {
+  height: 295px;
+  width: auto;
+  /* border-radius: 1rem; */
+  margin-bottom: 0.5rem;
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+button,
+.fake-button {
+  all: unset; /* nukes browser defaults */
+  height: 1.75rem;
+  width: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  border: 2px solid var(--off-gray);
+  border-radius: 0.5rem;
+  color: var(--off-black);
+  cursor: pointer;
+  font-family: var(--font-text);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0 0.25rem;
+  text-transform: uppercase;
+}
+
+.fake-button:link,
+.fake-button:visited,
+.fake-button:hover {
+  color: var(--off-black); /* mouse over */
+}
+
+button:hover,
+.fake-button:hover {
+  transform: scale(1.1);
+}
