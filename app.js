@@ -10,7 +10,7 @@ const session = require("express-session");
 // const bcrypt = require("bcryptjs");
 // const LocalStrategy = require("passport-local").Strategy;
 // const { body, validationResult } = require("express-validator");
-
+const PORT = process.env.PORT || 3000;
 const appRouter = require("./routes/appRouter");
 
 // 2. Create the app
@@ -60,8 +60,33 @@ app.get("/", (req, res) => {
 app.use("/app", appRouter);
 
 
+// Error Handling
+
+// -- 404 - Route not found (This should be placed before the general error handler)
+app.use((req, res, next) => {
+  res.status(404).render("404-500", {
+    title: "404 - Not Found",
+    error: "Sorry, we couldn't find the page you were looking for.",
+  });
+});
+
+// -- General error handler for 500 errors (or uncaught errors)
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  res.status(err.status || 500).render("404-500", {
+    title: "Internal Server Error",
+    error:
+      process.env.NODE_ENV === "production"
+        ? "Something went wrong."
+        : err.message,
+  });
+});
+
 // Start Server
-app.listen(3000, (err) => {
-  if (err) throw err;
-  console.log("App listening on port 3000!");
+app.listen(PORT, (error) => {
+  if (error) {
+    throw error;
+  }
+  console.log(`Listening on port ${PORT}!`);
 });

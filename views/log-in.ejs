@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+  </head>
+  <body>
+    <main>
+      <div class="card">
+        <h1>log in</h1>
+        <div class="user-message">
+          <p>
+            Log in to post/read on the <span class="red-letter">C</span>apital <span class="red-letter">A</span>rea <span class="red-letter">N</span>eigborhood Message Board.
+          </p> 
+        </div>
+        <form class="sign-up-form" action="/sign-up" method="POST">
+          <label for="username">
+            <p>username</p>
+            <input
+              id="username"
+              name="username"
+              placeholder="enter username"
+              type="text"
+              required
+            />
+          </label>
+          <label for="password">
+            <p>password</p>
+            <input
+              id="password"
+              name="password"
+              placeholder="enter a password"
+              type="password"
+              required
+            />
+          </label>
+        </form>
+        <div class="button-container">
+          <a class="fake-button" href="/app/">home</a>
+          <button type="submit">submit</button>
+        </div>
+      </div>
+    </main>
+  <%- include('./partials/footer.ejs') %>    
+  </body>
+</html>

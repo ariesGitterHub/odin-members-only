@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+  </head>
+  <body>
+    <main>
+      <div class="card">
+        <h1>User/Member Profile</h1>
+        <div class="profile-image-container">
+          <p class="waving">🦁</p>
+        </div>
+        <div class="button-container-col">
+          <a class="fake-button wide-button" href="/app/message-board">message board</a>
+          <a class="fake-button wide-button" href="/app/new-post">create a new post</a>
+          <a class="fake-button wide-button" href="/app/update">update profile</a>
+          <!-- NOTE - below should be hidden if user has member status! -->
+          <a class="fake-button wide-button" href="/app/become-member">become a member</a>
+          <a class="fake-button wide-button" href="/app">log out</a>
+        </div>
+        </div>
+      </div>
+    </main>
+    <%- include('./partials/footer.ejs') %>
+  </body>
+</html>
