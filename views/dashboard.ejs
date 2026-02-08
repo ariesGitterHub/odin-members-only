@@ -7,13 +7,13 @@
     <%- include('./partials/header.ejs') %>
     <main>
       <div class="card">
-        <div class="card-title">
+        <div class="page-title uppercase">
           <!-- TODO - users and members will have slightly different profiles... -->
           <h1>member profile</h1>          
         </div>
         <div class="profile">
           <div class="profile-image">
-            <span class="emoji-avatar waving" role="img" aria-label="Lion avatar">🦁</span>
+            <span class="emoji emoji-avatar waving" role="img" aria-label="Lion avatar">&#x1F981;</span>
           </div>
           <!-- <div class="profile-data">
             <div class="profile-data-row">
@@ -45,7 +45,7 @@
           <dl class="profile-data">
             <div>
               <dt class="capitalize">name</dt>
-              <dd class="capitalize bold">leo king</dd>
+              <dd class="capitalize bold">leopold king</dd>
             </div>
             <div>
               <dt class="capitalize">username</dt>
@@ -55,17 +55,31 @@
               <dt class="capitalize">status</dt>
               <dd class="bold">member</dd>
             </div>
+            <div>
+              <dt class="capitalize">avatar</dt>
+              <dd class="bold emoji">🦁</dd>
+            </div>
+            <div>
+              <dt class="capitalize">color 1</dt>
+              <dd class="bold">dark red</dd>
+            </div>
+            <div>
+              <dt class="capitalize">color 2</dt>
+              <dd class="bold">dark blue</dd>
+            </div>
           </dl>
 
         </div>
         <div class="button-container-col">
-          <a class="fake-button wide-button" href="/app/message-board">message board</a>
+          <!-- <a class="fake-button wide-button" href="/app/message-board">message board</a> -->
           <!-- <a class="fake-button wide-button" href="/app/new-post">create a new post</a> -->
-          <a class="fake-button wide-button" href="/app/update">update profile</a>
-          <!-- NOTE - below should be hidden if user has member status! -->
-          <a class="fake-button wide-button" href="/app/become-member">become a member</a>
-
-          <!-- TODO - add log out to nav!!!! -->
+         <a class="fake-button wide-button" href="/app/delete">delete account</a> 
+         <span class="uppercase">warning: deleting your account is permanent.</span>
+         <!-- NOTE - below should be hidden if user has member status! -->
+         <a class="fake-button wide-button" href="/app/become-member">become a member</a>
+        <button class="fake-button wide-button" href="/app/update" type="button">update profile</button>
+         
+                <!-- TODO - add log out to nav!!!! -->
           <!-- <form class="form-reset" action="/app/log-out" method="POST">
             <button class="wide-button" type="submit">Log out</button>
           </form> -->

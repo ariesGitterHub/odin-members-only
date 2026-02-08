@@ -1,14 +1,27 @@
 <header class="app-header">
   <nav class="user-nav" aria-label="User menu">
-    <span class="user-info">
+    <!-- <span class="user-info">
       Logged in: "liondaddy"<%#= user.username %>
-    </span>
+    </span> -->
+    <a class="fake-button nav-button" href="/app/admin"><span class="emoji nav-image" role="img" aria-label="admin's overview">
+      <!-- &#xE261; -->
+      &#x2699;
+    </span></a>
+    <a class="fake-button nav-button" href="/app/info"><span class="emoji nav-image" role="img" aria-label="this site's info">&#x2139;</span></a>
+    <a class="fake-button nav-button" href="/app/message-board"><span class="emoji nav-image" role="img" aria-label="message board link">
+      <!-- &#xE263; -->
+      &#x270d;
+    </span></a>
+    <a class="fake-button nav-button" href="/app/dashboard"><span class="emoji nav-image" role="img" aria-label="avatar image and link to your profile">&#x1F1F1;</span></a>
     <form action="/app/log-out" method="POST" class="logout-form">
-      <button type="submit">Log out</button>
+      <button class="nav-button" type="submit"><span class="emoji nav-image" role="img" aria-label="log out">
+        <!-- &#xe24e; -->
+        &#x2716;
+      </span></button>
     </form>
   </nav>
+  <div class="logged-in-bar uppercase"><p>logged in as "liondaddy"</p></div>
 </header>
-
 
 <!-- <form class="form-reset" action="/app/log-out" method="POST">
 <button class="wide-button" type="submit">Log out</button>

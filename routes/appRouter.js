@@ -5,8 +5,10 @@ const {
   getSignUp,
   getLogIn,
   getDashboard,
+  getInfo,
   getMessageBoard, 
   getBecomeMember,
+  getAdmin,
   postLogOut,
 } = require("../controllers/app.Controllers");
 
@@ -16,8 +18,10 @@ appRouter.get("/", getHome);
 appRouter.get("/sign-up", getSignUp);
 appRouter.get("/log-in", getLogIn);
 appRouter.get("/dashboard", getDashboard);
+appRouter.get("/info", getInfo);
 appRouter.get("/message-board", getMessageBoard);
 appRouter.get("/become-member", getBecomeMember);
+appRouter.get("/admin", getAdmin);
 appRouter.get("/log-out", postLogOut);
 
 module.exports = appRouter;

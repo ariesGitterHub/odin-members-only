@@ -46,6 +46,18 @@ async function getDashboard(req, res, next) {
   }
 }
 
+async function getInfo(req, res, next) {
+  try {
+    res.render("info", {
+      title: "Site Information",
+      user: req.user,
+      errors: [],
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function getMessageBoard(req, res, next) {
   try {
     res.render("message-board", {
@@ -70,6 +82,18 @@ async function getBecomeMember(req, res, next) {
   }
 }
 
+async function getAdmin(req, res, next) {
+  try {
+    res.render("admin", {
+      title: "Admin",
+      user: req.user,
+      errors: [],
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 // -- Log-out
 // REMINDER - Don't use async or try/catch — below is the correct pattern.
 function postLogOut(req, res, next) {
@@ -84,7 +108,9 @@ module.exports = {
   getSignUp,
   getLogIn,
   getDashboard,
+  getInfo,
   getMessageBoard,
   getBecomeMember,
+  getAdmin,
   postLogOut
 };
