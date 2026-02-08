@@ -1,6 +1,14 @@
 const { Router } = require("express");
 
-const { getHome, getSignUp, getLogIn, getDashboard } = require("../controllers/app.Controllers");
+const {
+  getHome,
+  getSignUp,
+  getLogIn,
+  getDashboard,
+  getMessageBoard, 
+  getBecomeMember,
+  postLogOut,
+} = require("../controllers/app.Controllers");
 
 const appRouter = Router();
 
@@ -8,5 +16,8 @@ appRouter.get("/", getHome);
 appRouter.get("/sign-up", getSignUp);
 appRouter.get("/log-in", getLogIn);
 appRouter.get("/dashboard", getDashboard);
+appRouter.get("/message-board", getMessageBoard);
+appRouter.get("/become-member", getBecomeMember);
+appRouter.get("/log-out", postLogOut);
 
 module.exports = appRouter;

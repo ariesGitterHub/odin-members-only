@@ -1,29 +1,44 @@
+@font-face {
+  font-family: 'OpenMoji';
+  src: url('/fonts/OpenMoji-color-cbdt.ttf') format('truetype');
+  font-display: swap;
+}
+
 :root {
   --white: #fff;
-  --off-white: #ece8e1;
-  --off-gray: #71807e;
-  --off-black: #202322;
   --black: #000;
 
-  --off-yellow: #d2d27e;
-  --off-orange: #de9e26;
+  --off-white: #e5dfd5;
+  --off-gray: #768179;
+  --off-black: #1a1b1c;
 
-  --dk-blue: #3a3a48;
-  --off-blue: #406b82;
-  --lt-blue: #9db7c0;
+  --off-red: #994e4e;
+  --off-orange: #a18553;
+  --off-yellow: #a0a054;
+  --off-green: #519d64;
+  --off-teal: #4b9595;
+  --off-blue: #4c7d98;
+  --off-purple: #864e97;
 
-  --dk-green: #405440;
-  --off-green: #4d6553;
-  --lt-green: #a1c8a1;
+  --dk-red: #521313;
+  --dk-orange: #8a581a;
+  --dk-yellow: #83741d;
+  --dk-green: #324632;
+  --dk-teal: #394d4d;
+  --dk-blue: #2d2d3d;
+  --dk-purple: #483548;
 
-  --dk-purple: #554157;
-  --off-purple: #86427e;
-  --lt-purple: #c2a5c2;
-
-  --error-red: #963737;
+  --lt-red: #edabab;
+  --lt-orange: #ddb66d;
+  --lt-yellow: #eeee7d;
+  --lt-green: #a9eda9;
+  --lt-teal: #7de9e9;
+  --lt-blue: #92cfe4;
+  --lt-purple: #d080eb;
 
   --font-text: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  --font-emoji: "Noto Color Emoji", sans-serif;
+  /* --font-emoji: "Noto Color Emoji", sans-serif; */
+  --font-emoji: 'OpenMoji', system-ui, sans-serif;
 }
 
 *,
@@ -51,21 +66,65 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: start;
-  background: linear-gradient(05deg, var(--off-green), var(--off-gray));
+  background: linear-gradient(05deg, var(--off-black), var(--off-gray));
   color: var(--off-black);
   font-family: var(--font-text);
   font-size: 1rem;
 }
 
-h1,
-h2 {
-  /* margin-bottom: 1rem; */
+.app-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+}
+
+.user-nav {
+  height: 2.75rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  /* flex-wrap: wrap; */
+  gap: 1rem;
+  background-color: var(--off-red);
+  margin-bottom: 0;
+  padding: 1rem;
+}
+
+.user-info {
+  all: unset; /* nukes browser defaults */
+  height: 1.75rem;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: var(--white); */
+  /* border: 0.25rem solid var(--off-gray); */
+  /* border-radius: 0.5rem; */
+  /* box-shadow: inset 0 0.25rem 1rem var(--off-gray); */
+  color: var(--off-white);
+  /* cursor: pointer; */
+  font-family: var(--font-text);
+  font-size: 0.85rem;
+  font-weight: 300;
+  /* margin: 0; */
+  /* padding: 0 0.25rem; */
   text-transform: uppercase;
+}
+
+.card-title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  text-transform: uppercase;  
 }
 
 h1 {
   /* font-size: 1.75rem; */
-  font-size: 1.65rem;
+  font-size: 1.5rem;
+
 }
 
 h2 {
@@ -81,7 +140,7 @@ main {
 }
 
 .red-letter {
-  color: var(--error-red);
+  color: var(--off-red);
 }
 
 .card {
@@ -90,66 +149,139 @@ main {
   width: 300px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   justify-content: center;
-  /* background-color: var(--white); */
-  background: linear-gradient(05deg, var(--off-white), var(--white));
+  background-color: var(--off-white);
+  /* background: linear-gradient(05deg, var(--off-white), var(--white)); */
   /* border: 0.25rem solid var(--off-blue); */
   border-radius: 1rem;
   /* box-shadow: inset 0 0.125rem 0.5rem var(--off-black); */
   box-shadow: 0 1rem 1rem var(--off-black);
   margin: 1rem;
-  padding: 1.25rem;
+  padding: 1rem;
 }
 
 .home-image {
-  height: 15.5rem;
+  height: 15rem;
   width: auto;
   border-radius: 50%;
-  border: 0.25rem solid var(--off-blue);
-    box-shadow: inset 0 0.25rem 1rem var(--off-gray);
+  border: 0.25rem solid var(--off-gray);
+  box-shadow: inset 0 0.25rem 1rem var(--off-gray);
   margin: 0.5rem;
   /* opacity: 0.8; */
   /* padding: 0.5rem; */
 }
 
-.profile-image-container {
-  height: 15rem;
-  width: 15rem;
+.profile {
+width: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+background-color: var(--off-black);
+    border-radius: 1rem;
+      /* box-shadow: inset 0 0.25rem 1rem var(--off-black); */
+      box-shadow: inset 0 0.25rem 1rem var(--off-gray);
+/* margin: 1rem;       */
+margin-bottom: 1rem;
+padding: 1rem;
+
+}
+
+.profile-image {
+  height: 10rem;
+  width: 10rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--error-red);
-  /* border: 0.75rem solid var(--off-blue); */
-  /* border: 0.6rem solid var(--black); */
+  background: linear-gradient(05deg, var(--off-black), var(--off-gray));
+  border: 0.5rem solid var(--off-white);
   border-radius: 50%;
-     /* box-shadow: inset 0 2rem 5rem var(--off-black); */
-  margin: 0.5rem;
-  padding: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-.profile-image-container p {
-  /* opacity: .9; */
-  /* color: var(--dk-blue); */
+.emoji-avatar {
+  display: inline-block;
   font-family: var(--font-emoji);
-  font-size: 10rem;
-    /* text-shadow: 0 2px 4px rgba(0,0,0,0.3); */
-  /* filter: invert(49%) sepia(80%) saturate(5916%) hue-rotate(313deg); */
+  font-size: 6rem;
+
+  line-height: 1;
+  vertical-align: middle;
+  /* transform-origin: 70% 70%; */
+  /* BELOW KICKS IN IF NOT A MEMBER WITH A "SPIRIT EMOJI" */
+  color: var(--off-white);
+  font-weight: 600;
 }
 
-
-@keyframes wave-animation {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(2deg); }
-  50% { transform: rotate(0deg); }
-  50% { transform: rotate(-2deg); }
-  100% { transform: rotate(0deg); }
+/* @keyframes wave-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 .waving {
-  display: inline-block;
-  animation: wave-animation 8s ease-in-out infinite;
+  animation: wave-animation 6s ease-in-out infinite;
+  will-change: transform;
+} */
+
+/* .profile-data-row {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+} */
+
+/* .profile-data-grid {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 1rem;
+  align-items: center;
+} */
+
+.profile-data {
+  width: 100%;
+  color: var(--off-white);
+ font-size: 1rem;
+ /* margin: 0.5rem 0; */
+ /* padding: 0.5rem; */
 }
+
+.profile-data div {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 1rem;
+}
+
+
+
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.bold {
+  font-weight: 900;
+}
+
+.italic {
+  font-style: italic;
+}
+
 .button-container {
   width: 100%;
   display: flex;
@@ -181,7 +313,7 @@ button,
   align-items: center;
   justify-content: center;
   background-color: var(--white);
-  border: 0.25rem solid var(--off-blue);
+  border: 0.25rem solid var(--off-gray);
   border-radius: 0.5rem;
   box-shadow: inset 0 0.25rem 1rem var(--off-gray);
   color: var(--off-black);
@@ -195,7 +327,7 @@ button,
 }
 
 .wide-button {
-  width: 100%;
+  width: 95%;
 }
 
 .fake-button:link,
@@ -206,18 +338,26 @@ button,
 
 button:hover,
 .fake-button:hover {
-  transform: scale(1.1);
+  background-color: var(--off-black);
+  color: var(--off-white);
+  transform: scale(1.03);
 }
 
 .user-message {
   margin: 0.25rem 0;
 }
 
-form {
+.sign-up-form, .log-in-form, .become-member-form {
   width: 100%;
   color: var(--off-black);
   margin: 0.25rem 0;
 }
+
+/* .form-reset {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+} */
 
 label {
   font-weight: 500;
@@ -227,9 +367,9 @@ label {
 input {
   width: 100%;
   background-color: var(--white);
-    border: 0.125rem solid var(--off-blue);
-    /* border-radius: 0.125rem; */
-    margin-bottom: 0.25rem;
+  border: 0.125rem solid var(--off-gray);
+  /* border-radius: 0.125rem; */
+  margin-bottom: 0.25rem;
   padding: 0.125rem;
 }
 
@@ -237,14 +377,28 @@ input::placeholder {
   text-transform: capitalize;
 }
 footer {
+  color: var(--off-white);
   font-size: 0.8rem;
   margin: 1rem;
   text-align: center;
   text-transform: uppercase;
 }
+fieldset {
+  padding: 0.5rem;
+}
+
+fieldset input {
+  width: 100%;
+  /* margin-left: 0.5rem; */
+  text-align: center;
+}
+
+fieldset input::placeholder {
+  text-align: left;
+}
 
 .page-errors h1 {
-  color: var(--error-red);
+  color: var(--off-red);
 }
 
 .page-errors p {
@@ -267,10 +421,16 @@ footer {
 }
 
 .errors {
-  color: var(--error-red);
+  color: var(--off-red);
   font-family: var(--font-text);
   font-size: 1rem;
   margin: 0;
   padding: 0;
   text-transform: uppercase;
 }
+
+/* @media (prefers-reduced-motion: reduce) {
+  .waving {
+    animation: none;
+  }
+} */

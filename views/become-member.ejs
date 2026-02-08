@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %>
+    <main>
+      <div class="card">
+        <div class="card-title">
+            <h1>become a member!</h1>   
+        </div>
+        <div class="user-message">
+          <p>
+            Neighbors living in <span class="red-letter">C.A.N.</span> can petition to upgrade from <span class="italic">user</span> to <span class="italic">member</span> status. If you are one of the select few given the secret password, please enter it below, and unlock new privileges.
+          </p> 
+        </div>
+        <form class="become-member-form" action="/app/become-member" method="POST">
+          <label for="secret-password">
+            <p>secret password</p>
+            <input
+              id="secret-password"
+              name="secret-password"
+              placeholder="enter the secret password"
+              type="password"
+              required
+            />
+          </label>
+        </form>
+        <div class="button-container">
+          <a class="fake-button" href="/app/">home</a>
+          <button type="submit">submit</button>
+        </div>
+      </div>
+    </main>
+  <%- include('./partials/footer.ejs') %>    
+  </body>
+</html>
