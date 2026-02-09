@@ -46,6 +46,18 @@ async function getDashboard(req, res, next) {
   }
 }
 
+async function getUpdateProfile(req, res, next) {
+  try {
+    res.render("update-profile", {
+      title: "Update Profile",
+      user: req.user,
+      errors: [],
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function getInfo(req, res, next) {
   try {
     res.render("info", {
@@ -108,6 +120,7 @@ module.exports = {
   getSignUp,
   getLogIn,
   getDashboard,
+  getUpdateProfile,
   getInfo,
   getMessageBoard,
   getBecomeMember,

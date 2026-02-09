@@ -5,6 +5,7 @@ const {
   getSignUp,
   getLogIn,
   getDashboard,
+  getUpdateProfile,
   getInfo,
   getMessageBoard, 
   getBecomeMember,
@@ -18,6 +19,7 @@ appRouter.get("/", getHome);
 appRouter.get("/sign-up", getSignUp);
 appRouter.get("/log-in", getLogIn);
 appRouter.get("/dashboard", getDashboard);
+appRouter.get("/update-profile", getUpdateProfile);
 appRouter.get("/info", getInfo);
 appRouter.get("/message-board", getMessageBoard);
 appRouter.get("/become-member", getBecomeMember);

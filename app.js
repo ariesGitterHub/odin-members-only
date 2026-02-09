@@ -12,6 +12,7 @@ const session = require("express-session");
 // const { body, validationResult } = require("express-validator");
 const PORT = process.env.PORT || 3000;
 const appRouter = require("./routes/appRouter");
+const { log } = require("node:console");
 
 // 2. Create the app
 const app = express();
@@ -58,6 +59,14 @@ app.get("/", (req, res) => {
 
 // -- Mount app routes
 app.use("/app", appRouter);
+
+// // -- Log-out
+// app.get("/log-out", (req, res, next) => {
+//   req.logout((err) => {
+//     if (err) return next(err);
+//     res.redirect("/"); // Redirect to home after log-out
+//   });
+// });
 
 
 // Error Handling
