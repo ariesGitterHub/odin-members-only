@@ -244,16 +244,21 @@ padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(05deg, var(--dk-blue), var(--dk-red));
-  border: 0.125rem solid var(--off-white);
+  background: linear-gradient(05deg, var(--off-gray), var(--off-white));
+  border: 0.125rem solid var(--off-gray);
   border-radius: 50%;
-  color: var(--lt-yellow);
+  color: var(--off-black);
   margin-bottom: 0.5rem;
+}
+
+.letter {
+  font-weight: 600;
 }
 
 .emoji {
   display: inline-block;
   font-family: var(--font-emoji);
+  /* font-weight: 100; */
   line-height: 1;
   vertical-align: middle;
 }
@@ -389,7 +394,7 @@ button,
 
 button:hover,
 .fake-button:hover {
-  background-color: var(--off-black);
+  background-color: var(--off-red);
   box-shadow: none;
   color: var(--off-white);
   transform: scale(1.03);
@@ -417,9 +422,9 @@ button:hover,
 }
 
 .nav-button:hover {
- background-color: var(--white);
+ background-color: var(--off-black);
  box-shadow: none;
- color: var(--off-red);
+ color: var(--off-white);
 }
 
 .user-message {
@@ -427,7 +432,7 @@ button:hover,
   margin: 0.25rem 0;
 }
 
-.sign-up-form, .log-in-form, .become-member-form, .update-profile-form {
+.sign-up-form, .log-in-form, .become-member-form, .update-profile-form, .change-avatar-form {
   width: 100%;
   margin: 0.25rem 0;
 }
@@ -436,7 +441,7 @@ button:hover,
   color: var(--off-black);
 }
 
-.update-profile-form {
+.update-profile-form, .change-avatar-form {
   color: var(--off-white);
 }
 

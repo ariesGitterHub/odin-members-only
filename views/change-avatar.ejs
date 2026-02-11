@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %>
+    <main>
+      <div class="card">
+        <div class="page-title uppercase">
+          <h1>change avatar</h1>          
+        </div>
+        <div class="user-message">
+          <p>
+            Make changes to your avatar here.
+          </p> 
+        </div>
+        <div class="profile">
+          <div class="profile-image">
+            <!-- TODO - if user then letter and option to change is missing (can still color change though!), else emoji/emoji-avatar -->
+            <span class="emoji emoji-avatar" role="img" aria-label="TODO - make this reflect emoji name">
+               &#x1F408;&#x200D;&#x2B1B;
+              </span>
+          </div>
+         <form class="change-avatar-form" action="/app/change-avatar" method="POST"> 
+          <label for="avatar">
+            <p>avatar</p>
+            <input
+              id="avatar"
+              name="avatar"
+              placeholder="select avatar by typing"
+              type="text"
+              required
+            />
+          </label>
+          <label for="avatar-color">
+            <p>avatar color</p>
+            <input
+              id="avatar-color"
+              name="avatar-color"
+              value="#1a1b1c"
+              type="color"
+              required
+            />
+          </label>
+          <label for="background-color-top">
+            <p>background color (top)</p>
+            <input
+              id="background-color-top"
+              name="background-color-top"
+              value="#eeee7d"
+              type="color"
+              required
+            />
+          </label>
+          </label>
+          <label for="background-color-bottom">
+            <p>background color (bottom)</p>
+            <input
+              id="background-color-bottom"
+              name="background-color-bottom"
+              value="#83741d"
+              type="color"
+              required
+            />
+          </label>
+          <div class="button-container">
+            <a class="fake-button" href="/app/dashboard">cancel</a>
+            <button type="submit">submit</button>
+          </div> 
+        </form> 
+        </div>
+        </div>
+      </div>
+    </main>
+    <%- include('./partials/footer.ejs') %>
+    <!-- <script src="/js/main.js"></script> -->
+  </body>
+</html>

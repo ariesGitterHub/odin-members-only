@@ -46,10 +46,34 @@ async function getDashboard(req, res, next) {
   }
 }
 
+async function getMemberDirectory(req, res, next) {
+  try {
+    res.render("member-directory", {
+      title: "Member Directory",
+      user: req.user,
+      errors: [],
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function getUpdateProfile(req, res, next) {
   try {
     res.render("update-profile", {
       title: "Update Profile",
+      user: req.user,
+      errors: [],
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function getChangeAvatar(req, res, next) {
+  try {
+    res.render("change-avatar", {
+      title: "Change Avatar",
       user: req.user,
       errors: [],
     });
@@ -120,7 +144,9 @@ module.exports = {
   getSignUp,
   getLogIn,
   getDashboard,
+  getMemberDirectory,
   getUpdateProfile,
+  getChangeAvatar,
   getInfo,
   getMessageBoard,
   getBecomeMember,

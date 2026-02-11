@@ -92,6 +92,9 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Start cron jobs
+require("./cron/cleanup"); // starts the daily cleanup job
+
 // Start Server
 app.listen(PORT, (error) => {
   if (error) {
