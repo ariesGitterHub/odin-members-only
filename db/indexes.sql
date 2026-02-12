@@ -25,6 +25,15 @@ CREATE INDEX idx_messages_expires
 CREATE INDEX idx_messages_user_id
   ON messages(user_id);
 
+ -- MESSAGE LIKES
+-- Speeds up finding all likes for a specific message
+CREATE INDEX idx_message_likes_message_id
+  ON message_likes(message_id);
+
+-- Speeds up finding all likes from a single user
+CREATE INDEX idx_message_likes_user_id
+  ON message_likes(user_id);
+
 -- SESSIONS
 -- Used on every authenticated request
 CREATE INDEX idx_sessions_token

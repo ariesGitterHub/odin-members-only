@@ -1,3 +1,7 @@
+const {
+  getUsers,
+} = require("../db/queries");
+
 async function getHome(req, res, next) {
   try {
     res.render("index", {
@@ -119,10 +123,11 @@ async function getBecomeMember(req, res, next) {
 }
 
 async function getAdmin(req, res, next) {
+  const users = await getUsers();
   try {
     res.render("admin", {
       title: "Admin",
-      user: req.user,
+      users,
       errors: [],
     });
   } catch (err) {
@@ -151,5 +156,5 @@ module.exports = {
   getMessageBoard,
   getBecomeMember,
   getAdmin,
-  postLogOut
+  postLogOut,
 };

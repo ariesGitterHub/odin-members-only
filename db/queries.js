@@ -2,6 +2,39 @@
 // Requires: node-postgres client (pg)
 const pool = require("./pool");
 
+// --- Get all users ---
+// const getUsers = async function getUsers() {
+//   const { rows } = await pool.query(
+//     "SELECT * FROM users ORDER BY id",
+//   );
+//   return rows;
+// };
+
+const getUsers = async function getUsers() {
+  const { rows } = await pool.query(`
+    SELECT
+      u.*,
+      up.avatar_type,
+      up.avatar_color_fg,
+      up.avatar_color_bg_top,
+      up.avatar_color_bg_bottom,
+      up.phone,
+      up.street_address,
+      up.apt_unit,
+      up.city,
+      up.us_state,
+      up.zip_code,
+      up.notes,
+      up.verified_by_admin
+    FROM users u
+    LEFT JOIN user_profiles up
+      ON u.id = up.user_id
+    ORDER BY u.id;
+  `);
+
+  return rows;
+};
+
 /**
  * Fetch messages that are not deleted and not expired.
  * Ordered by newest first.
@@ -207,6 +240,7 @@ const updateMessageTitle = async (messageId, newTitle) => {
 // }
 
 module.exports = {
+  getUsers,
   getValidMessages,
   getMessagesByUser,
   getMessagesByTopic,

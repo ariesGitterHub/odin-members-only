@@ -63,7 +63,7 @@ CREATE TABLE messages (
 
   topic_id INTEGER NOT NULL REFERENCES topics(id),
   user_id INTEGER NOT NULL REFERENCES users(id),
-
+  like_count INTEGER DEFAULT 0,
   title TEXT NOT NULL,
   body TEXT NOT NULL,
 
@@ -73,6 +73,39 @@ CREATE TABLE messages (
   is_deleted BOOLEAN DEFAULT false,
   deleted_at TIMESTAMPTZ
 );
+
+-- Message Likes
+CREATE TABLE message_likes (
+  message_id INTEGER NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  -- updated_at TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (message_id, user_id)
+);
+
+-- Trigger function to update like_count
+CREATE OR REPLACE FUNCTION update_like_count()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'INSERT' THEN
+    UPDATE messages
+    SET like_count = like_count + 1
+    WHERE id = NEW.message_id;
+  ELSIF TG_OP = 'DELETE' THEN
+    UPDATE messages
+    SET like_count = like_count - 1
+    WHERE id = OLD.message_id;
+  END IF;
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger on message_likes table
+CREATE TRIGGER trigger_like_count
+AFTER INSERT OR DELETE ON message_likes
+FOR EACH ROW
+EXECUTE FUNCTION update_like_count();
+
 
 -- Sessions
 CREATE TABLE sessions (

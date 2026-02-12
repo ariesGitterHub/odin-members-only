@@ -6,11 +6,86 @@
   <body>
     <%- include('./partials/header.ejs') %>
     <main>
-      <div class="card">
-        <div class="page-title uppercase">
-          <h1>admin overview</h1>
-        </div>
+      <div class="page-title-off-card uppercase">
+        <h1>admin overview</h1>
       </div>
+      <% if (locals.users) {%> <% users.forEach(function(user) { %>
+      <div class="card">
+        <dl class="profile-data-admin">
+            <div>
+              <dt class="capitalize">name</dt>
+              <dd class="capitalize bold"><%= user.first_name %> <%= user.last_name %></dd>
+            </div>
+            <!-- <div>
+              <dt class="capitalize">username</dt>
+              <dd class="bold">liondaddy</dd>
+            </div> -->
+            <!-- TODO - if status === member, then show; else hidden -->
+            <div>
+              <dt class="capitalize">status</dt>
+              <dd class="bold"><%= user.permission_status %></dd>
+            </div>
+            <div>
+              <dt class="capitalize">email</dt>
+              <dd class="bold"><%= user.email%></dd>
+            </div>
+            <div>
+              <dt class="capitalize">phone</dt>
+              <dd class="bold"><%= user.phone%></dd>
+            </div>
+            <div>
+              <dt class="capitalize">birthdate</dt>
+              <dd class="bold"><%= user.birthdate %></dd>
+            </div>
+            <br>
+            <div>
+              <dt class="capitalize">street</dt>
+              <dd class="bold"><%= user.street_address %></dd>
+            </div>
+            <div>
+              <dt class="capitalize">apt/unit</dt>
+              <dd class="bold"><%= user.apt_unit %></dd>
+            </div>
+            <div>
+              <dt class="capitalize">city</dt>
+              <dd class="bold"><%= user.city %></dd>
+            </div>
+            <div>
+              <dt class="capitalize">state</dt>
+              <dd class="bold"><%= user.us_state %></dd>
+            </div>
+            <div>
+              <dt class="capitalize">zip code</dt>
+              <dd class="bold"><%= user.zip_code %></dd>
+            </div>
+            <br>
+            <div>
+              <dt class="capitalize">avatar</dt>
+              <dd class="bold"><%= user.avatar_type %></dd>
+            </div>
+            <div>
+              <dt class="capitalize">color0</dt>
+              <dd class="bold"><%= user.avatar_color_fg %></dd>
+            </div>
+            <div>
+              <dt class="capitalize">color1</dt>
+              <dd class="bold"><%= user.avatar_color_bg_top %></dd>
+            </div>
+            <div>
+              <dt class="capitalize">color2</dt>
+              <dd class="bold"><%= user.avatar_color_bg_bottom %></dd>
+            </div>
+            <br>
+            <div>
+              <dt class="capitalize">notes</dt>
+              <dd class="bold"><%= user.notes %></dd>
+            </div>
+          </dl> 
+          <div class="button-container-col">
+            <a class="fake-button wide-button" href="/app/admin-update-profile">update profile</a>
+          </div>
+      </div>
+     <% }); %> <% } %>
     </main>
     <%- include('./partials/footer.ejs') %>
   </body>

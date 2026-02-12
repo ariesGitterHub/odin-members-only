@@ -4,6 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "db:schema": "node -r dotenv/config scripts/db-schema.js",
+    "db:seed": "node -r dotenv/config scripts/db-seed.js",
+    "db:init": "npm run db:schema && npm run db:seed",
+    "db:reset": "node -r dotenv/config scripts/db-reset.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +26,7 @@
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "chalk": "^4.1.2",
     "connect-pg-simple": "^10.0.0",
     "dotenv": "^17.2.3",
     "ejs": "^4.0.1",
