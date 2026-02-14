@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %>
+    <main>
+      <div class="page-title-off-card uppercase"><h1>message boards</h1></div>
+      <div class="card">
+        <ul class="topic-list">
+        <% topics.forEach(topic => { %>
+          <li>
+            <a class="fake-button wide-button" href="/app/message-boards/<%= topic.slug %>">
+              <h2 class="topic-title"><%= topic.name %></h2>
+              <!-- <p class="topic-description"><%#= topic.description %></p> -->
+            </a>
+          </li>
+        <% }) %>
+        </ul>
+      </div>
+    </main>
+    <%- include('./partials/footer.ejs') %>
+  </body>
+</html>
+
+
+<!-- <%#- include('partials/message-card', { 
+      message, 
+      topic, 
+      currentUser 
+    }) %>
+ -->
+
+ <!-- <%# if (currentUser) { %>
+  <button>❤️</button>
+<%# } %>
+ -->

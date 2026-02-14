@@ -1,6 +1,18 @@
 const {
   getUsers,
+  // getTopics,
+  getAllTopics,
+  getTopicBySlug,
+  getMessagesByTopicId,
+  getValidMessagesByTopic,
+  getMessagesByUser,
+  getMessagesByTopic,
+  softDeleteExpiredMessages,
+  hardDeleteMessages,
+  cleanupMessages,
 } = require("../db/queries");
+
+const { calculateAge, formatShortDate } = require("../utils/calculateAge");
 
 async function getHome(req, res, next) {
   try {
@@ -98,17 +110,73 @@ async function getInfo(req, res, next) {
   }
 }
 
-async function getMessageBoard(req, res, next) {
+async function getMessageBoards(req, res, next) {
   try {
-    res.render("message-board", {
-      title: "Message Board",
-      user: req.user,
+    const topics = await getAllTopics();
+
+    res.render("message-boards", {
+      title: "Message Boards",
+      topics,
+      errors: [],
+    });
+
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function getTopicPage(req, res, next) {
+  try {
+    const { slug } = req.params;
+
+    // Get topic info
+    const topic = await getTopicBySlug(slug);
+
+    if (!topic) {
+      return res.status(404).render("404");
+    }
+
+    // Get messages for this topic
+    const messages = await getValidMessagesByTopic(topic.id);
+
+    res.render("topic", {
+      title: topic.name,
+      topic,
+      messages,
       errors: [],
     });
   } catch (err) {
     next(err);
   }
 }
+
+
+
+
+// async function getTopicBySlug(req, res, next) {
+//   try {
+//     const { slug } = req.params;
+
+//     const topic = await getTopicBySlug(slug);
+
+//     if (!topic) {
+//       return res.status(404).render("404");
+//     }
+
+//     const messages = await getValidMessagesByTopic(topic.id);
+
+//     res.render("topic", {
+//       title: topic.name,
+//       topic,
+//       messages,
+//       errors: [],
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
+
 
 async function getBecomeMember(req, res, next) {
   try {
@@ -122,12 +190,40 @@ async function getBecomeMember(req, res, next) {
   }
 }
 
+// async function getAdmin(req, res, next) {
+//   const users = await getUsers();
+//   const age = calculateAge(users.birthdate);
+//   const formattedBirthdate = formatShortDate(users.birthdate); 
+
+//   try {
+//     res.render("admin", {
+//       title: "Admin",
+//       users,
+//       age,
+//       formattedBirthdate,
+//       errors: [],
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
+// -- Log-out
+// REMINDER - Don't use async or try/catch — below is the correct pattern.
+
 async function getAdmin(req, res, next) {
-  const users = await getUsers();
   try {
+    const users = await getUsers();
+
+    const usersWithDates = users.map((user) => ({
+      ...user,
+      age: calculateAge(user.birthdate),
+      formattedBirthdate: formatShortDate(user.birthdate),
+    }));
+
     res.render("admin", {
       title: "Admin",
-      users,
+      users: usersWithDates,
       errors: [],
     });
   } catch (err) {
@@ -135,8 +231,7 @@ async function getAdmin(req, res, next) {
   }
 }
 
-// -- Log-out
-// REMINDER - Don't use async or try/catch — below is the correct pattern.
+
 function postLogOut(req, res, next) {
   req.logout((err) => {
     if (err) return next(err);
@@ -153,7 +248,9 @@ module.exports = {
   getUpdateProfile,
   getChangeAvatar,
   getInfo,
-  getMessageBoard,
+  getMessageBoards,
+  // getMessageBoardBySlug,
+  getTopicPage,
   getBecomeMember,
   getAdmin,
   postLogOut,

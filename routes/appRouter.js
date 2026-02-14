@@ -9,11 +9,13 @@ const {
   getUpdateProfile,
   getChangeAvatar,
   getInfo,
-  getMessageBoard, 
+  getMessageBoards,
+  // getMessageBoardBySlug,
+  getTopicPage,
   getBecomeMember,
   getAdmin,
   postLogOut,
-} = require("../controllers/app.Controllers");
+} = require("../controllers/appControllers");
 
 const appRouter = Router();
 
@@ -25,7 +27,10 @@ appRouter.get("/member-directory", getMemberDirectory);
 appRouter.get("/update-profile", getUpdateProfile);
 appRouter.get("/change-avatar", getChangeAvatar);
 appRouter.get("/info", getInfo);
-appRouter.get("/message-board", getMessageBoard);
+
+appRouter.get("/message-boards", getMessageBoards);
+appRouter.get("/message-boards/:slug", getTopicPage);
+
 appRouter.get("/become-member", getBecomeMember);
 appRouter.get("/admin", getAdmin);
 appRouter.get("/log-out", postLogOut);

@@ -82,7 +82,8 @@ a {
   color: var(--off-red); /* mouse over */
 }
 
-ul {
+/* ul, */
+.info-ul {
   background-color: var(--white);
     border: 0.125rem solid var(--off-gray);
   border-radius: 0.5rem;
@@ -93,6 +94,14 @@ ul {
 li {
   list-style: none;
   margin-bottom: 0.5rem;
+}
+
+li:last-child {
+  margin-bottom: 0;
+}
+
+.topic-list {
+  width: 100%;
 }
 
 html,
@@ -305,6 +314,15 @@ padding: 1rem;
   font-weight: 600; */
 }
 
+/* .emoji-like {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dk-red);
+  font-family: var(--font-emoji);
+  vertical-align: middle;
+} */
+
 /* @keyframes wave-animation {
   0% {
     transform: rotate(0deg);
@@ -383,6 +401,9 @@ padding: 1rem;
   font-style: italic;
 }
 
+
+
+
 .button-container {
   width: 100%;
   display: flex;
@@ -458,9 +479,16 @@ button:hover,
 }
 
 .nav-image {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
+  font-weight: 100;
   text-align: center;
 }
+
+/* .nav-avatar-image {
+  font-size: 1.75rem;
+  font-weight: 100;
+  text-align: center;
+} */
 
 .nav-button:hover {
  background-color: var(--off-black);
@@ -565,6 +593,118 @@ fieldset input::placeholder {
 .warning {
   font-size: 0.8rem;
 }
+
+/* Message-card */
+
+.message-card {
+  background-color: var(--white);
+  /* border: 0.125rem solid var(--off-gray); */
+  border-radius: 0.5rem;
+  color: var(--off-black);
+  padding: 0.5rem;
+}
+
+.message-header {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  /* background-color: var(--lt-red); */
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  padding: 0.25rem;
+}
+
+.message-avatar-image {
+  width: 3.75rem;
+  height: 3.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+/* background-color: pink; */
+  background: linear-gradient(05deg, var(--off-gray), var(--off-white));
+  border: 0.125rem solid var(--off-black);
+border-radius: 50%;
+color: var(--off-black);
+margin-right: 0.5rem;
+padding: 0.25rem;
+font-size: 2.5rem;
+}
+
+.message-name-and-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.message-name {
+  color: var(--off-red);
+}
+
+.message-title {
+font-size: 0.9rem;
+}
+
+
+.message-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+    /* background-color: var(--lt-green); */
+
+  font-size: 0.7rem;
+    padding: 0.25rem;
+}
+
+.message-details span {
+  display: flex;
+align-items: center;
+justify-content: center;
+  background-color: var(--off-white);
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  text-align: center;
+}
+
+.message-body {
+  /* background-color: var(--lt-yellow); */
+  /* border-top: 0.125rem solid var(--off-gray); */
+  /* border-bottom: 0.125rem solid var(--off-gray); */
+  /* font-size: 0.9rem; */
+  padding: 0.25rem;
+}
+
+
+
+.message-footer {
+  /* background-color: var(--lt-blue); */
+    border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  padding: 0.25rem;
+}
+.message-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  /* margin-top: 0.75rem; */
+}
+
+.message-button {
+  width: fit-content;
+  color: var(--off-black);
+}
+
+/* TODO - test this again, and only keep one hidden! */
+.hidden {
+  display: none;
+}
+
+/* I can't recall the last time I had to use !important, 
+but I had elements on admin.ejs that would not get properly hidden. 
+It might have something to do with my use of dt and dd elements; unsure. */
+div.hidden {
+  display: none !important;  /* Ensures it's not overridden */
+}
+
 
 /* @media (prefers-reduced-motion: reduce) {
   .waving {

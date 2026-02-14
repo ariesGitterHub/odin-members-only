@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %>
+
+    <main>
+      <div class="page-title-off-card uppercase">
+        <h1><%= topic.name %></h1>
+      </div>
+
+      <div class="card messages-list">
+        <% if (messages.length === 0) { %>
+          <p>No messages yet. Be the first to post!</p>
+        <% } else { %>
+          <% messages.forEach(message => { %>
+            <%- include('./partials/message-card', { message }) %>
+          <% }) %>
+        <% } %>
+      </div>
+    </main>
+
+    <%- include('./partials/footer.ejs') %>
+  </body>
+</html>

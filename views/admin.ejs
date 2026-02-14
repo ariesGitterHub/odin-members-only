@@ -10,81 +10,101 @@
         <h1>admin overview</h1>
       </div>
       <% if (locals.users) {%> <% users.forEach(function(user) { %>
-      <div class="card">
-        <dl class="profile-data-admin">
-            <div>
-              <dt class="capitalize">name</dt>
-              <dd class="capitalize bold"><%= user.first_name %> <%= user.last_name %></dd>
-            </div>
-            <!-- <div>
-              <dt class="capitalize">username</dt>
-              <dd class="bold">liondaddy</dd>
-            </div> -->
-            <!-- TODO - if status === member, then show; else hidden -->
-            <div>
-              <dt class="capitalize">status</dt>
-              <dd class="bold"><%= user.permission_status %></dd>
-            </div>
-            <div>
-              <dt class="capitalize">email</dt>
-              <dd class="bold"><%= user.email%></dd>
-            </div>
-            <div>
-              <dt class="capitalize">phone</dt>
-              <dd class="bold"><%= user.phone%></dd>
-            </div>
-            <div>
-              <dt class="capitalize">birthdate</dt>
-              <dd class="bold"><%= user.birthdate %></dd>
-            </div>
+        <div class="card">
+          <dl class="profile-data-admin">
+              <div>
+                <dt class="capitalize">name</dt>
+                <dd class="capitalize bold"><%= user.first_name %> <%= user.last_name %></dd>
+              </div>
+              <!-- TODO - if status === member, then show; else hidden -->
+              <div>
+                <dt class="capitalize">status</dt>
+                <dd class="bold"><%= user.permission_status %></dd>
+              </div>
+              <div>
+                <dt class="capitalize">email</dt>
+                <dd class="bold"><%= user.email%></dd>
+              </div>
+              <%= console.log(user.phone) %>
+              <div class="<%= user.phone ? '' : 'hidden' %>">
+                <dt class="capitalize">phone</dt>
+                <dd class="bold"><%= user.phone || "Not Provided" %></dd>
+              </div>
+              <div>
+                <dt class="capitalize">birthdate</dt>
+                <!-- <dd class="bold"><%#= user.birthdate %></dd> -->
+                <!-- <dd class="bold"><%#= new Date(user.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %> (<%#= age %>)</dd> -->
+                <dd class="bold"><%= user.formattedBirthdate %> (<%= user.age %>)</dd>
+              </div>
+              <br class="<%= user.street_address ? '' : 'hidden' %>">
+              <div class="<%= user.street_address ? '' : 'hidden' %>">
+                <dt class="capitalize">street</dt>
+                <dd class="bold"><%= user.street_address || "Not Provided" %></dd>
+                <!-- <dt class="<%#= user.street_address ? '' : 'hidden' %> capitalize">street</dt>
+                <dd class="<%#= user.street_address ? '' : 'hidden' %> bold"><%#= user.street_address || "Not Provided" %></dd> -->
+              </div>
+              <div class="<%= user.apt_unit ? '' : 'hidden' %>">
+                <dt class="capitalize">apt/unit</dt>
+                <dd class="bold"><%= user.apt_unit || "Not Provided" %></dd>
+                <!-- <dt class="<%#= user.apt_unit ? '' : 'hidden' %> capitalize">apt/unit</dt>
+                <dd class="<%#= user.apt_unit ? '' : 'hidden' %> bold"><%#= user.apt_unit || "Not Provided" %></dd> -->
+              </div>
+              <div class="<%= user.city ? '' : 'hidden' %>">
+                <dt class="capitalize">city</dt>
+                <dd class="bold"><%= user.city || "Not Provided" %></dd>
+                <!-- <dt class="<%#= user.city ? '' : 'hidden' %> capitalize">city</dt>
+                <dd class="<%#= user.city ? '' : 'hidden' %> bold"><%#= user.city || "Not Provided" %></dd> -->
+              </div>
+              <div class="<%= user.us_state ? '' : 'hidden' %>">
+                <dt class="capitalize">state</dt>
+                <dd class="bold"><%= user.us_state || "Not Provided" %></dd>
+                <!-- <dt class="<%#= user.us_state ? '' : 'hidden' %> capitalize">state</dt>
+                <dd class="<%#= user.us_state ? '' : 'hidden' %> bold"><%#= user.us_state || "Not Provided" %></dd> -->
+              </div>
+              <div class="<%= user.zip_code ? '' : 'hidden' %>">
+                <dt class="capitalize">zip code</dt>
+                <dd class="bold"><%= user.zip_code || "Not Provided" %></dd>
+                <!-- <dt class="<%#= user.zip_code ? '' : 'hidden' %> capitalize">zip code</dt>
+                <dd class="<%#= user.zip_code ? '' : 'hidden' %> bold"><%#= user.zip_code || "Not Provided" %></dd> -->
+              </div>
+              <br class="<%= (user.avatar_color_fg ? '' : 'hidden') || (user.avatar_color_bg_top ? '' : 'hidden') || (user.avatar_color_bg_bottom ? '' : 'hidden') %>">
+              <div class="<%= user.avatar_type ? '' : 'hidden' %>">
+                <dt class="capitalize">avatar</dt>
+                <dd class="bold"><%= user.avatar_type || "Not Provided" %></dd>
+                <!-- <dt class="<%#= user.avatar_type ? '' : 'hidden' %> capitalize">avatar</dt>
+                <dd class="<%#= user.avatar_type ? '' : 'hidden' %> bold"><%#= user.avatar_type || "Not Provided" %></dd> -->
+              </div>
+              <div class="<%= user.avatar_color_fg ? '' : 'hidden' %>">
+                <dt class="capitalize">color0</dt>
+                <dd class="bold"><%= user.avatar_color_fg || "Not Provided" %></dd>
+                <!-- <dt class="<%#= user.avatar_color_fg ? '' : 'hidden' %> capitalize">color0</dt>
+                <dd class="<%#= user.avatar_color_fg ? '' : 'hidden' %> bold"><%#= user.avatar_color_fg || "Not Provided" %></dd> -->
+              </div>
+              <div class="<%= user.avatar_color_bg_top ? '' : 'hidden' %>">
+                <dt class="capitalize">color1</dt>
+                <dd class="bold"><%= user.avatar_color_bg_top || "Not Provided" %></dd>
+                <!-- <dt class="<%#= user.avatar_color_bg_top ? '' : 'hidden' %> capitalize">color1</dt>
+                <dd class="<%#= user.avatar_color_bg_top ? '' : 'hidden' %> bold"><%#= user.avatar_color_bg_top || "Not Provided" %></dd> -->
+              </div>
+              <div class="<%= user.avatar_color_bg_bottom ? '' : 'hidden' %>">
+                <dt class="capitalize">color2</dt>
+                <dd class="bold"><%= user.avatar_color_bg_bottom || "Not Provided" %></dd>
+                <!-- <dt class="<%#= user.avatar_color_bg_bottom ? '' : 'hidden' %> capitalize">color2</dt>
+                <dd class="<%#= user.avatar_color_bg_bottom ? '' : 'hidden' %> bold"><%#= user.avatar_color_bg_bottom || "Not Provided" %></dd> -->
+              </div>
+              <br class="<%= user.notes ? '' : 'hidden' %>">
+              <div class="<%= user.notes ? '' : 'hidden' %>">
+                <dt class="capitalize">notes</dt>
+                <dd class="bold"><%= user.notes || "Not Provided" %></dd>
+                <!-- <dt class="<%#= user.notes ? '' : 'hidden' %> capitalize">notes</dt>
+                <dd class="<%#= user.notes ? '' : 'hidden' %> bold"><%#= user.notes || "Not Provided" %></dd> -->
+              </div>
+            </dl> 
             <br>
-            <div>
-              <dt class="capitalize">street</dt>
-              <dd class="bold"><%= user.street_address %></dd>
+            <div class="button-container-col">
+              <a class="fake-button wide-button" href="/app/admin-update-profile">update profile</a>
             </div>
-            <div>
-              <dt class="capitalize">apt/unit</dt>
-              <dd class="bold"><%= user.apt_unit %></dd>
-            </div>
-            <div>
-              <dt class="capitalize">city</dt>
-              <dd class="bold"><%= user.city %></dd>
-            </div>
-            <div>
-              <dt class="capitalize">state</dt>
-              <dd class="bold"><%= user.us_state %></dd>
-            </div>
-            <div>
-              <dt class="capitalize">zip code</dt>
-              <dd class="bold"><%= user.zip_code %></dd>
-            </div>
-            <br>
-            <div>
-              <dt class="capitalize">avatar</dt>
-              <dd class="bold"><%= user.avatar_type %></dd>
-            </div>
-            <div>
-              <dt class="capitalize">color0</dt>
-              <dd class="bold"><%= user.avatar_color_fg %></dd>
-            </div>
-            <div>
-              <dt class="capitalize">color1</dt>
-              <dd class="bold"><%= user.avatar_color_bg_top %></dd>
-            </div>
-            <div>
-              <dt class="capitalize">color2</dt>
-              <dd class="bold"><%= user.avatar_color_bg_bottom %></dd>
-            </div>
-            <br>
-            <div>
-              <dt class="capitalize">notes</dt>
-              <dd class="bold"><%= user.notes %></dd>
-            </div>
-          </dl> 
-          <div class="button-container-col">
-            <a class="fake-button wide-button" href="/app/admin-update-profile">update profile</a>
-          </div>
-      </div>
+        </div>
      <% }); %> <% } %>
     </main>
     <%- include('./partials/footer.ejs') %>

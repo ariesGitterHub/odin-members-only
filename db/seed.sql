@@ -38,9 +38,9 @@ VALUES
   ('lost-found', 'Lost & Found', 'Lost or found pets and items', 60),
   ('buy-sell', 'Buy & Sell', 'Items for sale or wanted', 70),
   ('free-stuff', 'Free Stuff', 'Give away items you no longer need or want', 80),
-  ('businesses', 'Local Businesses/Services', 'Recommendations and offers for local services', 90),
+  ('businesses', 'Local Businesses', 'Recommendations and offers for local services', 90),
   ('introductions', 'Introductions', 'Welcome new neighbors', 100),
-  ('feedback', 'Feedback', 'Suggestions and feedback about this board', 110)
+  ('feedback', 'Feedback', 'Suggestions and feedback about this site', 110)
 ON CONFLICT (slug) DO NOTHING;
 
 
@@ -69,10 +69,46 @@ ON CONFLICT (email) DO NOTHING;
 -- USER PROFILES
 -- =====================================================
 
-INSERT INTO user_profiles (user_id, verified_by_admin)
-SELECT u.id, true
+-- INSERT INTO user_profiles (user_id, verified_by_admin)
+-- SELECT u.id, true
+-- FROM users u
+-- LEFT JOIN user_profiles p ON p.user_id = u.id
+-- WHERE u.email IN (
+--   'alan@can.local',
+--   'bruce@can.local',
+--   'chuck@can.local',
+--   'dave@can.local'
+-- )
+-- AND p.user_id IS NULL;
+
+INSERT INTO user_profiles (
+  user_id,
+  phone,
+  street_address,
+  city,
+  us_state,
+  zip_code,
+  verified_by_admin
+)
+SELECT
+  u.id,
+  v.phone,
+  v.street_address,
+  v.city,
+  v.us_state,
+  v.zip_code,
+  true
 FROM users u
+
+LEFT JOIN (
+  VALUES
+    ('chuck@can.local', '555-111-2222', '123 Maple St', 'Harrisburg', 'PA', '17102'),
+    ('dave@can.local',  '555-333-4444', '456 Oak Ave',  'Harrisburg',   'PA', '17101')
+) AS v(email, phone, street_address, city, us_state, zip_code)
+ON u.email = v.email
+
 LEFT JOIN user_profiles p ON p.user_id = u.id
+
 WHERE u.email IN (
   'alan@can.local',
   'bruce@can.local',
@@ -80,6 +116,7 @@ WHERE u.email IN (
   'dave@can.local'
 )
 AND p.user_id IS NULL;
+
 
 
 -- =====================================================

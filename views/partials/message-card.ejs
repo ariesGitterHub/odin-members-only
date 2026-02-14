@@ -1,0 +1,35 @@
+<div class="message-card">
+  <div class="message-header">
+    <div class="message-avatar">
+      <span class="emoji message-avatar-image" role="img" aria-label="avatar image and link to your profile">
+        🐈‍⬛
+      </span>
+    </div>
+    <div class="message-name-and-title">
+      <p class="message-name bold"><%= message.first_name %> <%= message.last_name %></p>
+      <p class="message-title uppercase"><%= message.title %></p>
+    </div>
+  </div>
+  <div class="message-details uppercase">
+    <span>created <%= new Date(message.created_at).toLocaleDateString() %></span>
+    <span>chars <%= message.body.length %></span>    
+    <span>expires <%= new Date(message.expires_at).toLocaleDateString() %></span>   
+    <!-- <span>likes: <%= message.like_count %></span>  -->
+  </div>
+  <div class="message-body">
+    <p><%= message.body %></p>
+  </div>
+  <div class="message-footer">
+  <%# if (currentUser) { %>
+    
+      <div class="message-button-container">
+        <!-- <button class="message-button" type="button">Edit</button> -->
+        <button class="" type="button">Delete</button>
+        <form action="/messages/<%= message.id %>/like" method="POST">
+        <button class="" type="submit"><span class="emoji">🖤(<%= message.like_count %>)</span></button>
+      </form>          
+      </div>
+
+    <%# } %>
+  </div>
+</div>

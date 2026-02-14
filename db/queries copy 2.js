@@ -1,4 +1,14 @@
+// PostgreSQL queries for the Neighborhood Message Board
+// Requires: node-postgres client (pg)
 const pool = require("./pool");
+
+// --- Get all users ---
+// const getUsers = async function getUsers() {
+//   const { rows } = await pool.query(
+//     "SELECT * FROM users ORDER BY id",
+//   );
+//   return rows;
+// };
 
 const getUsers = async function getUsers() {
   const { rows } = await pool.query(`
@@ -40,7 +50,7 @@ const getTopicBySlug = async (slug) => {
   const query = `
     SELECT *
     FROM topics
-    WHERE LOWER(slug) = LOWER($1)
+    WHERE slug = $1
       AND is_active = true
     LIMIT 1;
   `;
@@ -48,29 +58,29 @@ const getTopicBySlug = async (slug) => {
   return res.rows[0];
 };
 
-// const getMessagesByTopicId = async (topicId, limit = 50) => {
-//   const query = `
-//     SELECT 
-//       m.id,
-//       m.topic_id,
-//       m.user_id,
-//       m.title,
-//       m.like_count,
-//       m.body,
-//       m.created_at,
-//       u.first_name,
-//       u.last_name
-//     FROM messages m
-//     JOIN users u ON m.user_id = u.id
-//     WHERE m.topic_id = $1
-//       AND m.is_deleted = false
-//       AND (m.expires_at IS NULL OR m.expires_at > NOW())
-//     ORDER BY m.created_at DESC
-//     LIMIT $2;
-//   `;
-//   const res = await pool.query(query, [topicId, limit]);
-//   return res.rows;
-// };
+const getMessagesByTopicId = async (topicId, limit = 50) => {
+  const query = `
+    SELECT 
+      m.id,
+      m.topic_id,
+      m.user_id,
+      m.title,
+      m.like_count,
+      m.body,
+      m.created_at,
+      u.first_name,
+      u.last_name
+    FROM messages m
+    JOIN users u ON m.user_id = u.id
+    WHERE m.topic_id = $1
+      AND m.is_deleted = false
+      AND (m.expires_at IS NULL OR m.expires_at > NOW())
+    ORDER BY m.created_at DESC
+    LIMIT $2;
+  `;
+  const res = await pool.query(query, [topicId, limit]);
+  return res.rows;
+};
 
 
 /**
@@ -201,19 +211,19 @@ const cleanupMessages = async (olderThanDays = 30) => {
  * @param userId: ID of the user
  * @param limit: number of messages to return
  */
-// const getMessagesByUser = async (userId, limit = 50) => {
-//   const query = `
-//     SELECT id, topic_id, title, body, created_at, expires_at
-//     FROM messages
-//     WHERE user_id = $1
-//       AND is_deleted = false
-//       AND (expires_at IS NULL OR expires_at > NOW())
-//     ORDER BY created_at DESC
-//     LIMIT $2;
-//   `;
-//   const res = await pool.query(query, [userId, limit]);
-//   return res.rows;
-// };
+const getMessagesByUser = async (userId, limit = 50) => {
+  const query = `
+    SELECT id, topic_id, title, body, created_at, expires_at
+    FROM messages
+    WHERE user_id = $1
+      AND is_deleted = false
+      AND (expires_at IS NULL OR expires_at > NOW())
+    ORDER BY created_at DESC
+    LIMIT $2;
+  `;
+  const res = await pool.query(query, [userId, limit]);
+  return res.rows;
+};
 
 /**
  * Fetch messages by a specific topic
@@ -308,9 +318,9 @@ module.exports = {
   // getTopics,
   getAllTopics,
   getTopicBySlug,
-  // getMessagesByTopicId,
+  getMessagesByTopicId,
   getValidMessagesByTopic,
-  // getMessagesByUser,
+  getMessagesByUser,
   getMessagesByTopic,
   softDeleteExpiredMessages,
   hardDeleteMessages,
