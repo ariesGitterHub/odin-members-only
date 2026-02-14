@@ -1,8 +1,15 @@
 <div class="message-card">
   <div class="message-header">
-    <div class="message-avatar">
-      <span class="emoji message-avatar-image" role="img" aria-label="avatar image and link to your profile">
-        🐈‍⬛
+    <div 
+      class="message-avatar-image-container" 
+      style="
+        --avatar-fg: <%= message.avatar_color_fg || 'var(--off-black)' %>;
+        --avatar-bg-top: <%= message.avatar_color_bg_top || 'var(--off-white)' %>;
+        --avatar-bg-bottom: <%= message.avatar_color_bg_bottom || 'var(--off-gray)' %>;
+      ">
+      <span class="emoji" role="img" aria-label="avatar image">
+        <!-- 🐈‍⬛ -->
+        <%= message.avatarLetter %>
       </span>
     </div>
     <div class="message-name-and-title">
@@ -26,7 +33,7 @@
         <!-- <button class="message-button" type="button">Edit</button> -->
         <button class="" type="button">Delete</button>
         <form action="/messages/<%= message.id %>/like" method="POST">
-        <button class="" type="submit"><span class="emoji">🖤(<%= message.like_count %>)</span></button>
+        <button class="" type="submit"><span class="emoji-like">🖤(<%= message.like_count %>)</span></button>
       </form>          
       </div>
 

@@ -25,6 +25,18 @@ const getUsers = async function getUsers() {
   return rows;
 };
 
+// Query to get avatar-related data by user ID
+// const getAvatarByUserId = `
+//   SELECT 
+//     avatar_type,
+//     avatar_color_fg,
+//     avatar_color_bg_top,
+//     avatar_color_bg_bottom
+//   FROM user_profiles
+//   WHERE user_id = $1;
+// `;
+
+
 const getAllTopics = async () => {
   const query = `
     SELECT *
@@ -91,6 +103,31 @@ const getTopicBySlug = async (slug) => {
 //   return res.rows;
 // };
 
+// const getValidMessagesByTopic = async (topicId, limit = 50) => {
+//   const query = `
+//     SELECT 
+//       m.id,
+//       m.topic_id,
+//       m.user_id,
+//       m.title,
+//       m.like_count,
+//       m.body,
+//       m.created_at,
+//       m.expires_at,
+//       u.first_name,
+//       u.last_name
+//     FROM messages m
+//     JOIN users u ON m.user_id = u.id
+//     WHERE m.topic_id = $1
+//       AND m.is_deleted = false
+//       AND (m.expires_at IS NULL OR m.expires_at > NOW())
+//     ORDER BY m.created_at DESC
+//     LIMIT $2;
+//   `;
+//   const res = await pool.query(query, [topicId, limit]);
+//   return res.rows;
+// };
+
 const getValidMessagesByTopic = async (topicId, limit = 50) => {
   const query = `
     SELECT 
@@ -103,9 +140,15 @@ const getValidMessagesByTopic = async (topicId, limit = 50) => {
       m.created_at,
       m.expires_at,
       u.first_name,
-      u.last_name
+      u.last_name,
+      u.permission_status,
+      up.avatar_type,
+      up.avatar_color_fg,
+      up.avatar_color_bg_top,
+      up.avatar_color_bg_bottom
     FROM messages m
     JOIN users u ON m.user_id = u.id
+    LEFT JOIN user_profiles up ON up.user_id = u.id
     WHERE m.topic_id = $1
       AND m.is_deleted = false
       AND (m.expires_at IS NULL OR m.expires_at > NOW())
@@ -115,6 +158,7 @@ const getValidMessagesByTopic = async (topicId, limit = 50) => {
   const res = await pool.query(query, [topicId, limit]);
   return res.rows;
 };
+
 
 
 /**

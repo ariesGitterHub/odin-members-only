@@ -13,6 +13,7 @@ const {
 } = require("../db/queries");
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
+const { avatarTypeDefault } = require("../utils/avatarTypeDefault");
 
 async function getHome(req, res, next) {
   try {
@@ -139,10 +140,36 @@ async function getTopicPage(req, res, next) {
     // Get messages for this topic
     const messages = await getValidMessagesByTopic(topic.id);
 
+    // Check avatar, if none select, gets a letter
+    // const avatarLetter = avatarTypeDefault(
+    //   messages.avatar_type,
+    //   messages.permission_status,
+    //   messages.first_name,
+    // );
+
+    // const avatarLetter = messages.map((message) => {
+    //   avatarTypeDefault(
+    //   message.avatar_type,
+    //   message.permission_status,
+    //   message.first_name,
+    // )});
+
+    // Attach avatarLetter to each message - TODO - I need to remember below!
+    const messagesWithAvatars = messages.map((message) => ({
+      ...message,
+      avatarLetter: avatarTypeDefault(
+        message.avatar_type,
+        message.permission_status,
+        message.first_name,
+      ),
+    }));
+
     res.render("topic", {
       title: topic.name,
       topic,
-      messages,
+      // messages,
+      messages: messagesWithAvatars,
+      // avatarLetter,
       errors: [],
     });
   } catch (err) {

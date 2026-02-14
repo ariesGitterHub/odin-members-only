@@ -83,6 +83,10 @@ ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO user_profiles (
   user_id,
+  avatar_type,
+  avatar_color_fg,
+  avatar_color_bg_top,
+  avatar_color_bg_bottom,
   phone,
   street_address,
   city,
@@ -92,6 +96,10 @@ INSERT INTO user_profiles (
 )
 SELECT
   u.id,
+  v.avatar_type,
+  v.avatar_color_fg,
+  v.avatar_color_bg_top,
+  v.avatar_color_bg_bottom,
   v.phone,
   v.street_address,
   v.city,
@@ -102,9 +110,9 @@ FROM users u
 
 LEFT JOIN (
   VALUES
-    ('chuck@can.local', '555-111-2222', '123 Maple St', 'Harrisburg', 'PA', '17102'),
-    ('dave@can.local',  '555-333-4444', '456 Oak Ave',  'Harrisburg',   'PA', '17101')
-) AS v(email, phone, street_address, city, us_state, zip_code)
+    ('chuck@can.local', '🦍', '', '#92cfe4', '#7de9e9',  '555-111-2222', '123 Maple St', 'Harrisburg', 'PA', '17102'),
+    ('dave@can.local', '🐅', '#521313', '#eeee7d', '#83741d', '555-333-4444', '456 Oak Ave',  'Harrisburg',   'PA', '17101')
+) AS v(email, avatar_type, avatar_color_fg, avatar_color_bg_top, avatar_color_bg_bottom, phone, street_address, city, us_state, zip_code)
 ON u.email = v.email
 
 LEFT JOIN user_profiles p ON p.user_id = u.id

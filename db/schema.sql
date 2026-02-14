@@ -1,5 +1,5 @@
 -- Enum for user permission status
-CREATE TYPE user_permission_status AS ENUM ('user', 'member', 'admin');
+CREATE TYPE permission_status_enum AS ENUM ('user', 'member', 'admin');
 
 -- Users
 CREATE TABLE users (
@@ -12,7 +12,7 @@ CREATE TABLE users (
   last_name TEXT NOT NULL,
   birthdate DATE,
 
-  permission_status user_permission_status NOT NULL,
+  permission_status permission_status_enum  NOT NULL,
 
   is_active BOOLEAN DEFAULT true,
 

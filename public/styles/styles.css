@@ -51,11 +51,14 @@
   --lt-blue: #92cfe4;
   --lt-purple: #d080eb;
 
+  --avatar-fg: var(--off-black);
+  --avatar-bg-top: var(--off-white);
+  --avatar-bg-bottom: var(--off-gray);
+
   --font-text: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   /* --font-emoji: 'OpenMoji', system-ui, sans-serif; */
   /* --font-emoji: "NotoColorEmoji", sans-serif; */
   --font-emoji: "NotoEmoji", sans-serif;
-
 }
 
 *,
@@ -85,7 +88,7 @@ a {
 /* ul, */
 .info-ul {
   background-color: var(--white);
-    border: 0.125rem solid var(--off-gray);
+  border: 0.125rem solid var(--off-gray);
   border-radius: 0.5rem;
   margin: 0.125rem 0;
   padding: 0.25rem;
@@ -141,7 +144,6 @@ body {
   /* padding: 1rem; */
 }
 
-
 /* .user-info {
   height: 1.75rem;
   width: fit-content;
@@ -172,23 +174,23 @@ body {
 } */
 
 .page-title {
-  display: inline-block;  
+  display: inline-block;
   /* background: linear-gradient(90deg, #ff00cc, #3333ff); */
   background: linear-gradient(180deg, var(--off-red), var(--off-black));
   -webkit-background-clip: text; /* Clips background to text shape */
   -webkit-text-fill-color: transparent; /* Makes original text color transparent */
   font-size: 3rem;
-  padding: 0.5rem; 
+  padding: 0.5rem;
 }
 
 .page-title-off-card {
-  display: inline-block;  
+  display: inline-block;
   /* background: linear-gradient(90deg, #ff00cc, #3333ff); */
   background: linear-gradient(180deg, var(--white), var(--off-white));
   -webkit-background-clip: text; /* Clips background to text shape */
   -webkit-text-fill-color: transparent; /* Makes original text color transparent */
   font-size: 3rem;
-  padding: 0.5rem; 
+  padding: 0.5rem;
 }
 
 .red-letter {
@@ -199,14 +201,12 @@ body {
 
 .page-subtitle {
   color: var(--off-gray);
-  padding: 0 0.5rem; 
+  padding: 0 0.5rem;
 }
-
 
 h1 {
   /* font-size: 1.75rem; */
   font-size: 1.5rem;
-
 }
 
 h2 {
@@ -255,18 +255,18 @@ main {
 }
 
 .profile {
-width: 100%;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-background-color: var(--off-black);
-    border-radius: 1rem;
-      /* box-shadow: inset 0 0.25rem 1rem var(--off-black); */
-      box-shadow: inset 0 0.25rem 1rem var(--off-gray);
-/* margin: 1rem;       */
-margin-bottom: 1rem;
-padding: 1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--off-black);
+  border-radius: 1rem;
+  /* box-shadow: inset 0 0.25rem 1rem var(--off-black); */
+  box-shadow: inset 0 0.25rem 1rem var(--off-gray);
+  /* margin: 1rem;       */
+  margin-bottom: 1rem;
+  padding: 1rem;
 }
 
 /* .profile-admin {
@@ -281,16 +281,20 @@ margin-bottom: 1rem;
 padding: 1rem;
 } */
 
-.profile-image {
+.profile-avatar-image-container {
   height: 10rem;
   width: 10rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(05deg, var(--off-gray), var(--off-white));
+  background: linear-gradient(
+    05deg,
+    var(--avatar-bg-bottom),
+    var(--avatar-bg-top)
+  );
   border: 0.125rem solid var(--off-gray);
   border-radius: 50%;
-  color: var(--off-black);
+  color: var(--avatar-fg);
   margin-bottom: 0.5rem;
 }
 
@@ -298,11 +302,25 @@ padding: 1rem;
   font-weight: 600;
 }
 
+/* .emoji-avatar-fg {
+color: var(--avatar-fg-default);
+} */
+
+/* .emoji-avatar-bg-top {
+color: var(--avatar-bg-top-default);
+}
+
+.emoji-avatar-bg-bottom {
+color: var(--avatar-bg-bottom-default);
+} */
+
 .emoji {
   display: inline-block;
   font-family: var(--font-emoji);
-  /* font-weight: 100; */
+  font-size: 2.5rem;
+  font-weight: 100;
   line-height: 1;
+  margin: 0.75rem;
   vertical-align: middle;
 }
 
@@ -314,14 +332,14 @@ padding: 1rem;
   font-weight: 600; */
 }
 
-/* .emoji-like {
+.emoji-like {
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--dk-red);
   font-family: var(--font-emoji);
-  vertical-align: middle;
-} */
+  /* vertical-align: middle; */
+}
 
 /* @keyframes wave-animation {
   0% {
@@ -359,22 +377,24 @@ padding: 1rem;
   align-items: center;
 } */
 
-.profile-data, .profile-data-admin {
+.profile-data,
+.profile-data-admin {
   width: 100%;
- font-size: 1rem;
- /* margin: 0.5rem 0; */
- /* padding: 0.5rem; */
+  font-size: 1rem;
+  /* margin: 0.5rem 0; */
+  /* padding: 0.5rem; */
 }
 
 .profile-data {
-  color: var(--off-white);  
+  color: var(--off-white);
 }
 
 .profile-data-admin {
-  color: var(--off-black);  
+  color: var(--off-black);
 }
 
-.profile-data div, .profile-data-admin div {
+.profile-data div,
+.profile-data-admin div {
   display: grid;
   grid-template-columns: 4rem 1fr;
   gap: 1rem;
@@ -400,9 +420,6 @@ padding: 1rem;
 .italic {
   font-style: italic;
 }
-
-
-
 
 .button-container {
   width: 100%;
@@ -491,9 +508,9 @@ button:hover,
 } */
 
 .nav-button:hover {
- background-color: var(--off-black);
- box-shadow: none;
- color: var(--off-white);
+  background-color: var(--off-black);
+  box-shadow: none;
+  color: var(--off-white);
 }
 
 .user-message {
@@ -501,16 +518,23 @@ button:hover,
   margin: 0.25rem 0;
 }
 
-.sign-up-form, .log-in-form, .become-member-form, .update-profile-form, .change-avatar-form {
+.sign-up-form,
+.log-in-form,
+.become-member-form,
+.update-profile-form,
+.change-avatar-form {
   width: 100%;
   margin: 0.25rem 0;
 }
 
-.sign-up-form, .log-in-form, .become-member-form {
+.sign-up-form,
+.log-in-form,
+.become-member-form {
   color: var(--off-black);
 }
 
-.update-profile-form, .change-avatar-form {
+.update-profile-form,
+.change-avatar-form {
   color: var(--off-white);
 }
 
@@ -614,20 +638,27 @@ fieldset input::placeholder {
   padding: 0.25rem;
 }
 
-.message-avatar-image {
-  width: 3.75rem;
+.message-avatar-image-container {
+  /* height: 3.75rem;  
+  width: 3.75rem; */
   height: 3.75rem;
+  width: 3.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
-/* background-color: pink; */
-  background: linear-gradient(05deg, var(--off-gray), var(--off-white));
-  border: 0.125rem solid var(--off-black);
-border-radius: 50%;
-color: var(--off-black);
-margin-right: 0.5rem;
-padding: 0.25rem;
-font-size: 2.5rem;
+  /* background-color: pink; */
+  background: linear-gradient(
+    05deg,
+    var(--avatar-bg-bottom),
+    var(--avatar-bg-top)
+  );
+  /* border: 0.125rem solid var(--off-black); */
+  border-radius: 50%;
+  box-shadow: inset 0 0.125rem 0.5rem var(--off-gray);
+  color: var(--avatar-fg);
+  margin-right: 0.5rem;
+  padding: 0.25rem;
+  /* font-size: 2.5rem; */
 }
 
 .message-name-and-title {
@@ -640,25 +671,25 @@ font-size: 2.5rem;
 }
 
 .message-title {
-font-size: 0.9rem;
+  border-top: 0.125rem solid var(--off-white);
+  font-size: 0.9rem;
 }
-
 
 .message-details {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.25rem;
-    /* background-color: var(--lt-green); */
+  /* background-color: var(--lt-green); */
 
   font-size: 0.7rem;
-    padding: 0.25rem;
+  padding: 0.25rem;
 }
 
 .message-details span {
   display: flex;
-align-items: center;
-justify-content: center;
+  align-items: center;
+  justify-content: center;
   background-color: var(--off-white);
   border-radius: 0.5rem;
   padding: 0.25rem;
@@ -673,11 +704,9 @@ justify-content: center;
   padding: 0.25rem;
 }
 
-
-
 .message-footer {
   /* background-color: var(--lt-blue); */
-    border-bottom-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
   padding: 0.25rem;
 }
@@ -702,9 +731,8 @@ justify-content: center;
 but I had elements on admin.ejs that would not get properly hidden. 
 It might have something to do with my use of dt and dd elements; unsure. */
 div.hidden {
-  display: none !important;  /* Ensures it's not overridden */
+  display: none !important; /* Ensures it's not overridden */
 }
-
 
 /* @media (prefers-reduced-motion: reduce) {
   .waving {
