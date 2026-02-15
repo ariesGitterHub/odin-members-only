@@ -4,7 +4,7 @@ const {
   getHome,
   getSignUp,
   getLogIn,
-  getDashboard,
+  getYourProfile,
   getMemberDirectory,
   getUpdateProfile,
   getChangeAvatar,
@@ -22,7 +22,7 @@ const appRouter = Router();
 appRouter.get("/", getHome);
 appRouter.get("/sign-up", getSignUp);
 appRouter.get("/log-in", getLogIn);
-appRouter.get("/dashboard", getDashboard);
+appRouter.get("/your-profile", getYourProfile);
 appRouter.get("/member-directory", getMemberDirectory);
 appRouter.get("/update-profile", getUpdateProfile);
 appRouter.get("/change-avatar", getChangeAvatar);

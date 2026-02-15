@@ -41,6 +41,22 @@ app.use(
   }),
 );
 
+app.use(async (req, res, next) => {
+  try {
+    if (req.session.userId) {
+      const user = await getUserById(req.session.userId);
+      res.locals.currentUser = user;
+    } else {
+      res.locals.currentUser = null;
+    }
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+
+
 // Passport Middleware setup (after session)
 
 // app.use(passport.initialize());

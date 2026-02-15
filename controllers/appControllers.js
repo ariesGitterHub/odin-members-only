@@ -51,10 +51,10 @@ async function getLogIn(req, res, next) {
   }
 }
 
-async function getDashboard(req, res, next) {
+async function getYourProfile(req, res, next) {
   try {
-    res.render("dashboard", {
-      title: "Dashboard",
+    res.render("your-profile", {
+      title: "Your Profile",
       user: req.user,
       errors: [],
     });
@@ -270,7 +270,7 @@ module.exports = {
   getHome,
   getSignUp,
   getLogIn,
-  getDashboard,
+  getYourProfile,
   getMemberDirectory,
   getUpdateProfile,
   getChangeAvatar,

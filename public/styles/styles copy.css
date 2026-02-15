@@ -513,7 +513,7 @@ button:hover,
   color: var(--off-white);
 }
 
-.user-message {
+.ui-message {
   width: 100%;
   margin: 0.25rem 0;
 }

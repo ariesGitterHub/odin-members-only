@@ -1,0 +1,107 @@
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  background: linear-gradient(05deg, var(--off-black), var(--off-gray));
+  color: var(--off-black);
+  font-family: var(--font-text);
+  font-size: 1rem;
+}
+
+h1 {
+  /* font-size: 1.75rem; */
+  font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+/* h3 {
+  font-size: 1.125rem;
+} */
+
+/* HEADER (& NAV) */
+
+.app-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+}
+
+.app-nav {
+  height: 4rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 0.5rem;
+  background-color: var(--off-red);
+}
+
+.app-nav-button-image {
+  /* font-size: 1.75rem; */
+  font-weight: 100;
+  text-align: center;
+}
+
+.app-logged-in-bar {
+  background-color: var(--off-black);
+  color: var(--off-white);
+  font-size: 0.8rem;
+  padding: 0.125rem;
+  text-align: center;
+}
+
+
+/* MAIN */
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* margin: 1rem; */
+}
+
+/* -- Button Containers */
+
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 0.75rem;
+}
+
+.button-container-col {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* .button-container-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+} */
+
+/* FOOTER */
+
+footer {
+  color: var(--off-white);
+  font-size: 0.8rem;
+  margin: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+}

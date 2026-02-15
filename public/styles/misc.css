@@ -1,0 +1,45 @@
+.capitalize {
+  text-transform: capitalize;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.black {
+    color: var(--off-black);
+}
+
+.white {
+    color: var(--off-white);
+}
+
+.red-letter {
+  /* color: var(--off-red); */
+  /* background-color: var(--off-black); */
+  /* border: 1px solid red; */
+}
+
+/* TODO - test this again, and only keep one hidden! */
+.hidden {
+  display: none;
+}
+
+/* I can't recall the last time I had to use !important, 
+but I had elements on admin.ejs that would not get properly hidden. 
+It might have something to do with my use of dt and dd elements; unsure. */
+div.hidden {
+  display: none !important; /* Ensures it's not overridden */
+}

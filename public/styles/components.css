@@ -1,0 +1,175 @@
+/* A LINKS */
+
+.app-link {
+  color: var(--off-red);
+  font-weight: 600;
+}
+
+.app-link:link,
+.app-link:visited,
+.app-link:hover {
+  color: var(--off-red); /* mouse over */
+}
+
+
+/* BUTTONS */
+
+button,
+.fake-button {
+  all: unset; /* nukes browser defaults */
+  height: 1.75rem;
+  width: 5.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  border: 0.125rem solid var(--off-gray);
+  border-radius: 0.5rem;
+  box-shadow: inset 0 0.25rem 1rem var(--off-gray);
+  color: var(--off-black);
+  cursor: pointer;
+  font-family: var(--font-text);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0 0.25rem;
+  text-transform: uppercase;
+}
+
+.fake-button:link,
+.fake-button:visited,
+.fake-button:hover {
+  color: var(--off-black); /* mouse over */
+}
+
+button:hover,
+.fake-button:hover {
+  background-color: var(--off-red);
+  box-shadow: none;
+  color: var(--off-white);
+  transform: scale(1.03);
+}
+
+.wide-button {
+  width: 95%;
+}
+
+.nav-button {
+  height: 2rem;
+  width: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  line-height: 1;
+  margin: 0.25rem 0;
+  padding: 0.25rem;
+}
+
+.nav-button:hover {
+  background-color: var(--off-black);
+  box-shadow: none;
+  color: var(--off-white);
+}
+
+/* EMOJIS */
+
+.emoji {
+  /* display: inline-block; */
+  font-family: var(--font-emoji);
+  /* font-size: 2.5rem; */
+  font-weight: 100;
+  /* line-height: 1; */
+  /* margin: 0.75rem; */
+  /* vertical-align: middle; */
+}
+
+.emoji-size-nav {
+  font-size: 1.75rem;
+}
+
+.emoji-in-use {
+  font-size: 2.5rem;
+}
+
+.emoji-avatar {
+  font-size: 6rem;
+  /* transform-origin: 70% 70%; */
+  /* BELOW KICKS IN IF NOT A MEMBER WITH A "SPIRIT EMOJI" */
+  /* color: var(--off-white);
+  font-weight: 600; */
+}
+
+.emoji-like {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dk-red);
+  font-family: var(--font-emoji);
+  /* vertical-align: middle; */
+}
+
+/* FORMS */
+
+.sign-up-form,
+.log-in-form,
+.become-member-form,
+.update-profile-form,
+.change-avatar-form {
+  width: 100%;
+  margin: 0.25rem 0;
+}
+
+.sign-up-form,
+.log-in-form,
+.become-member-form {
+  color: var(--off-black);
+}
+
+.update-profile-form,
+.change-avatar-form {
+  color: var(--off-white);
+}
+
+label {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+input {
+  width: 100%;
+  background-color: var(--white);
+  border: 0.125rem solid var(--off-gray);
+  /* border-radius: 0.125rem; */
+  margin-bottom: 0.25rem;
+  padding: 0.125rem;
+}
+
+input::placeholder {
+  text-transform: capitalize;
+}
+
+fieldset {
+  padding: 0.5rem;
+}
+
+fieldset input {
+  width: 100%;
+  /* margin-left: 0.5rem; */
+  text-align: center;
+}
+
+fieldset input::placeholder {
+  text-align: left;
+}
+
+/* UL & LI */
+
+li {
+  list-style: none;
+  margin-bottom: 0.5rem;
+}
+
+li:last-child {
+  margin-bottom: 0;
+}
