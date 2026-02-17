@@ -13,6 +13,7 @@ const session = require("express-session");
 const PORT = process.env.PORT || 3000;
 const appRouter = require("./routes/appRouter");
 const { log } = require("node:console");
+const permissions = require("./utils/permissions");
 
 // 2. Create the app
 const app = express();
@@ -41,20 +42,30 @@ app.use(
   }),
 );
 
-app.use(async (req, res, next) => {
-  try {
-    if (req.session.userId) {
-      const user = await getUserById(req.session.userId);
-      res.locals.currentUser = user;
-    } else {
-      res.locals.currentUser = null;
-    }
-    next();
-  } catch (err) {
-    next(err);
-  }
-});
+// app.use(async (req, res, next) => {
+//   try {
+//     if (req.session.userId) {
+//       const user = await getUserById(req.session.userId);
+//       res.locals.currentUser = user;
+//     } else {
+//       res.locals.currentUser = null;
+//     }
+//     next();
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
+// app.use((req, res, next) => {
+//   res.locals.currentUser = req.session.user || null;
+//   next();
+// });
+
+app.use((req, res, next) => {
+  res.locals.currentUser = req.session.user || null;
+  res.locals.permissions = permissions;
+  next();
+});
 
 
 // Passport Middleware setup (after session)

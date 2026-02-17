@@ -26,10 +26,32 @@
     color: var(--off-white);
 }
 
-.red-letter {
+/* -- ???? Assigned via permission_status, must be able to override other css, put last in misc.css ???? */
+
+.admin-card {
+  background-color: var(--off-black);
+    border: 0.125rem solid var(--off-red);
+  color: var(--off-white);
+}
+.member-card {
+  background-color: var(--lt-yellow);
+    border: 0.125rem solid var(--off-red);
   /* color: var(--off-red); */
+}
+.guest-card {
+  background-color: var(--off-white);
+    border: 0.125rem solid var(--off-red);
+}
+
+.user-card {
+/* on admin panel, used to grab via js */
+}
+
+.red-letter {
+  color: var(--off-red);
   /* background-color: var(--off-black); */
   /* border: 1px solid red; */
+  font-weight: 500;
 }
 
 /* TODO - test this again, and only keep one hidden! */

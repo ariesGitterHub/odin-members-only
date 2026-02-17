@@ -72,12 +72,33 @@ main {
   /* margin: 1rem; */
 }
 
+/* General Element Containers */
+.element-container-row {
+  /* width: 100%; */
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  /* gap: 0.25rem; */
+}
+
+.element-container-col {
+  /* width: 100%; */
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  /* gap: 0.25rem; */
+}
+
+
+
 /* -- Button Containers */
 
 .button-container {
   width: 100%;
   display: flex;
   justify-content: space-evenly;
+  gap: 0.5rem;
   margin-top: 0.75rem;
 }
 

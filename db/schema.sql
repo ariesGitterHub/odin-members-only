@@ -1,5 +1,5 @@
 -- Enum for user permission status
-CREATE TYPE permission_status_enum AS ENUM ('user', 'member', 'admin');
+CREATE TYPE permission_status_enum AS ENUM ('guest', 'member', 'admin');
 
 -- Users
 CREATE TABLE users (

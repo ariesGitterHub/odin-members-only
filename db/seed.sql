@@ -18,8 +18,14 @@ ON CONFLICT (email) DO NOTHING;
 
 -- Ensure admin has a profile and is verified
 
-INSERT INTO user_profiles (user_id, verified_by_admin)
-SELECT u.id, true
+INSERT INTO user_profiles (
+  user_id,   
+  avatar_type,
+  avatar_color_bg_top,
+  avatar_color_bg_bottom,
+  verified_by_admin
+)
+SELECT u.id, '👑', '#d080eb', '#864e97', true
 FROM users u
 LEFT JOIN user_profiles p ON p.user_id = u.id
 WHERE u.email = 'admin@can.org'
@@ -33,14 +39,15 @@ VALUES
   ('safety-alerts', 'Safety Alerts', 'Suspicious activity and crime', 10),
   ('events', 'Events', 'Neighborhood events, meetings, and activities', 20),
   ('general', 'General Discussion', 'General neighborhood conversations', 30),
-  ('nuisances', 'Nuisances', 'Noise, vandalism, and general irritations', 40),
-  ('help-requests', 'Help Requests', 'Ask neighbors for help or assistance', 50),
-  ('lost-found', 'Lost & Found', 'Lost or found pets and items', 60),
-  ('buy-sell', 'Buy & Sell', 'Items for sale or wanted', 70),
-  ('free-stuff', 'Free Stuff', 'Give away items you no longer need or want', 80),
-  ('businesses', 'Local Businesses', 'Recommendations and offers for local services', 90),
-  ('introductions', 'Introductions', 'Welcome new neighbors', 100),
-  ('feedback', 'Feedback', 'Suggestions and feedback about this site', 110)
+  ('harrisburg', 'Harrisburg', 'City and government conversations', 40),
+  ('nuisances', 'Nuisances', 'Noise, vandalism, and general irritations', 50),
+  ('help-requests', 'Help Requests', 'Ask neighbors for help or assistance', 60),
+  ('lost-found', 'Lost & Found', 'Lost or found pets and items', 70),
+  ('buy-sell', 'Buy & Sell', 'Items for sale or wanted', 80),
+  ('free-stuff', 'Free Stuff', 'Give away items you no longer need or want', 90),
+  ('businesses', 'Local Businesses', 'Recommendations and offers for local services', 100),
+  ('introductions', 'Introductions', 'Welcome new neighbors', 110),
+  ('feedback', 'Feedback', 'Suggestions and feedback about this site', 120)
 ON CONFLICT (slug) DO NOTHING;
 
 
@@ -58,8 +65,8 @@ INSERT INTO users (
   permission_status
 )
 VALUES
-  ('alan@can.local',  '$2b$12$DUMMY_HASH', 'Alan',  'Rivera', '1961-01-05', 'user'),
-  ('bruce@can.local', '$2b$12$DUMMY_HASH', 'Bruce', 'Chen', '1951-04-05', 'user'),
+  ('alan@can.local',  '$2b$12$DUMMY_HASH', 'Alan',  'Rivera', '1961-01-05', 'guest'),
+  ('bruce@can.local', '$2b$12$DUMMY_HASH', 'Bruce', 'Chen', '1951-04-05', 'guest'),
   ('chuck@can.local', '$2b$12$DUMMY_HASH', 'Chuck', 'Thompson', '1941-08-05', 'member'),
   ('dave@can.local',  '$2b$12$DUMMY_HASH', 'Dave',  'Brooks', '1951-10-05', 'member')
 ON CONFLICT (email) DO NOTHING;
@@ -92,6 +99,7 @@ INSERT INTO user_profiles (
   city,
   us_state,
   zip_code,
+  notes,
   verified_by_admin
 )
 SELECT
@@ -105,14 +113,15 @@ SELECT
   v.city,
   v.us_state,
   v.zip_code,
+  v.notes,
   true
 FROM users u
 
 LEFT JOIN (
   VALUES
-    ('chuck@can.local', '🦍', '', '#92cfe4', '#7de9e9',  '555-111-2222', '123 Maple St', 'Harrisburg', 'PA', '17102'),
-    ('dave@can.local', '🐅', '#521313', '#eeee7d', '#83741d', '555-333-4444', '456 Oak Ave',  'Harrisburg',   'PA', '17101')
-) AS v(email, avatar_type, avatar_color_fg, avatar_color_bg_top, avatar_color_bg_bottom, phone, street_address, city, us_state, zip_code)
+    ('chuck@can.local', '🦍', '', '#92cfe4', '#7de9e9',  '555-111-2222', '123 Maple St', 'Harrisburg', 'PA', '17102', 'likes peanut brittle'),
+    ('dave@can.local', '🐅', '#521313', '#eeee7d', '#83741d', '555-333-4444', '456 Oak Ave',  'Harrisburg', 'PA', '17101', '')
+) AS v(email, avatar_type, avatar_color_fg, avatar_color_bg_top, avatar_color_bg_bottom, phone, street_address, city, us_state, zip_code, notes)
 ON u.email = v.email
 
 LEFT JOIN user_profiles p ON p.user_id = u.id

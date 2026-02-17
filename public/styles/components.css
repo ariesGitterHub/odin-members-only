@@ -74,6 +74,32 @@ button:hover,
 
 /* EMOJIS */
 
+.avatar-image-container-wide {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.avatar-image-circle {
+  height: 3.75rem;
+  width: 3.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    05deg,
+    var(--avatar-bg-bottom),
+    var(--avatar-bg-top)
+  );
+  border-radius: 50%;
+  box-shadow: inset 0 0.125rem 0.5rem var(--off-gray);
+  color: var(--avatar-fg);
+  margin-right: 0.5rem;
+  padding: 2rem;
+}
+
 .emoji {
   /* display: inline-block; */
   font-family: var(--font-emoji);

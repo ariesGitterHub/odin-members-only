@@ -108,3 +108,70 @@ document.addEventListener("DOMContentLoaded", () => {
 //   });
 // };
 
+// TOGGLE .HIDDEN FOR ALL USER CARDS ON ADMIN PANEL
+// document.querySelectorAll(".user-card").forEach((card) => {
+//   const showUsers = document.querySelector("#show-users-button");
+//   showUsers.addEventListener("click", () => {
+//     card.classList.toggle("hidden")
+//   })
+// })
+
+// TOGGLE .HIDDEN FOR ALL GUEST CARDS ON ADMIN PANEL
+document.querySelectorAll(".guest-card").forEach((card) => {
+  const showGuests = document.querySelector("#show-guests-button");
+  showGuests.addEventListener("click", () => {
+    card.classList.toggle("hidden");
+    card.classList.contains("hidden")
+      ? (showGuests.textContent = "open guest profiles")
+      : (showGuests.textContent = "close guest profiles");
+  });
+})
+
+// TOGGLE .HIDDEN FOR ALL MEMBER CARDS ON ADMIN PANEL
+document.querySelectorAll(".member-card").forEach((card) => {
+  const showMembers = document.querySelector("#show-members-button");
+  showMembers.addEventListener("click", () => {
+    card.classList.toggle("hidden");
+    card.classList.contains("hidden")
+      ? (showMembers.textContent = "open member profiles")
+      : (showMembers.textContent = "close member profiles");
+  });
+})
+
+// // TOGGLE .HIDDEN FOR PROFILE's DETAILS ON ADMIN PANEL
+// document.querySelectorAll(".profile-data").forEach((card) => {
+//   const showProfile = document.querySelectorAll(".show-profile-button").forEach((btn) => {
+//     btn.addEventListener("click", () => {
+//       card.classList.toggle("hidden");
+//       card.classList.contains("hidden")
+//         ? (showProfile.textContent = "open this profile")
+//         : (showProfile.textContent = "close this profile");
+//     });    
+//   });
+
+// })
+
+document.querySelectorAll(".show-profile-button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const profile = btn.closest(".profile-data")
+        profile.classList.toggle("hidden");
+        profile.classList.contains("hidden")
+          ? (btn.textContent = "open this profile")
+          : (btn.textContent = "close this profile");
+      });
+    });
+
+// document.querySelectorAll(".show-profile-button").forEach((btn) => {
+//   btn.addEventListener("click", () => {
+//     const card = btn.closest(".card");
+
+//     const isOpen = !card.classList.toggle("hidden");
+
+//     card.classList.toggle("expanded", isOpen);
+//     btn.setAttribute("aria-expanded", isOpen);
+
+//     card.querySelector(".file-tab-text").textContent = isOpen
+//       ? "full view:"
+//       : "quick view:";
+//   });
+// });

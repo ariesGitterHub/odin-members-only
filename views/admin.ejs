@@ -7,14 +7,50 @@
     <%- include('./partials/header.ejs') %>
     <main>
       <div class="page-title-off-card uppercase">
-        <h1>admin overview</h1>
+        <h1>admin panel</h1>
       </div>
-      <% if (locals.users) {%> <% users.forEach(function(user) { %>
-        <div class="card">
-          <dl class="profile-data black">
+      <% if (users.length === 0) { %> 
+        <p>No users yet. Be the first to join!</p>
+        <% } else { users.forEach(function(user) { %>
+        <div class="card
+        <% if (user.permission_status === "admin") { %>
+          admin-card
+          <% } else if (user.permission_status === "member") { %>
+          member-card user-card hidden
+          <% } else { %>
+          guest-card user-card hidden
+          <% } %>
+          ">
+          <div class="element-container-row">
+            <div class="avatar-image-container-wide">
+              <div 
+                class="avatar-image-circle" 
+                style="
+                  --avatar-fg: <%= user.avatar_color_fg || 'var(--off-black)' %>;
+                  --avatar-bg-top: <%= user.avatar_color_bg_top || 'var(--off-white)' %>;
+                  --avatar-bg-bottom: <%= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
+                ">
+                <span class="emoji emoji-in-use" role="img" aria-label="avatar image">
+                  <!-- 🐈‍⬛ -->
+                  <!-- <%#= message.avatarLetter %> -->
+                  <%= user.avatarLetter %>
+                </span>
+              </div>            
+            </div>
+            <div class="element-container-col">
+              <h2 class="profile-name"><%= user.first_name %></h2>
+              <h2 class="profile-name"><%= user.last_name %></h2>
+            </div>
+          </div>
+
+          <dl class="profile-data hidden">
               <div>
                 <dt class="capitalize">name</dt>
                 <dd class="capitalize bold"><%= user.first_name %> <%= user.last_name %></dd>
+              </div>
+              <div>
+                <dt class="capitalize">verified</dt>
+                <dd class="bold"><%= user.verified_by_admin %></dd>
               </div>
               <!-- TODO - if status === member, then show; else hidden -->
               <div>
@@ -34,7 +70,7 @@
                 <dt class="capitalize">birthdate</dt>
                 <!-- <dd class="bold"><%#= user.birthdate %></dd> -->
                 <!-- <dd class="bold"><%#= new Date(user.birthdate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %> (<%#= age %>)</dd> -->
-                <dd class="bold"><%= user.formattedBirthdate %> (<%= user.age %>)</dd>
+                <dd class="bold"><%= user.formattedBirthdate %> (age: <%= user.age %>)</dd>
               </div>
               <!-- <hr> -->
               <!-- <br class="<%#= user.street_address ? '' : 'hidden' %>"> -->
@@ -103,20 +139,33 @@
               </div>
             </dl> 
             <br>
+            <%# if (user.permission_status === "admin") { %>
             <div class="button-container-col">
-              <% if (user.permission_status === "admin") { %>
-                <a class="fake-button wide-button" href="/app/????">create user/member</a> 
-              <% } %> 
+            <%# } else { %>
+            <!-- <div class="button-container"> -->
+            <%# } %>
+              <!-- <%# if (user.permission_status !== "admin") { %> -->
+               <!-- TODO - should the admin account be deletable? -->
               <% if (user.permission_status !== "admin") { %>
-                <a class="fake-button wide-button" href="/app/delete">delete account</a>
+                <a class="fake-button wide-button" href="/app/delete">delete this user</a>
               <% } %>
-              <% if (user.permission_status === "user") { %>
-                <a class="fake-button wide-button" href="/app/???">upgrade to member</a>
+              <% if (user.permission_status === "guest") { %>
+                <button class="wide-button">admin verify user</button>
+                <button class="wide-button">upgrade to member</button>
               <% } %>
-              <a class="fake-button wide-button" href="/app/admin-update-profile">update profile</a>
+              <a class="fake-button wide-button" href="/app/admin-update-profile">update this user</a>
+              <!-- <%# if (permissions.hasRole(currentUser, "admin")) { %> -->
+               <% if (user.permission_status === "admin") { %>
+                <a class="fake-button wide-button" href="/app/????">create new user</a>
+                <!-- <button id="show-users-button" class="wide-button" type="button">show all user profiles</button> -->
+                <button id="show-guests-button" class="wide-button" type="button">open guest profiles</button>
+                <button id="show-members-button" class="wide-button" type="button">open member profiles</button>
+              <% } %> 
+              <button class="wide-button show-profile-button" type="button">open this profile</button>
             </div>
         </div>
-     <% }); %> <% } %>
+          <% }) %>
+        <% } %>
     </main>
     <%- include('./partials/footer.ejs') %>
   </body>

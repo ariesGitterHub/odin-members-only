@@ -14,6 +14,10 @@ const {
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
 const { avatarTypeDefault } = require("../utils/avatarTypeDefault");
+const { addDateFields, addAvatarFields } = require("../utils/viewFormatters");
+
+
+const { hasRole, isExactRole } = require("../utils/permissions.js");
 
 async function getHome(req, res, next) {
   try {
@@ -155,14 +159,17 @@ async function getTopicPage(req, res, next) {
     // )});
 
     // Attach avatarLetter to each message - TODO - I need to remember below!
-    const messagesWithAvatars = messages.map((message) => ({
-      ...message,
-      avatarLetter: avatarTypeDefault(
-        message.avatar_type,
-        message.permission_status,
-        message.first_name,
-      ),
-    }));
+    // const messagesWithAvatars = messages.map((message) => ({
+    //   ...message,
+    //   avatarLetter: avatarTypeDefault(
+    //     message.avatar_type,
+    //     message.permission_status,
+    //     message.first_name,
+    //   ),
+    // }));
+
+    const messagesWithAvatars = addAvatarFields(messages, avatarTypeDefault);
+
 
     res.render("topic", {
       title: topic.name,
@@ -242,15 +249,32 @@ async function getAdmin(req, res, next) {
   try {
     const users = await getUsers();
 
-    const usersWithDates = users.map((user) => ({
-      ...user,
-      age: calculateAge(user.birthdate),
-      formattedBirthdate: formatShortDate(user.birthdate),
-    }));
+    // const usersWithDates = users.map((user) => ({
+    //   ...user,
+    //   age: calculateAge(user.birthdate),
+    //   formattedBirthdate: formatShortDate(user.birthdate),
+    // }));
+
+    // const usersWithAvatars = users.map((user) => ({
+    //   ...user,
+    //   avatarLetter: avatarTypeDefault(
+    //     user.avatar_type,
+    //     user.permission_status,
+    //     user.first_name,
+    //   ),
+    // }));
+
+    const usersWithDates = addDateFields(users, calculateAge, formatShortDate);
+    // NOTE - that usersWithDates is added into the const below...because there can only be a single "users" far below (see "!!!-HERE-!!!") on "users: usersWithAvatars" or it blows a 500 error.
+    const usersWithAvatars = addAvatarFields(usersWithDates, avatarTypeDefault);
 
     res.render("admin", {
       title: "Admin",
-      users: usersWithDates,
+      // users: usersWithDates,
+      // "!!!-HERE-!!!" (see comments above in this controller)
+      users: usersWithAvatars,
+      // usersWithDates,
+      // usersWithAvatars,
       errors: [],
     });
   } catch (err) {
