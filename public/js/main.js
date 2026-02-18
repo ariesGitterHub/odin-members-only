@@ -153,9 +153,10 @@ document.querySelectorAll(".member-card").forEach((card) => {
 
 document.querySelectorAll(".show-profile-button").forEach((btn) => {
       btn.addEventListener("click", () => {
-        const profile = btn.closest(".profile-data")
-        profile.classList.toggle("hidden");
-        profile.classList.contains("hidden")
+        // const profileData = btn.closest(".profile-data")
+        const profileData = btn.closest(".card").querySelector(".profile-data");
+        profileData.classList.toggle("hidden");
+        profileData.classList.contains("hidden")
           ? (btn.textContent = "open this profile")
           : (btn.textContent = "close this profile");
       });

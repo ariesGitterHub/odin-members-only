@@ -1,5 +1,42 @@
 const pool = require("./pool");
 
+// const getUsers = async function getUsers() {
+//   const { rows } = await pool.query(`
+//     SELECT
+//       u.*,
+//       up.avatar_type,
+//       up.avatar_color_fg,
+//       up.avatar_color_bg_top,
+//       up.avatar_color_bg_bottom,
+//       up.phone,
+//       up.street_address,
+//       up.apt_unit,
+//       up.city,
+//       up.us_state,
+//       up.zip_code,
+//       up.notes,
+//       up.verified_by_admin
+//     FROM users u
+//     LEFT JOIN user_profiles up
+//       ON u.id = up.user_id
+//     ORDER BY u.id;
+//   `);
+
+//   return rows;
+// };
+
+// Query to get avatar-related data by user ID
+// const getAvatarByUserId = `
+//   SELECT 
+//     avatar_type,
+//     avatar_color_fg,
+//     avatar_color_bg_top,
+//     avatar_color_bg_bottom
+//   FROM user_profiles
+//   WHERE user_id = $1;
+// `;
+
+
 const getUsers = async function getUsers() {
   const { rows } = await pool.query(`
     SELECT
@@ -15,26 +52,23 @@ const getUsers = async function getUsers() {
       up.us_state,
       up.zip_code,
       up.notes,
-      up.verified_by_admin
+      up.verified_by_admin,
+      COUNT(m.id) AS message_count
     FROM users u
-    LEFT JOIN user_profiles up
-      ON u.id = up.user_id
-    ORDER BY u.id;
+    LEFT JOIN user_profiles up ON u.id = up.user_id
+    LEFT JOIN messages m ON u.id = m.user_id AND m.is_deleted = false
+    GROUP BY u.id, up.user_id
+    ORDER BY 
+      CASE 
+        WHEN u.permission_status = 'admin' THEN 0
+        ELSE 1
+      END,
+      u.last_name,  -- Sort by last name in alphabetical order
+      u.first_name; -- If last names are the same, then by first name
   `);
 
   return rows;
 };
-
-// Query to get avatar-related data by user ID
-// const getAvatarByUserId = `
-//   SELECT 
-//     avatar_type,
-//     avatar_color_fg,
-//     avatar_color_bg_top,
-//     avatar_color_bg_bottom
-//   FROM user_profiles
-//   WHERE user_id = $1;
-// `;
 
 
 const getAllTopics = async () => {

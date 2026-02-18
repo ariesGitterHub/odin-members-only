@@ -13,6 +13,7 @@ CREATE TABLE users (
   birthdate DATE,
 
   permission_status permission_status_enum  NOT NULL,
+  member_request BOOLEAN DEFAULT false,
 
   is_active BOOLEAN DEFAULT true,
 

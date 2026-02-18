@@ -83,8 +83,6 @@ button:hover,
 }
 
 .avatar-image-circle {
-  height: 3.75rem;
-  width: 3.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,6 +98,21 @@ button:hover,
   padding: 2rem;
 }
 
+/* .avatar-circle-tiny {
+  height: 3.75rem;
+  width: 3.75rem;
+} */
+
+.avatar-circle-small {
+  height: 3.75rem;
+  width: 3.75rem;
+}
+
+.avatar-circle-medium {
+  height: 7.755rem;
+  width: 7.75rem;
+}
+
 .emoji {
   /* display: inline-block; */
   font-family: var(--font-emoji);
@@ -110,13 +123,35 @@ button:hover,
   /* vertical-align: middle; */
 }
 
+.emoji:hover {
+  transform: scale(1.125);
+}
+
+.emoji2 {
+  font-family: var(--font-emoji2);
+  font-weight: 100;
+}
+.emoji3 {
+  font-family: var(--font-emoji3);
+  font-weight: 100;
+}
+
 .emoji-size-nav {
   font-size: 1.75rem;
 }
 
-.emoji-in-use {
+.emoji-size-directory {
   font-size: 2.5rem;
 }
+
+/* .emoji-in-use {
+  font-size: 2.5rem;
+} */
+
+.emoji-size-profile {
+  font-size: 6rem;
+}
+
 
 .emoji-avatar {
   font-size: 6rem;

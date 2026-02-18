@@ -37,18 +37,18 @@ function getZodiacSign(dateInput) {
   const day = date.getDate();
   const month = date.getMonth() + 1; // JS months are 0-indexed
 
-  if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return "Aquarius";
-  if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return "Pisces";
-  if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "Aries";
-  if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "Taurus";
-  if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return "Gemini";
-  if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return "Cancer";
-  if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return "Leo";
-  if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return "Virgo";
-  if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return "Libra";
-  if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return "Scorpio";
-  if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return "Sagittarius";
-  if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return "Capricorn";
+  if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return aquarius;
+  if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return pisces;
+  if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return aries;
+  if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return taurus;
+  if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return gemini;
+  if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return cancer;
+  if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return leo;
+  if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return virgo;
+  if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return libra;
+  if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return scorpio;
+  if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return sagittarius;
+  if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return capricorn;
 }
 
 function getRealZodiacSign(dateInput) {
@@ -56,30 +56,29 @@ function getRealZodiacSign(dateInput) {
   const day = date.getDate();
   const month = date.getMonth() + 1; // JS months are 0-indexed
 
-  if ((month === 2 && day >= 16) || (month === 3 && day <= 11)) return "Aquarius";
-  if ((month === 3 && day >= 12) || (month === 4 && day <= 18)) return "Pisces";
-  if ((month === 4 && day >= 19) || (month === 5 && day <= 13)) return "Aries";
-  if ((month === 5 && day >= 14) || (month === 6 && day <= 19)) return "Taurus";
-  if ((month === 6 && day >= 20) || (month === 7 && day <= 20)) return "Gemini";
-  if ((month === 7 && day >= 21) || (month === 8 && day <= 9)) return "Cancer";
-  if ((month === 8 && day >= 10) || (month === 9 && day <= 15)) return "Leo";
-  if ((month === 9 && day >= 16) || (month === 10 && day <= 30)) return "Virgo";
-  if ((month === 10 && day >= 31) || (month === 11 && day <= 22)) return "Libra";
-  if ((month === 11 && day >= 23) || (month === 11 && day <= 29)) return "Scorpio";
-  if ((month === 11 && day >= 30) || (month === 12 && day <= 17)) return "Ophiuchus";
-  if ((month === 12 && day >= 18) || (month === 1 && day <= 18)) return "Sagittarius";
-  if ((month === 1 && day >= 19) || (month === 2 && day <= 15)) return "Capricorn";
+  if ((month === 2 && day >= 16) || (month === 3 && day <= 11)) return aquarius;
+  if ((month === 3 && day >= 12) || (month === 4 && day <= 18)) return pisces;
+  if ((month === 4 && day >= 19) || (month === 5 && day <= 13)) return aries;
+  if ((month === 5 && day >= 14) || (month === 6 && day <= 19)) return taurus;
+  if ((month === 6 && day >= 20) || (month === 7 && day <= 20)) return gemini;
+  if ((month === 7 && day >= 21) || (month === 8 && day <= 9)) return cancer;
+  if ((month === 8 && day >= 10) || (month === 9 && day <= 15)) return leo;
+  if ((month === 9 && day >= 16) || (month === 10 && day <= 30)) return virgo;
+  if ((month === 10 && day >= 31) || (month === 11 && day <= 22)) return libra;
+  if ((month === 11 && day >= 23) || (month === 11 && day <= 29)) return scorpio;
+  if ((month === 11 && day >= 30) || (month === 12 && day <= 17)) return ophiuchus;
+  if ((month === 12 && day >= 18) || (month === 1 && day <= 18)) return sagittarius;
+  if ((month === 1 && day >= 19) || (month === 2 && day <= 15)) return capricorn;
 }
 
 
 // 60‑year cycle components
 const animals = [
-  "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake",
-  "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"
+  rat, ox, tiger, rabbit, dragon, snake, horse, goat, monkey, rooster, dog, pig
 ];
 
 const elements = [
-  "Wood", "Fire", "Earth", "Metal", "Water"
+  wood, fire, earth, metal, water
 ];
 
 // Chinese New Year lookup (expand as needed)
@@ -304,11 +303,12 @@ function getChineseZodiacFull(birthdate) {
   const animal = animals[cycleIndex % 12];
   const element = elements[Math.floor((cycleIndex % 10) / 2)];
 
-  return `${element} ${animal}`;
+  // return `${element} ${animal}`;
+  return `${element}/${animal}`;
 }
 
 // Example usages:
-// console.log(getChineseZodiacFull("1990-08-25")); // "Metal Horse"
+console.log(getChineseZodiacFull("1935-08-25"));
 // console.log(getChineseZodiacFull("1988-01-30")); // "Earth Rabbit"
 // console.log(getChineseZodiacFull("2000-01-20")); // "Earth Rabbit"
 // console.log(getChineseZodiacFull("2000-02-10")); // "Metal Dragon"

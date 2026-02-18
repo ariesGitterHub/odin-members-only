@@ -14,8 +14,21 @@ const {
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
 const { avatarTypeDefault } = require("../utils/avatarTypeDefault");
-const { addDateFields, addAvatarFields } = require("../utils/viewFormatters");
-
+const {
+  getZodiacSign,
+  getRealZodiacSign,
+  getChineseZodiacFull,
+} = require("../utils/zodiacSigns");
+const {
+  addBirthdateFields,
+  // addDateFields,
+  addSessionCreateDateFields,
+  addSessionUpdateDateFields,
+  addZodiacSigns,
+  addRealZodiacSigns,
+  addChineseZodiacSigns,
+  addAvatarFields,
+} = require("../utils/viewFormatters");
 
 const { hasRole, isExactRole } = require("../utils/permissions.js");
 
@@ -56,10 +69,13 @@ async function getLogIn(req, res, next) {
 }
 
 async function getYourProfile(req, res, next) {
+  const users = await getUsers();
+  const usersWithBirthDates = addBirthdateFields(users, calculateAge, formatShortDate);
+  const usersWithAvatars = addAvatarFields(usersWithBirthDates, avatarTypeDefault);
   try {
     res.render("your-profile", {
       title: "Your Profile",
-      user: req.user,
+      users: usersWithAvatars,
       errors: [],
     });
   } catch (err) {
@@ -124,7 +140,6 @@ async function getMessageBoards(req, res, next) {
       topics,
       errors: [],
     });
-
   } catch (err) {
     next(err);
   }
@@ -170,7 +185,6 @@ async function getTopicPage(req, res, next) {
 
     const messagesWithAvatars = addAvatarFields(messages, avatarTypeDefault);
 
-
     res.render("topic", {
       title: topic.name,
       topic,
@@ -183,9 +197,6 @@ async function getTopicPage(req, res, next) {
     next(err);
   }
 }
-
-
-
 
 // async function getTopicBySlug(req, res, next) {
 //   try {
@@ -210,8 +221,6 @@ async function getTopicPage(req, res, next) {
 //   }
 // }
 
-
-
 async function getBecomeMember(req, res, next) {
   try {
     res.render("become-member", {
@@ -227,7 +236,7 @@ async function getBecomeMember(req, res, next) {
 // async function getAdmin(req, res, next) {
 //   const users = await getUsers();
 //   const age = calculateAge(users.birthdate);
-//   const formattedBirthdate = formatShortDate(users.birthdate); 
+//   const formattedBirthdate = formatShortDate(users.birthdate);
 
 //   try {
 //     res.render("admin", {
@@ -264,9 +273,23 @@ async function getAdmin(req, res, next) {
     //   ),
     // }));
 
-    const usersWithDates = addDateFields(users, calculateAge, formatShortDate);
+    const usersWithBirthdates = addBirthdateFields(users, calculateAge, formatShortDate);
+    const usersWithCreationDates = addSessionCreateDateFields(usersWithBirthdates, formatShortDate);
+    const usersWithUpdateDates = addSessionUpdateDateFields(usersWithCreationDates, formatShortDate);
+    const usersWithZodiacSigns = addZodiacSigns(usersWithUpdateDates, getZodiacSign);
+    const usersWithRealZodiacSigns = addRealZodiacSigns(
+      usersWithZodiacSigns,
+      getRealZodiacSign,
+    );
+    const usersWithChineseZodiacSigns = addChineseZodiacSigns(
+      usersWithRealZodiacSigns,
+      getChineseZodiacFull,
+    );
     // NOTE - that usersWithDates is added into the const below...because there can only be a single "users" far below (see "!!!-HERE-!!!") on "users: usersWithAvatars" or it blows a 500 error.
-    const usersWithAvatars = addAvatarFields(usersWithDates, avatarTypeDefault);
+    const usersWithAvatars = addAvatarFields(
+      usersWithChineseZodiacSigns,
+      avatarTypeDefault,
+    );
 
     res.render("admin", {
       title: "Admin",
@@ -281,7 +304,6 @@ async function getAdmin(req, res, next) {
     next(err);
   }
 }
-
 
 function postLogOut(req, res, next) {
   req.logout((err) => {

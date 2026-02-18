@@ -46,7 +46,7 @@
   --dk-purple: #483548;
 
   --lt-red: #edabab;
-  --lt-orange: #ddb66d;
+  --lt-orange: #f2c166;
   --lt-yellow: #eeee7d;
   --lt-green: #a9eda9;
   --lt-teal: #7de9e9;
@@ -57,10 +57,13 @@
   --avatar-bg-top: var(--off-white);
   --avatar-bg-bottom: var(--off-gray);
 
-  --font-text: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  --member-request-alert: var(--lt-orange);
+
+  /* --font-title: Georgia, 'Times New Roman', Times, serif; */
+  --font-text: "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   /* TODO - delete whichever below is unused... */
-  /* --font-emoji: 'OpenMoji', system-ui, sans-serif; */
-  /* --font-emoji: "NotoColorEmoji", sans-serif; */
+  --font-emoji3: 'OpenMoji', system-ui, sans-serif;
+  --font-emoji2: "NotoColorEmoji", sans-serif;
   --font-emoji: "NotoEmoji", sans-serif;
 }
 

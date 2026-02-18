@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %>
+    <main>
+      <div class="page-title-off-card uppercase">
+        <h1>your profile</h1>
+      </div>
+      <div class="card">
+        <% if (currentUser) { %>
+        <div class="profile">
+          <div class="avatar-image-circle" >
+            <span class="emoji emoji-avatar" role="img" aria-label="TODO - make this reflect emoji name">
+               <!-- &#x1F408;&#x200D;&#x2B1B; -->
+                &#x1F1F1;
+              </span>
+          </div>
+          <dl class="profile-data-dl white">
+            <div>
+              <dt class="capitalize">name</dt>
+              <dd class="capitalize bold">leopold king</dd>
+            </div>
+            <!-- <div>
+              <dt class="capitalize">username</dt>
+              <dd class="bold">liondaddy</dd>
+            </div> -->
+            <!-- TODO - if status === member, then show; else hidden -->
+            <div>
+              <dt class="capitalize">status</dt>
+              <dd class="bold">member</dd>
+            </div>
+            <div>
+              <dt class="capitalize">email</dt>
+              <dd class="bold">eeeee@eeee.com</dd>
+            </div>
+            <!-- <div>
+              <dt class="capitalize">phone</dt>
+              <dd class="bold">555-555-5555</dd>
+            </div> -->
+            <div>
+              <dt class="capitalize">birthdate</dt>
+              <dd class="bold">04/20/1986</dd>
+            </div>
+            <div>
+              <dt class="capitalize">avatar</dt>
+              <dd class="bold">black cat</dd>
+            </div>
+            <!-- <div>
+              <dt class="capitalize">color 0</dt>
+              <dd class="bold">lt yellow</dd>
+            </div>
+            <div>
+              <dt class="capitalize">color 1</dt>
+              <dd class="bold">dark red</dd>
+            </div>
+            <div>
+              <dt class="capitalize">color 2</dt>
+              <dd class="bold">dark blue</dd>
+            </div>-->
+          </dl> 
+
+        </div>
+        <div class="button-container-col">
+          <!-- <a class="fake-button wide-button" href="/app/message-board">message board</a> -->
+          <!-- <a class="fake-button wide-button" href="/app/new-post">create a new post</a> -->
+          <a class="fake-button wide-button" href="/app/delete">delete account</a> 
+          <span class="ui-message-warning uppercase">deletion of account is permanent.</span>
+          <!-- NOTE - below should be hidden if user has member status! -->
+          <a class="fake-button wide-button" href="/app/become-member">become a member</a>
+          <a class="fake-button wide-button" href="/app/member-directory">member directory</a>
+          <!-- Below - a link or button????? -->
+          <a class="fake-button wide-button" href="/app/update-profile">update profile</a>
+          <a class="fake-button wide-button" href="/app/change-avatar">change avatar</a>
+        </div>
+        </div>
+      </div>
+    </main>
+    <%- include('./partials/footer.ejs') %>
+  </body>
+</html>

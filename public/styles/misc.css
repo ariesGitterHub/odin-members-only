@@ -26,25 +26,82 @@
     color: var(--off-white);
 }
 
+.green {
+    color: var(--off-green);
+}
+
+.red {
+    color: var(--off-red);
+}
+
 /* -- ???? Assigned via permission_status, must be able to override other css, put last in misc.css ???? */
 
 .admin-card {
-  background-color: var(--off-black);
-    border: 0.125rem solid var(--off-red);
+  background-color: var(--black);
+    border: 0.25rem double var(--off-red);
   color: var(--off-white);
 }
 .member-card {
-  background-color: var(--lt-yellow);
-    border: 0.125rem solid var(--off-red);
+  /* background-color: var(--lt-blue); */
+    border: 0.25rem solid var(--off-red);
   /* color: var(--off-red); */
 }
 .guest-card {
-  background-color: var(--off-white);
-    border: 0.125rem solid var(--off-red);
+  /* background-color: var(--lt-green); */
+    border: 0.25rem dotted var(--off-red);
 }
 
 .user-card {
 /* on admin panel, used to grab via js */
+background-color: var(--white);
+}
+
+/* .directory-name {
+  background-color: grey;
+} */
+
+.directory-bar {
+  width:100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.admin-card .directory-bar {
+  background-color: var(--off-black);
+  /* border: 0.125rem solid var(--off-gray); */
+}
+
+.user-card .directory-bar {
+  background-color: var(--off-white);
+  /* border: 0.125rem solid var(--off-gray); */
+}
+
+.directory-bar span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--off-gray);
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  /* text-align: center; */
+}
+
+.directory-bar span, .directory-bar p {
+    font-size: 1.125rem;
+}
+
+.admin-card .directory-bar span {
+  background-color: var(--off-white);
+  color: var(--off-black);
+}
+
+.user-card .directory-bar span {
+  background-color: var(--off-black);
+  color: var(--off-white);
 }
 
 .red-letter {
@@ -53,6 +110,26 @@
   /* border: 1px solid red; */
   font-weight: 500;
 }
+
+.neighbor-data {
+  background-color: var(--off-white);
+  /* border-bottom: 2px solid var(--white); */
+  border-radius: 0.25rem;
+  padding-left: 0.125rem;
+}
+
+.app-data {
+  padding-left: 0.125rem;
+}
+
+.neighbor-data, .app-data {
+ margin-bottom: 2px;
+}
+
+.upgrade-me {
+  background-color: var(--member-request-alert);
+}
+
 
 /* TODO - test this again, and only keep one hidden! */
 .hidden {
