@@ -46,7 +46,7 @@
   --dk-purple: #483548;
 
   --lt-red: #edabab;
-  --lt-orange: #f2c166;
+  --lt-orange: #e7b537;
   --lt-yellow: #eeee7d;
   --lt-green: #a9eda9;
   --lt-teal: #7de9e9;
@@ -58,13 +58,39 @@
   --avatar-bg-bottom: var(--off-gray);
 
   --member-request-alert: var(--lt-orange);
+  --box-shadow-gray: inset 0 0.25rem 1rem var(--off-gray);
+  --box-shadow-black: 0 1rem 1rem var(--off-black);
 
-  /* --font-title: Georgia, 'Times New Roman', Times, serif; */
   --font-text: "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   /* TODO - delete whichever below is unused... */
   --font-emoji3: 'OpenMoji', system-ui, sans-serif;
   --font-emoji2: "NotoColorEmoji", sans-serif;
   --font-emoji: "NotoEmoji", sans-serif;
+
+  /* Root sizing for Media Queries */
+  /* --main-max-width: 1000px; */
+  --card-width: 300px;
+  /* --message-card-width: 100%; */
+
+  --page-title-all: 1.65rem;
+  --page-subtitle-all: 1.45rem;
+
+  --index-image-size: 15rem;
+  
+  --avatar-circle-small-h-w: 3.75rem;
+  --avatar-circle-large-h-w: 7.75rem;
+
+  --emoji-quick-view-bar-size: 1.125rem;
+
+  --avatar-emoji-nav-size: 1.75rem;
+  --avatar-emoji-small-size: 2.5rem;
+  --avatar-emoji-large-size: 6.5rem;
+
+  --message-name-size: 1.125rem;
+  --message-title-size: 1rem;
+  --message-details-size: 0.875rem;
+  --message-body-size: 1.1rem;
+
 }
 
 *,
@@ -79,4 +105,3 @@ a {
   text-decoration: none;
   color: inherit;
 }
-

@@ -108,14 +108,22 @@ background-color: var(--white);
   color: var(--off-red);
   /* background-color: var(--off-black); */
   /* border: 1px solid red; */
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .neighbor-data {
-  background-color: var(--off-white);
+  /* background-color: var(--off-white); */
   /* border-bottom: 2px solid var(--white); */
   border-radius: 0.25rem;
   padding-left: 0.125rem;
+}
+
+.admin-card .neighbor-data {
+  background-color: var(--off-black);
+}
+
+.user-card .neighbor-data {
+  background-color: var(--off-white);
 }
 
 .app-data {
@@ -129,7 +137,6 @@ background-color: var(--white);
 .upgrade-me {
   background-color: var(--member-request-alert);
 }
-
 
 /* TODO - test this again, and only keep one hidden! */
 .hidden {

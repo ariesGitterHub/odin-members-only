@@ -27,7 +27,7 @@ const pool = require("./pool");
 
 // Query to get avatar-related data by user ID
 // const getAvatarByUserId = `
-//   SELECT 
+//   SELECT
 //     avatar_type,
 //     avatar_color_fg,
 //     avatar_color_bg_top,
@@ -35,7 +35,6 @@ const pool = require("./pool");
 //   FROM user_profiles
 //   WHERE user_id = $1;
 // `;
-
 
 const getUsers = async function getUsers() {
   const { rows } = await pool.query(`
@@ -70,17 +69,34 @@ const getUsers = async function getUsers() {
   return rows;
 };
 
+// const getAllTopics = async () => {
+//   const query = `
+//     SELECT *
+//     FROM topics
+//     WHERE is_active = true
+//     ORDER BY sort_order;
+//   `;
+//   const res = await pool.query(query);
+//   return res.rows;
+// };
 
 const getAllTopics = async () => {
-  const query = `
-    SELECT *
-    FROM topics
-    WHERE is_active = true
-    ORDER BY sort_order;
-  `;
-  const res = await pool.query(query);
-  return res.rows;
+  const { rows } = await pool.query(`
+    SELECT
+      t.*,
+      COUNT(m.id) AS message_count
+    FROM topics t
+    LEFT JOIN messages m 
+      ON m.topic_id = t.id
+      AND m.is_deleted = false
+    WHERE t.is_active = true
+    GROUP BY t.id
+    ORDER BY t.sort_order;
+  `);
+
+  return rows;
 };
+
 
 const getTopicBySlug = async (slug) => {
   const query = `
@@ -96,7 +112,7 @@ const getTopicBySlug = async (slug) => {
 
 // const getMessagesByTopicId = async (topicId, limit = 50) => {
 //   const query = `
-//     SELECT 
+//     SELECT
 //       m.id,
 //       m.topic_id,
 //       m.user_id,
@@ -118,7 +134,6 @@ const getTopicBySlug = async (slug) => {
 //   return res.rows;
 // };
 
-
 /**
  * Fetch messages that are not deleted and not expired.
  * Ordered by newest first.
@@ -139,7 +154,7 @@ const getTopicBySlug = async (slug) => {
 
 // const getValidMessagesByTopic = async (topicId, limit = 50) => {
 //   const query = `
-//     SELECT 
+//     SELECT
 //       m.id,
 //       m.topic_id,
 //       m.user_id,
@@ -192,8 +207,6 @@ const getValidMessagesByTopic = async (topicId, limit = 50) => {
   const res = await pool.query(query, [topicId, limit]);
   return res.rows;
 };
-
-
 
 /**
  * Soft-delete messages that have expired but are not yet marked as deleted.
@@ -312,9 +325,9 @@ const getMessagesByTopic = async (topicId, limit = 50) => {
   return res.rows;
 };
 
-// 
-// 
-// 
+//
+//
+//
 
 // /**
 //  * [Brief description of the query]
@@ -331,7 +344,6 @@ const getMessagesByTopic = async (topicId, limit = 50) => {
 //     throw err;
 //   }
 // };
-
 
 // /**
 //  * Fetch messages containing a keyword in the title or body

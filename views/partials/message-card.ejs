@@ -1,39 +1,46 @@
 <div class="message-card">
   <div class="message-header">
     <div 
-      class="avatar-image-circle" 
+      class="avatar-image-circle avatar-circle-small" 
       style="
         --avatar-fg: <%= message.avatar_color_fg || 'var(--off-black)' %>;
         --avatar-bg-top: <%= message.avatar_color_bg_top || 'var(--off-white)' %>;
         --avatar-bg-bottom: <%= message.avatar_color_bg_bottom || 'var(--off-gray)' %>;
       ">
-      <span class="emoji emoji-in-use" role="img" aria-label="avatar image">
+      <span class="emoji avatar-emoji-small-size" role="img" aria-label="avatar image">
         <!-- 🐈‍⬛ -->
         <%= message.avatarLetter %>
       </span>
     </div>
     <div class="message-name-and-title">
       <p class="message-name bold"><%= message.first_name %> <%= message.last_name %></p>
-      <p class="message-title uppercase"><%= message.title %></p>
+      <p class="message-title bold"><%= message.title %></p>
     </div>
   </div>
   <div class="message-details uppercase">
-    <span>created <%= new Date(message.created_at).toLocaleDateString() %></span>
-    <span>chars <%= message.body.length %></span>    
-    <span>expires <%= new Date(message.expires_at).toLocaleDateString() %></span>   
+    <span>created: <%= new Date(message.created_at).toLocaleDateString() %></span>
+    <span>chars: <%= message.body.length %>/700</span>    
+    <span>expires: <%= new Date(message.expires_at).toLocaleDateString() %></span>   
     <!-- <span>likes: <%= message.like_count %></span>  -->
   </div>
   <div class="message-body">
-    <p><%= message.body %></p>
+    <p>🗨️ <%= message.body %></p>
   </div>
   <div class="message-footer">
   <%# if (currentUser) { %>
     
       <div class="message-button-container">
         <!-- <button class="message-button" type="button">Edit</button> -->
-        <button class="" type="button">Delete</button>
+        <!-- BELOW NEEDS DELETE ACCESS TO THE PERSON WHO WROTE IT -->
+        <%# if (message.permission_status === "admin") { %>
+         <button class="message-button" type="button">Delete</button>
+        <%# } %>
+        <!-- BELOW NEEDS TO BE HIDDEN TO THE PERSON WHO WROTE IT -->
+        <button class="message-button" type="button">Reply (0)</button>
+        <%# } %>
         <form action="/messages/<%= message.id %>/like" method="POST">
-        <button class="" type="submit"><span class="emoji-like">🖤(<%= message.like_count %>)</span></button>
+        
+        <button class="message-button" type="submit"><span class="emoji2">❤(<%= message.like_count %>)</span></button>
       </form>          
       </div>
 

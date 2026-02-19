@@ -186,6 +186,28 @@ WHERE t.slug = 'buy-sell'
   AND u.email = 'chuck@can.local'
 LIMIT 1;
 
+-- 3️⃣ Buy & Sell
+INSERT INTO messages (topic_id, user_id, title, like_count, body, expires_at)
+SELECT t.id, u.id,
+  'MONKEY for sale that i found while washing dishes in a car park vestibule and it said hi but don''t tell anyone I speak - $5',  1,
+  'Slightly bitey, great condition. DM if interested.',
+  NOW() + INTERVAL '30 days'
+FROM topics t, users u
+WHERE t.slug = 'buy-sell'
+  AND u.email = 'evil@can.local'
+LIMIT 1;
+
+-- 3️⃣ Buy & Sell
+INSERT INTO messages (topic_id, user_id, title, like_count, body, expires_at)
+SELECT t.id, u.id,
+  'POOP!',  1,
+  'Angry pooping.',
+  NOW() + INTERVAL '30 days'
+FROM topics t, users u
+WHERE t.slug = 'buy-sell'
+  AND u.email = 'chuck@can.local'
+LIMIT 1;
+
 
 -- 4️⃣ Free Stuff
 INSERT INTO messages (topic_id, user_id, title, like_count, body, expires_at)

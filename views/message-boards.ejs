@@ -12,7 +12,7 @@
         <% topics.forEach(topic => { %>
           <li>
             <a class="fake-button wide-button" href="/app/message-boards/<%= topic.slug %>">
-              <h2 class="topic-title"><%= topic.name %></h2>
+              <h2 class="topic-title">(<span class="bold"><%= topic.message_count%></span>) <%= topic.name %></h2>
               <!-- <p class="topic-description"><%#= topic.description %></p> -->
             </a>
           </li>

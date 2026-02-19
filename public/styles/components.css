@@ -25,7 +25,7 @@ button,
   background-color: var(--white);
   border: 0.125rem solid var(--off-gray);
   border-radius: 0.5rem;
-  box-shadow: inset 0 0.25rem 1rem var(--off-gray);
+  box-shadow: var(--box-shadow-gray);
   color: var(--off-black);
   cursor: pointer;
   font-family: var(--font-text);
@@ -47,7 +47,7 @@ button:hover,
   background-color: var(--off-red);
   box-shadow: none;
   color: var(--off-white);
-  transform: scale(1.03);
+  /* transform: scale(1.03); */
 }
 
 .wide-button {
@@ -72,6 +72,10 @@ button:hover,
   color: var(--off-white);
 }
 
+.message-button {
+  width: fit-content;
+}
+
 /* EMOJIS */
 
 .avatar-image-container-wide {
@@ -92,7 +96,7 @@ button:hover,
     var(--avatar-bg-top)
   );
   border-radius: 50%;
-  box-shadow: inset 0 0.125rem 0.5rem var(--off-gray);
+  box-shadow: var(--box-shadow-gray);
   color: var(--avatar-fg);
   margin-right: 0.5rem;
   padding: 2rem;
@@ -104,13 +108,29 @@ button:hover,
 } */
 
 .avatar-circle-small {
-  height: 3.75rem;
-  width: 3.75rem;
+  height: var(--avatar-circle-small-h-w);
+  width: var(--avatar-circle-small-h-w);
 }
 
-.avatar-circle-medium {
-  height: 7.755rem;
-  width: 7.75rem;
+.avatar-circle-large {
+  height: var(--avatar-circle-large-h-w);
+  width: var(--avatar-circle-large-h-w);
+}
+
+.avatar-emoji-nav-size {
+  font-size: var(--avatar-emoji-nav-size);
+}
+
+.avatar-emoji-small-size {
+  font-size: var(--avatar-emoji-small-size);
+}
+
+.avatar-emoji-large-size {
+  font-size: var(--avatar-emoji-large-size);
+}
+
+.avatar-circle-small:hover, .avatar-circle-large:hover {
+    transform: scale(1.125);
 }
 
 .emoji {
@@ -123,9 +143,9 @@ button:hover,
   /* vertical-align: middle; */
 }
 
-.emoji:hover {
+/* .emoji:hover {
   transform: scale(1.125);
-}
+} */
 
 .emoji2 {
   font-family: var(--font-emoji2);
@@ -136,32 +156,8 @@ button:hover,
   font-weight: 100;
 }
 
-.emoji-size-nav {
-  font-size: 1.75rem;
-}
-
-.emoji-size-directory {
-  font-size: 2.5rem;
-}
-
-/* .emoji-in-use {
-  font-size: 2.5rem;
-} */
-
-.emoji-size-profile {
-  font-size: 6rem;
-}
-
-
-.emoji-avatar {
-  font-size: 6rem;
-  /* transform-origin: 70% 70%; */
-  /* BELOW KICKS IN IF NOT A MEMBER WITH A "SPIRIT EMOJI" */
-  /* color: var(--off-white);
-  font-weight: 600; */
-}
-
 .emoji-like {
+  width: fit-content;
   display: flex;
   align-items: center;
   justify-content: center;

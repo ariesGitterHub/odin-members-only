@@ -32,7 +32,7 @@
                   --avatar-bg-top: <%= user.avatar_color_bg_top || 'var(--off-white)' %>;
                   --avatar-bg-bottom: <%= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
                 ">
-                <span class="emoji emoji-size-directory" role="img" aria-label="avatar image">
+                <span class="emoji avatar-emoji-small-size" role="img" aria-label="avatar image">
                   <!-- 🐈‍⬛ -->
                   <!-- <%#= message.avatarLetter %> -->
                   <%= user.avatarLetter %>
@@ -45,7 +45,7 @@
             </div>
           </div>
 
-          <div class="directory-bar">
+          <div class="admin-quick-view-bar">
             <span>
             <% if (user.verified_by_admin === true) { %>
               <p class="emoji green">✔</p> 
@@ -66,20 +66,20 @@
 
             <% if (user.message_count) { %>
               <span class="black">
-                <p class="emoji emoji-size-directory"><%= user.message_count %></p>
+                <p class="emoji"><%= user.message_count %></p>
               </span>
             <% } %>
 
             <% if (user.birthdate) { %>
               <span class="black">
-                <p class="emoji emoji-size-directory"><%= user.zodiacSign %></p>
-                (<p class="emoji emoji-size-directory"><%= user.realZodiacSign %></p>)
+                <p class="emoji"><%= user.zodiacSign %></p>
+                (<p class="emoji"><%= user.realZodiacSign %></p>)
               </span>
             <% } %>
 
             <% if (user.birthdate) { %>
               <span class="black">
-                <p class="emoji emoji-size-directory"><%= user.chineseZodiacSign %></p>
+                <p class="emoji"><%= user.chineseZodiacSign %></p>
               </span>
             <% } %>
 
@@ -162,7 +162,7 @@
               <!-- <hr> -->
               <div class="app-data">
                 <dt class="capitalize">count</dt>
-                <dd class="bold"><%= user.message_count %> current messages</dd>
+                <dd class="bold"><%= user.message_count %> posts</dd>
                 <!-- <dt class="<%#= user.avatar_type ? '' : 'hidden' %> capitalize">avatar</dt>
                 <dd class="<%#= user.avatar_type ? '' : 'hidden' %> bold"><%#= user.avatar_type || "n/a" %></dd> -->
               </div>

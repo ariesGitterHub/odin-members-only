@@ -1,0 +1,52 @@
+/* MEDIA QUERIES */
+@media (min-width: 450px) {
+  :root {
+    --card-width: 325px;
+  }
+
+  .app-nav {
+    justify-content: center;
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 600px) {
+  :root {
+    --card-width: 400px;
+    /* --page-title-all: 4rem; */
+    --page-title-all: 2.125rem;
+    --page-subtitle-all: 2rem;
+    --index-image-size: 21rem;
+/* All below were increased by 0.625rem */
+  --avatar-circle-small-h-w: 4.375rem;
+  --avatar-circle-large-h-w: 8.375rem;
+  --emoji-quick-view-bar-size: 1.75rem;
+  /* --avatar-emoji-nav-size: 2.375rem; */
+  --avatar-emoji-small-size: 3.125rem;
+  --avatar-emoji-large-size: 7.125rem;
+/* All below increased by 0.25 */
+    --message-name-size: 1.375rem;
+  --message-title-size: 1.25rem;
+    --message-details-size: 1.125rem;
+    --message-body-size: 1.35rem;
+
+  /* ********************************** */
+
+  }
+
+  .admin-quick-view-bar {
+    justify-content: space-evenly;
+  }
+}
+
+@media (min-width: 750px) {
+  :root {
+    /* --card-width: 550px; */
+  }
+}
+
+@media (min-width: 1050px) {
+  :root {
+    /* --card-width: 750px; */
+  }
+}

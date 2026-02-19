@@ -9,22 +9,22 @@
       <div class="page-title-off-card uppercase">
         <h1>your profile</h1>
       </div>
-      <div class="card profile-data-card">
+      <div class="card">
         <%# if (!currentUser) { %> 
         <!-- <p>No current user is logged in.</p> -->
         <%# } else { %>
-          <% let number = 5 %>
+          <% let number = 4 %>
           <% if (users.length !== 0) { %>
             <div class="profile-data">
               <div class="avatar-image-container-wide">
                 <div 
-                  class="avatar-image-circle avatar-circle-medium" 
+                  class="avatar-image-circle avatar-circle-large" 
                   style="
                     --avatar-fg: <%= users[number].avatar_color_fg || 'var(--off-black)' %>;
                     --avatar-bg-top: <%= users[number].avatar_color_bg_top || 'var(--off-white)' %>;
                     --avatar-bg-bottom: <%= users[number].avatar_color_bg_bottom || 'var(--off-gray)' %>;
                   ">
-                  <span class="emoji emoji-size-profile" role="img" aria-label="avatar image">
+                  <span class="emoji avatar-emoji-large-size" role="img" aria-label="avatar image">
                     <!-- 🐈‍⬛ -->
                     <%= users[number].avatarLetter %>
                     <%#= users[number].avatar_type %>
@@ -60,7 +60,7 @@
                   <dt class="capitalize">email</dt>
                   <dd class="bold"><%= users[number].email%></dd>
                 </div>
-                <%= console.log(users[number].phone) %>
+                <!-- <%#= console.log(users[number].phone) %> -->
                 <div>
                   <dt class="capitalize">phone</dt>
                   <dd class="bold"><%= users[number].phone || "n/a" %></dd>
@@ -103,6 +103,7 @@
                 <!-- Below - a link or button????? -->
                 <a class="fake-button wide-button" href="/app/update-profile">update profile</a>
                 <a class="fake-button wide-button" href="/app/change-avatar">change avatar</a>
+                <a class="fake-button wide-button" href="/app/???">new post</a>
               </div>
             </div>
           <% } %>
