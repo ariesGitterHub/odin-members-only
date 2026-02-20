@@ -195,14 +195,21 @@ main {
   background-color: var(--off-white);
   border-radius: 1rem;
   box-shadow: var(--box-shadow-black);
+  /* font-size: var(--message-body-size); */
+  /* line-height: 1.5; */
   margin: 0.5rem;
   padding: 1rem;
   z-index: 1; 
 }
 
+
 /* .modal-section.hidden {
   display: none;
 } */
+
+.modal-section { 
+width: 100%;
+}
 
 .close-button {
   height: 1.5rem;

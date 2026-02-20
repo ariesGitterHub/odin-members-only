@@ -7,34 +7,34 @@
     <main>
       <div class="card">
         <div class="page-title uppercase">
-          <h1>log in</h1>          
+          <h1>log in</h1>
         </div>
         <div class="ui-message">
           <p>
-            Log in to peruse or post on the <span class="red-letter">C</span>apital <span class="red-letter">A</span>rea <span class="red-letter">N</span>eigborhood Message Board.
-          </p> 
+            Log in to peruse or post on the
+            <span class="red-letter">C</span>apital
+            <span class="red-letter">A</span>rea
+            <span class="red-letter">N</span>eigborhood Message Board.
+          </p>
         </div>
         <form class="log-in-form" action="/app/log-in" method="POST">
-          <label for="email">
-            <p>email</p>
-            <input
-              id="email"
-              name="email"
-              placeholder="enter email"
-              type="email"
-              required
-            />
-          </label>
-          <label for="password">
-            <p>password</p>
-            <input
-              id="password"
-              name="password"
-              placeholder="enter a password"
-              type="password"
-              required
-            />
-          </label>
+          <label for="email"> email </label>
+          <input
+            id="email"
+            name="email"
+            placeholder="enter email"
+            type="email"
+            required
+          />
+          <!-- TODO - Relabel this password_hash????? -->
+          <label for="password"> password </label>
+          <input
+            id="password"
+            name="password"
+            placeholder="enter a password"
+            type="password"
+            required
+          />
           <div class="button-container">
             <a class="fake-button" href="/app/">home</a>
             <button type="submit">submit</button>
@@ -42,6 +42,6 @@
         </form>
       </div>
     </main>
-  <%- include('./partials/footer.ejs') %>    
+    <%- include('./partials/footer.ejs') %>
   </body>
 </html>

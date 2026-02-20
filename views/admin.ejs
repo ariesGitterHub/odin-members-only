@@ -217,7 +217,13 @@
               <% if (user.permission_status === "guest" && user.member_request === true) { %>
                 <button class="wide-button">upgrade to member</button>
               <% } %>
-                <a class="fake-button wide-button" href="/app/admin-update-profile">update this user</a>
+                <!-- <a class="fake-button wide-button" href="/app/admin-update-profile">update this user</a> -->
+                <button class="wide-button" onclick="openModal('modal-edit-profile-admin', 'modal-title-edit-profile-admin')">
+                  update this profile
+                </button>
+                <button class="wide-button" onclick="openModal('modal-change-avatar', 'modal-title-change-avatar')">
+                  change this avatar
+                </button>
             </div>
             
           </div>

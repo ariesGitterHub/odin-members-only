@@ -1,1 +1,142 @@
-hi
+<% let number = 4 %>
+<% if (users.length !== 0) { %>
+<div class="ui-message">
+  <p>Make updates to your profile here.</p>
+</div>
+  <form class="profile-data-form" action="/app/????" method="POST">
+      <label class="capitalize" for="first_name">
+        first name (fname)
+      </label>
+        <input 
+          class="bold"           
+          type="text"
+          id="first_name"
+          name="first_name"
+          value="<%= users[number].first_name || "" %>"
+          required
+        />        
+      <label class="capitalize" for="last_name">
+        last name (lname)
+      </label>
+        <input 
+          class="bold"
+          type="text"
+          id="last_name"
+          name="last_name"
+          value="<%= users[number].last_name || "" %>"
+          required
+        />        
+      <label class="capitalize" for="email">
+        email address
+      </label>
+        <input 
+          class=" lowercase bold" 
+          type="email"
+          id="email"
+          name="email"
+          value="<%= users[number].email %>"
+          required
+        />        
+      <label class="capitalize" for="phone">
+        phone
+      </label>
+        <input 
+          class="bold"
+          type="phone"
+          id="phone"
+          name="phone"
+          value="<%= users[number].phone || "" %>"
+          required
+        />        
+      <label class="capitalize" for="birthdate">
+        birthdate
+      </label>
+        <input 
+          class="bold"
+          type="date"
+          id="birthdate"
+          name="birthdate"
+          value="<%= users[number].birthdate %>"
+          required
+        />        
+        <label class="capitalize" for="street_address">
+          street address
+        </label>
+          <input 
+            class="bold" 
+            type="text"
+            id="street_address"
+            name="street_address"
+            value="<%= users[number].street_address || "" %>"
+            required
+          />          
+        <label class="capitalize" for="apt_unit">
+          apt/unit
+        </label>
+          <input 
+            class="bold"
+            type="text"
+            id="apt_unit"
+            name="apt_unit"
+            value="<%= users[number].apt_unit || "" %>"
+            required
+          />          
+        <label class="capitalize" for="city">
+          city
+        </label>
+          <input 
+            class="bold"
+            type="text"
+            id="city"
+            name="city"
+            value="<%= users[number].city || "" %>"
+            required
+          />          
+        <label class="capitalize" for="us_state">
+          state
+        </label>
+          <input 
+            class="bold"
+            type="text"
+            id="us_state"
+            name="us_state"
+            value="<%= users[number].us_state || "" %>"
+            required
+          />
+        <label class="capitalize" for="zip_code">
+          zip code
+        </label>
+          <input 
+            class="bold"           
+            type="text"
+            id="zip_code"
+            name="zip_code"
+            value="<%= users[number].zip_code || "" %>"
+            required
+          />
+          <!-- TODO - Relabel this password_hash????? -->
+        <label for="password">
+            change password
+        </label>
+            <input
+              id="password"
+              name="password"
+              value="<%= users[number].password_hash %>"
+              type="password"
+              required
+            />
+        <label for="confirm-password">
+          confirm new password
+        </label>
+          <input
+            id="confirm-password"
+            name="confirm-password"
+            placeholder="re-enter new password"
+            type="password"
+            required
+          />
+      <div class="button-container">
+      <button class="wide-button" type="submit">submit profile changes</button>
+    </div>
+  </form>
+<% } %>

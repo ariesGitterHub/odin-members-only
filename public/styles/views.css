@@ -121,6 +121,7 @@ background-color: var(--white);
   margin: 0;
 }
 
+/* TODO - SHOULD FORM GO HERE??? */
 .profile-data, .profile-data-dl {
   width: 100%;
   /* color: var(--off-black); */
@@ -140,6 +141,8 @@ background-color: var(--white);
 
 .ui-message {
   width: 100%;
+  font-size: var(--message-body-size);
+  font-weight: 300;
   margin: 0.25rem 0;
 }
 

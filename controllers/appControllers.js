@@ -70,8 +70,19 @@ async function getLogIn(req, res, next) {
 
 async function getYourProfile(req, res, next) {
   const users = await getUsers();
+
+  users.forEach((user) => {
+    if (user.birthdate instanceof Date) {
+      user.birthdate = user.birthdate.toISOString().split("T")[0];
+    }
+  });
+
+
   const usersWithBirthDates = addBirthdateFields(users, calculateAge, formatShortDate);
   const usersWithAvatars = addAvatarFields(usersWithBirthDates, avatarTypeDefault);
+
+
+
   try {
     res.render("your-profile", {
       title: "Your Profile",

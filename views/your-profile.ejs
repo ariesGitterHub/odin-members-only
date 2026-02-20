@@ -32,35 +32,18 @@
                 </div>            
             </div>
               <dl class="profile-data-dl">
-                <!-- <div>
-                  <dt class="capitalize">fname</dt>
-                  <dd class="capitalize bold"><%#= users[number].first_name %></dd>
-                </div>
-                <div>
-                  <dt class="capitalize">lname</dt>
-                  <dd class="capitalize bold"><%#= users[number].last_name %></dd>
-                </div> -->
                 <div>
                   <dt class="capitalize">name</dt>
                   <dd class="capitalize bold"><%= users[number].first_name %> <%= users[number].last_name %></dd>
                 </div>
-                <!-- <div>
-                  <dt class="capitalize">verified</dt>
-                  <dd class="bold"><%#= users[number].verified_by_admin %></dd>
-                </div> -->
                 <div>
                   <dt class="capitalize">status</dt>
                   <dd class="bold"><%= users[number].permission_status %></dd>
                 </div>
-                <!-- <div>
-                  <dt class="capitalize">upgrade</dt>
-                  <dd class="bold">member request = <%#= users[number].member_request %></dd>
-                </div> -->
                 <div>
                   <dt class="capitalize">email</dt>
                   <dd class="bold"><%= users[number].email%></dd>
                 </div>
-                <!-- <%#= console.log(users[number].phone) %> -->
                 <div>
                   <dt class="capitalize">phone</dt>
                   <dd class="bold"><%= users[number].phone || "n/a" %></dd>
@@ -104,8 +87,14 @@
                 <a class="fake-button wide-button" href="/app/member-directory">member directory</a>
                 <% } %>
                 <!-- Below - a link or button????? -->
-                <a class="fake-button wide-button" href="/app/update-profile">update profile</a>
-                <a class="fake-button wide-button" href="/app/change-avatar">change avatar</a>
+                <!-- <a class="fake-button wide-button" href="/app/update-profile">update profile</a> -->
+                <button class="wide-button" onclick="openModal('modal-edit-profile-user', 'modal-title-edit-profile-user')">
+                    update your profile
+                  </button>
+                <!-- <a class="fake-button wide-button" href="/app/change-avatar">change avatar</a> -->
+                <button class="wide-button" onclick="openModal('modal-change-avatar', 'modal-title-change-avatar')">
+                  change this avatar
+                </button>
               </div>
             </div>
           <% } %>

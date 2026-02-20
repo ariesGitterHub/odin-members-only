@@ -166,13 +166,15 @@ button:hover,
   /* vertical-align: middle; */
 }
 
+/* TODO - FIX ALL FORMS and COALESCE */
 /* FORMS */
 
 .sign-up-form,
 .log-in-form,
 .become-member-form,
 .update-profile-form,
-.change-avatar-form {
+.change-avatar-form,
+.profile-data-form {
   width: 100%;
   margin: 0.25rem 0;
 }
@@ -182,14 +184,12 @@ button:hover,
 .become-member-form {
   color: var(--off-black);
 }
-
-.update-profile-form,
 .change-avatar-form {
   color: var(--off-white);
 }
 
 label {
-  font-weight: 500;
+  width: 100%;
   text-transform: capitalize;
 }
 
@@ -198,6 +198,8 @@ input {
   background-color: var(--white);
   border: 0.125rem solid var(--off-gray);
   /* border-radius: 0.125rem; */
+    font-weight: 600;
+
   margin-bottom: 0.25rem;
   padding: 0.125rem;
 }

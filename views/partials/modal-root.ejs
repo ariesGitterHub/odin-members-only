@@ -1,21 +1,11 @@
-<div
-  id="modal"
-  class="modal hidden"
-  role="dialog"
-  aria-modal="true"
->
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true">
   <div class="modal-overlay" data-close-modal></div>
 
   <!-- <div class="modal-content" role="document"> -->
   <div class="modal-content-card" role="document">
-    <button
-      class="close-button"
-      aria-label="close modal"
-      data-close-modal
-    >
+    <button class="close-button" aria-label="close modal" data-close-modal>
       <span class="emoji">❌</span>
     </button>
-  
 
     <!-- BECOME MEMBER -->
     <div class="modal-section hidden" id="modal-become-member">
@@ -33,23 +23,26 @@
 
     <!-- EDIT PROFILE (USER) -->
     <div class="modal-section hidden" id="modal-edit-profile-user">
-      <h1 id="modal-title-edit-profile-user">Edit Profile</h1>
+      <div class="page-title-modal uppercase">
+        <h1 id="modal-title-edit-profile-user">edit your profile</h1>
+      </div>
       <%- include('./modals/edit-profile-user.ejs') %>
     </div>
 
     <!-- EDIT PROFILE (ADMIN) -->
     <div class="modal-section hidden" id="modal-edit-profile-admin">
-      <h1 id="modal-title-edit-profile-admin">Admin Edit Profile</h1>
+      <div class="page-title-modal uppercase">
+        <h1 id="modal-title-edit-profile-admin">edit user profile</h1>
+      </div>
       <%- include('./modals/edit-profile-admin.ejs') %>
     </div>
 
     <!-- CHANGE AVATAR -->
     <div class="modal-section hidden" id="modal-change-avatar">
-      <h1 id="modal-title-change-avatar">Change Avatar</h1>
+      <div class="page-title-modal uppercase">
+        <h1 id="modal-title-change-avatar">Change Avatar</h1>        
+      </div>
       <%- include('./modals/change-avatar.ejs') %>
     </div>
-
-
-
   </div>
 </div>

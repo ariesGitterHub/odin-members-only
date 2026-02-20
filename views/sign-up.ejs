@@ -7,155 +7,73 @@
     <main>
       <div class="card">
         <div class="page-title uppercase">
-          <h1>sign up</h1>          
+          <h1>sign up</h1>
         </div>
         <div class="ui-message">
           <p>
-            Signing up is required if you wish to peruse or post on the <span class="red-letter">C</span>apital <span class="red-letter">A</span>rea <span class="red-letter">N</span>eigborhood Message Board.
-          </p> 
+            Signing up is required if you wish to peruse or post on the
+            <span class="red-letter">C</span>apital
+            <span class="red-letter">A</span>rea
+            <span class="red-letter">N</span>eigborhood Message Board.
+          </p>
         </div>
         <form class="sign-up-form" action="/app/sign-up" method="POST">
-          <label for="first-name">
-            <p>first name</p>
-            <input
-              id="first-name"
-              name="first-name"
-              placeholder="enter first name"
-              type="text"
-              required
-            />
-          </label>
-          <label for="last-name">
-            <p>last name</p>
-            <input
-              id="last-name"
-              name="last-name"
-              placeholder="enter last name"
-              type="text"
-              required
-            />
-          </label>
-          <label for="email">
-            <p>email</p>
-            <input
-              id="email"
-              name="email"
-              placeholder="enter email address"
-              type="email"
-              required
-            />
-          </label>
-          <!-- <label for="phone">
-            <p>phone</p>
-            <input
-              id="phone"
-              name="phone"
-              placeholder="enter phone number"
-              type="phone"
-              required
-            />
-          </label> -->
-          <label for="birthdate">
-            <p>birthdate</p>
-            <input
+          <label for="first_name"> first name </label>
+          <input
+            id="first_name"
+            name="first_name"
+            placeholder="enter first name"
+            type="text"
+            required
+          />
+          <label for="last_name"> last name </label>
+          <input
+            id="last_name"
+            name="last_name"
+            placeholder="enter last name"
+            type="text"
+            required
+          />
+          <label for="email"> email </label>
+          <input
+            id="email"
+            name="email"
+            placeholder="enter email address"
+            type="email"
+            required
+          />
+          <label for="birthdate"> birthdate </label>
+          <input
             id="birthdate"
             name="birthdate"
             placeholder="enter birthdate"
             type="date"
             required
-            />
-          </label>
-          <!-- <fieldset class="address-group">
-            <legend>neighborhood address</legend>
-            <label for="street">
-              <p>street address</p>
-              <input
-                id="street"
-                name="street"
-                type="text"
-                placeholder="101 north st"
-                required
-              />
-            </label>
-            <label for="unit">
-              <p>apt / unit (optional)</p>
-              <input
-                id="unit"
-                name="unit"
-                type="text"
-                placeholder="apt 1B"
-              />
-            </label>
-            <label for="city">
-              <p>city</p>
-              <input
-                id="city"
-                name="city"
-                type="text"
-                placeholder="harrisburg"
-                required
-              />
-            </label>
-            <label for="state">
-              <p>state</p>
-              <input
-                id="state"
-                name="state"
-                type="text"
-                maxlength="2"
-                placeholder="PA"
-                required
-              />
-            </label>
-            <label for="zip">
-              <p>zip code</p>
-              <input
-                id="zip"
-                name="zip"
-                type="text"
-                pattern="\d{5}"
-                placeholder="17102"
-                required
-              />
-            </label>
-          </fieldset> -->
-          <!-- <label for="username">
-            <p>username</p>
-            <input
-              id="username"
-              name="username"
-              placeholder="select a username"
-              type="text"
-              required
-            />
-          </label> -->
-          <label for="password">
-            <p>password</p>
-            <input
-              id="password"
-              name="password"
-              placeholder="select a password"
-              type="password"
-              required
-            />
-          </label>
-          <label for="confirm-password">
-            <p>confirm password</p>
-            <input
-              id="confirm-password"
-              name="confirm-password"
-              placeholder="re-enter chosen password"
-              type="password"
-              required
-            />
-          </label>
+          />
+          <!-- TODO - Relabel this password_hash????? -->
+          <label for="password"> password </label>
+          <input
+            id="password"
+            name="password"
+            placeholder="select a password"
+            type="password"
+            required
+          />
+          <label for="confirm_password"> confirm password </label>
+          <input
+            id="confirm_password"
+            name="confirm_password"
+            placeholder="re-enter chosen password"
+            type="password"
+            required
+          />
           <div class="button-container">
             <a class="fake-button" href="/app/">home</a>
             <button type="submit">submit</button>
-          </div>         
+          </div>
         </form>
       </div>
     </main>
-  <%- include('./partials/footer.ejs') %>    
+    <%- include('./partials/footer.ejs') %>
   </body>
 </html>
