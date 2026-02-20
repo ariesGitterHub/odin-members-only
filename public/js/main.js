@@ -176,3 +176,32 @@ document.querySelectorAll(".show-profile-button").forEach((btn) => {
 //       : "quick view:";
 //   });
 // });
+
+function openModal(sectionId, titleId) {
+  const modal = document.getElementById("modal");
+  const sections = document.querySelectorAll(".modal-section");
+
+  // Hide all sections
+  sections.forEach((section) => {
+    section.classList.add("hidden");
+  });
+
+  // Show target section
+  const target = document.getElementById(sectionId);
+  target.classList.remove("hidden");
+
+  // Update aria-labelledby dynamically
+  modal.setAttribute("aria-labelledby", titleId);
+
+  // Show modal
+  modal.classList.remove("hidden");
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.add("hidden");
+}
+
+// Close via overlay or button
+document.querySelectorAll("[data-close-modal]").forEach((el) => {
+  el.addEventListener("click", closeModal);
+});

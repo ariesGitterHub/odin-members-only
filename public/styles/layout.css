@@ -129,6 +129,103 @@ main {
   justify-content: space-between;
 } */
 
+/* MODAL */
+
+/* ADMIN PASSWORD MODAL */
+/* #modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--frog-lt-trans);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+} */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* .modal.hidden {
+  display: none;
+} */
+
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--off-black-trans);
+}
+
+/* .modal-content {
+  height: fit-content;
+  width: var(--card-width);
+  background: var(--lt-red);
+  border: 2px solid var(--dk-yellow);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  position: relative;
+} */
+
+/* .modal-content {
+  position: relative;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  z-index: 1;
+  max-width: 500px;
+  width: 100%;
+} */
+
+.modal-content-card {
+  position: relative;
+  height: fit-content;
+  width: calc(var(--card-width) + 0.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  background-color: var(--off-white);
+  border-radius: 1rem;
+  box-shadow: var(--box-shadow-black);
+  margin: 0.5rem;
+  padding: 1rem;
+  z-index: 1; 
+}
+
+/* .modal-section.hidden {
+  display: none;
+} */
+
+.close-button {
+  height: 1.5rem;
+  width: 1.5rem;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background-color: transparent;
+  /* border: 0.125rem solid var(--off-gray); */
+  border-radius: 50%;
+  box-shadow: var(--box-shadow-gray);
+  cursor: pointer;
+  font-size: 1rem;
+  /* margin-bottom: 0.5rem; */
+  padding: 0.25rem;
+}
+
+.close-button:hover {
+  /* color: var(--off-white); */
+  /* transform: scale(1); */
+}
+
+
 /* FOOTER */
 
 footer {
@@ -138,3 +235,4 @@ footer {
   text-align: center;
   text-transform: uppercase;
 }
+

@@ -27,6 +27,20 @@
   padding: 0.5rem;
 }
 
+.page-title-modal {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: start;
+  /* background: linear-gradient(90deg, #ff00cc, #3333ff); */
+  background: linear-gradient(180deg, var(--off-red), var(--off-black));
+  -webkit-background-clip: text; /* Clips background to text shape */
+  -webkit-text-fill-color: transparent; /* Makes original text color transparent */
+  /* font-size: var(--page-title-all); */
+  padding: 0.25rem 0;
+}
+
 /* -- View Card */
 
 .card {

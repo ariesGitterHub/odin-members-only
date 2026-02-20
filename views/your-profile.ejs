@@ -13,7 +13,7 @@
         <%# if (!currentUser) { %> 
         <!-- <p>No current user is logged in.</p> -->
         <%# } else { %>
-          <% let number = 4 %>
+          <% let number = 2 %>
           <% if (users.length !== 0) { %>
             <div class="profile-data">
               <div class="avatar-image-container-wide">
@@ -95,7 +95,10 @@
                 <span class="ui-message-warning uppercase">deletion of account is permanent.</span>
                 <!-- NOTE - below should be hidden if user has member status! -->
                 <% if (users[number].permission_status === "guest" && users[number].member_request === false) { %>
-                  <button class="wide-button">upgrade to member</button>
+                  <!-- <button class="wide-button">upgrade to member</button> -->
+                  <button class="wide-button" onclick="openModal('modal-become-member', 'modal-title-become-member')">
+                    upgrade to member
+                  </button>
                 <% } %>
                 <% if (users[number].permission_status !== "guest") { %>
                 <a class="fake-button wide-button" href="/app/member-directory">member directory</a>
@@ -103,7 +106,6 @@
                 <!-- Below - a link or button????? -->
                 <a class="fake-button wide-button" href="/app/update-profile">update profile</a>
                 <a class="fake-button wide-button" href="/app/change-avatar">change avatar</a>
-                <a class="fake-button wide-button" href="/app/???">new post</a>
               </div>
             </div>
           <% } %>
@@ -114,6 +116,7 @@
         </div>
       </div>
     </main>
+    <%- include('./partials/modal-root.ejs') %>
     <%- include('./partials/footer.ejs') %>
   </body>
 </html>
