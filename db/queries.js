@@ -69,6 +69,37 @@ const getUsers = async function getUsers() {
   return rows;
 };
 
+// NEW...............................................................................
+const getUserById = async function getUserById(userId) {
+  const { rows } = await pool.query(
+    `
+    SELECT
+      u.*,
+      up.avatar_type,
+      up.avatar_color_fg,
+      up.avatar_color_bg_top,
+      up.avatar_color_bg_bottom,
+      up.phone,
+      up.street_address,
+      up.apt_unit,
+      up.city,
+      up.us_state,
+      up.zip_code,
+      up.notes,
+      up.verified_by_admin,
+      COUNT(m.id) AS message_count
+    FROM users u
+    LEFT JOIN user_profiles up ON u.id = up.user_id
+    LEFT JOIN messages m ON u.id = m.user_id AND m.is_deleted = false
+    WHERE u.id = $1
+    GROUP BY u.id, up.user_id
+  `,
+    [userId],
+  );
+
+  return rows[0]; // Returning only the first row (one user)
+};
+
 // const getAllTopics = async () => {
 //   const query = `
 //     SELECT *
@@ -395,6 +426,7 @@ const getMessagesByTopic = async (topicId, limit = 50) => {
 
 module.exports = {
   getUsers,
+  getUserById,
   // getTopics,
   getAllTopics,
   getTopicBySlug,

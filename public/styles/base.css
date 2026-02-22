@@ -28,7 +28,6 @@
   --off-white: #e5dfd5;
   --off-gray: #768179;
   --off-black: #1a1b1c;
-  --off-black: #1a1b1c;
   --off-black-trans: #1a1b1c80;
 
   --off-red: #994e4e;
@@ -55,9 +54,9 @@
   --lt-blue: #92cfe4;
   --lt-purple: #d080eb;
 
-  --avatar-fg: var(--off-black);
-  --avatar-bg-top: var(--off-white);
-  --avatar-bg-bottom: var(--off-gray);
+  --avatar-color-fg: var(--off-black);
+  --avatar-color-bg-top: var(--off-white);
+  --avatar-color-bg-bottom: var(--off-gray);
 
   --member-request-alert: var(--lt-orange);
   --box-shadow-gray: inset 0 0.25rem 1rem var(--off-gray);

@@ -10,7 +10,6 @@
         <input 
           class="bold"           
           type="text"
-          id="first_name"
           name="first_name"
           value="<%= users[number].first_name || "" %>"
           required
@@ -21,7 +20,6 @@
         <input 
           class="bold"
           type="text"
-          id="last_name"
           name="last_name"
           value="<%= users[number].last_name || "" %>"
           required
@@ -32,7 +30,6 @@
         <input 
           class=" lowercase bold" 
           type="email"
-          id="email"
           name="email"
           value="<%= users[number].email %>"
           required
@@ -43,7 +40,6 @@
         <input 
           class="bold"
           type="phone"
-          id="phone"
           name="phone"
           value="<%= users[number].phone || "" %>"
           required
@@ -54,7 +50,6 @@
         <input 
           class="bold"
           type="date"
-          id="birthdate"
           name="birthdate"
           value="<%= users[number].birthdate %>"
           required
@@ -65,7 +60,6 @@
           <input 
             class="bold" 
             type="text"
-            id="street_address"
             name="street_address"
             value="<%= users[number].street_address || "" %>"
             required
@@ -76,7 +70,6 @@
           <input 
             class="bold"
             type="text"
-            id="apt_unit"
             name="apt_unit"
             value="<%= users[number].apt_unit || "" %>"
             required
@@ -87,7 +80,6 @@
           <input 
             class="bold"
             type="text"
-            id="city"
             name="city"
             value="<%= users[number].city || "" %>"
             required
@@ -98,7 +90,6 @@
           <input 
             class="bold"
             type="text"
-            id="us_state"
             name="us_state"
             value="<%= users[number].us_state || "" %>"
             required
@@ -109,7 +100,6 @@
           <input 
             class="bold"           
             type="text"
-            id="zip_code"
             name="zip_code"
             value="<%= users[number].zip_code || "" %>"
             required
@@ -119,7 +109,6 @@
             change password
         </label>
             <input
-              id="password"
               name="password"
               value="<%= users[number].password_hash %>"
               type="password"
@@ -129,7 +118,6 @@
           confirm new password
         </label>
           <input
-            id="confirm-password"
             name="confirm-password"
             placeholder="re-enter new password"
             type="password"

@@ -14,6 +14,7 @@ const {
   getTopicPage,
   getBecomeMember,
   getAdmin,
+  getUserDetails,
   postLogOut,
 } = require("../controllers/appControllers");
 
@@ -22,17 +23,20 @@ const appRouter = Router();
 appRouter.get("/", getHome);
 appRouter.get("/sign-up", getSignUp);
 appRouter.get("/log-in", getLogIn);
-appRouter.get("/your-profile", getYourProfile);
-appRouter.get("/member-directory", getMemberDirectory);
-appRouter.get("/update-profile", getUpdateProfile);
-appRouter.get("/change-avatar", getChangeAvatar);
+appRouter.get("/admin", getAdmin);
+// Ensure you add the route for this
+// appRouter.get("/user/:id", getUserDetails);
+appRouter.get("/user/:id", getUserDetails);
 appRouter.get("/info", getInfo);
-
 appRouter.get("/message-boards", getMessageBoards);
 appRouter.get("/message-boards/:slug", getTopicPage);
 
-appRouter.get("/become-member", getBecomeMember);
-appRouter.get("/admin", getAdmin);
+appRouter.get("/your-profile", getYourProfile);
+// appRouter.get("/update-profile", getUpdateProfile);
+// appRouter.get("/change-avatar", getChangeAvatar);
+// appRouter.get("/member-directory", getMemberDirectory);
+// appRouter.get("/become-member", getBecomeMember);
+
 appRouter.get("/log-out", postLogOut);
 
 module.exports = appRouter;

@@ -205,3 +205,131 @@ function closeModal() {
 document.querySelectorAll("[data-close-modal]").forEach((el) => {
   el.addEventListener("click", closeModal);
 });
+
+// Listen for click events on "Edit" buttons
+// document.querySelectorAll('.edit-user-button').forEach(button => {
+//   button.addEventListener('click', async (e) => {
+//     const userId = e.target.dataset.userId;  // Get the user ID from the data attribute
+
+//     try {
+//       // Fetch user data by ID
+//       const response = await fetch(`/user/${userId}`);
+      
+//       if (response.ok) {
+//         const user = await response.json();  // Get the user data
+
+//         // Render the modal with the user data
+//         const modalContent = document.getElementById('modal-edit-profile-admin');
+//         modalContent.innerHTML = await renderEditProfileModal(user);  // Inject the user data into the modal
+
+//         // Show the modal
+//         document.getElementById('modal').classList.remove('hidden');
+//       } else {
+//         alert('Failed to load user details');
+//       }
+//     } catch (error) {
+//       console.error('Error fetching user data:', error);
+//     }
+//   });
+// });
+
+// // Helper function to render the form dynamically
+// async function renderEditProfileModal(user) {
+//   return `
+//     <form class="profile-data-form" action="/app/update-user/${user.id}" method="POST">
+//       <label class="capitalize" for="first_name">first name (fname)</label>
+//       <input class="bold" type="text" name="first_name" value="${user.first_name}" required />
+//       <label class="capitalize" for="last_name">last name (lname)</label>
+//       <input class="bold" type="text" name="last_name" value="${user.last_name}" required />
+//       <label class="capitalize" for="email">email address</label>
+//       <input class=" lowercase bold" type="email" name="email" value="${user.email}" required />
+//       <button class="wide-button" type="submit">submit profile changes</button>
+//     </form>
+//   `;
+// }
+
+// Listen for click events on "Edit" buttons
+document.querySelectorAll('.edit-user-profile-admin-button').forEach(button => {
+  button.addEventListener('click', async (e) => {
+    const userId = e.target.dataset.userId;  // Get the user ID from the data attribute
+
+    try {
+      // Send AJAX request to fetch the user data by ID
+      const response = await fetch(`/app/user/${userId}`);
+      
+      if (response.ok) {
+        const user = await response.json();  // Get the user data from the response
+
+        // Dynamically inject user data into the modal content
+        document.getElementById('first_name').value = user.first_name;
+        document.getElementById('last_name').value = user.last_name;
+        document.getElementById('verified_by_admin').value = user.verified_by_admin;
+        document.getElementById('permission_status').value = user.permission_status;
+        document.getElementById('upgrade_request').value = user.member_request;
+        document.getElementById('email').value = user.email;
+        document.getElementById('phone').value = user.phone || "";
+        document.getElementById('birthdate').value = user.birthdate;
+        document.getElementById('street_address').value = user.street_address || "";
+        document.getElementById('apt_unit').value = user.apt_unit || "";
+        document.getElementById('city').value = user.city || "";
+        document.getElementById('us_state').value = user.us_state || "";
+        document.getElementById('zip_code').value = user.zip_code || "";
+        document.getElementById('notes').value = user.notes || "";
+
+        // Show the modal
+        document.getElementById('modal').classList.remove('hidden');
+      } else {
+        alert('Failed to load user details');
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      
+    }
+  });
+});
+
+document
+  .querySelectorAll(".edit-user-avatar-admin-button")
+  .forEach((button) => {
+    button.addEventListener("click", async (e) => {
+      const userId = e.target.dataset.userId; // Get the user ID from the data attribute
+
+      try {
+        // Send AJAX request to fetch the user data by ID
+        const response = await fetch(`/app/user/${userId}`);
+
+        if (response.ok) {
+          const user = await response.json(); // Get the user data from the response
+
+          // Dynamically inject user data into the modal content
+
+
+
+          if (user.permission_status === "guest") {
+            document.querySelector(".hide-label").classList.add("hidden"); 
+            document.querySelector(".hide-input").classList.add("hidden");  
+          }
+
+          // Access CSS variables
+          const rootStyles = getComputedStyle(document.documentElement);
+          // Use these values in your JavaScript
+          const avatarColorFg = rootStyles.getPropertyValue('--avatar-color-fg').trim();
+          const avatarColorBgTop = rootStyles.getPropertyValue('--avatar-color-bg-top').trim();
+          const avatarColorBgBottom = rootStyles.getPropertyValue('--avatar-color-bg-bottom').trim();        
+          
+          document.getElementById("avatar_type").value = user.avatar_type || "";
+                  
+          document.getElementById("avatar_color_fg").value = user.avatar_color_fg || avatarColorFg;
+          document.getElementById("avatar_color_bg_top").value = user.avatar_color_bg_top || avatarColorBgTop;
+          document.getElementById("avatar_color_bg_bottom").value = user.avatar_color_bg_bottom || avatarColorBgBottom;
+          
+          // Show the modal
+          document.getElementById("modal").classList.remove("hidden");
+        } else {
+          alert("Failed to load user details");
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    });
+  });

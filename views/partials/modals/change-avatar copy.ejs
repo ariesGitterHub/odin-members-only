@@ -1,0 +1,72 @@
+ <% let number = 1 %>
+<% if (users.length !== 0) { %>
+ <div class="ui-message">
+    <p>
+      Make changes to the avatar here.
+    </p> 
+  </div>
+  <div class="element-container-row-center ">
+<div 
+  class="avatar-image-circle avatar-circle-large" 
+  style="
+    --avatar-fg: <%= users[number].avatar_color_fg || 'var(--off-black)' %>;
+    --avatar-bg-top: <%= users[number].avatar_color_bg_top || 'var(--off-white)' %>;
+    --avatar-bg-bottom: <%= users[number].avatar_color_bg_bottom || 'var(--off-gray)' %>;
+  ">
+  <span class="emoji avatar-emoji-large-size" role="img" aria-label="avatar image">
+    <!-- 🐈‍⬛ -->
+    <%= users[number].avatarLetter %>
+    <%#= users[number].avatar_type %>
+  </span>
+</div>     
+  </div>
+ 
+    <form class="profile-data-form" action="/app/???" method="POST"> 
+    <label for="avatar_type">
+      avatar emoji
+    </label>
+      <input
+        id="avatar_type"
+        name="avatar_type"
+        value="<%= users[number].avatar_type || "" %>"
+        type="text"
+        required
+      />
+    <label for="avatar_color_fg">
+      avatar color
+    </label>
+      <input
+        id="avatar_color_fg"
+        name="avatar_color_fg"
+        value="<%= users[number].avatar_color_fg || "#1a1b1c" %>"
+        type="color"
+        required
+      />
+    <label for="avatar_color_bg_top">
+      background color (top)
+    </label>
+      <input
+        id="avatar_color_bg_top"
+        name="avatar_color_bg_top"
+        value="<%= users[number].avatar_color_bg_top || "#eeee7d" %>"
+        type="color"
+        required
+      />
+    <label for="avatar_color_bg_bottom">
+      background color (bottom)
+    </label>      
+      <input
+        id="avatar_color_bg_bottom"
+        name="avatar_color_bg_bottom"
+        value="<%= users[number].avatar_color_bg_bottom || "#83741d" %>"
+        type="color"
+        required
+      />
+    <div class="button-container">
+      <a class="fake-button" href="/app/your-profile">cancel</a>
+      <button type="submit">submit</button>
+    </div> 
+  </form> 
+  </div>
+</div>
+<% } %>

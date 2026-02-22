@@ -28,9 +28,9 @@
               <div 
                 class="avatar-image-circle avatar-circle-small" 
                 style="
-                  --avatar-fg: <%= user.avatar_color_fg || 'var(--off-black)' %>;
-                  --avatar-bg-top: <%= user.avatar_color_bg_top || 'var(--off-white)' %>;
-                  --avatar-bg-bottom: <%= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
+                  --avatar-color-fg: <%= user.avatar_color_fg || 'var(--off-black)' %>;
+                  --avatar-color-bg-top: <%= user.avatar_color_bg_top || 'var(--off-white)' %>;
+                  --avatar-color-bg-bottom: <%= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
                 ">
                 <span class="emoji avatar-emoji-small-size" role="img" aria-label="avatar image">
                   <!-- 🐈‍⬛ -->
@@ -96,6 +96,10 @@
                 <dt class="capitalize">lname</dt>
                 <dd class="capitalize bold"><%#= user.last_name %></dd>
               </div> -->
+              <div>
+                <dt class="capitalize">ID</dt>
+                <dd class="capitalize bold"><%= user.id %></dd>
+              </div>
               <div class="neighbor-data">
                 <dt class="capitalize">name</dt>
                 <dd class="capitalize bold"><%= user.first_name %> <%= user.last_name %></dd>
@@ -218,10 +222,12 @@
                 <button class="wide-button">upgrade to member</button>
               <% } %>
                 <!-- <a class="fake-button wide-button" href="/app/admin-update-profile">update this user</a> -->
-                <button class="wide-button" onclick="openModal('modal-edit-profile-admin', 'modal-title-edit-profile-admin')">
+                <button class="wide-button edit-user-profile-admin-button" onclick="openModal('modal-edit-profile-admin', 'modal-title-edit-profile-admin')" data-user-id="<%= user.id %>">
                   update this profile
                 </button>
-                <button class="wide-button" onclick="openModal('modal-change-avatar', 'modal-title-change-avatar')">
+                
+
+                <button class="wide-button edit-user-avatar-admin-button" onclick="openModal('modal-change-avatar', 'modal-title-change-avatar')"data-user-id="<%= user.id %>">
                   change this avatar
                 </button>
             </div>

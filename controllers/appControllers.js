@@ -1,5 +1,6 @@
 const {
   getUsers,
+  getUserById,
   // getTopics,
   getAllTopics,
   getTopicBySlug,
@@ -232,17 +233,17 @@ async function getTopicPage(req, res, next) {
 //   }
 // }
 
-async function getBecomeMember(req, res, next) {
-  try {
-    res.render("become-member", {
-      title: "Become Member",
-      user: req.user,
-      errors: [],
-    });
-  } catch (err) {
-    next(err);
-  }
-}
+// async function getBecomeMember(req, res, next) {
+//   try {
+//     res.render("become-member", {
+//       title: "Become Member",
+//       user: req.user,
+//       errors: [],
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// }
 
 // async function getAdmin(req, res, next) {
 //   const users = await getUsers();
@@ -316,6 +317,43 @@ async function getAdmin(req, res, next) {
   }
 }
 
+// Function to fetch individual user data for modal
+// async function getUserDetails(req, res, next) {
+//   const userId = req.params.id;  // Get user ID from URL parameter
+//   try {
+//     const user = await getUserById(userId);
+//     if (user) {
+//       res.json(user);  // Send user data as JSON
+//     } else {
+//       res.status(404).send('User not found');
+//     }
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
+// Function to fetch individual user data for modal
+// Function to fetch individual user data for modal
+async function getUserDetails(req, res, next) {
+  const userId = req.params.id;  // Get user ID from URL parameter
+  try {
+    const user = await getUserById(userId);  // Replace with your actual query
+    if (user.birthdate instanceof Date) {
+      user.birthdate = user.birthdate.toISOString().split("T")[0];
+    }
+
+    if (user) {
+      res.json(user);  // Send user data as JSON
+    } else {
+      res.status(404).send('User not found');
+    }
+  } catch (err) {
+    next(err);  // Pass error to the error handling middleware
+  }
+}
+
+
+
 function postLogOut(req, res, next) {
   req.logout((err) => {
     if (err) return next(err);
@@ -335,7 +373,8 @@ module.exports = {
   getMessageBoards,
   // getMessageBoardBySlug,
   getTopicPage,
-  getBecomeMember,
+  // getBecomeMember,
   getAdmin,
+  getUserDetails,
   postLogOut,
 };

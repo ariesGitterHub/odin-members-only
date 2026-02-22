@@ -92,12 +92,12 @@ button:hover,
   justify-content: center;
   background: linear-gradient(
     05deg,
-    var(--avatar-bg-bottom),
-    var(--avatar-bg-top)
+    var(--avatar-color-bg-bottom),
+    var(--avatar-color-bg-top)
   );
   border-radius: 50%;
   box-shadow: var(--box-shadow-gray);
-  color: var(--avatar-fg);
+  color: var(--avatar-color-fg);
   margin-right: 0.5rem;
   padding: 2rem;
 }

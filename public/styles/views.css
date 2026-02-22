@@ -105,12 +105,12 @@ background-color: var(--white);
   justify-content: center;
   background: linear-gradient(
     05deg,
-    var(--avatar-bg-bottom),
-    var(--avatar-bg-top)
+    var(--avatar-color-bg-bottom),
+    var(--avatar-color-bg-top)
   );
   border: 0.125rem solid var(--off-gray);
   border-radius: 50%;
-  color: var(--avatar-fg);
+  color: var(--avatar-color-fg);
   margin-bottom: 0.5rem;
 } */
 
@@ -286,12 +286,12 @@ background-color: var(--white);
   background-color: pink;
   background: linear-gradient(
     05deg,
-    var(--avatar-bg-bottom),
-    var(--avatar-bg-top)
+    var(--avatar-color-bg-bottom),
+    var(--avatar-color-bg-top)
   );
   border-radius: 50%;
   box-shadow: var(--box-shadow-gray);
-  color: var(--avatar-fg);
+  color: var(--avatar-color-fg);
   margin-right: 0.5rem;
   padding: 2rem;
 } */
