@@ -77,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
   bindColorPicker("background-color-bottom", "--off-gray");
 });
 
+
 // use?
 
 // 7. Bonus: scaling this later
@@ -124,7 +125,7 @@ document.querySelectorAll(".guest-card").forEach((card) => {
       ? (showGuests.textContent = "open guest profiles")
       : (showGuests.textContent = "close guest profiles");
   });
-});
+})
 
 // TOGGLE .HIDDEN FOR ALL MEMBER CARDS ON ADMIN PANEL
 document.querySelectorAll(".member-card").forEach((card) => {
@@ -135,7 +136,7 @@ document.querySelectorAll(".member-card").forEach((card) => {
       ? (showMembers.textContent = "open member profiles")
       : (showMembers.textContent = "close member profiles");
   });
-});
+})
 
 // // TOGGLE .HIDDEN FOR PROFILE's DETAILS ON ADMIN PANEL
 // document.querySelectorAll(".profile-data").forEach((card) => {
@@ -145,21 +146,21 @@ document.querySelectorAll(".member-card").forEach((card) => {
 //       card.classList.contains("hidden")
 //         ? (showProfile.textContent = "open this profile")
 //         : (showProfile.textContent = "close this profile");
-//     });
+//     });    
 //   });
 
 // })
 
 document.querySelectorAll(".show-profile-button").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    // const profileData = btn.closest(".profile-data")
-    const profileData = btn.closest(".card").querySelector(".profile-data");
-    profileData.classList.toggle("hidden");
-    profileData.classList.contains("hidden")
-      ? (btn.textContent = "open this profile")
-      : (btn.textContent = "close this profile");
-  });
-});
+      btn.addEventListener("click", () => {
+        // const profileData = btn.closest(".profile-data")
+        const profileData = btn.closest(".card").querySelector(".profile-data");
+        profileData.classList.toggle("hidden");
+        profileData.classList.contains("hidden")
+          ? (btn.textContent = "open this profile")
+          : (btn.textContent = "close this profile");
+      });
+    });
 
 // document.querySelectorAll(".show-profile-button").forEach((btn) => {
 //   btn.addEventListener("click", () => {
@@ -213,7 +214,7 @@ document.querySelectorAll("[data-close-modal]").forEach((el) => {
 //     try {
 //       // Fetch user data by ID
 //       const response = await fetch(`/user/${userId}`);
-
+      
 //       if (response.ok) {
 //         const user = await response.json();  // Get the user data
 
@@ -248,49 +249,44 @@ document.querySelectorAll("[data-close-modal]").forEach((el) => {
 // }
 
 // Listen for click events on "Edit" buttons
-document
-  .querySelectorAll(".edit-user-profile-admin-button")
-  .forEach((button) => {
-    button.addEventListener("click", async (e) => {
-      const userId = e.target.dataset.userId; // Get the user ID from the data attribute
+document.querySelectorAll('.edit-user-profile-admin-button').forEach(button => {
+  button.addEventListener('click', async (e) => {
+    const userId = e.target.dataset.userId;  // Get the user ID from the data attribute
 
-      try {
-        // Send AJAX request to fetch the user data by ID
-        const response = await fetch(`/app/user/${userId}`);
+    try {
+      // Send AJAX request to fetch the user data by ID
+      const response = await fetch(`/app/user/${userId}`);
+      
+      if (response.ok) {
+        const user = await response.json();  // Get the user data from the response
 
-        if (response.ok) {
-          const user = await response.json(); // Get the user data from the response
+        // Dynamically inject user data into the modal content
+        document.getElementById('first_name').value = user.first_name;
+        document.getElementById('last_name').value = user.last_name;
+        document.getElementById('verified_by_admin').value = user.verified_by_admin;
+        document.getElementById('permission_status').value = user.permission_status;
+        document.getElementById('upgrade_request').value = user.member_request;
+        document.getElementById('email').value = user.email;
+        document.getElementById('phone').value = user.phone || "";
+        document.getElementById('birthdate').value = user.birthdate;
+        document.getElementById('street_address').value = user.street_address || "";
+        document.getElementById('apt_unit').value = user.apt_unit || "";
+        document.getElementById('city').value = user.city || "";
+        document.getElementById('us_state').value = user.us_state || "";
+        document.getElementById('zip_code').value = user.zip_code || "";
+        document.getElementById('notes').value = user.notes || "";
 
-          // Dynamically inject user data into the modal content
-          document.getElementById("first_name").value = user.first_name;
-          document.getElementById("last_name").value = user.last_name;
-          document.getElementById("verified_by_admin").value =
-            user.verified_by_admin;
-          document.getElementById("permission_status").value =
-            user.permission_status;
-          document.getElementById("upgrade_request").value =
-            user.member_request;
-          document.getElementById("email").value = user.email;
-          document.getElementById("phone").value = user.phone || "";
-          document.getElementById("birthdate").value = user.birthdate;
-          document.getElementById("street_address").value =
-            user.street_address || "";
-          document.getElementById("apt_unit").value = user.apt_unit || "";
-          document.getElementById("city").value = user.city || "";
-          document.getElementById("us_state").value = user.us_state || "";
-          document.getElementById("zip_code").value = user.zip_code || "";
-          document.getElementById("notes").value = user.notes || "";
-
-          // Show the modal
-          document.getElementById("modal").classList.remove("hidden");
-        } else {
-          alert("Failed to load user details");
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+        // Show the modal
+        document.getElementById('modal').classList.remove('hidden');
+      } else {
+        alert('Failed to load user details');
       }
-    });
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      
+    }
   });
+});
 
 document
   .querySelectorAll(".edit-user-avatar-admin-button")
@@ -305,18 +301,13 @@ document
         if (response.ok) {
           const user = await response.json(); // Get the user data from the response
 
-          // Access CSS variables
+
+                    // Access CSS variables
           const rootStyles = getComputedStyle(document.documentElement);
           // Use these values in your JavaScript
-          const avatarColorFg = rootStyles
-            .getPropertyValue("--avatar-color-fg")
-            .trim();
-          const avatarColorBgTop = rootStyles
-            .getPropertyValue("--avatar-color-bg-top")
-            .trim();
-          const avatarColorBgBottom = rootStyles
-            .getPropertyValue("--avatar-color-bg-bottom")
-            .trim();
+          const avatarColorFg = rootStyles.getPropertyValue('--avatar-color-fg').trim();
+          const avatarColorBgTop = rootStyles.getPropertyValue('--avatar-color-bg-top').trim();
+          const avatarColorBgBottom = rootStyles.getPropertyValue('--avatar-color-bg-bottom').trim();   
 
           // Dynamically inject user data into the modal content
 
@@ -324,38 +315,26 @@ document
 
           if (user.permission_status === "guest") {
             document
-              .querySelector(".change-avatar-hide-element")
-              .classList.add("hidden");
-            // document
-            //   .querySelector(".change-avatar-hide-input")
-            //   .classList.add("hidden");
+              .querySelector(".change-avatar-hide-label")
+              .classList.add("hidden"); 
+            document
+              .querySelector(".change-avatar-hide-input")
+              .classList.add("hidden");  
           } else {
             document
-              .querySelector(".change-avatar-hide-element")
+              .querySelector(".change-avatar-hide-label")
               .classList.remove("hidden");
-            // document
-            //   .querySelector(".change-avatar-hide-input")
-            //   .classList.remove("hidden");
+            document
+              .querySelector(".change-avatar-hide-input")
+              .classList.remove("hidden"); 
           }
-
+          
           document.getElementById("avatar_type").value = user.avatar_type || "";
-
-          const fg = user.avatar_color_fg || avatarColorFg;
-          const bgt = user.avatar_color_bg_top || avatarColorBgTop;
-          const bgb = user.avatar_color_bg_bottom || avatarColorBgBottom;
-
-          document.getElementById("avatar_color_fg").value = fg;
-          document.getElementById("avatar_color_bg_top").value = bgt;
-          document.getElementById("avatar_color_bg_bottom").value = bgb;
-
-          const currentAvatarEl = document.getElementById("current_avatar");
-          currentAvatarEl.textContent = user.avatar_type || "";
-          currentAvatarEl.style.color = fg; // now this works
-          currentAvatarEl.style.background = `linear-gradient(05deg, ${bgb}, ${bgt})`;
-
-          // const newAvatarEl = document.getElementById("new_avatar");
-          // newAvatarEl.textContent = user.avatar_type || "";
-
+                  
+          document.getElementById("avatar_color_fg").value = user.avatar_color_fg || avatarColorFg;
+          document.getElementById("avatar_color_bg_top").value = user.avatar_color_bg_top || avatarColorBgTop;
+          document.getElementById("avatar_color_bg_bottom").value = user.avatar_color_bg_bottom || avatarColorBgBottom;
+          
           // Show the modal
           document.getElementById("modal").classList.remove("hidden");
         } else {
@@ -366,53 +345,3 @@ document
       }
     });
   });
-
-// document.getElementById("avatar_color_fg").addEventListener("input", async (e) => {
-// const newAvatarEl = document.getElementById("new_avatar");
-// newAvatarEl.style.color = e.target.value;
-// console.log(e.value)
-// });
-
-// const avatarColorPickerFg = document.getElementById("avatar_color_fg");
-// const avatarColorPickerBgt = document.getElementById("avatar_color_bg_top");
-// const avatarColorPickerBgb = document.getElementById("avatar_color_bg_bottom");
-// const newAvatarEl = document.getElementById("new_avatar");
-
-// avatarColorPickerFg.addEventListener("input", () => {
-//   newAvatarEl.style.color = avatarColorPickerFg.value;
-// });
-
-// avatarColorPickerBgt.addEventListener("input", () => {
-//   newAvatarEl.style.background = `linear-gradient(05deg, ${avatarColorPickerBgt.value}, ${avatarColorPickerBgb.value})`;
-//   avatarColorPickerBgt.value;
-// });
-
-// avatarColorPickerBgb.addEventListener("input", () => {
-//   newAvatarEl.style.background = avatarColorPickerBgb.value;
-// });
-
-const avatarInput = document.getElementById("avatar_type");
-const avatarColorPickerFg = document.getElementById("avatar_color_fg");
-const avatarColorPickerBgt = document.getElementById("avatar_color_bg_top");
-const avatarColorPickerBgb = document.getElementById("avatar_color_bg_bottom");
-const newAvatarEl = document.getElementById("new_avatar");
-
-// Update everything in one place
-function updateAvatarPreview() {
-  newAvatarEl.textContent = avatarInput.value
-
-  newAvatarEl.style.color = avatarColorPickerFg.value;
-
-  newAvatarEl.style.background = `
-    linear-gradient(5deg, 
-      ${avatarColorPickerBgb.value}, 
-      ${avatarColorPickerBgt.value}
-    )
-  `;
-}
-
-// Attach same function to all inputs
-avatarInput.addEventListener("input", updateAvatarPreview);
-avatarColorPickerFg.addEventListener("input", updateAvatarPreview);
-avatarColorPickerBgt.addEventListener("input", updateAvatarPreview);
-avatarColorPickerBgb.addEventListener("input", updateAvatarPreview);

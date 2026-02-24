@@ -33,6 +33,8 @@ const {
 
 const { hasRole, isExactRole } = require("../utils/permissions.js");
 
+const emojiData = require("../data/NotoEmoji.json");
+
 async function getHome(req, res, next) {
   try {
     res.render("index", {
@@ -308,6 +310,7 @@ async function getAdmin(req, res, next) {
       // users: usersWithDates,
       // "!!!-HERE-!!!" (see comments above in this controller)
       users: usersWithAvatars,
+      emojiData,
       // usersWithDates,
       // usersWithAvatars,
       errors: [],

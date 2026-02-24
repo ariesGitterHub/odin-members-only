@@ -391,7 +391,6 @@ document
 //   newAvatarEl.style.background = avatarColorPickerBgb.value;
 // });
 
-const avatarInput = document.getElementById("avatar_type");
 const avatarColorPickerFg = document.getElementById("avatar_color_fg");
 const avatarColorPickerBgt = document.getElementById("avatar_color_bg_top");
 const avatarColorPickerBgb = document.getElementById("avatar_color_bg_bottom");
@@ -399,8 +398,6 @@ const newAvatarEl = document.getElementById("new_avatar");
 
 // Update everything in one place
 function updateAvatarPreview() {
-  newAvatarEl.textContent = avatarInput.value
-
   newAvatarEl.style.color = avatarColorPickerFg.value;
 
   newAvatarEl.style.background = `
@@ -412,7 +409,64 @@ function updateAvatarPreview() {
 }
 
 // Attach same function to all inputs
-avatarInput.addEventListener("input", updateAvatarPreview);
 avatarColorPickerFg.addEventListener("input", updateAvatarPreview);
 avatarColorPickerBgt.addEventListener("input", updateAvatarPreview);
 avatarColorPickerBgb.addEventListener("input", updateAvatarPreview);
+
+const rawEmojiData = window.emojiData;
+const allEmojis = Object.values(rawEmojiData).flat();
+
+function emojiNameFinder(selectedEmoji) {
+  return (
+    allEmojis.find((e) => e.emoji === selectedEmoji)?.text ?? "emoji not found"
+  );
+}
+
+const avatarInput = document.getElementById("avatar_type");
+
+avatarInput.addEventListener("input", () => {
+  const emoji = avatarInput.value.trim();
+  const name = emojiNameFinder(emoji);
+  console.log(name);
+});
+
+function searchEmojis(query) {
+  const q = query.toLowerCase();
+
+  return allEmojis.filter(
+    (e) =>
+      e.text.toLowerCase().includes(q) ||
+      e.keywords.some((k) => k.toLowerCase().includes(q)),
+  );
+}
+
+avatarInput.addEventListener("input", () => {
+  const results = searchEmojis(avatarInput.value);
+
+  console.log(results.slice(0, 10)); // limit results
+});
+
+const dropdown = document.getElementById("emoji_dropdown");
+
+function renderDropdown(results) {
+  dropdown.innerHTML = "";
+
+  results.slice(0, 20).forEach((e) => {
+    const item = document.createElement("div");
+    item.textContent = `${e.emoji} ${e.text}`;
+    item.classList.add("emoji-option");
+
+    item.addEventListener("click", () => {
+      avatarInput.value = e.emoji;
+      dropdown.innerHTML = "";
+    });
+
+    dropdown.appendChild(item);
+  });
+}
+
+avatarInput.addEventListener("input", () => {
+  const results = searchEmojis(avatarInput.value);
+  renderDropdown(results);
+});
+

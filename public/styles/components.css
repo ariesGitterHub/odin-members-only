@@ -133,6 +133,10 @@ button:hover,
     transform: scale(1.125);
 }
 
+/* .font-weight-100 {
+  font-weight: 100;
+} */
+
 .emoji {
   /* display: inline-block; */
   font-family: var(--font-emoji);
@@ -206,6 +210,32 @@ input {
 
 input::placeholder {
   text-transform: capitalize;
+}
+
+/* .input-height-special {
+  height: 3rem;
+} */
+
+/* .emoji-input-width {
+  height: 3rem;
+  width: 5.35rem;
+  color: var(--off-black);
+  font-family: var(--font-emoji);
+  font-size: 1.75rem;
+  text-align: center;
+} */
+
+.preview-current, .preview-new {
+  height: 7rem;
+  width: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.125rem solid var(--off-gray);
+  border-radius: 50%;
+  font-family: var(--font-emoji);
+  font-size: 4.55rem;
+  /* text-align: center; */
 }
 
 fieldset {

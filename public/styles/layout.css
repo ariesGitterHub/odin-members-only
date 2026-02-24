@@ -93,6 +93,14 @@ main {
   /* gap: 0.25rem; */
 }
 
+.element-container-row-space-evenly {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* gap: 0.25rem; */
+}
+
 .element-container-col {
   /* width: 100%; */
   display: flex;
@@ -101,6 +109,13 @@ main {
   justify-content: center;
   /* gap: 0.25rem; */
 }
+
+/* .element-container-col-space-evenly {
+  display: flex;
+  flex-direction: column;
+  align-items: space-evenly;
+  justify-content: center;
+} */
 
 
 

@@ -96,10 +96,10 @@
                 <dt class="capitalize">lname</dt>
                 <dd class="capitalize bold"><%#= user.last_name %></dd>
               </div> -->
-              <div>
+              <!-- <div>
                 <dt class="capitalize">ID</dt>
-                <dd class="capitalize bold"><%= user.id %></dd>
-              </div>
+                <dd class="capitalize bold"><%#= user.id %></dd>
+              </div> -->
               <div class="neighbor-data">
                 <dt class="capitalize">name</dt>
                 <dd class="capitalize bold"><%= user.first_name %> <%= user.last_name %></dd>
@@ -173,7 +173,7 @@
               <!-- <br class="<%#= (user.avatar_color_fg ? '' : 'hidden') || (user.avatar_color_bg_top ? '' : 'hidden') || (user.avatar_color_bg_bottom ? '' : 'hidden') %>"> -->
               <div class="<%= user.avatar_type ? '' : 'hidden' %> app-data">
                 <dt class="capitalize">avatar</dt>
-                <dd class="bold"><%= user.avatar_type || "n/a" %></dd>
+                <dd class="emoji"><%= user.avatar_type || "n/a" %></dd>
                 <!-- <dt class="<%#= user.avatar_type ? '' : 'hidden' %> capitalize">avatar</dt>
                 <dd class="<%#= user.avatar_type ? '' : 'hidden' %> bold"><%#= user.avatar_type || "n/a" %></dd> -->
               </div>
