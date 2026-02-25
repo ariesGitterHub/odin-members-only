@@ -170,6 +170,33 @@ button:hover,
   /* vertical-align: middle; */
 }
 
+.emoji-picker-wrapper {
+  position: relative;
+}
+
+.emoji-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 300px;
+  max-height: 200px;
+  overflow-y: auto;
+  background: var(--white);
+  border: 0.125 solid var(--off-gray);
+  display: none;
+  z-index: 1000;
+}
+
+.emoji-option {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.emoji-option:hover {
+  background: var(--lt-red);
+}
+
+
 /* TODO - FIX ALL FORMS and COALESCE */
 /* FORMS */
 
@@ -197,7 +224,7 @@ label {
   text-transform: capitalize;
 }
 
-input {
+input, .fake-input {
   width: 100%;
   background-color: var(--white);
   border: 0.125rem solid var(--off-gray);
@@ -235,6 +262,7 @@ input::placeholder {
   border-radius: 50%;
   font-family: var(--font-emoji);
   font-size: 4.55rem;
+  padding: 2rem;
   /* text-align: center; */
 }
 

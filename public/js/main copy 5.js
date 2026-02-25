@@ -309,6 +309,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Run once on init so preview matches loaded values
     updateAvatarPreview();
   }
+  
 
 //NEW
 

@@ -1,7 +1,3 @@
-const { emojiNameFinder } = require("./utils/emojiFinder");
-console.log(emojiNameFinder("🦁"));
-
-
 // 0. FIRST!
 require("dotenv").config(); // Load environment variables
 
