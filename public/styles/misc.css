@@ -77,6 +77,14 @@
   background-color: var(--member-request-alert);
 }
 
+input[type="button"],
+input[type="submit"],
+input[type="checkbox"],
+input[type="radio"], 
+input[type="color"] {
+  cursor: pointer !important;
+}
+
 /* TODO - test this again, and only keep one hidden! */
 .hidden {
   display: none;

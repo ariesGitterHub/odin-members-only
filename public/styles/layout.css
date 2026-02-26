@@ -138,11 +138,12 @@ main {
   gap: 0.5rem;
 }
 
-/* .button-container-row {
+.button-container-row {
   width: 100%;
   display: flex;
-  justify-content: space-between;
-} */
+  justify-content: center;
+  gap: 0.5rem;
+}
 
 /* MODAL */
 

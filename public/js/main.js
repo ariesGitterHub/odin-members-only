@@ -148,7 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Call the emoji picker initialization
-    emojiPickerDropdown(); // Initialize the emoji picker dropdown for this modal
+    // emojiPickerDropdown(); // Initialize the emoji picker dropdown for this modal
+    emojiPickerDiv();
   }
 
   async function handleModalOpen(userId, sectionId, titleId) {
@@ -229,21 +230,40 @@ document.addEventListener("DOMContentLoaded", () => {
     return await response.json();
   }
 
+  // async function loadEmojis() {
+  //   const emojiData = await getEmojiData(); // Await the Promise
+  //   const allEmojis = Object.values(emojiData).flat(); // Now this is the actual data
+
+  //   const emojiMap = Object.fromEntries(
+  //     allEmojis.map((e) => [e.text, e.emoji]),
+  //   );
+
+  //   // Convert object to array and sort it
+  //   const emojiMapSorted = Object.entries(emojiMap)
+  //     .sort((a, b) => a[0].localeCompare(b[0])) // Sort by the 'text' (which is the first value in the entry)
+  //     .map(([text, emoji]) => ({ text, emoji })); // Optional: convert back to an object or array of objects
+
+  //   // console.log(emojiMapSorted);
+  //   return emojiMapSorted;
+  // }
+
+  let emojiMapSortedCache = null;
+
   async function loadEmojis() {
-    const emojiData = await getEmojiData(); // Await the Promise
-    const allEmojis = Object.values(emojiData).flat(); // Now this is the actual data
+    if (emojiMapSortedCache) return emojiMapSortedCache;
+
+    const emojiData = await getEmojiData();
+    const allEmojis = Object.values(emojiData).flat();
 
     const emojiMap = Object.fromEntries(
       allEmojis.map((e) => [e.text, e.emoji]),
     );
 
-    // Convert object to array and sort it
-    const emojiMapSorted = Object.entries(emojiMap)
-      .sort((a, b) => a[0].localeCompare(b[0])) // Sort by the 'text' (which is the first value in the entry)
-      .map(([text, emoji]) => ({ text, emoji })); // Optional: convert back to an object or array of objects
+    emojiMapSortedCache = Object.entries(emojiMap)
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([text, emoji]) => ({ text, emoji }));
 
-    console.log(emojiMapSorted);
-    return emojiMapSorted;
+    return emojiMapSortedCache;
   }
 
   // Call the loadEmojis function to run it
@@ -271,84 +291,250 @@ document.addEventListener("DOMContentLoaded", () => {
   //NEW!
   // async function emojiPickerDropdown() {}
 
-  //This uses innerHTML - no bueno, but it works flawlessly.
-  async function emojiPickerDropdown() {
-    const emojiTextDropdown = document.getElementById("emoji-text-dropdown");
-    const avatarTypeText = document.getElementById("avatar-type-text");
-    const avatarInput = document.getElementById("avatar_type");
-    const newAvatarElement = document.getElementById("new_avatar");
+  //This uses innerHTML - no bueno, but it works flawlessly. (Was it flawless?)
 
-    if (
-      !emojiTextDropdown ||
-      !avatarTypeText ||
-      !avatarInput ||
-      !newAvatarElement
-    ) {
-      return;
-    }
+  // async function emojiPickerDropdown() {
+  //   const emojiTextDropdown = document.getElementById("emoji-text-dropdown");
+  //   const avatarTypeText = document.getElementById("avatar-type-text");
+  //   const avatarInput = document.getElementById("avatar_type");
+  //   const newAvatarElement = document.getElementById("new_avatar");
 
-    const emojiMapSorted = await loadEmojis(); // Load and sort the emojis
+  //   if (
+  //     !emojiTextDropdown ||
+  //     !avatarTypeText ||
+  //     !avatarInput ||
+  //     !newAvatarElement
+  //   ) {
+  //     return;
+  //   }
 
-    // Dynamically create dropdown content
-    // emojiTextDropdown.innerHTML = emojiMapSorted
-    //   .map(
-    //     (
-    //       emoji,
-    //     ) => `<p class="emoji-option" data-emoji="${emoji.emoji}" data-text="${emoji.text}">
-    //     <span class="emoji">${emoji.emoji}</span> - ${emoji.text}
-    //   </p>`,
-    //   )
-    //   .join("");
+  //   const emojiMapSorted = await loadEmojis(); // Load and sort the emojis
 
-    // Dynamically create dropdown content with ----> DOMPurify 
-    // TODO - Keep using DOMPurify/installed on npm/CDN, or find a better way? Uninstall DOMPurify from node dependency? Or add webpack and use npm install of dompurify?
+  //   // Dynamically create dropdown content
+  //   emojiTextDropdown.innerHTML = emojiMapSorted
+  //     .map(
+  //       (
+  //         emoji,
+  //       ) => `<p class="emoji-option" data-emoji="${emoji.emoji}" data-text="${emoji.text}">
+  //       <span class="emoji">${emoji.emoji}</span> - ${emoji.text}
+  //     </p>`,
+  //     )
+  //     .join("");
 
-    emojiTextDropdown.innerHTML = emojiMapSorted
-      .map(
-        (
-          emoji,
-        ) => `<p class="emoji-option" data-emoji="${emoji.emoji}" data-text="${emoji.text}">
-      <span class="emoji">${DOMPurify.sanitize(emoji.emoji)}</span> - ${DOMPurify.sanitize(emoji.text)}
-    </p>`,
-      )
-      .join("");
+  //   // Dynamically create dropdown content with ----> DOMPurify 
+  //   // TODO - Keep using DOMPurify/installed on npm/CDN, or find a better way? Uninstall DOMPurify from node dependency? Or add webpack and use npm install of dompurify?
 
-    // Show the dropdown when clicking the input
-    const fakeInput = document.querySelector(".fake-input");
-    fakeInput.addEventListener("click", () => {
-      emojiTextDropdown.classList.toggle("hidden");
+  //   // emojiTextDropdown.innerHTML = emojiMapSorted
+  //   //   .map(
+  //   //     (
+  //   //       emoji,
+  //   //     ) => `<p class="emoji-option" data-emoji="${emoji.emoji}" data-text="${emoji.text}">
+  //   //   <span class="emoji">${DOMPurify.sanitize(emoji.emoji)}</span> - ${DOMPurify.sanitize(emoji.text)}
+  //   // </p>`,
+  //   //   )
+  //   //   .join("");
+
+  //   // Show the dropdown when clicking the input
+  //   const fakeInput = document.querySelector(".fake-input");
+  //   fakeInput.addEventListener("click", () => {
+  //     emojiTextDropdown.classList.toggle("hidden");
+  //   });
+
+  //   // Handle emoji selection from the dropdown
+  //   document.querySelectorAll(".emoji-option").forEach((option) => {
+  //     option.addEventListener("click", (e) => {
+  //       const selectedText = e.target.dataset.text;
+  //       const selectedEmoji = e.target.dataset.emoji;
+
+  //       // Update the avatar-type-text with the selected text
+  //       avatarTypeText.textContent = selectedText;
+
+  //       // Set the hidden input (avatar_type) value to the corresponding emoji
+  //       avatarInput.value = selectedEmoji;
+
+  //       // Update the new avatar preview value to the corresponding emoji
+  //       newAvatarElement.textContent = selectedEmoji;
+
+  //       // Close the dropdown after selection
+  //       emojiTextDropdown.classList.add("hidden");
+  //     });
+  //   });
+
+  //   // Close dropdown if the user clicks anywhere outside the dropdown
+  //   window.addEventListener("click", (e) => {
+  //     if (
+  //       !emojiTextDropdown.contains(e.target) &&
+  //       !fakeInput.contains(e.target)
+  //     ) {
+  //       emojiTextDropdown.classList.add("hidden");
+  //     }
+  //   });
+  // }
+
+    // async function emojiPickerDropdown() {
+    //   const emojiTextDropdown = document.getElementById("emoji-text-dropdown");
+    //   const avatarTypeText = document.getElementById("avatar-type-text");
+    //   const avatarInput = document.getElementById("avatar_type");
+    //   const newAvatarElement = document.getElementById("new_avatar");
+
+    //   if (
+    //     !emojiTextDropdown ||
+    //     !avatarTypeText ||
+    //     !avatarInput ||
+    //     !newAvatarElement
+    //   ) {
+    //     return;
+    //   }
+
+    //   const emojiMapSorted = await loadEmojis(); // Load and sort the emojis
+
+    //   // Clear it first...
+    //   emojiTextDropdown.innerHTML = "";
+
+    //   // Dynamically create dropdown content - DON't USE -> innerHTML, use textContent
+    //   emojiMapSorted.forEach((emoji) => {
+    //     const emojiOption = document.createElement("p");
+    //     emojiOption.classList.add("emoji-option");
+    //     emojiOption.dataset.emoji = emoji.emoji;
+    //     emojiOption.dataset.text = emoji.text;
+
+    //     // Create the emoji span
+    //     const emojiSpan = document.createElement("span");
+    //     emojiSpan.classList.add("emoji");
+    //     emojiSpan.textContent = emoji.emoji; // Set emoji character
+
+    //     // Set the text content for the emoji text (i.e., what it is called, it's name)
+    //     const emojiName = document.createElement("span");
+    //     emojiName.textContent = ` - ${emoji.text}`;
+
+    //     // Append both emoji span and text to the option
+    //     emojiOption.appendChild(emojiSpan);
+    //     emojiOption.appendChild(emojiName);
+
+    //     // Append the new emoji option to the dropdown
+    //     emojiTextDropdown.appendChild(emojiOption);
+    //   });
+
+    //   // Show the dropdown when clicking the input
+    //   const fakeInput = document.querySelector(".fake-input");
+    //   fakeInput.addEventListener("click", () => {
+    //     emojiTextDropdown.classList.toggle("hidden");
+    //   });
+
+    //   // Delegated event listener for emoji selection
+    //   emojiTextDropdown.addEventListener("click", (e) => {
+    //     const target = e.target;
+
+    //     // Check if the clicked element is an emoji option (p with class .emoji-option)
+    //     if (target.classList.contains("emoji-option")) {
+    //       const selectedText = target.dataset.text;
+    //       const selectedEmoji = target.dataset.emoji;
+
+    //       // Update the avatar-type-text with the selected text
+    //       avatarTypeText.textContent = selectedText;
+
+    //       // Set the hidden input (avatar_type) value to the corresponding emoji
+    //       avatarInput.value = selectedEmoji;
+
+    //       // Update the new avatar preview value to the corresponding emoji
+    //       newAvatarElement.textContent = selectedEmoji;
+
+    //       // Close the dropdown after selection
+    //       emojiTextDropdown.classList.add("hidden");
+    //     }
+    //   });
+
+    //   // Close dropdown if the user clicks anywhere outside the dropdown
+    //   window.addEventListener("click", (e) => {
+    //     if (
+    //       !emojiTextDropdown.contains(e.target) &&
+    //       !fakeInput.contains(e.target)
+    //     ) {
+    //       emojiTextDropdown.classList.add("hidden");
+    //     }
+    //   });
+    // }
+
+  async function emojiPickerDiv() {
+    const emojiPanel = document.getElementById("emoji-panel");
+    const emojiList = document.getElementById("emoji-list");
+   
+    if (!emojiPanel || !emojiList ) return;
+
+    // Load and sort the emoji data
+    const emojiMapSorted = await loadEmojis(); // Ensure loadEmojis() is already optimized
+
+    // Clear any existing options
+    emojiList.innerHTML = "";
+
+    // Create radio button options for each emoji
+    emojiMapSorted.forEach((emoji, index) => {
+      const emojiOption = document.createElement("div");
+      emojiOption.classList.add("emoji-option");
+
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = "emoji";
+      input.id = `emoji-${index}`;
+      input.value = emoji.emoji;
+      input.dataset.text = emoji.text; // Use data-text to store the emoji text
+      input.setAttribute("aria-label", emoji.text);
+
+      const label = document.createElement("label");
+      label.setAttribute("for", `emoji-${index}`);
+      label.setAttribute("aria-labelledby", `emoji-${index}`);
+      // label.className = "element-container-row";
+      // label.textContent = ` - ${emoji.text}`;
+
+      const span = document.createElement("span");
+      span.className = "emoji";
+      span.textContent = `${emoji.emoji}`;
+
+      const p = document.createElement("p");
+      p.textContent = ` - ${emoji.text}`;
+
+      label.appendChild(span);
+      label.appendChild(p);
+      emojiOption.appendChild(input);
+      emojiOption.appendChild(label);
+
+      emojiList.appendChild(emojiOption);
     });
 
-    // Handle emoji selection from the dropdown
-    document.querySelectorAll(".emoji-option").forEach((option) => {
-      option.addEventListener("click", (e) => {
-        const selectedText = e.target.dataset.text;
-        const selectedEmoji = e.target.dataset.emoji;
+    // const openCloseEmojiPanel = document.querySelector(
+    //     "#open-close-emoji-panel",
+    //   );
+    //   openCloseEmojiPanel.addEventListener("click", () => {
+    //     emojiPanel.classList.toggle("hidden");
+    //   });
 
-        // Update the avatar-type-text with the selected text
-        avatarTypeText.textContent = selectedText;
-
-        // Set the hidden input (avatar_type) value to the corresponding emoji
-        avatarInput.value = selectedEmoji;
-
-        // Update the new avatar preview value to the corresponding emoji
-        newAvatarElement.textContent = selectedEmoji;
-
-        // Close the dropdown after selection
-        emojiTextDropdown.classList.add("hidden");
+      document.body.addEventListener("click", (e) => {
+        if (e.target && e.target.classList.contains("open-close-emoji-panel")) {
+          // Find the closest modal and toggle the emoji panel
+          const emojiPanel = e.target
+            .closest(".profile-data-form")
+            .querySelector(".emoji-panel");
+          emojiPanel.classList.toggle("hidden");
+        }
       });
-    });
 
-    // Close dropdown if the user clicks anywhere outside the dropdown
-    window.addEventListener("click", (e) => {
-      if (
-        !emojiTextDropdown.contains(e.target) &&
-        !fakeInput.contains(e.target)
-      ) {
-        emojiTextDropdown.classList.add("hidden");
+    // Handle radio button selection
+    emojiList.addEventListener("change", (e) => {
+      if (e.target.name === "emoji") {
+        const selectedEmoji = e.target.value;
+        const selectedText = e.target.dataset.text; // Access the data-text attribute
+        // Perform the necessary action with selectedEmoji, e.g., updating the preview
+        const avatarTypeText = document.getElementById("avatar-type-text");
+        const avatarInput = document.getElementById("avatar_type");
+        const newAvatarElement = document.getElementById("new_avatar");
+
+        avatarTypeText.textContent = selectedText; // Set selected text
+        avatarInput.value = selectedEmoji; // Set emoji value
+        newAvatarElement.textContent = selectedEmoji; // Update preview
       }
     });
   }
+
 
   //   end
 });

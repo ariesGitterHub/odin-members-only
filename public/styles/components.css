@@ -76,6 +76,10 @@ button:hover,
   width: fit-content;
 }
 
+/* .emoji-picker-button {
+  width: fit-content;
+} */
+
 /* EMOJIS */
 
 .avatar-image-container-wide {
@@ -197,6 +201,101 @@ button:hover,
   display: flex;
 } */
 
+.emoji-panel {
+  width: 100%;
+}
+
+.emoji-list {
+  height: 250px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-evenly;
+  background-color: var(--white);
+    border: 0.125rem solid var(--off-gray);
+    /* border-radius: 0.125rem; */
+
+  box-shadow: 0 4px 8px var(--off-black-trans);
+  margin-bottom: 0.5rem;
+  /* padding: 0.25rem; */
+   overflow-y: auto;
+}
+
+.emoji-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: var(--off-black);
+  margin-bottom: 0.5rem; /* Adds space between options */
+  margin-left: 0.25rem;
+  padding: 0.5rem;
+}
+
+/* Hide the default radio button */
+.emoji-option input[type="radio"] {
+  display: none;
+}
+
+/* Custom radio button styling */
+.emoji-option label {
+  display: flex;
+  align-items: center;
+  /* font-family: Arial, sans-serif; */
+  /* font-size: 2rem; */
+  /* color: #333; */
+  transition: color 0.3s;
+}
+
+/* Emoji styling */
+.emoji-option .emoji {
+    cursor: pointer;
+  font-size: 2rem; /* Larger emoji */
+  margin-right: 0.5rem; /* Adds space between the emoji and the text */
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Text styling */
+.emoji-option p {
+  color: var(--off-black); /* Lighter color for text */
+    cursor: pointer;
+  font-size: 1.125rem; /* Slightly smaller font for the text */
+  
+  margin: 0; /* Remove default margin */
+}
+
+.emoji-option:hover {
+  background-color: var(--off-white);
+  border-radius: 0.125rem;
+  
+  /* padding: 0.25rem; */
+}
+
+/* Hover effect: changes emoji size and label text color */
+.emoji-option:hover .emoji {
+  transform: scale(1.2); /* Slightly enlarge the emoji */
+}
+
+.emoji-option:hover label {
+  color: var(--off-red); /* Blue color on hover for the label */
+}
+
+/* Checked state - when the radio button is selected */
+.emoji-option input[type="radio"]:checked + label .emoji {
+  transform: scale(1.2); /* Slightly enlarge the emoji when selected */
+  color: var(--dk-red); /* Change emoji color when selected */
+}
+
+.emoji-option input[type="radio"]:checked + label p {
+  color: var(--black);
+  font-weight: bold; /* Make the text bold when the radio button is selected */
+}
+
+
+
+
+
+
 /* Hide the dropdown by default */
 /* #emoji-text-dropdown.hidden {
   display: none;
@@ -212,14 +311,13 @@ button:hover,
   background-color: #ddd;
 } */
 
-#emoji-text-dropdown {
-  max-height: 200px;  /* Set a max height to make the dropdown scrollable */
-  background-color: var(--white); /* Optional: Background color */
-  border: .0125rem solid var(--off-gray); /* Optional: Add border for a better visual */
-  box-shadow: 0 4px 8px var(--off-black-trans); /* Optional: Box shadow */  
-  overflow-y: auto; /* Enable scrolling when content overflows */
-  padding: 0.25rem; /* Optional: Add some padding for spacing */
-
+/* #emoji-text-dropdown {
+  max-height: 200px;
+  background-color: var(--white);
+  border: .0125rem solid var(--off-gray);
+  box-shadow: 0 4px 8px var(--off-black-trans);  
+  overflow-y: auto;
+  padding: 0.25rem;
 }
 
 .emoji-option {
@@ -228,9 +326,8 @@ button:hover,
 }
 
 .emoji-option:hover {
-  background-color: var(--lt-red);  /* Hover effect for better interaction */
-}
-
+  background-color: var(--lt-red);  /* Hover effect for better interaction
+} */
 
 /* TODO - FIX ALL FORMS and COALESCE */
 /* FORMS */
@@ -254,14 +351,14 @@ button:hover,
   color: var(--off-white);
 }
 
-label {
+label, .fake-label {
   width: 100%;
   text-transform: capitalize;
 }
 
 input, .fake-input {
   width: 100%;
-  background-color: var(--white);
+  /* background-color: var(--white); */
   border: 0.125rem solid var(--off-gray);
   /* border-radius: 0.125rem; */
     font-weight: 600;
@@ -270,12 +367,20 @@ input, .fake-input {
   padding: 0.125rem;
 }
 
-.fake-input:hover {
+
+/* .fake-input:hover {
   background-color: var(--lt-red);
+} */
+input {
+background-color: var(--white);
 }
 
 input::placeholder {
   text-transform: capitalize;
+}
+.fake-input {
+  background-color: var(--lt-red);
+  border-radius: 0.5rem;
 }
 
 /* .input-height-special {

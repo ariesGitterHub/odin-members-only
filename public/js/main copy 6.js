@@ -288,18 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Clear it first...
     emojiTextDropdown.innerHTML = "";
 
-    // Dynamically create dropdown content - DON't USE -> innerHTML
-    // emojiTextDropdown.innerHTML = emojiMapSorted
-    //   .map(
-    //     (
-    //       emoji,
-    //     ) => `<p class="emoji-option" data-emoji="${emoji.emoji}" data-text="${emoji.text}">
-    //     <span class="emoji">${emoji.emoji}</span> - ${emoji.text}
-    //   </p>`,
-    //   )
-    //   .join("");
-
-    // Dynamically create dropdown content using textContent
+    // Dynamically create dropdown content - DON't USE -> innerHTML, use textContent
     emojiMapSorted.forEach((emoji) => {
       const emojiOption = document.createElement("p");
       emojiOption.classList.add("emoji-option");

@@ -4650,7 +4650,7 @@
     {
       "emoji": "🍂",
       "unicode": "U+1F342",
-      "text": "fallen leaf",
+      "text": "falling leaves",
       "subcategory": "plant-other",
       "keywords": ["fallen leaf", "falling", "leaf"]
     },
@@ -8868,13 +8868,6 @@
       "keywords": ["cutting", "scissors", "tool"]
     },
     {
-      "emoji": "🗑",
-      "unicode": "U+1F5D1",
-      "text": "wastebasket",
-      "subcategory": "office",
-      "keywords": ["wastebasket"]
-    },
-        {
       "emoji": "🔑",
       "unicode": "U+1F511",
       "text": "key",
