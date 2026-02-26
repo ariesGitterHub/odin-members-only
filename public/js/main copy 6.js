@@ -1,6 +1,3 @@
-// import DOMPurify from "dompurify";
-// const DOMPurify = require("dompurify");
-
 document.addEventListener("DOMContentLoaded", () => {
   // TOGGLE HIDDEN ON ADMIN PANEL FOR...
   // Toggle .hidden for all "guest cards" on admin panel
@@ -208,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
       linear-gradient(5deg,
         ${avatarColorPickerBgb.value},
         ${avatarColorPickerBgt.value}
-      )`;
+      )`;      
     }
 
     // Attach listeners once
@@ -268,10 +265,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // main();
 
+
   //NEW!
   // async function emojiPickerDropdown() {}
-
-  //This uses innerHTML - no bueno, but it works flawlessly.
   async function emojiPickerDropdown() {
     const emojiTextDropdown = document.getElementById("emoji-text-dropdown");
     const avatarTypeText = document.getElementById("avatar-type-text");
@@ -289,7 +285,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const emojiMapSorted = await loadEmojis(); // Load and sort the emojis
 
-    // Dynamically create dropdown content
+    // Clear it first...
+    emojiTextDropdown.innerHTML = "";
+
+    // Dynamically create dropdown content - DON't USE -> innerHTML
     // emojiTextDropdown.innerHTML = emojiMapSorted
     //   .map(
     //     (
@@ -300,18 +299,29 @@ document.addEventListener("DOMContentLoaded", () => {
     //   )
     //   .join("");
 
-    // Dynamically create dropdown content with ----> DOMPurify 
-    // TODO - Keep using DOMPurify/installed on npm/CDN, or find a better way? Uninstall DOMPurify from node dependency? Or add webpack and use npm install of dompurify?
+    // Dynamically create dropdown content using textContent
+    emojiMapSorted.forEach((emoji) => {
+      const emojiOption = document.createElement("p");
+      emojiOption.classList.add("emoji-option");
+      emojiOption.dataset.emoji = emoji.emoji;
+      emojiOption.dataset.text = emoji.text;
 
-    emojiTextDropdown.innerHTML = emojiMapSorted
-      .map(
-        (
-          emoji,
-        ) => `<p class="emoji-option" data-emoji="${emoji.emoji}" data-text="${emoji.text}">
-      <span class="emoji">${DOMPurify.sanitize(emoji.emoji)}</span> - ${DOMPurify.sanitize(emoji.text)}
-    </p>`,
-      )
-      .join("");
+      // Create the emoji span
+      const emojiSpan = document.createElement("span");
+      emojiSpan.classList.add("emoji");
+      emojiSpan.textContent = emoji.emoji; // Set emoji text (emoji character)
+
+      // Set the text content for the emoji name (emoji text)
+      const emojiName = document.createElement("span");
+      emojiName.textContent = ` - ${emoji.text}`;
+
+      // Append both emoji span and text to the option
+      emojiOption.appendChild(emojiSpan);
+      emojiOption.appendChild(emojiName);
+
+      // Append the new emoji option to the dropdown
+      emojiTextDropdown.appendChild(emojiOption);
+    });
 
     // Show the dropdown when clicking the input
     const fakeInput = document.querySelector(".fake-input");
@@ -320,10 +330,43 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Handle emoji selection from the dropdown
-    document.querySelectorAll(".emoji-option").forEach((option) => {
-      option.addEventListener("click", (e) => {
-        const selectedText = e.target.dataset.text;
-        const selectedEmoji = e.target.dataset.emoji;
+    // document.querySelectorAll(".emoji-option").forEach((option) => {
+    //   option.addEventListener("click", (e) => {
+    //     const selectedText = e.target.dataset.text;
+    //     const selectedEmoji = e.target.dataset.emoji;
+
+    //     // Update the avatar-type-text with the selected text
+    //     avatarTypeText.textContent = selectedText;
+
+    //     // Set the hidden input (avatar_type) value to the corresponding emoji
+    //     avatarInput.value = selectedEmoji;
+
+    //     // Update the new avatar preview value to the corresponding emoji
+    //     newAvatarElement.textContent = selectedEmoji;
+
+    //     // Close the dropdown after selection
+    //     emojiTextDropdown.classList.add("hidden");
+    //   });
+    // });
+
+    // // Close dropdown if the user clicks anywhere outside the dropdown
+    // window.addEventListener("click", (e) => {
+    //   if (
+    //     !emojiTextDropdown.contains(e.target) &&
+    //     !fakeInput.contains(e.target)
+    //   ) {
+    //     emojiTextDropdown.classList.add("hidden");
+    //   }
+    // });
+
+    // Delegated event listener for emoji selection
+    emojiTextDropdown.addEventListener("click", (e) => {
+      const target = e.target;
+
+      // Check if the clicked element is an emoji option (p with class .emoji-option)
+      if (target.classList.contains("emoji-option")) {
+        const selectedText = target.dataset.text;
+        const selectedEmoji = target.dataset.emoji;
 
         // Update the avatar-type-text with the selected text
         avatarTypeText.textContent = selectedText;
@@ -336,7 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Close the dropdown after selection
         emojiTextDropdown.classList.add("hidden");
-      });
+      }
     });
 
     // Close dropdown if the user clicks anywhere outside the dropdown
@@ -349,6 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
 
   //   end
 });

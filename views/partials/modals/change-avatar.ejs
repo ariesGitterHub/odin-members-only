@@ -17,10 +17,10 @@
         </div>
       </div>
       <label for="avatar_type">
-        avatar emoji picker
+        avatar picker (click for dropdown)
       </label>
-        <div id="fake-avatar-input" class="fake-input" tabindex="0">
-          <p id="fake-avatar-text"></p>
+        <div class="fake-input capitalize" tabindex="0">
+          <p id="avatar-type-text"></p>
         </div>
         <input
           class="emoji"      
@@ -29,7 +29,9 @@
           id="avatar_type" 
           hidden
         />
-        <div id="emoji-suggestions" class="emoji-suggestions hhidden"></div>
+        <div id="emoji-text-dropdown" class="hidden">
+          <!-- <p id="emoji-option" class="emoji-option"><span id="emoji-option-span" class="emoji"></span></p> -->
+        </div>
       </div>
     <label for="avatar_color_fg">
       avatar color

@@ -170,11 +170,11 @@ button:hover,
   /* vertical-align: middle; */
 }
 
-.emoji-picker-wrapper {
+/* .emoji-picker-wrapper {
   position: relative;
 }
 
-.emoji-dropdown {
+.emoji-text-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
@@ -187,13 +187,48 @@ button:hover,
   z-index: 1000;
 }
 
-.emoji-option {
+.emoji-text-dropdown-content {
   padding: 0.5rem;
   cursor: pointer;
 }
 
-.emoji-option:hover {
+.emoji-text-dropdown-content:hover {
   background: var(--lt-red);
+  display: flex;
+} */
+
+/* Hide the dropdown by default */
+/* #emoji-text-dropdown.hidden {
+  display: none;
+} */
+
+/* Style for dropdown options */
+/* .emoji-option {
+  padding: 8px 16px;
+  cursor: pointer;
+} */
+
+/* .emoji-option:hover {
+  background-color: #ddd;
+} */
+
+#emoji-text-dropdown {
+  max-height: 200px;  /* Set a max height to make the dropdown scrollable */
+  background-color: var(--white); /* Optional: Background color */
+  border: .0125rem solid var(--off-gray); /* Optional: Add border for a better visual */
+  box-shadow: 0 4px 8px var(--off-black-trans); /* Optional: Box shadow */  
+  overflow-y: auto; /* Enable scrolling when content overflows */
+  padding: 0.25rem; /* Optional: Add some padding for spacing */
+
+}
+
+.emoji-option {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.emoji-option:hover {
+  background-color: var(--lt-red);  /* Hover effect for better interaction */
 }
 
 
@@ -233,6 +268,10 @@ input, .fake-input {
 
   margin-bottom: 0.25rem;
   padding: 0.125rem;
+}
+
+.fake-input:hover {
+  background-color: var(--lt-red);
 }
 
 input::placeholder {
