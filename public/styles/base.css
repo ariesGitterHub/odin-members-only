@@ -75,6 +75,7 @@
 
   --page-title-all: 1.65rem;
   --page-subtitle-all: 1.45rem;
+  --page-h3-all: calc(var(--page-subtitle-all) - 0.25rem);
 
   --index-image-size: 15rem;
   

@@ -20,49 +20,50 @@
         <form class="sign-up-form" action="/app/sign-up" method="POST">
           <label for="first_name"> first name </label>
           <input
+            id="first_name"
+            type="text"          
             name="first_name"
             placeholder="enter first name"
-            type="text"
             required
           />
           <label for="last_name"> last name </label>
           <input
+            id="last_name"
+            type="text"          
             name="last_name"
             placeholder="enter last name"
-            type="text"
             required
           />
           <label for="email"> email </label>
           <input
             id="email"
+            type="email"            
             name="email"
             placeholder="enter email address"
-            type="email"
             required
           />
           <label for="birthdate"> birthdate </label>
           <input
             id="birthdate"
+            type="date"            
             name="birthdate"
             placeholder="enter birthdate"
-            type="date"
             required
           />
-          <!-- TODO - Relabel this password_hash????? -->
           <label for="password"> password </label>
           <input
             id="password"
+            type="password"
             name="password"
             placeholder="select a password"
-            type="password"
             required
           />
           <label for="confirm_password"> confirm password </label>
           <input
             id="confirm_password"
+            type="password"
             name="confirm_password"
             placeholder="re-enter chosen password"
-            type="password"
             required
           />
           <div class="button-container">

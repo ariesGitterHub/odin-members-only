@@ -22,12 +22,12 @@
     </div>
 
     <!-- EDIT PROFILE (USER) -->
-    <!-- <div class="modal-section hidden" id="modal-edit-profile-user">
+    <div class="modal-section hidden" id="modal-edit-profile-user">
       <div class="page-title-modal uppercase">
         <h1 id="modal-title-edit-profile-user">edit your profile</h1>
       </div>
       <%#- include('./modals/edit-profile-user.ejs') %>
-    </div> -->
+    </div>
 
     <!-- EDIT PROFILE (ADMIN) -->
     <div class="modal-section hidden" id="modal-edit-profile-admin">
@@ -37,10 +37,18 @@
       <%- include('./modals/edit-profile-admin.ejs') %>
     </div>
 
+    <!-- CREATE PROFILE (ADMIN) -->
+    <div class="modal-section hidden" id="modal-create-profile-admin">
+      <div class="page-title-modal uppercase">
+        <h1 id="modal-title-create-profile-admin">create user profile</h1>
+      </div>
+      <%- include('./modals/create-profile-admin.ejs') %>
+    </div>
+
     <!-- CHANGE AVATAR -->
     <div class="modal-section hidden" id="modal-change-avatar">
       <div class="page-title-modal uppercase">
-        <h1 id="modal-title-change-avatar">Change Avatar</h1>        
+        <h1 id="modal-title-change-avatar">Change Avatar</h1>
       </div>
       <%- include('./modals/change-avatar.ejs') %>
     </div>

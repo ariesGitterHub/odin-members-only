@@ -20,17 +20,18 @@
         <form class="log-in-form" action="/app/log-in" method="POST">
           <label for="email"> email </label>
           <input
+            id="email"
+            type="email"
             name="email"
             placeholder="enter email"
-            type="email"
             required
           />
-          <!-- TODO - Relabel this password_hash????? -->
           <label for="password"> password </label>
           <input
+            id="password"
+            type="password"
             name="password"
             placeholder="enter a password"
-            type="password"
             required
           />
           <div class="button-container">

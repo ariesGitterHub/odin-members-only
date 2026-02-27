@@ -28,7 +28,7 @@ h2 {
 }
 
 /* h3 {
-  font-size: 1.125rem;
+  font-size: var(--page-h3-all);
 } */
 
 /* HEADER (& NAV) */

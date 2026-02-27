@@ -1,6 +1,6 @@
 <div class="ui-message">
   <p>
-    Make changes to the avatar here.
+    Scroll the selection to chose a new avatar, or change avatar color scheme by clicking colors below.
   </p> 
 </div>
 <div class="element-container-row-center ">
@@ -16,63 +16,52 @@
           <span id="new_avatar" class="emoji preview-new"></span>        
         </div>
       </div>
-
-
-        <label for="avatar_type">
-          avatar (current selection)
-        </label>
-          <div class="fake-input capitalize" tabindex="0">
-            <p id="avatar-type-text"></p>
-          </div>
-          <input
-            class="emoji"      
-            type="text"
-            name="avatar_type"
-            id="avatar_type" 
-            hidden
-          />
-        <!-- <div id="emoji-text-dropdown" class="hidden"></div> -->
-         <!-- <div class="button-container-row">
-          <button class="wide-button open-close-emoji-panel" type="button">Open/Close Avatar Picker</button> -->
-          <!-- <button id="close-emoji-panel" class="emoji-picker-button">Close Picker</button> -->
-         <!-- </div> -->
-        <!-- <div id="emoji-panel" class="emoji-panel hidden"> -->
-        <p class="fake-label">click to select a new avatar below</p>
-        <div id="emoji-panel" class="emoji-panel">
-          
-        <div id="emoji-list" class="emoji-list"></div>
-      
-        </div>
-
+      <label for="avatar_type">
+        avatar (current selection)
+      </label>
+      <input
+        class="emoji"      
+        type="text"
+        name="avatar_type"
+        id="avatar_type" 
+        hidden
+      />      
+      <div class="fake-input capitalize" tabindex="0">
+        <p id="avatar-type-text"></p>
       </div>
-    <label for="avatar_color_fg">
-      avatar color
-    </label>
+      <p class="fake-label">click to select a new avatar below</p>
+      <div id="emoji-panel" class="emoji-panel">
+        <div id="emoji-list" class="emoji-list"></div>
+      </div>
+      </div>
+      <label for="avatar_color_fg">
+        avatar color
+      </label>
       <input
         type="color"
         name="avatar_color_fg"
         id="avatar_color_fg"
         class="color_picker_fg"
       />
-    <label for="avatar_color_bg_top">
-      background color (top)
-    </label>
+      <label for="avatar_color_bg_top">
+        background color (top)
+      </label>
       <input
         type="color"      
         name="avatar_color_bg_top"
         id="avatar_color_bg_top"
       />
-    <label for="avatar_color_bg_bottom">
-      background color (bottom)
-    </label>      
+      <label for="avatar_color_bg_bottom">
+        background color (bottom)
+      </label>      
       <input
         type="color"
         name="avatar_color_bg_bottom"
         id="avatar_color_bg_bottom"
       />
-    <div class="button-container">
-      <button class="wide-button" type="submit">submit avatar changes</button>
-    </div> 
-  </form> 
+      <div class="button-container">
+        <button class="wide-button" type="submit">submit avatar changes</button>
+      </div> 
+    </form> 
   </div>
 </div>

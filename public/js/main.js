@@ -1,6 +1,3 @@
-// import DOMPurify from "dompurify";
-// const DOMPurify = require("dompurify");
-
 document.addEventListener("DOMContentLoaded", () => {
   // TOGGLE HIDDEN ON ADMIN PANEL FOR...
   // Toggle .hidden for all "guest cards" on admin panel
@@ -117,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Access CSS variables
     const rootStyles = getComputedStyle(document.documentElement);
-    // Use these values in your JavaScript
+    // Use these values
     const avatarColorFg = rootStyles
       .getPropertyValue("--avatar-color-fg")
       .trim();
@@ -148,32 +145,100 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Call the emoji picker initialization
-    // emojiPickerDropdown(); // Initialize the emoji picker dropdown for this modal
     emojiPickerDiv();
   }
 
+  // async function handleModalOpen(userId, sectionId, titleId) {
+  //   try {
+  //     const user = await getUserData(userId);
+
+  //     if (sectionId === "modal-edit-profile-admin") {
+  //       populateEditProfileAdmin(user);
+  //       openModal(sectionId, titleId);
+  //     }
+
+  //     if (sectionId === "modal-change-avatar") {
+  //       populateChangeAvatar(user);
+  //       openModal(sectionId, titleId);
+  //       initChangeAvatarModal();
+  //     }
+      
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Failed to load user data");
+  //   }
+  // }
+
+  // async function handleModalOpen(userId, sectionId, titleId) {
+  //   try {
+  //     if (userId) {
+  //       // Fetch user data only if userId is provided
+  //       const user = await getUserData(userId);
+
+  //       if (sectionId === "modal-edit-profile-admin") {
+  //         populateEditProfileAdmin(user);
+  //         openModal(sectionId, titleId);
+  //       }
+
+  //       if (sectionId === "modal-change-avatar") {
+  //         populateChangeAvatar(user);
+  //         openModal(sectionId, titleId);
+  //         initChangeAvatarModal();
+  //       }
+  //     } else {
+  //       // No userId, handle the case when we don't need user data
+  //       if (sectionId === "modal-create-profile-admin") {
+  //         // Handle the creation form (doesn't require user data)
+  //         openModal(sectionId, titleId);
+  //         // You can initialize any other functions for this modal here
+  //         // populateCreateProfileAdmin(); // If needed, add any default population logic
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Failed to load user data");
+  //   }
+  // }
+
   async function handleModalOpen(userId, sectionId, titleId) {
     try {
-      const user = await getUserData(userId);
+      console.log("userId:", userId); // Debugging line
 
-      if (sectionId === "modal-edit-profile-admin") {
-        populateEditProfileAdmin(user);
+      // Check if userId exists (not null or undefined)
+      if (userId != null && userId !== "") {
+        // Fetch user data only if userId exists
+        const user = await getUserData(userId);
+
+        if (sectionId === "modal-edit-profile-admin") {
+          populateEditProfileAdmin(user);
+          openModal(sectionId, titleId);
+        }
+
+        if (sectionId === "modal-change-avatar") {
+          populateChangeAvatar(user);
+          openModal(sectionId, titleId);
+          initChangeAvatarModal();
+        }
+      } else {
+        // If userId is not provided (for "create profile" modal or others)
+        if (sectionId === "modal-create-profile-admin") {
+          openModal(sectionId, titleId);
+          // Populate the modal for creating a profile (no user data needed)
+          // Optionally, call a function to initialize default values for the "create" modal
+        }
       }
-
-      if (sectionId === "modal-change-avatar") {
-        populateChangeAvatar(user);
-        openModal(sectionId, titleId);
-        initChangeAvatarModal();
-        // ???
-        // emojiPickerDropdown();
-      }
-
-      openModal(sectionId, titleId);
     } catch (err) {
       console.error(err);
       alert("Failed to load user data");
     }
   }
+
+  // The only modal that does't require user db data
+  const createProfileAdminButton = document.querySelector(".create-profile-admin-button");
+  createProfileAdminButton.addEventListener("click", (e) => {
+      const { section, title } = e.currentTarget.dataset;
+      handleModalOpen(null, section, title);
+    });
 
   document.querySelectorAll("[data-user-id]").forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -230,23 +295,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return await response.json();
   }
 
-  // async function loadEmojis() {
-  //   const emojiData = await getEmojiData(); // Await the Promise
-  //   const allEmojis = Object.values(emojiData).flat(); // Now this is the actual data
-
-  //   const emojiMap = Object.fromEntries(
-  //     allEmojis.map((e) => [e.text, e.emoji]),
-  //   );
-
-  //   // Convert object to array and sort it
-  //   const emojiMapSorted = Object.entries(emojiMap)
-  //     .sort((a, b) => a[0].localeCompare(b[0])) // Sort by the 'text' (which is the first value in the entry)
-  //     .map(([text, emoji]) => ({ text, emoji })); // Optional: convert back to an object or array of objects
-
-  //   // console.log(emojiMapSorted);
-  //   return emojiMapSorted;
-  // }
-
   let emojiMapSortedCache = null;
 
   async function loadEmojis() {
@@ -282,179 +330,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return "Invalid userId."; // Optional: handle if userId is not valid
   }
 
-  // async function main() {
-  //   console.log(await findInitialEmojiText("🦁"));
-  // }
-
-  // main();
-
-  //NEW!
-  // async function emojiPickerDropdown() {}
-
-  //This uses innerHTML - no bueno, but it works flawlessly. (Was it flawless?)
-
-  // async function emojiPickerDropdown() {
-  //   const emojiTextDropdown = document.getElementById("emoji-text-dropdown");
-  //   const avatarTypeText = document.getElementById("avatar-type-text");
-  //   const avatarInput = document.getElementById("avatar_type");
-  //   const newAvatarElement = document.getElementById("new_avatar");
-
-  //   if (
-  //     !emojiTextDropdown ||
-  //     !avatarTypeText ||
-  //     !avatarInput ||
-  //     !newAvatarElement
-  //   ) {
-  //     return;
-  //   }
-
-  //   const emojiMapSorted = await loadEmojis(); // Load and sort the emojis
-
-  //   // Dynamically create dropdown content
-  //   emojiTextDropdown.innerHTML = emojiMapSorted
-  //     .map(
-  //       (
-  //         emoji,
-  //       ) => `<p class="emoji-option" data-emoji="${emoji.emoji}" data-text="${emoji.text}">
-  //       <span class="emoji">${emoji.emoji}</span> - ${emoji.text}
-  //     </p>`,
-  //     )
-  //     .join("");
-
-  //   // Dynamically create dropdown content with ----> DOMPurify 
-  //   // TODO - Keep using DOMPurify/installed on npm/CDN, or find a better way? Uninstall DOMPurify from node dependency? Or add webpack and use npm install of dompurify?
-
-  //   // emojiTextDropdown.innerHTML = emojiMapSorted
-  //   //   .map(
-  //   //     (
-  //   //       emoji,
-  //   //     ) => `<p class="emoji-option" data-emoji="${emoji.emoji}" data-text="${emoji.text}">
-  //   //   <span class="emoji">${DOMPurify.sanitize(emoji.emoji)}</span> - ${DOMPurify.sanitize(emoji.text)}
-  //   // </p>`,
-  //   //   )
-  //   //   .join("");
-
-  //   // Show the dropdown when clicking the input
-  //   const fakeInput = document.querySelector(".fake-input");
-  //   fakeInput.addEventListener("click", () => {
-  //     emojiTextDropdown.classList.toggle("hidden");
-  //   });
-
-  //   // Handle emoji selection from the dropdown
-  //   document.querySelectorAll(".emoji-option").forEach((option) => {
-  //     option.addEventListener("click", (e) => {
-  //       const selectedText = e.target.dataset.text;
-  //       const selectedEmoji = e.target.dataset.emoji;
-
-  //       // Update the avatar-type-text with the selected text
-  //       avatarTypeText.textContent = selectedText;
-
-  //       // Set the hidden input (avatar_type) value to the corresponding emoji
-  //       avatarInput.value = selectedEmoji;
-
-  //       // Update the new avatar preview value to the corresponding emoji
-  //       newAvatarElement.textContent = selectedEmoji;
-
-  //       // Close the dropdown after selection
-  //       emojiTextDropdown.classList.add("hidden");
-  //     });
-  //   });
-
-  //   // Close dropdown if the user clicks anywhere outside the dropdown
-  //   window.addEventListener("click", (e) => {
-  //     if (
-  //       !emojiTextDropdown.contains(e.target) &&
-  //       !fakeInput.contains(e.target)
-  //     ) {
-  //       emojiTextDropdown.classList.add("hidden");
-  //     }
-  //   });
-  // }
-
-    // async function emojiPickerDropdown() {
-    //   const emojiTextDropdown = document.getElementById("emoji-text-dropdown");
-    //   const avatarTypeText = document.getElementById("avatar-type-text");
-    //   const avatarInput = document.getElementById("avatar_type");
-    //   const newAvatarElement = document.getElementById("new_avatar");
-
-    //   if (
-    //     !emojiTextDropdown ||
-    //     !avatarTypeText ||
-    //     !avatarInput ||
-    //     !newAvatarElement
-    //   ) {
-    //     return;
-    //   }
-
-    //   const emojiMapSorted = await loadEmojis(); // Load and sort the emojis
-
-    //   // Clear it first...
-    //   emojiTextDropdown.innerHTML = "";
-
-    //   // Dynamically create dropdown content - DON't USE -> innerHTML, use textContent
-    //   emojiMapSorted.forEach((emoji) => {
-    //     const emojiOption = document.createElement("p");
-    //     emojiOption.classList.add("emoji-option");
-    //     emojiOption.dataset.emoji = emoji.emoji;
-    //     emojiOption.dataset.text = emoji.text;
-
-    //     // Create the emoji span
-    //     const emojiSpan = document.createElement("span");
-    //     emojiSpan.classList.add("emoji");
-    //     emojiSpan.textContent = emoji.emoji; // Set emoji character
-
-    //     // Set the text content for the emoji text (i.e., what it is called, it's name)
-    //     const emojiName = document.createElement("span");
-    //     emojiName.textContent = ` - ${emoji.text}`;
-
-    //     // Append both emoji span and text to the option
-    //     emojiOption.appendChild(emojiSpan);
-    //     emojiOption.appendChild(emojiName);
-
-    //     // Append the new emoji option to the dropdown
-    //     emojiTextDropdown.appendChild(emojiOption);
-    //   });
-
-    //   // Show the dropdown when clicking the input
-    //   const fakeInput = document.querySelector(".fake-input");
-    //   fakeInput.addEventListener("click", () => {
-    //     emojiTextDropdown.classList.toggle("hidden");
-    //   });
-
-    //   // Delegated event listener for emoji selection
-    //   emojiTextDropdown.addEventListener("click", (e) => {
-    //     const target = e.target;
-
-    //     // Check if the clicked element is an emoji option (p with class .emoji-option)
-    //     if (target.classList.contains("emoji-option")) {
-    //       const selectedText = target.dataset.text;
-    //       const selectedEmoji = target.dataset.emoji;
-
-    //       // Update the avatar-type-text with the selected text
-    //       avatarTypeText.textContent = selectedText;
-
-    //       // Set the hidden input (avatar_type) value to the corresponding emoji
-    //       avatarInput.value = selectedEmoji;
-
-    //       // Update the new avatar preview value to the corresponding emoji
-    //       newAvatarElement.textContent = selectedEmoji;
-
-    //       // Close the dropdown after selection
-    //       emojiTextDropdown.classList.add("hidden");
-    //     }
-    //   });
-
-    //   // Close dropdown if the user clicks anywhere outside the dropdown
-    //   window.addEventListener("click", (e) => {
-    //     if (
-    //       !emojiTextDropdown.contains(e.target) &&
-    //       !fakeInput.contains(e.target)
-    //     ) {
-    //       emojiTextDropdown.classList.add("hidden");
-    //     }
-    //   });
-    // }
-
   async function emojiPickerDiv() {
     const emojiPanel = document.getElementById("emoji-panel");
     const emojiList = document.getElementById("emoji-list");
@@ -483,8 +358,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const label = document.createElement("label");
       label.setAttribute("for", `emoji-${index}`);
       label.setAttribute("aria-labelledby", `emoji-${index}`);
-      // label.className = "element-container-row";
-      // label.textContent = ` - ${emoji.text}`;
 
       const span = document.createElement("span");
       span.className = "emoji";
@@ -500,23 +373,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       emojiList.appendChild(emojiOption);
     });
-
-    // const openCloseEmojiPanel = document.querySelector(
-    //     "#open-close-emoji-panel",
-    //   );
-    //   openCloseEmojiPanel.addEventListener("click", () => {
-    //     emojiPanel.classList.toggle("hidden");
-    //   });
-
-      document.body.addEventListener("click", (e) => {
-        if (e.target && e.target.classList.contains("open-close-emoji-panel")) {
-          // Find the closest modal and toggle the emoji panel
-          const emojiPanel = e.target
-            .closest(".profile-data-form")
-            .querySelector(".emoji-panel");
-          emojiPanel.classList.toggle("hidden");
-        }
-      });
 
     // Handle radio button selection
     emojiList.addEventListener("change", (e) => {

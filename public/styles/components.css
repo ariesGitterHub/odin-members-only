@@ -206,7 +206,7 @@ button:hover,
 }
 
 .emoji-list {
-  height: 250px;
+  height: 230px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -379,7 +379,8 @@ input::placeholder {
   text-transform: capitalize;
 }
 .fake-input {
-  background-color: var(--lt-red);
+  /* background-color: var(--lt-red); */
+  background-color: var(--off-white);
   border-radius: 0.5rem;
 }
 
