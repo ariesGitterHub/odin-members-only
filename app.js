@@ -1,19 +1,19 @@
 // 0. FIRST!
 require("dotenv").config(); // Load environment variables
-
+require('./config/passport');  // This initializes the Passport strategies
 // 1. Imports at the top
 const express = require("express");
 const path = require("node:path");
 const session = require("express-session");
-// const passport = require("passport");
-// const { Pool } = require("pg");
-// const bcrypt = require("bcryptjs");
-// const LocalStrategy = require("passport-local").Strategy;
+const passport = require("passport");
 // const { body, validationResult } = require("express-validator");
+
 const PORT = process.env.PORT || 3000;
 const appRouter = require("./routes/appRouter");
 const { log } = require("node:console");
 const permissions = require("./utils/permissions");
+const { avatarTypeDefault } = require("./utils/avatarTypeDefault");
+const { addAvatarFields } = require("./utils/viewFormatters");
 
 // 2. Create the app
 const app = express();
@@ -34,10 +34,12 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      httpOnly: true, // ????? This right?
+      // secure: process.env.NODE_ENV === "production", //TODO!
+      secure: false, //localhost testing
       sameSite: "strict",
-      maxAge: 1000 * 60 * 60, // 1 hour
+      // sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 6, // 6 hour
     },
   }),
 );
@@ -61,21 +63,56 @@ app.use(
 //   next();
 // });
 
-app.use((req, res, next) => {
-  res.locals.currentUser = req.session.user || null;
-  res.locals.permissions = permissions;
-  next();
-});
+
 
 
 // Passport Middleware setup (after session)
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Passport LocalStrategy + serialize/deserialize
 // -- Serialize / Deserialize
 // TODO - HANDLED BY config/passport.js - link to...
+
+
+// NOTE - BELOW IS WRONG USING PASSPORT...
+// app.use((req, res, next) => {
+//   res.locals.currentUser = req.session.user || null;
+//   res.locals.permissions = permissions;
+//   next();
+// });
+// The fix:
+
+app.use((req, res, next) => {
+  if (req.user) {
+    // Make a shallow copy
+    const user = { ...req.user };
+
+    // Add avatar info (reusing your helper)
+    const processedUser = addAvatarFields([user], avatarTypeDefault)[0];
+
+    // Optionally format birthdate, age, or other profile fields
+    // const processedUserWithBirthdate = addBirthdateFields(
+    //   [processedUser],
+    //   calculateAge,
+    //   formatShortDate,
+    // )[0];
+
+    // res.locals.currentUser = processedUserWithBirthdate;
+    res.locals.currentUser = processedUser;
+  } else {
+    res.locals.currentUser = null;
+  }
+
+  next();
+});
+
+// app.use((req, res, next) => {
+//   res.locals.currentUser = req.user || null;
+//   res.locals.permissions = permissions;
+//   next();
+// });
 
 // Routes
 // -- "Home"

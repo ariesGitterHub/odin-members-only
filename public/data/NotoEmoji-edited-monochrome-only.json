@@ -8826,13 +8826,6 @@
       "keywords": ["briefcase"]
     },
     {
-      "emoji": "📌",
-      "unicode": "U+1F4CC",
-      "text": "pushpin",
-      "subcategory": "office",
-      "keywords": ["pin", "pushpin"]
-    },
-    {
       "emoji": "📎",
       "unicode": "U+1F4CE",
       "text": "paperclip",
@@ -9975,13 +9968,6 @@
       "text": "sparkle",
       "subcategory": "other-symbol",
       "keywords": ["*", "sparkle"]
-    },
-    {
-      "emoji": "🔟",
-      "unicode": "U+1F51F",
-      "text": "perfect 10",
-      "subcategory": "keycap",
-      "keywords": ["keycap"]
     },
     {
       "emoji": "🆒",

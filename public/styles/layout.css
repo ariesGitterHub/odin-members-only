@@ -167,6 +167,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+    overflow-y: auto;
   z-index: 1000;
 }
 
@@ -176,8 +177,9 @@ main {
 
 .modal-overlay {
   position: absolute;
-  inset: 0;
   background: var(--off-black-trans);
+  inset: 0;
+  /* overflow-y: auto; */
 }
 
 /* .modal-content {
@@ -214,6 +216,7 @@ main {
   /* font-size: var(--message-body-size); */
   /* line-height: 1.5; */
   margin: 0.5rem;
+  /* overflow-y: auto; */
   padding: 1rem;
   z-index: 1; 
 }

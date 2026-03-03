@@ -23,12 +23,24 @@
 }
 
 .page-title-off-card {
+  width: 100%;
   display: inline-block;
   /* background: linear-gradient(90deg, #ff00cc, #3333ff); */
   background: linear-gradient(180deg, var(--white), var(--off-white));
   -webkit-background-clip: text; /* Clips background to text shape */
   -webkit-text-fill-color: transparent; /* Makes original text color transparent */
   /* font-size: var(--page-title-all); */
+  padding: 0.5rem;
+}
+
+.page-subtitle-off-card {
+  display: inline-block;
+  /* background: linear-gradient(90deg, #ff00cc, #3333ff); */
+  background: linear-gradient(180deg, var(--white), var(--off-gray));
+  -webkit-background-clip: text; /* Clips background to text shape */
+  -webkit-text-fill-color: transparent; /* Makes original text color transparent */
+  /* font-size: var(--page-title-all); */
+  font-size: 1rem;
   padding: 0.5rem;
 }
 
@@ -345,6 +357,10 @@ background-color: var(--white);
   /* border-bottom: 0.125rem solid var(--off-gray); */
   font-size: var(--message-body-size);
   padding: 0.5rem;
+}
+
+.message-body-max {
+  
 }
 
 .message-footer {

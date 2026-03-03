@@ -17,7 +17,9 @@
 
     <!-- NEW POST -->
     <div class="modal-section hidden" id="modal-new-post">
-      <h1 id="modal-title-new-post">New Post</h1>
+      <div class="page-title-modal uppercase">
+        <h1 id="modal-title-new-post">new post by <span class="italic"><%= currentUser.first_name %></span></h1> 
+      </div>
       <%- include('./modals/new-post.ejs') %>
     </div>
 

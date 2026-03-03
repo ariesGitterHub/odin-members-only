@@ -39,19 +39,19 @@ WHERE u.email = 'admin@can.org'
 
 INSERT INTO topics (slug, name, description, sort_order)
 VALUES
-  ('announcements', 'Announcements', 'Official updates and important notices', 0),
+  ('announcements', 'Announcements', 'Updates and notices', 0),
   ('safety-alerts', 'Safety Alerts', 'Suspicious activity and crime', 10),
   ('events', 'Events', 'Neighborhood events, meetings, and activities', 20),
   ('general', 'General Discussion', 'General neighborhood conversations', 30),
-  ('harrisburg', 'Harrisburg', 'City and government conversations', 40),
+  ('harrisburg', 'Harrisburg', 'City government conversations', 40),
   ('nuisances', 'Nuisances', 'Noise, vandalism, and general irritations', 50),
-  ('help-requests', 'Help Requests', 'Ask neighbors for help or assistance', 60),
-  ('lost-found', 'Lost & Found', 'Lost or found pets and items', 70),
-  ('buy-sell', 'Buy & Sell', 'Items for sale or wanted', 80),
+  ('help-requests', 'Help Requests', 'Ask neighbors for assistance', 60),
+  ('lost-found', 'Lost and Found', 'Lost or found pets and items', 70),
+  ('buy-sell', 'Buy and Sell', 'Items for sale/items wanted', 80),
   ('free-stuff', 'Free Stuff', 'Give away items you no longer need or want', 90),
-  ('businesses', 'Local Businesses', 'Recommendations and offers for local services', 100),
+  ('businesses', 'Local Businesses', 'Recommendations for local services and restaurants', 100),
   ('introductions', 'Introductions', 'Welcome new neighbors', 110),
-  ('feedback', 'Feedback', 'Suggestions and feedback about this site', 120)
+  ('feedback', 'Feedback', 'Suggestions and feedback for this site', 120)
 ON CONFLICT (slug) DO NOTHING;
 
 
@@ -152,9 +152,9 @@ AND p.user_id IS NULL;
 
 
 -- 1️⃣ Introductions
-INSERT INTO messages (topic_id, user_id, title, like_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id,
-  'Hello from Alan', 7,
+  'Hello from Alan', 7, 0,
   'Hi everyone, just moved to the neighborhood last week. Looking forward to meeting you all!',
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
@@ -164,9 +164,9 @@ LIMIT 1;
 
 
 -- 2️⃣ Safety Alert
-INSERT INTO messages (topic_id, user_id, title, like_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id,
-  'Car break-ins reported on Maple St.', 9,
+  'Car break-ins reported on Maple St.', 9, 0,
   'Just a heads up — two cars were broken into overnight near Maple and 3rd. Please remember to lock your vehicles.',
   NOW() + INTERVAL '14 days'
 FROM topics t, users u
@@ -176,9 +176,9 @@ LIMIT 1;
 
 
 -- 3️⃣ Buy & Sell
-INSERT INTO messages (topic_id, user_id, title, like_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id,
-  'Bike for sale - $75',  1,
+  'Bike for sale - $75',  1, 1,
   'Selling a lightly used mountain bike. 26-inch wheels, great condition. DM if interested.',
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
@@ -187,9 +187,9 @@ WHERE t.slug = 'buy-sell'
 LIMIT 1;
 
 -- 3️⃣ Buy & Sell
-INSERT INTO messages (topic_id, user_id, title, like_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id,
-  'MONKEY for sale that i found while washing dishes in a car park vestibule and it said hi but don''t tell anyone I speak - $5',  1,
+  'MONKEY for sale that i found while washing dishes in a car park vestibule and it said hi but don''t tell anyone I speak - $5',  1, 2,
   'Slightly bitey, great condition. DM if interested.',
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
@@ -198,9 +198,9 @@ WHERE t.slug = 'buy-sell'
 LIMIT 1;
 
 -- 3️⃣ Buy & Sell
-INSERT INTO messages (topic_id, user_id, title, like_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id,
-  'POOP!',  1,
+  'POOP!',  1, 3,
   'Angry pooping.',
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
@@ -210,9 +210,9 @@ LIMIT 1;
 
 
 -- 4️⃣ Free Stuff
-INSERT INTO messages (topic_id, user_id, title, like_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id, 
-  'Free moving boxes', 2,
+  'Free moving boxes', 2, 0,
   'Just finished moving — have about 20 boxes in good shape. Free for pickup.',
   NOW() + INTERVAL '10 days'
 FROM topics t, users u
@@ -222,9 +222,9 @@ LIMIT 1;
 
 
 -- 5️⃣ Help Request
-INSERT INTO messages (topic_id, user_id, title, like_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id, 
-  'Need recommendation for plumber', 0,
+  'Need recommendation for plumber', 0, 0,
   'Can anyone recommend a reliable plumber for a small kitchen leak?',
   NOW() + INTERVAL '15 days'
 FROM topics t, users u
@@ -234,9 +234,9 @@ LIMIT 1;
 
 
 -- 6️⃣ Event
-INSERT INTO messages (topic_id, user_id, title, like_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id,
-  'Neighborhood BBQ this Saturday', 20,
+  'Neighborhood BBQ this Saturday', 20, 0,
   'Planning a casual BBQ at Riverside Park at 4pm. Bring something to share!',
   NOW() + INTERVAL '7 days'
 FROM topics t, users u
@@ -246,9 +246,9 @@ LIMIT 1;
 
 
 -- 7️⃣ Lost & Found
-INSERT INTO messages (topic_id, user_id, title, like_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id, 
-  'Found: small brown dog', 11,
+  'Found: small brown dog', 11, 0,
   'Friendly small brown dog found near Pine Ave. No collar. Please message if yours.',
   NOW() + INTERVAL '5 days'
 FROM topics t, users u
@@ -258,9 +258,9 @@ LIMIT 1;
 
 
 -- 8️⃣ General Discussion
-INSERT INTO messages (topic_id, user_id, title, like_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id, 
-  'Anyone else hearing construction noise?', 5,
+  'Anyone else hearing construction noise?', 5, 0,
   'There has been loud construction starting around 6:30am this week. Anyone know what project this is?',
   NOW() + INTERVAL '20 days'
 FROM topics t, users u

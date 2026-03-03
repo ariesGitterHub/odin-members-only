@@ -100,6 +100,33 @@ const getUserById = async function getUserById(userId) {
   return rows[0]; // Returning only the first row (one user)
 };
 
+// Sign Up 
+// Function to check if email exists
+async function checkIfEmailExists(email) {
+  const { rows } = await pool.query(
+    "SELECT * FROM users WHERE email = $1",
+    [email]
+  );
+  return rows;
+}
+
+// Function to insert a new user
+async function insertNewUser(
+  first_name,
+  last_name,
+  email,
+  birthdate,
+  password_hash,
+  permission_status = "guest",
+) {
+  const result = await pool.query(
+    "INSERT INTO users (first_name, last_name, email, birthdate, password_hash, permission_status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+    [first_name, last_name, email, birthdate, password_hash, permission_status],
+  );
+  return result.rows[0]; // Return the inserted user
+}
+
+
 // const getAllTopics = async () => {
 //   const query = `
 //     SELECT *
@@ -216,9 +243,11 @@ const getValidMessagesByTopic = async (topicId, limit = 50) => {
       m.user_id,
       m.title,
       m.like_count,
+      m.reply_count,
       m.body,
       m.created_at,
       m.expires_at,
+      m.is_sticky,
       u.first_name,
       u.last_name,
       u.permission_status,
@@ -427,6 +456,8 @@ const getMessagesByTopic = async (topicId, limit = 50) => {
 module.exports = {
   getUsers,
   getUserById,
+  checkIfEmailExists,
+  insertNewUser,
   // getTopics,
   getAllTopics,
   getTopicBySlug,

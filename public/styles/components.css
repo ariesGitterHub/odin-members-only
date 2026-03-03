@@ -73,6 +73,7 @@ button:hover,
 }
 
 .message-button {
+  min-width: 2.5rem;
   width: fit-content;
 }
 
@@ -143,12 +144,16 @@ button:hover,
 
 .emoji {
   /* display: inline-block; */
-  font-family: var(--font-emoji);
+  font-family: var(--font-emoji) !important;
   /* font-size: 2.5rem; */
   font-weight: 100;
   /* line-height: 1; */
   /* margin: 0.75rem; */
   /* vertical-align: middle; */
+}
+
+.emoji.reversed {
+    filter: grayscale(50%) contrast(100%);
 }
 
 /* .emoji:hover {
@@ -356,7 +361,7 @@ label, .fake-label {
   text-transform: capitalize;
 }
 
-input, .fake-input {
+input, .fake-input, textarea {
   width: 100%;
   /* background-color: var(--white); */
   border: 0.125rem solid var(--off-gray);
@@ -371,7 +376,7 @@ input, .fake-input {
 /* .fake-input:hover {
   background-color: var(--lt-red);
 } */
-input {
+input, textarea{
 background-color: var(--white);
 }
 
@@ -382,6 +387,10 @@ input::placeholder {
   /* background-color: var(--lt-red); */
   background-color: var(--off-white);
   border-radius: 0.5rem;
+}
+
+textarea {
+  height: 200px;
 }
 
 /* .input-height-special {

@@ -24,7 +24,7 @@
     <!-- <span>likes: <%= message.like_count %></span>  -->
   </div>
   <div class="message-body">
-    <p>🗨️ <%= message.body %></p>
+    <p><span class="emoji">🗨️</span> <%= message.body %></p>
   </div>
   <div class="message-footer">
   <%# if (currentUser) { %>
@@ -33,14 +33,15 @@
         <!-- <button class="message-button" type="button">Edit</button> -->
         <!-- BELOW NEEDS DELETE ACCESS TO THE PERSON WHO WROTE IT -->
         <%# if (message.permission_status === "admin") { %>
-         <button class="message-button" type="button">Delete</button>
+         <button class="message-button" type="button"><span class="emoji">📌</span></button>
+         <button class="message-button" type="button"><span class="emoji">🗑</span></button>
         <%# } %>
         <!-- BELOW NEEDS TO BE HIDDEN TO THE PERSON WHO WROTE IT -->
-        <button class="message-button" type="button">Reply (0)</button>
+        <button class="message-button" type="button"><span class="emoji">↩</span>(<%= message.reply_count %>)</button>
         <%# } %>
         <form action="/messages/<%= message.id %>/like" method="POST">
         
-        <button class="message-button" type="submit"><span class="emoji2">❤(<%= message.like_count %>)</span></button>
+        <button class="message-button" type="submit"><span class="emoji">❤</span>(<%= message.like_count %>)</button>
       </form>          
       </div>
 

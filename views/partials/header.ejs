@@ -1,53 +1,56 @@
-<header class="app-header">
-  <nav class="app-nav" aria-label="User menu">
-    <!-- <span class="user-info">
-      Logged in: "liondaddy"<%#= user.username %>
-    </span> -->
-    <a class="fake-button nav-button" href="/app/admin"><span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="admin's overview">
-      <!-- &#xE261; -->
-      <!-- &#x2699; -->
-       ⚙
-    </span></a>
-    <a class="fake-button nav-button" href="/app/info"><span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="this site's info">
-      <!-- &#x2139; -->
-    ℹ
-    </span></a>
-    <!-- <a class="fake-button nav-button" href="/app/new-post"><span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="new post link">
-       ✍🏼
-    </span></a> -->
-    <button class="nav-button" onclick="openModal('modal-new-post', 'modal-title-new-post')">
-        <span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="new post link">
-       ✍🏼
-    </span>
-    </button>
+  <!-- <pre><%#= JSON.stringify(currentUser, null, 2) %> -->
+  </pre><header class="app-header">
 
-    <a class="fake-button nav-button" href="/app/message-boards"><span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="message board link">
-      <!-- &#xE263; -->
-      <!-- &#x270d; -->
-      💬
-    </span></a>
-    <a class="fake-button nav-button" href="/app/your-profile"><span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="avatar image and link to your profile">
-      <!-- &#x1F1F1; -->
-       <!-- ! -->
-        <!-- 🐈‍⬛ -->
-         <%#= message.avatarLetter %>
-         👑
-    </span></a>
+  <nav class="app-nav" aria-label="User menu">
+    <a class="fake-button nav-button" href="/app/admin">
+      <span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="admin's overview">
+       ⚙
+      </span>
+    </a>
+    <a class="fake-button nav-button" href="/app/info">
+      <span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="this site's info">
+        ℹ
+      </span>
+  </a>
+    <button 
+      class="nav-button new-post-button"
+      data-section="modal-new-post"
+      data-title="modal-title-new-post"
+      >
+        <span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="create a new post">
+          ✍🏼
+        </span>
+    </button>
+    <a class="fake-button nav-button" href="/app/message-boards">
+      <span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="message board link">
+       💬
+      </span>
+    </a>
+    <!-- <a class="fake-button nav-button" href="/app/your-profile"> -->
+      <!-- <span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="avatar image and link to your profile"> -->
+        <!-- 👑 -->
+      <!-- </span> -->
+    </a>
+    <% if (currentUser) { %>
+    <a class="fake-button nav-button" href="/app/your-profile">
+      <span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="avatar image and link to your profile">
+        <%= currentUser.avatarLetter %>
+      </span>
+    </a>
+    <% } %>
     <form action="/app/log-out" method="POST" class="logout-form">
-      <button class="nav-button" type="submit"><span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="log out">
-        <!-- &#xe24e; -->
-        <!-- &#x2716;-->
-         <!-- ❌  -->
-          <!-- 🔚 -->
-           📴
-      </span></button>
+      <button class="nav-button" type="submit">
+        <span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="log out">
+          📴
+        </span>
+      </button>
     </form>
   </nav>
+  <!-- <div><%# console.log("req.user:", req.user); %></div> -->
   <% if (currentUser) { %>
-  <div class="app-logged-in-bar uppercase"><p>logged in as "<%= currentUser %>"</p></div>
+  <div class="app-logged-in-bar uppercase"><p>logged in as "<%= currentUser.email %>" (<%= currentUser.permission_status %>)</p></div>
   <% } %>
 </header>
-
 <!-- <form class="form-reset" action="/app/log-out" method="POST">
 <button class="wide-button" type="submit">Log out</button>
 </form> -->

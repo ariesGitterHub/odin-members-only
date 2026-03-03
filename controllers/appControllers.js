@@ -1,6 +1,13 @@
+const bcrypt = require("bcryptjs");
+const pool = require("../db/pool"); // PostgreSQL pool
+const { hasRole, requireRole } = require("../utils/permissions.js");
+const passport = require("passport");
+
 const {
   getUsers,
   getUserById,
+  checkIfEmailExists,
+  insertNewUser,
   // getTopics,
   getAllTopics,
   getTopicBySlug,
@@ -31,7 +38,7 @@ const {
   addAvatarFields,
 } = require("../utils/viewFormatters");
 
-const { hasRole, isExactRole } = require("../utils/permissions.js");
+// Index (Home)
 
 async function getHome(req, res, next) {
   try {
@@ -45,6 +52,20 @@ async function getHome(req, res, next) {
   }
 }
 
+// Sign-Up
+
+// async function getSignUp(req, res, next) {
+//   try {
+//     res.render("sign-up", {
+//       title: "Sign Up",
+//       user: req.user,
+//       errors: [],
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
 async function getSignUp(req, res, next) {
   try {
     res.render("sign-up", {
@@ -56,6 +77,63 @@ async function getSignUp(req, res, next) {
     next(err);
   }
 }
+
+async function postSignUp(req, res, next) {
+  const { first_name, last_name, email, birthdate, password, confirm_password } =
+    req.body;
+  const errors = [];
+
+  // Simple validation checks
+  if (
+    !first_name ||
+    !last_name ||
+    !email ||
+    !birthdate ||
+    !password ||
+    !confirm_password
+  ) {
+    errors.push("All fields are required.");
+  }
+
+  if (password !== confirm_password) {
+    errors.push("Passwords do not match.");
+  }
+
+  if (errors.length > 0) {
+    return res.render("sign-up", {
+      title: "Sign Up",
+      user: req.user,
+      errors,
+    });
+  }
+
+  try {
+    // Use the query function from queries.js to check if email exists
+    const existingUser = await checkIfEmailExists(email);
+
+    if (existingUser.length > 0) {
+      errors.push("Email is already taken.");
+      return res.render("sign-up", {
+        title: "Sign Up",
+        user: req.user,
+        errors,
+      });
+    }
+
+    // Hash the password before saving it to the database
+    const password_hash = await bcrypt.hash(password, 10);
+
+    // Use the query function from queries.js to insert the new user
+     await insertNewUser(first_name, last_name, email, birthdate, password_hash);
+
+    // Redirect to the login page after successful sign-up
+    res.redirect("/app/log-in");
+  } catch (err) {
+    next(err);
+  }
+}
+
+// Log-In
 
 async function getLogIn(req, res, next) {
   try {
@@ -69,25 +147,116 @@ async function getLogIn(req, res, next) {
   }
 }
 
-async function getYourProfile(req, res, next) {
-  const users = await getUsers();
-
-  users.forEach((user) => {
-    if (user.birthdate instanceof Date) {
-      user.birthdate = user.birthdate.toISOString().split("T")[0];
+async function postLogIn(req, res, next) {
+  console.log("Form data:", req.body); // Log the request body to see the submitted data
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      console.error("Error during authentication:", err);
+      return next(err); // handle unexpected error
     }
-  });
 
+    if (!user) {
+      console.log(
+        "Authentication failed:",
+        info.message || "Invalid email or password",
+      );
+      return res.render("log-in", {
+        title: "Log In",
+        errors: [info.message || "Invalid email or password"],
+      });
+    }
 
-  const usersWithBirthDates = addBirthdateFields(users, calculateAge, formatShortDate);
-  const usersWithAvatars = addAvatarFields(usersWithBirthDates, avatarTypeDefault);
+    console.log("User authenticated:", user);
 
+    // Log the user in
+    req.login(user, (err) => {
+      if (err) {
+        console.error("Error during login:", err);
 
+        return next(err); // handle login error
+      }
+
+      console.log("Login successful! Redirecting to message boards...");
+      // Redirect to homepage (or the intended route after successful login)
+      res.redirect("/app/message-boards");
+    });
+  })(req, res, next);
+}
+
+// Log out the user
+async function postLogOut(req, res, next) {
+  try {
+    req.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect("/app/log-in"); // Redirect to login page after logout
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+// async function getYourProfile(req, res, next) {
+//   const users = await getUsers();
+
+//   users.forEach((user) => {
+//     if (user.birthdate instanceof Date) {
+//       user.birthdate = user.birthdate.toISOString().split("T")[0];
+//     }
+//   });
+
+//   const usersWithBirthDates = addBirthdateFields(
+//     users,
+//     calculateAge,
+//     formatShortDate,
+//   );
+//   const usersWithAvatars = addAvatarFields(
+//     usersWithBirthDates,
+//     avatarTypeDefault,
+//   );
+
+//   try {
+//     res.render("your-profile", {
+//       title: "Your Profile",
+//       users: usersWithAvatars,
+//       errors: [],
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
+async function getYourProfile(req, res, next) {
+  if (!req.user) {
+    return res.redirect("/app/log-in"); // No logged-in user
+  }
+
+  // Clone the user so we can add computed fields
+  const currentUser = { ...req.user };
+
+  // Format birthdate for input/display
+  if (currentUser.birthdate instanceof Date) {
+    currentUser.birthdate = currentUser.birthdate.toISOString().split("T")[0];
+  }
+
+  // Add computed fields: age, formattedBirthdate
+  const userWithBirthdates = addBirthdateFields(
+    [currentUser], // pass as array to reuse your helper
+    calculateAge,
+    formatShortDate,
+  )[0]; // get first element
+
+  // Add avatar fields
+  const userWithAvatars = addAvatarFields(
+    [userWithBirthdates],
+    avatarTypeDefault,
+  )[0];
 
   try {
     res.render("your-profile", {
       title: "Your Profile",
-      users: usersWithAvatars,
+      currentUser: userWithAvatars, // send single processed user
       errors: [],
     });
   } catch (err) {
@@ -285,10 +454,23 @@ async function getAdmin(req, res, next) {
     //   ),
     // }));
 
-    const usersWithBirthdates = addBirthdateFields(users, calculateAge, formatShortDate);
-    const usersWithCreationDates = addSessionCreateDateFields(usersWithBirthdates, formatShortDate);
-    const usersWithUpdateDates = addSessionUpdateDateFields(usersWithCreationDates, formatShortDate);
-    const usersWithZodiacSigns = addZodiacSigns(usersWithUpdateDates, getZodiacSign);
+    const usersWithBirthdates = addBirthdateFields(
+      users,
+      calculateAge,
+      formatShortDate,
+    );
+    const usersWithCreationDates = addSessionCreateDateFields(
+      usersWithBirthdates,
+      formatShortDate,
+    );
+    const usersWithUpdateDates = addSessionUpdateDateFields(
+      usersWithCreationDates,
+      formatShortDate,
+    );
+    const usersWithZodiacSigns = addZodiacSigns(
+      usersWithUpdateDates,
+      getZodiacSign,
+    );
     const usersWithRealZodiacSigns = addRealZodiacSigns(
       usersWithZodiacSigns,
       getRealZodiacSign,
@@ -335,36 +517,40 @@ async function getAdmin(req, res, next) {
 // Function to fetch individual user data for modal
 // Function to fetch individual user data for modal
 async function getUserDetails(req, res, next) {
-  const userId = req.params.id;  // Get user ID from URL parameter
+  const userId = req.params.id; // Get user ID from URL parameter
   try {
-    const user = await getUserById(userId);  // Replace with your actual query
+    const user = await getUserById(userId); // Replace with your actual query
     if (user.birthdate instanceof Date) {
       user.birthdate = user.birthdate.toISOString().split("T")[0];
     }
 
     if (user) {
-      res.json(user);  // Send user data as JSON
+      res.json(user); // Send user data as JSON
     } else {
-      res.status(404).send('User not found');
+      res.status(404).send("User not found");
     }
   } catch (err) {
-    next(err);  // Pass error to the error handling middleware
+    next(err); // Pass error to the error handling middleware
   }
 }
 
+// function postLogOut(req, res, next) {
+//   req.logout((err) => {
+//     if (err) return next(err);
+//     res.redirect("/app");
+//   });
+// }
 
 
-function postLogOut(req, res, next) {
-  req.logout((err) => {
-    if (err) return next(err);
-    res.redirect("/app");
-  });
-}
 
 module.exports = {
   getHome,
   getSignUp,
+  postSignUp,
   getLogIn,
+  postLogIn,
+  postLogOut,
+
   getYourProfile,
   getMemberDirectory,
   getUpdateProfile,
@@ -376,5 +562,4 @@ module.exports = {
   // getBecomeMember,
   getAdmin,
   getUserDetails,
-  postLogOut,
 };

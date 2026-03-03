@@ -92,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("email").value = user.email;
     document.getElementById("phone").value = user.phone || "";
     document.getElementById("birthdate").value = user.birthdate;
+    document.getElementById("password").value = user.password_hash;
     document.getElementById("street_address").value = user.street_address || "";
     document.getElementById("apt_unit").value = user.apt_unit || "";
     document.getElementById("city").value = user.city || "";
@@ -221,10 +222,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } else {
         // If userId is not provided (for "create profile" modal or others)
-        if (sectionId === "modal-create-profile-admin") {
+        if (sectionId === "modal-create-profile-admin") {        
           openModal(sectionId, titleId);
           // Populate the modal for creating a profile (no user data needed)
           // Optionally, call a function to initialize default values for the "create" modal
+        }
+
+        if (sectionId === "modal-new-post") {
+          openModal(sectionId, titleId);
+          console.log("clicko!");
         }
       }
     } catch (err) {
@@ -234,11 +240,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // The only modal that does't require user db data
+  // const createProfileAdminButton = document.querySelector(".create-profile-admin-button");
+  // createProfileAdminButton.addEventListener("click", (e) => {
+  //     const { section, title } = e.currentTarget.dataset;
+  //     handleModalOpen(null, section, title);
+  //   });
+
   const createProfileAdminButton = document.querySelector(".create-profile-admin-button");
+if (createProfileAdminButton) {
   createProfileAdminButton.addEventListener("click", (e) => {
+    const { section, title } = e.currentTarget.dataset;
+    handleModalOpen(null, section, title);
+  });
+}
+
+  //   const newPostButton = document.querySelector(".new-post-button");
+  // newPostButton.addEventListener("click", (e) => {
+  //   const { section, title } = e.currentTarget.dataset;
+  //   handleModalOpen(null, section, title);
+  // });
+
+  const newPostButton = document.querySelector(".new-post-button");
+  if (newPostButton) {
+    newPostButton.addEventListener("click", (e) => {
       const { section, title } = e.currentTarget.dataset;
       handleModalOpen(null, section, title);
     });
+  }
 
   document.querySelectorAll("[data-user-id]").forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -391,6 +419,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+    //Dynamically set maximum number of characters for a new post (use db to hold values? Interesting idea...)
+        const newPostMessageBody = document.getElementById("new-post-message-body");
+        const newPostMaxCharCount = document.getElementById("new-post-max-char-count");
+        const maxChars = 700;
+
+        newPostMessageBody.addEventListener("input", () => {
+          const currentLength = newPostMessageBody.value.length;
+          newPostMaxCharCount.textContent = `Characters remaining: ${maxChars - currentLength}`;
+
+          if (currentLength > maxChars) {
+            newPostMessageBody.value = newPostMessageBody.value.substring(
+              0,
+              maxChars,
+            ); // Truncates input if too long
+          }
+        });
 
   //   end
 });
