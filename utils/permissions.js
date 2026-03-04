@@ -15,11 +15,14 @@ function requireRole(requiredRole) {
     const user = res.locals.currentUser;
 
     if (!user) {
-      return res.status(401).redirect("/login");
+      return res.status(401).redirect("/app/log-in");
     }
 
     if (!hasRole(user, requiredRole)) {
-      return res.status(403).render("403"); // or .send("Forbidden")
+      // return res.status(403).render("403"); // or .send("Forbidden")
+      const err = new Error("Forbidden");
+      err.status = 403;
+      return next(err);
     }
 
     next();

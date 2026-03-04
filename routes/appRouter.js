@@ -26,7 +26,8 @@ const {
 } = require("../controllers/appControllers");
 
 const appRouter = Router();
-appRouter.get("/current-user", getCurrentUser);
+// appRouter.get("/current-user", requireRole("admin"), getCurrentUser);
+appRouter.get("/current-user", getCurrentUser); // USE IN DEV
 appRouter.get("/", getHome);
 appRouter.get("/sign-up", getSignUp);
 appRouter.post("/sign-up", postSignUp);

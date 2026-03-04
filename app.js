@@ -131,24 +131,52 @@ app.use("/app", appRouter);
 
 // Error Handling
 
-// -- 404 - Route not found (This should be placed before the general error handler)
-app.use((req, res, next) => {
-  res.status(404).render("404-500", {
-    title: "404 - Not Found",
-    error: "Sorry, we couldn't find the page you were looking for.",
-  });
-});
+// // -- 404 - Route not found (This should be placed before the general error handler)
+// app.use((req, res, next) => {
+//   res.status(404).render("404-500", {
+//     title: "404 - Not Found",
+//     error: "Sorry, we couldn't find the page you were looking for.",
+//   });
+// });
 
-// -- General error handler for 500 errors (or uncaught errors)
+// // -- General error handler for 500 errors (or uncaught errors)
+// app.use((err, req, res, next) => {
+//   console.error(err);
+
+//   res.status(err.status || 500).render("404-500", {
+//     title: "Internal Server Error",
+//     error:
+//       process.env.NODE_ENV === "production"
+//         ? "Something went wrong."
+//         : err.message,
+//   });
+// });
+
 app.use((err, req, res, next) => {
   console.error(err);
 
-  res.status(err.status || 500).render("404-500", {
-    title: "Internal Server Error",
-    error:
+  const status = err.status || 500;
+
+  let title;
+  let message;
+
+  if (status === 403) {
+    title = "403 - Forbidden";
+    message = "You do not have permission to access this resource.";
+  } else if (status === 404) {
+    title = "404 - Not Found";
+    message = "Sorry, we couldn't find the page you were looking for.";
+  } else {
+    title = "500 - Internal Server Error";
+    message =
       process.env.NODE_ENV === "production"
         ? "Something went wrong."
-        : err.message,
+        : err.message;
+  }
+
+  res.status(status).render("error-page", {
+    title,
+    error: message,
   });
 });
 
