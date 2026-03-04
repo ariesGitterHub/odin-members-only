@@ -2,11 +2,13 @@
   </pre><header class="app-header">
 
   <nav class="app-nav" aria-label="User menu">
+     <% if (currentUser.permission_status === "admin") { %>
     <a class="fake-button nav-button" href="/app/admin">
       <span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="admin's overview">
        ⚙
       </span>
     </a>
+    <% } %>
     <a class="fake-button nav-button" href="/app/info">
       <span class="emoji avatar-emoji-nav-size app-nav-button-image" role="img" aria-label="this site's info">
         ℹ

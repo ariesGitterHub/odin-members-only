@@ -38,6 +38,21 @@ const {
   addAvatarFields,
 } = require("../utils/viewFormatters");
 
+// currentUser Info
+// appController.js
+
+async function getCurrentUser(req, res, next) {
+  try {
+    if (req.user) {
+      res.json(req.user); // optionally pick only needed fields
+    } else {
+      res.json(null);
+    }
+  } catch (err) {
+    next(err);
+  }
+}
+
 // Index (Home)
 
 async function getHome(req, res, next) {
@@ -79,8 +94,14 @@ async function getSignUp(req, res, next) {
 }
 
 async function postSignUp(req, res, next) {
-  const { first_name, last_name, email, birthdate, password, confirm_password } =
-    req.body;
+  const {
+    first_name,
+    last_name,
+    email,
+    birthdate,
+    password,
+    confirm_password,
+  } = req.body;
   const errors = [];
 
   // Simple validation checks
@@ -121,10 +142,10 @@ async function postSignUp(req, res, next) {
     }
 
     // Hash the password before saving it to the database
-    const password_hash = await bcrypt.hash(password, 10);
+    const password_hash = await bcrypt.hash(password, 12);
 
     // Use the query function from queries.js to insert the new user
-     await insertNewUser(first_name, last_name, email, birthdate, password_hash);
+    await insertNewUser(first_name, last_name, email, birthdate, password_hash);
 
     // Redirect to the login page after successful sign-up
     res.redirect("/app/log-in");
@@ -236,27 +257,27 @@ async function getYourProfile(req, res, next) {
   const currentUser = { ...req.user };
 
   // Format birthdate for input/display
-  if (currentUser.birthdate instanceof Date) {
-    currentUser.birthdate = currentUser.birthdate.toISOString().split("T")[0];
-  }
+  // if (currentUser.birthdate instanceof Date) {
+  //   currentUser.birthdate = currentUser.birthdate.toISOString().split("T")[0];
+  // }
 
   // Add computed fields: age, formattedBirthdate
-  const userWithBirthdates = addBirthdateFields(
+  const currentUserWithBirthdate = addBirthdateFields(
     [currentUser], // pass as array to reuse your helper
     calculateAge,
     formatShortDate,
   )[0]; // get first element
 
   // Add avatar fields
-  const userWithAvatars = addAvatarFields(
-    [userWithBirthdates],
+  const currentUserWithAvatar = addAvatarFields(
+    [currentUserWithBirthdate],
     avatarTypeDefault,
   )[0];
 
   try {
     res.render("your-profile", {
       title: "Your Profile",
-      currentUser: userWithAvatars, // send single processed user
+      currentUser: currentUserWithAvatar, // send single processed user
       errors: [],
     });
   } catch (err) {
@@ -541,9 +562,8 @@ async function getUserDetails(req, res, next) {
 //   });
 // }
 
-
-
 module.exports = {
+  getCurrentUser,
   getHome,
   getSignUp,
   postSignUp,

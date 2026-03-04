@@ -120,55 +120,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("notes").value = user.notes || "";
   }
 
-  // async function populateChangeAvatar(user) {
-  //   //Hide fields that are not mean to be used by a "guest"
-  //   if (user.permission_status === "guest") {
-  //     document
-  //       .querySelector(".change-avatar-hide-element")
-  //       .classList.add("hidden");
-  //   } else {
-  //     document
-  //       .querySelector(".change-avatar-hide-element")
-  //       .classList.remove("hidden");
-  //   }
-
-  //   // Access CSS variables
-  //   const rootStyles = getComputedStyle(document.documentElement);
-  //   // Use these values
-  //   const avatarColorFg = rootStyles
-  //     .getPropertyValue("--avatar-color-fg")
-  //     .trim();
-  //   const avatarColorBgTop = rootStyles
-  //     .getPropertyValue("--avatar-color-bg-top")
-  //     .trim();
-  //   const avatarColorBgBottom = rootStyles
-  //     .getPropertyValue("--avatar-color-bg-bottom")
-  //     .trim();
-  //   document.getElementById("avatar_type").value = user.avatar_type || "";
-  //   document.getElementById("avatar_color_fg").value =
-  //     user.avatar_color_fg || avatarColorFg;
-  //   document.getElementById("avatar_color_bg_top").value =
-  //     user.avatar_color_bg_top || avatarColorBgTop;
-  //   document.getElementById("avatar_color_bg_bottom").value =
-  //     user.avatar_color_bg_bottom || avatarColorBgBottom;
-
-  //   const currentAvatarElement = document.getElementById("current_avatar");
-  //   if (currentAvatarElement) {
-  //     currentAvatarElement.textContent = user.avatar_type || "";
-  //     currentAvatarElement.style.color = user.avatar_color_fg || avatarColorFg;
-  //     currentAvatarElement.style.background = `linear-gradient(5deg, ${user.avatar_color_bg_bottom || avatarColorBgTop}, ${user.avatar_color_bg_top || avatarColorBgBottom})`;
-  //   }
-
-  //   const avatarTypeText = document.getElementById("avatar-type-text");
-  //   if (avatarTypeText) {
-  //     avatarTypeText.textContent = await findInitialEmojiText(user.avatar_type);
-  //   }
-
-  //   // Call the emoji picker initialization
-  //   emojiPickerDiv();
-  // }
-
   async function populateChangeAvatar(user) {
+    console.log("working...")
     //Hide fields that are not mean to be used by a "guest"
     if (user.permission_status === "guest") {
       document
@@ -215,6 +168,111 @@ document.addEventListener("DOMContentLoaded", () => {
     // Call the emoji picker initialization
     emojiPickerDiv();
   }
+
+  function fart(){};
+
+  // async function populateChangeAvatarAdmin(user) {
+  //   console.log("populateChangeAvatar user-log-admin:", user);
+  //   console.log(document.getElementById("modal-change-avatar-admin"));
+  //   //Hide fields that are not mean to be used by a "guest"
+  //   if (user.permission_status === "guest") {
+  //     document
+  //       .querySelector(".change-avatar-hide-element")
+  //       .classList.add("hidden");
+  //   } else {
+  //     document
+  //       .querySelector(".change-avatar-hide-element")
+  //       .classList.remove("hidden");
+  //   }
+
+  //   // Access CSS variables
+  //   const rootStyles = getComputedStyle(document.documentElement);
+  //   // Use these values
+  //   const avatarColorFg = rootStyles
+  //     .getPropertyValue("--avatar-color-fg")
+  //     .trim();
+  //   const avatarColorBgTop = rootStyles
+  //     .getPropertyValue("--avatar-color-bg-top")
+  //     .trim();
+  //   const avatarColorBgBottom = rootStyles
+  //     .getPropertyValue("--avatar-color-bg-bottom")
+  //     .trim();
+  //   document.getElementById("avatar_type_admin").value = user.avatar_type || "";
+  //   document.getElementById("avatar_color_fg_admin").value =
+  //     user.avatar_color_fg || avatarColorFg;
+  //   document.getElementById("avatar_color_bg_top_admin").value =
+  //     user.avatar_color_bg_top || avatarColorBgTop;
+  //   document.getElementById("avatar_color_bg_bottom_admin").value =
+  //     user.avatar_color_bg_bottom || avatarColorBgBottom;
+
+  //   const currentAvatarElement = document.getElementById("current_avatar_admin");
+  //   if (currentAvatarElement) {
+  //     currentAvatarElement.textContent = user.avatar_type || "";
+  //     currentAvatarElement.style.color = user.avatar_color_fg || avatarColorFg;
+  //     currentAvatarElement.style.background = `linear-gradient(5deg, ${user.avatar_color_bg_bottom || avatarColorBgTop}, ${user.avatar_color_bg_top || avatarColorBgBottom})`;
+  //   }
+
+  //   const avatarTypeText = document.getElementById("avatar-type-text-admin");
+  //   if (avatarTypeText) {
+  //     avatarTypeText.textContent = await findInitialEmojiText(user.avatar_type);
+  //   }
+
+  //   // Call the emoji picker initialization
+  //   emojiPickerDiv();
+  // }
+
+  // async function populateChangeAvatarUser(user) {
+  //   console.log("populateChangeAvatar user-log...:", user);
+  //   console.log(document.getElementById("modal-change-avatar-user"));
+  //   //Hide fields that are not mean to be used by a "guest"
+  //   if (user.permission_status === "guest") {
+  //     document
+  //       .querySelector(".change-avatar-hide-element")
+  //       .classList.add("hidden");
+  //   } else {
+  //     document
+  //       .querySelector(".change-avatar-hide-element")
+  //       .classList.remove("hidden");
+  //   }
+
+  //   // Access CSS variables
+  //   const rootStyles = getComputedStyle(document.documentElement);
+  //   // Use these values
+  //   const avatarColorFg = rootStyles
+  //     .getPropertyValue("--avatar-color-fg")
+  //     .trim();
+  //   const avatarColorBgTop = rootStyles
+  //     .getPropertyValue("--avatar-color-bg-top")
+  //     .trim();
+  //   const avatarColorBgBottom = rootStyles
+  //     .getPropertyValue("--avatar-color-bg-bottom")
+  //     .trim();
+  //   document.getElementById("avatar_type_user").value = user.avatar_type || "";
+  //   document.getElementById("avatar_color_fg_user").value =
+  //     user.avatar_color_fg || avatarColorFg;
+  //   document.getElementById("avatar_color_bg_top_user").value =
+  //     user.avatar_color_bg_top || avatarColorBgTop;
+  //   document.getElementById("avatar_color_bg_bottom_user").value =
+  //     user.avatar_color_bg_bottom || avatarColorBgBottom;
+
+  //   const currentAvatarElement = document.getElementById(
+  //     "current_avatar_user",
+  //   );
+  //   if (currentAvatarElement) {
+  //     currentAvatarElement.textContent = user.avatar_type || "";
+  //     currentAvatarElement.style.color = user.avatar_color_fg || avatarColorFg;
+  //     currentAvatarElement.style.background = `linear-gradient(5deg, ${user.avatar_color_bg_bottom || avatarColorBgTop}, ${user.avatar_color_bg_top || avatarColorBgBottom})`;
+  //   }
+
+  //   const avatarTypeText = document.getElementById("avatar-type-text-user");
+  //   if (avatarTypeText) {
+  //     avatarTypeText.textContent = await findInitialEmojiText(user.avatar_type);
+  //   }
+
+  //   // Call the emoji picker initialization
+  //   emojiPickerDiv();
+  // }
+
   // async function handleModalOpen(userId, sectionId, titleId) {
   //   try {
   //     const user = await fetchUserData(userId);
@@ -270,13 +328,13 @@ document.addEventListener("DOMContentLoaded", () => {
   async function handleModalOpen(userId, sectionId, titleId) {
     try {
       console.log("userId:", userId); // Debugging line
-      console.log("userId:", userId); // Debugging line
+      console.log("HERE!"); // Debugging line
 
       // Check if userId exists (not null or undefined)
       if (userId != null && userId !== "") {
         // Fetch user data only if userId exists
         const user = await fetchUserData(userId);
-        const currentUser = await fetchCurrentUserData(userId);
+        // const currentUser = await fetchCurrentUserData(userId);
 
         if (sectionId === "modal-edit-profile-admin") {
           populateEditProfileAdmin(user);
@@ -285,15 +343,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (sectionId === "modal-change-avatar-admin") {
           populateChangeAvatar(user);
+          // populateChangeAvatarAdmin(user);
           openModal(sectionId, titleId);
           initChangeAvatarModal();
         }
 
-        if (sectionId === "modal-change-avatar-user") {
-          populateChangeAvatar(currentUser);
-          openModal(sectionId, titleId);
-          initChangeAvatarModal();
-        }
+        // if (sectionId === "modal-change-avatar-user") {
+        //   populateChangeAvatar(currentUser);
+        //   // populateChangeAvatarUser(currentUser);
+        //   openModal(sectionId, titleId);
+        //   initChangeAvatarModal();
+        // }
       } else {
         // If userId is not provided (for "create profile" modal or others)
         if (sectionId === "modal-create-profile-admin") {

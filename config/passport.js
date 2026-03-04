@@ -159,18 +159,53 @@ passport.serializeUser((user, done) => {
 //     done(err);
 //   }
 // });
-passport.deserializeUser(async (id, done) => {
-   console.log("Deserializing user:", id);
-  try {
-    const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [
-      id,
-    ]);
+// passport.deserializeUser(async (id, done) => {
+//    console.log("Deserializing user:", id);
+//   try {
+//     const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [
+//       id,
+//     ]);
 
-    if (rows.length === 0) {
+//     if (rows.length === 0) {
+//       return done(null, false);
+//     }
+
+//     done(null, rows[0]);
+//   } catch (err) {
+//     done(err);
+//   }
+// });
+passport.deserializeUser(async (id, done) => {
+  console.log("Deserializing user:", id);
+  try {
+    const { rows } = await pool.query(
+      `
+      SELECT 
+        users.*,
+        user_profiles.avatar_type,
+        user_profiles.avatar_color_fg,
+        user_profiles.avatar_color_bg_top,
+        user_profiles.avatar_color_bg_bottom,
+        user_profiles.verified_by_admin,
+        user_profiles.phone,
+        user_profiles.street_address,
+        user_profiles.apt_unit,
+        user_profiles.city,
+        user_profiles.us_state,
+        user_profiles.zip_code
+      FROM users
+      LEFT JOIN user_profiles
+        ON users.id = user_profiles.user_id
+      WHERE users.id = $1
+      `,
+      [id],
+    );
+
+    if (!rows[0]) {
       return done(null, false);
     }
 
-    done(null, rows[0]);
+    done(null, rows[0]); // full user + profile
   } catch (err) {
     done(err);
   }

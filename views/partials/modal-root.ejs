@@ -47,12 +47,22 @@
       <%- include('./modals/create-profile-admin.ejs') %>
     </div>
 
-    <!-- CHANGE AVATAR -->
-    <div class="modal-section hidden" id="modal-change-avatar">
+    <!-- CHANGE AVATAR ADMIN -->
+    <div class="modal-section hidden" id="modal-change-avatar-admin">
       <div class="page-title-modal uppercase">
-        <h1 id="modal-title-change-avatar">Change Avatar</h1>
+        <h1 id="modal-title-change-avatar-admin">Change Avatar</h1>
+      </div>
+      <%#- include('./modals/change-avatar.ejs') %>
+      <%- include('./modals/change-avatar.ejs') %>
+    </div>
+
+        <!-- CHANGE AVATAR USER -->
+    <div class="modal-section hidden" id="modal-change-avatar-user">
+      <div class="page-title-modal uppercase">
+        <h1 id="modal-title-change-avatar-user">Change Your Avatar</h1>
       </div>
       <%- include('./modals/change-avatar.ejs') %>
+      <%#- include('./modals/change-avatar-user.ejs') %>
     </div>
   </div>
 </div>

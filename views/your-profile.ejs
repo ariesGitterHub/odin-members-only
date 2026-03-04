@@ -72,8 +72,10 @@
                 </div>
               </dl>
               <div class="button-container-col">
-                <a class="fake-button wide-button" href="/app/delete">delete account</a> 
-                <span class="ui-message-warning uppercase">deletion of account is permanent.</span>
+                <% if (currentUser.permission_status !== "admin") { %>
+                  <a class="fake-button wide-button" href="/app/delete">delete account</a> 
+                  <span class="ui-message-warning uppercase">deletion of account is permanent.</span>                
+                <% } %>
                 <!-- NOTE - below should be hidden if user has member status! -->
                 <% if (currentUser.permission_status === "guest" && currentUser.member_request === false) { %>
                   <!-- <button class="wide-button">upgrade to member</button> -->
@@ -107,10 +109,18 @@
                 <!-- <button class="wide-button" onclick="openModal('modal-change-avatar', 'modal-title-change-avatar')">
                   change this avatar
                 </button> -->
-                <button 
+                <!-- <button 
                   class="wide-button open-modal-btn" 
                   data-section="modal-change-avatar"
                   data-title="modal-title-change-avatar"
+                  >
+                  change this avatar
+                </button> -->
+                <button 
+                  class="wide-button edit-change-avatar-button" 
+                  data-section="modal-change-avatar-user"
+                  data-title="modal-title-change-avatar-user"
+                  data-user-id="<%= currentUser.id %>"
                   >
                   change this avatar
                 </button>

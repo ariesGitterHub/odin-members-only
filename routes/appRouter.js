@@ -1,9 +1,10 @@
 const { Router } = require("express");
 const express = require("express");
-const permissions = require("../utils/permissions");
+const { requireRole } = require("../utils/permissions");
 // const bcrypt = require("bcryptjs");
 
 const {
+  getCurrentUser,
   getHome,
   getSignUp,
   postSignUp,
@@ -25,7 +26,7 @@ const {
 } = require("../controllers/appControllers");
 
 const appRouter = Router();
-
+appRouter.get("/current-user", getCurrentUser);
 appRouter.get("/", getHome);
 appRouter.get("/sign-up", getSignUp);
 appRouter.post("/sign-up", postSignUp);
@@ -41,7 +42,7 @@ appRouter.post(
   postLogOut,
 );
 
-appRouter.get("/admin", getAdmin);
+appRouter.get("/admin", requireRole("admin"), getAdmin);
 // Ensure you add the route for this
 // appRouter.get("/user/:id", getUserDetails);
 appRouter.get("/user/:id", getUserDetails);

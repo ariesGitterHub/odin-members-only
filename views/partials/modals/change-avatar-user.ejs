@@ -1,0 +1,67 @@
+<div class="ui-message">
+  <p>
+    Scroll the selection to chose a new avatar, or change avatar color scheme by clicking colors below.
+  </p> 
+</div>
+<div class="element-container-row-center ">
+  <form class="profile-data-form" action="/app/???" method="POST"> 
+    <div class="change-avatar-hide-element element-container-col">
+      <div class="element-container-row-space">
+        <div class="element-container-col">
+          <p class="capitalize">current</p>
+          <span id="current_avatar_user" class="emoji preview-current"></span>        
+        </div>
+        <div class="element-container-col">
+          <p class="capitalize">preview</p>
+          <span id="new_avatar_user" class="emoji preview-new"></span>        
+        </div>
+      </div>
+      <label for="avatar_type_user">
+        avatar (current selection)
+      </label>
+      <input
+        class="emoji"      
+        type="text"
+        name="avatar_type"
+        id="avatar_type_user" 
+        hidden
+      />      
+      <div class="fake-input capitalize" tabindex="0">
+        <p id="avatar-type-text-user"></p>
+      </div>
+      <p class="fake-label">click to select a new avatar below</p>
+      <div id="emoji-panel-user" class="emoji-panel">
+        <div id="emoji-list-user" class="emoji-list"></div>
+      </div>
+      </div>
+      <label for="avatar_color_fg_user">
+        avatar color
+      </label>
+      <input
+        type="color"
+        name="avatar_color_fg"
+        id="avatar_color_fg_user"
+        class="color_picker_fg"
+      />
+      <label for="avatar_color_bg_top_user">
+        background color (top)
+      </label>
+      <input
+        type="color"      
+        name="avatar_color_bg_top"
+        id="avatar_color_bg_top_user"
+      />
+      <label for="avatar_color_bg_bottom_user">
+        background color (bottom)
+      </label>      
+      <input
+        type="color"
+        name="avatar_color_bg_bottom"
+        id="avatar_color_bg_bottom_user"
+      />
+      <div class="button-container">
+        <button class="wide-button" type="submit">submit avatar changes</button>
+      </div> 
+    </form> 
+  </div>
+</div>

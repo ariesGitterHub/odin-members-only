@@ -1,9 +1,10 @@
 // 0. FIRST!
 require("dotenv").config(); // Load environment variables
-require('./config/passport');  // This initializes the Passport strategies
+require("./config/passport"); // This initializes the Passport strategies
 // 1. Imports at the top
 const express = require("express");
 const path = require("node:path");
+const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const passport = require("passport");
 // const { body, validationResult } = require("express-validator");
@@ -63,9 +64,6 @@ app.use(
 //   next();
 // });
 
-
-
-
 // Passport Middleware setup (after session)
 
 app.use(passport.initialize());
@@ -74,7 +72,6 @@ app.use(passport.session());
 // Passport LocalStrategy + serialize/deserialize
 // -- Serialize / Deserialize
 // TODO - HANDLED BY config/passport.js - link to...
-
 
 // NOTE - BELOW IS WRONG USING PASSPORT...
 // app.use((req, res, next) => {
@@ -132,7 +129,6 @@ app.use("/app", appRouter);
 //   });
 // });
 
-
 // Error Handling
 
 // -- 404 - Route not found (This should be placed before the general error handler)
@@ -166,3 +162,9 @@ app.listen(PORT, (error) => {
   }
   console.log(`Listening on port ${PORT}!`);
 });
+
+// async function getHash () {
+// const hashThatPassword = await bcrypt.hash(process.env.ADMIN_FAST_PASSWORD, 12);
+// console.log(hashThatPassword);
+// }
+// getHash();
