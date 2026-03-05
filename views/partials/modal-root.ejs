@@ -18,18 +18,28 @@
     <!-- NEW POST -->
     <div class="modal-section hidden" id="modal-new-post">
       <div class="page-title-modal uppercase">
-        <h1 id="modal-title-new-post">new post by <span class="italic"><%= currentUser.first_name %></span></h1> 
+        <h1 id="modal-title-new-post">
+          new post by <span class="italic"><%= currentUser.first_name %></span>
+        </h1>
       </div>
       <%- include('./modals/new-post.ejs') %>
     </div>
 
     <!-- EDIT PROFILE (USER) -->
-    <div class="modal-section hidden" id="modal-edit-profile-user">
+    <!-- <div class="modal-section hidden" id="modal-edit-profile-user">
       <div class="page-title-modal uppercase">
         <h1 id="modal-title-edit-profile-user">edit your profile</h1>
       </div>
       <%#- include('./modals/edit-profile-user.ejs') %>
-    </div>
+    </div> -->
+
+    <!-- CHANGE AVATAR USER -->
+    <!-- <div class="modal-section hidden" id="modal-change-avatar-user">
+      <div class="page-title-modal uppercase">
+        <h1 id="modal-title-change-avatar-user">Change Your Avatar</h1>
+      </div>
+      <%#- include('./modals/change-avatar.ejs') %>
+    </div> -->
 
     <!-- EDIT PROFILE (ADMIN) -->
     <div class="modal-section hidden" id="modal-edit-profile-admin">
@@ -47,22 +57,5 @@
       <%- include('./modals/create-profile-admin.ejs') %>
     </div>
 
-    <!-- CHANGE AVATAR ADMIN -->
-    <div class="modal-section hidden" id="modal-change-avatar-admin">
-      <div class="page-title-modal uppercase">
-        <h1 id="modal-title-change-avatar-admin">Change Avatar</h1>
-      </div>
-      <%#- include('./modals/change-avatar.ejs') %>
-      <%- include('./modals/change-avatar.ejs') %>
-    </div>
-
-        <!-- CHANGE AVATAR USER -->
-    <div class="modal-section hidden" id="modal-change-avatar-user">
-      <div class="page-title-modal uppercase">
-        <h1 id="modal-title-change-avatar-user">Change Your Avatar</h1>
-      </div>
-      <%- include('./modals/change-avatar.ejs') %>
-      <%#- include('./modals/change-avatar-user.ejs') %>
-    </div>
   </div>
 </div>

@@ -103,21 +103,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // POPULATE MODAL FIELDS (UNIVERSALLY) WITH USER.ID DATA FROM DB...
 
   function populateEditProfileAdmin(user) {
-    document.getElementById("first_name").value = user.first_name;
-    document.getElementById("last_name").value = user.last_name;
-    document.getElementById("verified_by_admin").value = user.verified_by_admin;
-    document.getElementById("permission_status").value = user.permission_status;
-    document.getElementById("upgrade_request").value = user.member_request;
-    document.getElementById("email").value = user.email;
-    document.getElementById("phone").value = user.phone || "";
-    document.getElementById("birthdate").value = user.birthdate;
-    document.getElementById("password").value = user.password_hash;
-    document.getElementById("street_address").value = user.street_address || "";
-    document.getElementById("apt_unit").value = user.apt_unit || "";
-    document.getElementById("city").value = user.city || "";
-    document.getElementById("us_state").value = user.us_state || "";
-    document.getElementById("zip_code").value = user.zip_code || "";
-    document.getElementById("notes").value = user.notes || "";
+    document.getElementById("first-name-edit-profile-admin").value = user.first_name;
+    document.getElementById("last-name-edit-profile-admin").value = user.last_name;
+    document.getElementById("permission-status-edit-profile-admin").value = user.permission_status;
+    document.getElementById("verified-by-admin-edit-profile-admin").value = user.verified_by_admin;
+    document.getElementById("upgrade-request-edit-profile-admin").value = user.member_request;
+    document.getElementById("is-active-edit-profile-admin").value = user.is_active;
+    document.getElementById("email-edit-profile-admin").value = user.email;
+    document.getElementById("phone-edit-profile-admin").value = user.phone || "";
+    document.getElementById("birthdate-edit-profile-admin").value = user.birthdate;
+    document.getElementById("password-edit-profile-admin").value = user.password_hash;
+    document.getElementById("street-address-edit-profile-admin").value = user.street_address || "";
+    document.getElementById("apt-unit-edit-profile-admin").value = user.apt_unit || "";
+    document.getElementById("city-edit-profile-admin").value = user.city || "";
+    document.getElementById("us-state-edit-profile-admin").value = user.us_state || "";
+    document.getElementById("zip-code-edit-profile-admin").value = user.zip_code || "";
+    document.getElementById("avatar-type-edit-profile-admin").value = user.avatar_type || "";
+    document.getElementById("avatar-color-fg-edit-profile-admin").value = user.avatar_color_fg || "";
+    document.getElementById("avatar-color-bg-top-edit-profile-admin").value = user.avatar_color_bg_top || "";
+    document.getElementById("avatar-color-bg-bottom-edit-profile-admin").value = user.avatar_color_bg_bottom || "";
+    document.getElementById("notes-edit-profile-admin").value = user.notes || "";
   }
 
   // async function populateChangeAvatar(user) {
@@ -192,22 +197,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const avatarColorBgBottom = rootStyles
       .getPropertyValue("--avatar-color-bg-bottom")
       .trim();
-    document.getElementById("avatar_type").value = user.avatar_type || "";
-    document.getElementById("avatar_color_fg").value =
-      user.avatar_color_fg || avatarColorFg;
-    document.getElementById("avatar_color_bg_top").value =
-      user.avatar_color_bg_top || avatarColorBgTop;
-    document.getElementById("avatar_color_bg_bottom").value =
-      user.avatar_color_bg_bottom || avatarColorBgBottom;
+    document.getElementById("avatar-type-change-avatar").value = user.avatar_type || "";
+    document.getElementById("avatar-color-fg-change-avatar").value = user.avatar_color_fg || avatarColorFg;
+    document.getElementById("avatar-color-bg-top-change-avatar").value = user.avatar_color_bg_top || avatarColorBgTop;
+    document.getElementById("avatar-color-bg-bottom-change-avatar").value = user.avatar_color_bg_bottom || avatarColorBgBottom;
 
-    const currentAvatarElement = document.getElementById("current_avatar");
+    const currentAvatarElement = document.getElementById("current-avatar-change-avatar");
     if (currentAvatarElement) {
       currentAvatarElement.textContent = user.avatar_type || "";
       currentAvatarElement.style.color = user.avatar_color_fg || avatarColorFg;
       currentAvatarElement.style.background = `linear-gradient(5deg, ${user.avatar_color_bg_bottom || avatarColorBgTop}, ${user.avatar_color_bg_top || avatarColorBgBottom})`;
     }
 
-    const avatarTypeText = document.getElementById("avatar-type-text");
+    const avatarTypeText = document.getElementById("avatar-type-text-change-avatar");
     if (avatarTypeText) {
       avatarTypeText.textContent = await findInitialEmojiText(user.avatar_type);
     }
@@ -270,7 +272,6 @@ document.addEventListener("DOMContentLoaded", () => {
   async function handleModalOpen(userId, sectionId, titleId) {
     try {
       console.log("userId:", userId); // Debugging line
-      console.log("userId:", userId); // Debugging line
 
       // Check if userId exists (not null or undefined)
       if (userId != null && userId !== "") {
@@ -283,16 +284,17 @@ document.addEventListener("DOMContentLoaded", () => {
           openModal(sectionId, titleId);
         }
 
-        if (sectionId === "modal-change-avatar-admin") {
-          populateChangeAvatar(user);
-          openModal(sectionId, titleId);
-          initChangeAvatarModal();
-        }
+        // if (sectionId === "modal-change-avatar-admin") {
+        //   populateChangeAvatar(user);
+        //   openModal(sectionId, titleId);
+        //   initChangeAvatarModal();
+        // }
 
         if (sectionId === "modal-change-avatar-user") {
           populateChangeAvatar(currentUser);
           openModal(sectionId, titleId);
           initChangeAvatarModal();
+          console.log("Firing?")
         }
       } else {
         // If userId is not provided (for "create profile" modal or others)
@@ -352,13 +354,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function initChangeAvatarModal() {
-    const avatarInput = document.getElementById("avatar_type");
-    const avatarColorPickerFg = document.getElementById("avatar_color_fg");
-    const avatarColorPickerBgt = document.getElementById("avatar_color_bg_top");
-    const avatarColorPickerBgb = document.getElementById(
-      "avatar_color_bg_bottom",
-    );
-    const newAvatarElement = document.getElementById("new_avatar");
+    const avatarInput = document.getElementById("avatar-type-change-avatar");
+    const avatarColorPickerFg = document.getElementById("avatar-color-fg-change-avatar");
+    const avatarColorPickerBgt = document.getElementById("avatar-color-bg-top-change-avatar");
+    const avatarColorPickerBgb = document.getElementById("avatar-color-bg-bottom-change-avatar");
+    const newAvatarElement = document.getElementById("new-avatar-change-avatar");
 
     // Exit safely if modal isn't present
     if (
@@ -435,8 +435,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function emojiPickerDiv() {
-    const emojiPanel = document.getElementById("emoji-panel");
-    const emojiList = document.getElementById("emoji-list");
+    const emojiPanel = document.getElementById("emoji-panel-change-avatar");
+    const emojiList = document.getElementById("emoji-list-change-avatar");
 
     if (!emojiPanel || !emojiList) return;
 
@@ -484,9 +484,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedEmoji = e.target.value;
         const selectedText = e.target.dataset.text; // Access the data-text attribute
         // Perform the necessary action with selectedEmoji, e.g., updating the preview
-        const avatarTypeText = document.getElementById("avatar-type-text");
-        const avatarInput = document.getElementById("avatar_type");
-        const newAvatarElement = document.getElementById("new_avatar");
+        const avatarTypeText = document.getElementById("avatar-type-text-change-avatar");
+        const avatarInput = document.getElementById("avatar-type-change-avatar");
+        const newAvatarElement = document.getElementById("new-avatar-change-avatar");
 
         avatarTypeText.textContent = selectedText; // Set selected text
         avatarInput.value = selectedEmoji; // Set emoji value
@@ -496,6 +496,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //Dynamically set maximum number of characters for a new post (use db to hold values? Interesting idea...)
+
   const newPostMessageBody = document.getElementById("new-post-message-body");
   const newPostMaxCharCount = document.getElementById(
     "new-post-max-char-count",

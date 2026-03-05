@@ -34,6 +34,7 @@
     color: var(--off-red);
 }
 
+
 /* -- ???? Assigned via permission_status, must be able to override other css, put last in misc.css ???? */
 
 
@@ -76,6 +77,14 @@
 .upgrade-me {
   background-color: var(--member-request-alert);
 }
+
+/* .col {
+  width:6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+} */
 
 input[type="button"],
 input[type="submit"],

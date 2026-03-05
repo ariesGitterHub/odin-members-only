@@ -206,11 +206,11 @@ button:hover,
   display: flex;
 } */
 
-.emoji-panel {
+.emoji-panel-change-avatar {
   width: 100%;
 }
 
-.emoji-list {
+.emoji-list-change-avatar {
   height: 230px;
   width: 100%;
   display: flex;
@@ -342,26 +342,33 @@ button:hover,
 .become-member-form,
 .update-profile-form,
 .change-avatar-form,
+.edit-profile-admin-form,
+.create-profile-admin-form,
 .profile-data-form {
   width: 100%;
   margin: 0.25rem 0;
 }
+
+/* .edit-profile-admin-form input,
+.create-profile-admin-form input {
+width: fit-content;
+} */
 
 .sign-up-form,
 .log-in-form,
 .become-member-form {
   color: var(--off-black);
 }
-.change-avatar-form {
+/* .change-avatar-form {
   color: var(--off-white);
-}
+} */
 
 label, .fake-label {
   width: 100%;
   text-transform: capitalize;
 }
 
-input, .fake-input, textarea {
+input, .fake-input, textarea, select {
   width: 100%;
   /* background-color: var(--white); */
   border: 0.125rem solid var(--off-gray);
@@ -376,6 +383,10 @@ input, .fake-input, textarea {
 /* .fake-input:hover {
   background-color: var(--lt-red);
 } */
+input, .fake-button, select {
+  height: 1.65rem;
+}
+
 input, textarea{
 background-color: var(--white);
 }
@@ -391,6 +402,10 @@ input::placeholder {
 
 textarea {
   height: 200px;
+}
+
+#notes-edit-profile-admin, #notes-create-profile-admin {
+  height: 75px;
 }
 
 /* .input-height-special {

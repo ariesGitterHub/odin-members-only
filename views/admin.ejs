@@ -45,13 +45,6 @@
 
           <div class="admin-quick-view-bar">
             <span>
-            <% if (user.verified_by_admin === true) { %>
-              <p class="emoji green">✔</p> 
-            <% } else { %>
-              <p class="emoji red">❌</p>  
-            <% } %>
-            </span>
-            <span>
               <% if (user.permission_status === "admin") { %>
                 <p class="emoji">🗝</p>
               <% } else if (user.permission_status === "member") { %>
@@ -60,6 +53,13 @@
                 <p class="emoji">👤</p>  
               <% } %>
             </span>
+            <span>
+            <% if (user.verified_by_admin === true) { %>
+              <p class="emoji green">✔</p> 
+            <% } else { %>
+              <p class="emoji red">❌</p>  
+            <% } %>
+            </span>
             <% if (user.message_count) { %>
               <span class="black">
                 <p class="emoji"><%= user.message_count %></p>
@@ -67,8 +67,8 @@
             <% } %>
             <% if (user.birthdate) { %>
               <span class="black">
-                <p class="emoji"><%= user.zodiacSign %></p>
-                (<p class="emoji"><%= user.realZodiacSign %></p>)
+                <p class="emoji red"><%= user.zodiacSign %></p>
+                (<p class="emoji green"><%= user.realZodiacSign %></p>)
               </span>
             <% } %>
             <% if (user.birthdate) { %>
@@ -84,17 +84,21 @@
                 <dd class="capitalize bold"><%= user.first_name %> <%= user.last_name %></dd>
               </div>
               <div class="app-data">
+                <dt class="capitalize">status</dt>
+                <dd class="bold"><%= user.permission_status %></dd>
+              </div>
+              <div class="app-data">
                 <dt class="capitalize">verified</dt>
                 <dd class="bold"><%= user.verified_by_admin %></dd>
               </div>
               <!-- TODO - ??? if status === member, then show; else hidden -->
               <div class="app-data">
-                <dt class="capitalize">status</dt>
-                <dd class="bold"><%= user.permission_status %></dd>
-              </div>
-              <div class="app-data">
                 <dt class="capitalize">upgrade</dt>
                 <dd class="bold">member request = <%= user.member_request %></dd>
+              </div>
+              <div class="app-data">
+                <dt class="capitalize">activity</dt>
+                <dd class="bold">is active = <%= user.is_active%></dd>
               </div>
               <div class="neighbor-data">
                 <dt class="capitalize">email</dt>
@@ -160,6 +164,10 @@
                 <dt class="capitalize">updated</dt>
                 <dd class="bold"><%= user.formattedUpdateDate %></dd>
               </div>
+              <div class="app-data">
+                <dt class="capitalize">last log</dt>
+                <dd class="bold"><%#= user.formattedUpdateDate %> keep?</dd>
+              </div>
             </dl>
             <div class="button-container-col">
               <% if (user.permission_status !== "admin") { %>
@@ -179,14 +187,14 @@
                   data-user-id="<%= user.id %>">
                   update this profile
                 </button>
-                <button 
+                <!-- <button 
                   class="wide-button edit-change-avatar-button" 
                   data-section="modal-change-avatar-admin"
                   data-title="modal-title-change-avatar-admin"
-                  data-user-id="<%= user.id %>"
+                  data-user-id="<%#= user.id %>"
                   >
                   change this avatar
-                </button>
+                </button> -->
             </div>
           </div>
           <br>

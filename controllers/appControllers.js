@@ -41,12 +41,38 @@ const {
 // currentUser Info
 // appController.js
 
+// async function getCurrentUser(req, res, next) {
+//   try {
+//     if (req.user) {
+//       res.json(req.user); // optionally pick only needed fields
+//     } else {
+//       res.json(null);
+//     }
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
 async function getCurrentUser(req, res, next) {
   try {
     if (req.user) {
-      res.json(req.user); // optionally pick only needed fields
+      // Only send safe fields
+      const safeUser = {
+        id: req.user.id,
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        email: req.user.email,
+        permission_status: req.user.permission_status,
+        avatarLetter: req.user.avatarLetter,
+        avatar_type: req.user.avatar_type,
+        avatar_color_fg: req.user.avatar_color_fg,
+        avatar_color_bg_top: req.user.avatar_color_bg_top,
+        avatar_color_bg_bottom: req.user.avatar_color_bg_bottom,
+      };
+
+      res.json(safeUser);
     } else {
-      res.json(null);
+      res.json(null); // or res.status(401).json({ user: null })
     }
   } catch (err) {
     next(err);
