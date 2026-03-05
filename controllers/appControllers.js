@@ -311,18 +311,6 @@ async function getYourProfile(req, res, next) {
   }
 }
 
-async function getMemberDirectory(req, res, next) {
-  try {
-    res.render("member-directory", {
-      title: "Member Directory",
-      user: req.user,
-      errors: [],
-    });
-  } catch (err) {
-    next(err);
-  }
-}
-
 async function getUpdateProfile(req, res, next) {
   try {
     res.render("update-profile", {
@@ -481,6 +469,25 @@ async function getTopicPage(req, res, next) {
 
 // -- Log-out
 // REMINDER - Don't use async or try/catch — below is the correct pattern.
+
+async function getMemberDirectory(req, res, next) {
+  try {
+    const users = await getUsers();
+
+    const usersWithAvatars = addAvatarFields(
+      users,
+      avatarTypeDefault,
+    );
+
+    res.render("member-directory", {
+      title: "Admin",
+      users: usersWithAvatars,
+      errors: [],
+    });
+  } catch (err) {
+    next(err);
+  }
+}
 
 async function getAdmin(req, res, next) {
   try {

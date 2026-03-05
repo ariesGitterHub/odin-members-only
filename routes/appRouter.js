@@ -52,9 +52,11 @@ appRouter.get("/message-boards", getMessageBoards);
 appRouter.get("/message-boards/:slug", getTopicPage);
 
 appRouter.get("/your-profile", getYourProfile);
+appRouter.get("/member-directory", requireRole("member"), getMemberDirectory);
+
 // appRouter.get("/update-profile", getUpdateProfile);
 // appRouter.get("/change-avatar", getChangeAvatar);
-// appRouter.get("/member-directory", getMemberDirectory);
+// 
 // appRouter.get("/become-member", getBecomeMember);
 
 // appRouter.get("/log-out", postLogOut);

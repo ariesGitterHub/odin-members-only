@@ -276,12 +276,17 @@ const cnyTable = [
   { year: 2100, start: "2100-02-09" },
 ];
 
+// True modulo helper (handles negatives)
+function mod(n, m) {
+  return ((n % m) + m) % m;
+}
+
 function getChineseZodiacFull(birthdate) {
   const birth = new Date(birthdate);
   const birthYear = birth.getFullYear();
 
   // Lookup Chinese New Year for birth year
-  const thisYearCNY = cnyTable.find(e => e.year === birthYear);
+  const thisYearCNY = cnyTable.find((e) => e.year === birthYear);
   if (!thisYearCNY) {
     throw new Error(`CNY info not found for year ${birthYear}`);
   }
@@ -289,28 +294,35 @@ function getChineseZodiacFull(birthdate) {
   const cnyDate = new Date(thisYearCNY.start);
 
   // Determine effective zodiac year
-  const zodiacYear = birth < cnyDate
-    ? birthYear - 1   // born before CNY -> previous lunar year
-    : birthYear;
+  const zodiacYear =
+    birth < cnyDate
+      ? birthYear - 1 // born before CNY -> previous lunar year
+      : birthYear;
 
   // Sexagenary cycle anchor:
   // 1984 is known as a Wood Rat year (cycle start)
   const cycleBase = 1984;
 
   // Position in 60‑year cycle
-  const cycleIndex = (zodiacYear - cycleBase + 60) % 60;
+  // const cycleIndex = (zodiacYear - cycleBase + 60) % 60;
+  // Position in 60-year cycle (true modulo)
+  const cycleIndex = mod(zodiacYear - cycleBase, 60);
 
   const animal = animals[cycleIndex % 12];
-  const element = elements[Math.floor((cycleIndex % 10) / 2)];
+  // const element = elements[Math.floor((cycleIndex % 10) / 2)];
+  const element = elements[Math.floor(mod(cycleIndex, 10) / 2)];
 
   // return `${element} ${animal}`;
   return `${element}/${animal}`;
 }
 
 // Example usages:
-console.log(getChineseZodiacFull("1935-08-25"));
-// console.log(getChineseZodiacFull("1988-01-30")); // "Earth Rabbit"
-// console.log(getChineseZodiacFull("2000-01-20")); // "Earth Rabbit"
-// console.log(getChineseZodiacFull("2000-02-10")); // "Metal Dragon"
+// console.log(getChineseZodiacFull("1910-01-01")); // This should fail b/c there is no 1909 (1910 - 1 = 1909)
+// console.log(getChineseZodiacFull("1911-01-01"));
+// console.log(getChineseZodiacFull("1924-01-01"));
+// console.log(getChineseZodiacFull("1925-04-30"));
+// console.log(getChineseZodiacFull("2000-01-20"));
+// console.log(getChineseZodiacFull("2000-02-10"));
+
 
 module.exports = { getZodiacSign, getRealZodiacSign, getChineseZodiacFull };

@@ -13,7 +13,7 @@ VALUES (
   'admin@can.org',
   '$2b$12$RF0Zoj3moNJOziNwh2bSa.DxlWqUSn0QZNnhYPDjCHjWyzagrsHD6',
   'CAN Admin',
-  'Prime',
+  '#1',
   '1974-04-20',
   'admin',
   true

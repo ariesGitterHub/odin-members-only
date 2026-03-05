@@ -157,6 +157,17 @@ main {
   justify-content: center;
 }
 
+.element-container-row-names {
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+  flex-wrap: nowrap;
+  gap: 0.25rem;
+  margin: 0;
+}
+
 
 
 /* -- Button Containers */

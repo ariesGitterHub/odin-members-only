@@ -90,6 +90,10 @@ button:hover,
   justify-content: center;
   margin-bottom: 0.5rem;
 }
+.avatar-image-container-wide2 {
+  width: 100%;
+
+}
 
 .avatar-image-circle {
   display: flex;
@@ -342,6 +346,7 @@ button:hover,
 .become-member-form,
 .update-profile-form,
 .change-avatar-form,
+.edit-profile-user-form,
 .edit-profile-admin-form,
 .create-profile-admin-form,
 .new-post-form,

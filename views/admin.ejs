@@ -35,12 +35,13 @@
                 <span class="emoji avatar-emoji-small-size" role="img" aria-label="avatar image">
                   <%= user.avatarLetter %>
                 </span>
-              </div>            
+              </div>   
+              <h2 class="profile-name italic"><%= user.first_name %> <%= user.last_name %></h2>         
             </div>
-            <div class="element-container-col italic">
-              <h2 class="profile-name"><%= user.first_name %></h2>
-              <h2 class="profile-name"><%= user.last_name %></h2>
-            </div>
+            <!-- <div class="element-container-col italic">
+              <h2 class="profile-name"><%#= user.first_name %></h2>
+              <h2 class="profile-name"><%#= user.last_name %></h2>
+            </div> -->
           </div>
 
           <div class="admin-quick-view-bar">
@@ -94,11 +95,11 @@
               <!-- TODO - ??? if status === member, then show; else hidden -->
               <div class="app-data">
                 <dt class="capitalize">upgrade</dt>
-                <dd class="bold">member request = <%= user.member_request %></dd>
+                <dd class="bold">member request (<%= user.member_request %>)</dd>
               </div>
               <div class="app-data">
                 <dt class="capitalize">activity</dt>
-                <dd class="bold">is active = <%= user.is_active%></dd>
+                <dd class="bold">active status (<%= user.is_active%>)</dd>
               </div>
               <div class="neighbor-data">
                 <dt class="capitalize">email</dt>

@@ -125,6 +125,20 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("notes-edit-profile-admin").value = user.notes || "";
   }
 
+    function populateEditProfileUser(user) {
+    document.getElementById("first-name-edit-profile-user").value = user.first_name;
+    document.getElementById("last-name-edit-profile-user").value = user.last_name;
+    document.getElementById("email-edit-profile-user").value = user.email;
+    document.getElementById("phone-edit-profile-user").value = user.phone || "";
+    document.getElementById("birthdate-edit-profile-user").value = user.birthdate;
+    document.getElementById("password-edit-profile-user").value = user.password_hash;
+    document.getElementById("street-address-edit-profile-user").value = user.street_address || "";
+    document.getElementById("apt-unit-edit-profile-user").value = user.apt_unit || "";
+    document.getElementById("city-edit-profile-user").value = user.city || "";
+    document.getElementById("us-state-edit-profile-user").value = user.us_state || "";
+    document.getElementById("zip-code-edit-profile-user").value = user.zip_code || "";
+  }
+
   // async function populateChangeAvatar(user) {
   //   //Hide fields that are not mean to be used by a "guest"
   //   if (user.permission_status === "guest") {
@@ -281,6 +295,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (sectionId === "modal-edit-profile-admin") {
           populateEditProfileAdmin(user);
+          openModal(sectionId, titleId);
+        }
+
+        if (sectionId === "modal-edit-profile-user") {
+          populateEditProfileUser(currentUser);
           openModal(sectionId, titleId);
         }
 
