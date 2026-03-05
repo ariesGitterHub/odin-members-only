@@ -78,6 +78,7 @@
                 <% } %>
                 <!-- NOTE - below should be hidden if user has member status! -->
                 <% if (currentUser.permission_status === "guest" && currentUser.member_request === false) { %>
+                <!-- <%# if (currentUser.permission_status === "admin" && currentUser.member_request === true) { %> -->
                   <!-- <button class="wide-button">upgrade to member</button> -->
                   <!-- <button class="wide-button" 
                   onclick="openModal('modal-become-member', 'modal-title-become-member')">
@@ -86,7 +87,8 @@
                   <button 
                     class="wide-button open-modal-btn" 
                     data-section="modal-become-member" 
-                    data-title="modal-title-become-member">
+                    data-title="modal-title-become-member"
+                    data-user-id="<%= currentUser.id %>">
                     upgrade to member
                   </button>
                 <% } %>

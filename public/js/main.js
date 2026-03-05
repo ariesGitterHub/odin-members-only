@@ -290,12 +290,20 @@ document.addEventListener("DOMContentLoaded", () => {
         //   initChangeAvatarModal();
         // }
 
+        if (sectionId === "modal-become-member") {
+          populateChangeAvatar(currentUser);
+          openModal(sectionId, titleId);
+          initChangeAvatarModal();
+          console.log("modal-become-member");
+        }
+
         if (sectionId === "modal-change-avatar-user") {
           populateChangeAvatar(currentUser);
           openModal(sectionId, titleId);
           initChangeAvatarModal();
-          console.log("Firing?")
+          console.log("modal-change-avatar-use");
         }
+        
       } else {
         // If userId is not provided (for "create profile" modal or others)
         if (sectionId === "modal-create-profile-admin") {

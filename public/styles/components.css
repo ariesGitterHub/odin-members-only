@@ -344,6 +344,7 @@ button:hover,
 .change-avatar-form,
 .edit-profile-admin-form,
 .create-profile-admin-form,
+.new-post-form,
 .profile-data-form {
   width: 100%;
   margin: 0.25rem 0;
