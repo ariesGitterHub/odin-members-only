@@ -1,0 +1,109 @@
+<div class="ui-message">
+  <p>
+    Make changes to the avatar here.
+  </p> 
+</div>
+<div class="element-container-row-center ">
+<!-- <div 
+  class="avatar-image-circle avatar-circle-large" 
+  style="
+    --avatar-color-fg: <%#= user.avatar_color_fg || 'var(--off-black)' %>;
+    --avatar-color-bg-top: <%#= user.avatar_color_bg_top || 'var(--off-white)' %>;
+    --avatar-color-bg-bottom: <%#= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
+  ">
+  <span class="emoji avatar-emoji-large-size" role="img" aria-label="avatar image">
+    <%#= user.avatarLetter %>
+    <%#= users[number].avatar_type %>
+  </span>
+</div>      -->
+    
+  </div>
+
+    <form class="profile-data-form" action="/app/???" method="POST"> 
+
+    <!-- <label class="change-avatar-hide-label" for="avatar_type">
+      avatar emoji
+    </label>
+      <input
+        class="change-avatar-hide-input"      
+        type="text"
+        name="avatar_type"
+        id="avatar_type"      
+      /> -->
+      <div class="change-avatar-hide-element element-container-col">
+        <div class="element-container-row-space">
+          <div class="element-container-col">
+            <p class="capitalize">current</p>
+            <span id="current_avatar" class="emoji preview-current"></span>        
+          </div>
+          <div class="element-container-col">
+            <p class="capitalize">preview</p>
+            <span id="new_avatar" class="emoji preview-new"></span>        
+          </div>
+        </div>
+        <label for="avatar_type">
+          avatar emoji picker
+        </label>
+          <input
+            class="emoji"      
+            type="text"
+            name="avatar_type"
+            id="avatar_type" 
+          />
+          <!-- <div id="emoji_dropdown" class="emoji emoji-dropdown"></div> -->
+
+          <!-- <label for="avatar_type">
+            avatar emoji picker
+          </label>
+
+          <div class="emoji-picker-wrapper">
+            <input
+              class="emoji"      
+              type="text"
+              name="avatar_type"
+              id="avatar_type" 
+              autocomplete="off"
+            />
+            <div id="emoji_dropdown" class="emoji-dropdown">
+
+            </div> -->
+          </div>
+      </div>
+
+
+
+
+
+
+    <label for="avatar_color_fg">
+      avatar color
+    </label>
+      <input
+        type="color"
+        name="avatar_color_fg"
+        id="avatar_color_fg"
+        class="color_picker_fg"
+      />
+    <label for="avatar_color_bg_top">
+      background color (top)
+    </label>
+      <input
+        type="color"      
+        name="avatar_color_bg_top"
+        id="avatar_color_bg_top"
+      />
+    <label for="avatar_color_bg_bottom">
+      background color (bottom)
+    </label>      
+      <input
+        type="color"
+        name="avatar_color_bg_bottom"
+        id="avatar_color_bg_bottom"
+      />
+    <div class="button-container">
+      <!-- <a class="fake-button" href="/app/your-profile">cancel</a> -->
+      <button class="wide-button" type="submit">submit avatar changes</button>
+    </div> 
+  </form> 
+  </div>
+</div>

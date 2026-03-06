@@ -1,19 +1,16 @@
-/* A LINKS */
-
-.app-link {
+/* A element classes for text-based links */
+.text-link {
   color: var(--off-red);
   font-weight: 600;
 }
 
-.app-link:link,
-.app-link:visited,
-.app-link:hover {
+.text-link:link,
+.text-link:visited,
+.text-link:hover {
   color: var(--off-red); /* mouse over */
 }
 
-
-/* BUTTONS */
-
+/* A and BUTTON element */
 button,
 .fake-button {
   all: unset; /* nukes browser defaults */
@@ -47,21 +44,15 @@ button:hover,
   background-color: var(--off-red);
   box-shadow: none;
   color: var(--off-white);
-  /* transform: scale(1.03); */
 }
 
 .wide-button {
   width: 95%;
 }
 
-.nav-button {
-  height: 2rem;
-  width: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  line-height: 1;
+.fake-button.nav-button {
+  height: var(--nav-button-h-w);
+  width: var(--nav-button-h-w);
   margin: 0.25rem 0;
   padding: 0.25rem;
 }
@@ -77,298 +68,175 @@ button:hover,
   width: fit-content;
 }
 
-/* .emoji-picker-button {
-  width: fit-content;
-} */
+.close-button {
+  height: 1.5rem;
+  width: 1.5rem;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background-color: transparent;
+  border-radius: var(--border-radius-circle);
+  box-shadow: var(--box-shadow-gray);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.25rem;
+}
 
-/* EMOJIS */
 
-.avatar-image-container-wide {
+/* DIV containers */
+
+/* -- button based */
+.button-container-col {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.button-container-row-space-evenly {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.button-container-row {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.5rem;
+  gap: 0.5rem;
 }
-.avatar-image-container-wide2 {
+
+/* --column-based */
+.element-container-col-default {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.element-container-col-start-center {
+  /* width: 100%; */
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  /* gap: 0.25rem; */
+}
+
+/* --row-based */
+.element-container-row {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.element-container-row-default {
   width: 100%;
-
-}
-
-.avatar-image-circle {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* TODO - make changes */
+
+.element-container-row-space-evenly {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.element-container-row-space-between {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+}
+
+.element-container-profile-block {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 0.25rem;
+  background-color: var(--lt-red);
+  border: 0.125rem solid var(--off-gray);
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  margin: 0.25rem 0;
+  padding: 0.25rem;
+  text-transform: uppercase;
+}
+
+.element-container-row-space-between .emoji {
+  width: 2.75rem;
+  text-align: center;
+}
+
+/* Emoji/avatar related */
+.avatar-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-background {
   background: linear-gradient(
     05deg,
     var(--avatar-color-bg-bottom),
     var(--avatar-color-bg-top)
   );
-  border-radius: 50%;
   box-shadow: var(--box-shadow-gray);
-  color: var(--avatar-color-fg);
-  margin-right: 0.5rem;
-  padding: 2rem;
+  color: var(--avatar-color-fg);/
 }
 
-/* .avatar-circle-tiny {
-  height: 3.75rem;
-  width: 3.75rem;
-} */
-
-.avatar-circle-small {
+.avatar-container-size-small {
   height: var(--avatar-circle-small-h-w);
   width: var(--avatar-circle-small-h-w);
 }
 
-.avatar-circle-large {
+.avatar-container-size-large {
   height: var(--avatar-circle-large-h-w);
   width: var(--avatar-circle-large-h-w);
 }
 
-.avatar-emoji-nav-size {
+.emoji-nav-size {
   font-size: var(--avatar-emoji-nav-size);
 }
 
-.avatar-emoji-small-size {
+.emoji-size-small {
   font-size: var(--avatar-emoji-small-size);
 }
 
-.avatar-emoji-large-size {
+.emoji-size-large {
   font-size: var(--avatar-emoji-large-size);
 }
 
-.avatar-circle-small:hover, .avatar-circle-large:hover {
-    transform: scale(1.125);
+.emoji-size-largest {
+  font-size: var(--avatar-emoji-largest-size);
 }
 
-/* .font-weight-100 {
-  font-weight: 100;
-} */
+.emoji-size-small:hover {
+  transform: scale(1.125);
+}
+.emoji-size-large:hover {
+  transform: scale(0.875);
+}
 
 .emoji {
-  /* display: inline-block; */
   font-family: var(--font-emoji) !important;
-  /* font-size: 2.5rem; */
-  font-weight: 100;
-  /* line-height: 1; */
-  /* margin: 0.75rem; */
-  /* vertical-align: middle; */
-}
-
-.emoji.reversed {
-    filter: grayscale(50%) contrast(100%);
-}
-
-/* .emoji:hover {
-  transform: scale(1.125);
-} */
-
-.emoji2 {
-  font-family: var(--font-emoji2);
-  font-weight: 100;
-}
-.emoji3 {
-  font-family: var(--font-emoji3);
   font-weight: 100;
 }
 
-.emoji-like {
-  width: fit-content;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--dk-red);
-  font-family: var(--font-emoji);
-  /* vertical-align: middle; */
-}
-
-/* .emoji-picker-wrapper {
-  position: relative;
-}
-
-.emoji-text-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 300px;
-  max-height: 200px;
-  overflow-y: auto;
-  background: var(--white);
-  border: 0.125 solid var(--off-gray);
-  display: none;
-  z-index: 1000;
-}
-
-.emoji-text-dropdown-content {
-  padding: 0.5rem;
-  cursor: pointer;
-}
-
-.emoji-text-dropdown-content:hover {
-  background: var(--lt-red);
-  display: flex;
-} */
-
-.emoji-panel-change-avatar {
-  width: 100%;
-}
-
-.emoji-list-change-avatar {
-  height: 230px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: space-evenly;
-  background-color: var(--white);
-    border: 0.125rem solid var(--off-gray);
-    /* border-radius: 0.125rem; */
-
-  box-shadow: 0 4px 8px var(--off-black-trans);
-  margin-bottom: 0.5rem;
-  /* padding: 0.25rem; */
-   overflow-y: auto;
-}
-
-.emoji-option {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  color: var(--off-black);
-  margin-bottom: 0.5rem; /* Adds space between options */
-  margin-left: 0.25rem;
-  padding: 0.5rem;
-}
-
-/* Hide the default radio button */
-.emoji-option input[type="radio"] {
-  display: none;
-}
-
-/* Custom radio button styling */
-.emoji-option label {
-  display: flex;
-  align-items: center;
-  /* font-family: Arial, sans-serif; */
-  /* font-size: 2rem; */
-  /* color: #333; */
-  transition: color 0.3s;
-}
-
-/* Emoji styling */
-.emoji-option .emoji {
-    cursor: pointer;
-  font-size: 2rem; /* Larger emoji */
-  margin-right: 0.5rem; /* Adds space between the emoji and the text */
-  transition: transform 0.2s ease-in-out;
-}
-
-/* Text styling */
-.emoji-option p {
-  color: var(--off-black); /* Lighter color for text */
-    cursor: pointer;
-  font-size: 1.125rem; /* Slightly smaller font for the text */
-  
-  margin: 0; /* Remove default margin */
-}
-
-.emoji-option:hover {
-  background-color: var(--off-white);
-  border-radius: 0.125rem;
-  
-  /* padding: 0.25rem; */
-}
-
-/* Hover effect: changes emoji size and label text color */
-.emoji-option:hover .emoji {
-  transform: scale(1.2); /* Slightly enlarge the emoji */
-}
-
-.emoji-option:hover label {
-  color: var(--off-red); /* Blue color on hover for the label */
-}
-
-/* Checked state - when the radio button is selected */
-.emoji-option input[type="radio"]:checked + label .emoji {
-  transform: scale(1.2); /* Slightly enlarge the emoji when selected */
-  color: var(--dk-red); /* Change emoji color when selected */
-}
-
-.emoji-option input[type="radio"]:checked + label p {
-  color: var(--black);
-  font-weight: bold; /* Make the text bold when the radio button is selected */
-}
-
-
-
-
-
-
-/* Hide the dropdown by default */
-/* #emoji-text-dropdown.hidden {
-  display: none;
-} */
-
-/* Style for dropdown options */
-/* .emoji-option {
-  padding: 8px 16px;
-  cursor: pointer;
-} */
-
-/* .emoji-option:hover {
-  background-color: #ddd;
-} */
-
-/* #emoji-text-dropdown {
-  max-height: 200px;
-  background-color: var(--white);
-  border: .0125rem solid var(--off-gray);
-  box-shadow: 0 4px 8px var(--off-black-trans);  
-  overflow-y: auto;
-  padding: 0.25rem;
-}
-
-.emoji-option {
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-}
-
-.emoji-option:hover {
-  background-color: var(--lt-red);  /* Hover effect for better interaction
-} */
-
-/* TODO - FIX ALL FORMS and COALESCE */
-/* FORMS */
-
-.sign-up-form,
-.log-in-form,
-.become-member-form,
-.update-profile-form,
-.change-avatar-form,
-.edit-profile-user-form,
-.edit-profile-admin-form,
-.create-profile-admin-form,
-.new-post-form,
-.profile-data-form {
-  width: 100%;
-  margin: 0.25rem 0;
-}
-
-/* .edit-profile-admin-form input,
-.create-profile-admin-form input {
-width: fit-content;
-} */
-
-.sign-up-form,
-.log-in-form,
-.become-member-form {
-  color: var(--off-black);
-}
-/* .change-avatar-form {
-  color: var(--off-white);
-} */
-
+/* FORM related */
 label, .fake-label {
   width: 100%;
   text-transform: capitalize;
@@ -376,19 +244,12 @@ label, .fake-label {
 
 input, .fake-input, textarea, select {
   width: 100%;
-  /* background-color: var(--white); */
   border: 0.125rem solid var(--off-gray);
-  /* border-radius: 0.125rem; */
-    font-weight: 600;
-
+  font-weight: 600;
   margin-bottom: 0.25rem;
   padding: 0.125rem;
 }
 
-
-/* .fake-input:hover {
-  background-color: var(--lt-red);
-} */
 input, .fake-button, select {
   height: 1.65rem;
 }
@@ -400,8 +261,8 @@ background-color: var(--white);
 input::placeholder {
   text-transform: capitalize;
 }
+
 .fake-input {
-  /* background-color: var(--lt-red); */
   background-color: var(--off-white);
   border-radius: 0.5rem;
 }
@@ -414,49 +275,7 @@ textarea {
   height: 75px;
 }
 
-/* .input-height-special {
-  height: 3rem;
-} */
-
-/* .emoji-input-width {
-  height: 3rem;
-  width: 5.35rem;
-  color: var(--off-black);
-  font-family: var(--font-emoji);
-  font-size: 1.75rem;
-  text-align: center;
-} */
-
-.preview-current, .preview-new {
-  height: 7rem;
-  width: 7rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 0.125rem solid var(--off-gray);
-  border-radius: 50%;
-  font-family: var(--font-emoji);
-  font-size: 4.55rem;
-  padding: 2rem;
-  /* text-align: center; */
-}
-
-fieldset {
-  padding: 0.5rem;
-}
-
-fieldset input {
-  width: 100%;
-  /* margin-left: 0.5rem; */
-  text-align: center;
-}
-
-fieldset input::placeholder {
-  text-align: left;
-}
-
-/* UL & LI */
-
+/* LIST related */
 li {
   list-style: none;
   margin-bottom: 0.5rem;
@@ -464,4 +283,17 @@ li {
 
 li:last-child {
   margin-bottom: 0;
+}
+
+
+/* UI Messages */
+.ui-message {
+  width: 100%;
+  font-size: var(--message-body-size);
+  font-weight: 300;
+  margin: 0.25rem 0;
+}
+
+.ui-message-warning {
+  font-size: 0.8rem;
 }

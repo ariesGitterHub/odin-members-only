@@ -1,0 +1,153 @@
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  background: linear-gradient(05deg, var(--off-black), var(--off-gray));
+  color: var(--off-black);
+  font-family: var(--font-text);
+  font-size: 1rem;
+}
+
+h1 {
+  font-size: var(--page-title-all);
+}
+
+h2 {
+  font-size: var(--page-subtitle-all);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Global Page and Modal Classes */
+/* -- Titles and Subtitles */
+.page-title {
+  display: inline-block;
+  background: linear-gradient(180deg, var(--off-red), var(--off-black));
+  -webkit-background-clip: text; /* Clips background to text shape */
+  -webkit-text-fill-color: transparent; /* Makes original text color transparent */
+  /* padding: 0.25rem 0 0 0 ; */
+}
+
+.page-title-off-card {
+  /* width: 100%; */
+  display: inline-block;
+  background: linear-gradient(180deg, var(--white), var(--off-white));
+  -webkit-background-clip: text; /* Clips background to text shape */
+  -webkit-text-fill-color: transparent; /* Makes original text color transparent */
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.page-title-modal {
+  width: 88%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  justify-content: start;
+  background: linear-gradient(180deg, var(--off-red), var(--off-black));
+  -webkit-background-clip: text; /* Clips background to text shape */
+  -webkit-text-fill-color: transparent; /* Makes original text color transparent */
+  padding: 0.25rem 0;
+}
+
+.page-subtitle {
+  color: var(--off-gray);
+  padding: 0 0.5rem;
+}
+
+.page-subtitle-off-card {
+  width: 100%;
+  display: inline-block;
+  background: linear-gradient(180deg, var(--white), var(--off-gray));
+  -webkit-background-clip: text; /* Clips background to text shape */
+  -webkit-text-fill-color: transparent; /* Makes original text color transparent */
+  font-size: 0.85rem;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.page-section-title {
+  font-size: 1.125rem;
+  text-transform: uppercase;
+}
+
+/* -- Card */
+
+.card {
+  height: fit-content;
+  width: var(--card-width);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  background-color: var(--off-white);
+  border-radius: 1rem;
+  box-shadow: var(--box-shadow-black);
+  margin: 0.5rem;
+  padding: 1rem;
+}
+
+.admin-card {
+  background-color: var(--black);
+  border: 0.25rem double var(--off-red);
+  color: var(--off-white);
+}
+
+.member-card {
+  background-color: var(--white);
+  border: 0.25rem solid var(--off-red);
+}
+
+.guest-card {
+  border: 0.25rem dotted var(--off-red);
+}
+
+.user-card {
+  /* on admin panel, used to grab via js */
+  background-color: var(--white);
+}
+
+/* -- Profile Data, using dl, dt, & dd special elements, and their related classes */
+.profile-data-container, .profile-data-dl {
+  width: 100%;
+  /* color: var(--off-black); */
+  font-size: 1rem;
+  /* margin: 0.5rem 0; */
+  /* padding: 0.5rem; */
+    margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.profile-data-dl div {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 1rem;
+  line-height: 1.5;
+}
+
+.neighbor-relevant-data {
+  border-radius: 0.25rem;
+  padding-left: 0.125rem;
+}
+
+.app-relevant-data {
+  padding-left: 0.125rem;
+}
+
+.neighbor-relevant-data, .app-relevant-data {
+ margin-bottom: 2px;
+}
+

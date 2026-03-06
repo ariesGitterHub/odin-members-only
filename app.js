@@ -19,6 +19,9 @@ const { addAvatarFields } = require("./utils/viewFormatters");
 // 2. Create the app
 const app = express();
 
+// Catch any uncaught exceptions to prevent Node from crashing...This prevents Node from completely crashing on unexpected errors during development. Important: This is mostly for development/debugging — you shouldn’t rely on it in production to silently swallow real bugs. Always fix the root cause.
+process.on("uncaughtException", console.error);
+
 // 3. App.config - boilerplate app configurations
 app.use(express.static(__dirname + "/public"));
 app.set("views", path.join(__dirname, "views"));

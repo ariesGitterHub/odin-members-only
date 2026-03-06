@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const express = require("express");
+// const express = require("express");
 const { requireRole } = require("../utils/permissions");
 // const bcrypt = require("bcryptjs");
 
@@ -13,21 +13,20 @@ const {
   postLogOut,
   getYourProfile,
   getMemberDirectory,
-  getUpdateProfile,
-  getChangeAvatar,
   getInfo,
   getMessageBoards,
-  // getMessageBoardBySlug,
+  getTopicNamesForDropdown,
   getTopicPage,
-  getBecomeMember,
-  getAdmin,
+  getAdminPage,
+  getAdminEditPage,
+  getAdminCreatePage,
   getUserDetails,
   
 } = require("../controllers/appControllers");
 
 const appRouter = Router();
-// appRouter.get("/current-user", requireRole("admin"), getCurrentUser);
-appRouter.get("/current-user", getCurrentUser); // USE IN DEV
+appRouter.get("/current-user", requireRole("admin"), getCurrentUser);
+// appRouter.get("/current-user", getCurrentUser); // USE IN DEV
 appRouter.get("/", getHome);
 appRouter.get("/sign-up", getSignUp);
 appRouter.post("/sign-up", postSignUp);
@@ -43,24 +42,19 @@ appRouter.post(
   postLogOut,
 );
 
-appRouter.get("/admin", requireRole("admin"), getAdmin);
+// TODO - Place protected routes together.
+
+appRouter.get("/admin", requireRole("admin"), getAdminPage);
+appRouter.get("/admin-edit/:id", requireRole("admin"), getAdminEditPage);
+appRouter.get("/admin-create", requireRole("admin"), getAdminCreatePage);
 // Ensure you add the route for this
 // appRouter.get("/user/:id", getUserDetails);
-appRouter.get("/user/:id", getUserDetails);
+appRouter.get("/user/:id", requireRole("admin"), getUserDetails);
 appRouter.get("/info", getInfo);
 appRouter.get("/message-boards", getMessageBoards);
+appRouter.get("/topics", requireRole("admin"), getTopicNamesForDropdown);
 appRouter.get("/message-boards/:slug", getTopicPage);
-
 appRouter.get("/your-profile", getYourProfile);
 appRouter.get("/member-directory", requireRole("member"), getMemberDirectory);
-
-// appRouter.get("/update-profile", getUpdateProfile);
-// appRouter.get("/change-avatar", getChangeAvatar);
-// 
-// appRouter.get("/become-member", getBecomeMember);
-
-// appRouter.get("/log-out", postLogOut);
-
-
 
 module.exports = appRouter;

@@ -12,16 +12,20 @@
 
 @media (min-width: 600px) {
   :root {
+  --nav-button-h-w: 3rem;
+  --nav-bar-h: 5rem;
+ --avatar-emoji-nav-size: 2.5rem;
+  
     --card-width: 400px;
     /* --page-title-all: 4rem; */
     --page-title-all: 2.125rem;
     --page-subtitle-all: 2rem;
     --index-image-size: 21rem;
-/* All below were increased by 0.625rem */
+
   --avatar-circle-small-h-w: 4.375rem;
   --avatar-circle-large-h-w: 10rem;
   --emoji-quick-view-bar-size: 1.75rem;
-  /* --avatar-emoji-nav-size: 2.375rem; */
+ 
   --avatar-emoji-small-size: 3.125rem;
   --avatar-emoji-large-size: 7rem;
 /* All below increased by 0.25 */
@@ -32,6 +36,9 @@
 
   /* ********************************** */
 
+  }
+  .nav-bar {
+    justify-content: center;
   }
 
   .admin-quick-view-bar {

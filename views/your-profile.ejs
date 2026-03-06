@@ -9,72 +9,85 @@
       <div class="page-title-off-card uppercase">
         <h1>your profile</h1>
       </div>
-      <div class="card">
+      <div class="card your-profile-card">
         <% if (!currentUser) { %> 
         <p>No current user is logged in.</p>
         <% } else { %>
-            <div class="profile-data">
-              <div class="avatar-image-container-wide">
+            <div class="profile-data-container">
+              <!-- <div class="avatar-image-container-wide">
                 <div 
-                  class="avatar-image-circle avatar-circle-large" 
+                  class="avatar-image-container circle avatar-circle-large" 
+                  style="
+                    --avatar-color-fg: <%#= currentUser.avatar_color_fg || 'var(--off-black)' %>;
+                    --avatar-color-bg-top: <%#= currentUser.avatar_color_bg_top || 'var(--off-white)' %>;
+                    --avatar-color-bg-bottom: <%#= currentUser.avatar_color_bg_bottom || 'var(--off-gray)' %>;
+                  ">
+                  <span class="emoji avatar-emoji-large-size" role="img" aria-label="avatar image">
+                    <%#= currentUser.avatarLetter %>
+                  </span>
+                </div>            
+              </div> -->
+              <div class="element-container-row-default margin-bottom">
+                <div 
+                  class="avatar-container avatar-container-size-large avatar-background circle " 
                   style="
                     --avatar-color-fg: <%= currentUser.avatar_color_fg || 'var(--off-black)' %>;
                     --avatar-color-bg-top: <%= currentUser.avatar_color_bg_top || 'var(--off-white)' %>;
                     --avatar-color-bg-bottom: <%= currentUser.avatar_color_bg_bottom || 'var(--off-gray)' %>;
                   ">
-                  <span class="emoji avatar-emoji-large-size" role="img" aria-label="avatar image">
+                  <span class="emoji emoji-size-large" role="image" aria-label="avatar image">
                     <%= currentUser.avatarLetter %>
                   </span>
-                </div>            
+                </div>           
               </div>
-              <dl class="profile-data-dl">
-                <div>
+              <dl class="profile-data-dl margin-bottom">
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">name</dt>
                   <dd class="capitalize bold"><%= currentUser.first_name %> <%= currentUser.last_name %></dd>
                 </div>
-                <div>
+                <div class="app-relevant-data">
                   <dt class="capitalize">status</dt>
                   <dd class="bold"><%= currentUser.permission_status %></dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">email</dt>
                   <dd class="bold"><%= currentUser.email%></dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">phone</dt>
                   <dd class="bold"><%= currentUser.phone || "n/a" %></dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">birthdate</dt>
                   <dd class="bold"><%= currentUser.formattedBirthdate %> (age: <%= currentUser.age %>)</dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">street</dt>
                   <dd class="bold"><%= currentUser.street_address || "n/a" %></dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">apt/unit</dt>
                   <dd class="bold"><%= currentUser.apt_unit || "n/a" %></dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">city</dt>
                   <dd class="bold"><%= currentUser.city || "n/a" %></dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">state</dt>
                   <dd class="bold"><%= currentUser.us_state || "n/a" %></dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">zip code</dt>
                   <dd class="bold"><%= currentUser.zip_code || "n/a" %></dd>
                 </div>
               </dl>
               <div class="button-container-col">
-                <% if (currentUser.permission_status !== "admin") { %>
+                <% if (currentUser && currentUser.permission_status !== "admin") { %>
                   <a class="fake-button wide-button" href="/app/delete">delete account</a> 
                   <span class="ui-message-warning uppercase">deletion of account is permanent.</span>                
                 <% } %>
-                <% if (currentUser.permission_status === "guest" && currentUser.member_request === false) { %>
+                <% if (currentUser && currentUser.permission_status === "guest" && currentUser.member_request === false) { %>
                   <button 
                     class="wide-button open-modal-btn" 
                     data-section="modal-become-member" 
@@ -83,13 +96,13 @@
                     upgrade to member
                   </button>
                 <% } %>
-                <% if (currentUser.permission_status !== "guest") { %>
+                <% if (currentUser && currentUser.permission_status !== "guest") { %>
                 <a class="fake-button wide-button" href="/app/member-directory">member directory</a>
                 <% } %>
                 <button 
                   class="wide-button open-modal-btn" 
-                  data-section="modal-edit-profile-user"
-                  data-title="modal-title-edit-profile-user"
+                  data-section="modal-edit-profile"
+                  data-title="modal-title-edit-profile"
                   data-user-id="<%= currentUser.id %>">
                     update your profile
                   </button>
@@ -99,7 +112,7 @@
                   data-title="modal-title-change-avatar-user"
                   data-user-id="<%= currentUser.id %>"
                   >
-                  change this avatar
+                  change your avatar
                 </button>
               </div>
             </div>

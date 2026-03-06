@@ -1,6 +1,5 @@
 <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
   <div class="modal-overlay" data-close-modal></div>
-
   <!-- <div class="modal-content" role="document"> -->
   <div class="modal-content-card" role="document">
     <button class="close-button" aria-label="close modal" data-close-modal>
@@ -26,36 +25,27 @@
     </div>
 
     <!-- EDIT PROFILE (USER) -->
-    <div class="modal-section hidden" id="modal-edit-profile-user">
+    <div class="modal-section hidden" id="modal-edit-profile">
       <div class="page-title-modal uppercase">
-        <h1 id="modal-title-edit-profile-user">edit profile</h1>
+        <h1 id="modal-title-edit-profile">edit profile</h1>
       </div>
-      <%- include('./modals/edit-profile-user.ejs') %>
+      <%- include('./modals/edit-profile.ejs') %>
     </div>
 
-    <!-- EDIT PROFILE (ADMIN) -->
-    <div class="modal-section hidden" id="modal-edit-profile-admin">
+    <!-- WARNING -->
+    <div class="modal-section hidden" id="modal-warning">
       <div class="page-title-modal uppercase">
-        <h1 id="modal-title-edit-profile-admin">edit user</h1>
+        <h1 id="modal-title-warning">warning</h1>
       </div>
-      <%- include('./modals/edit-profile-admin.ejs') %>
+      <%#- include('./modals/warning.ejs') %>
     </div>
 
-    <!-- CREATE PROFILE (ADMIN) -->
-    <div class="modal-section hidden" id="modal-create-profile-admin">
-      <div class="page-title-modal uppercase">
-        <h1 id="modal-title-create-profile-admin">create user</h1>
-      </div>
-      <%- include('./modals/create-profile-admin.ejs') %>
-    </div>
-
-    <!-- CHANGE AVATAR USER -->
+    <!-- CHANGE AVATAR -->
     <div class="modal-section hidden" id="modal-change-avatar-user">
       <div class="page-title-modal uppercase">
         <h1 id="modal-title-change-avatar-user">Edit Avatar</h1>
       </div>
       <%- include('./modals/change-avatar.ejs') %>
     </div>
-
   </div>
 </div>

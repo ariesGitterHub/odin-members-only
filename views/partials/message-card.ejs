@@ -1,16 +1,29 @@
 <div class="message-card">
   <div class="message-header">
-    <div 
-      class="avatar-image-circle avatar-circle-small" 
+    <!-- <div 
+      class="avatar-image-container circle avatar-circle-small" 
       style="
-        --avatar-color-fg: <%= message.avatar_color_fg || 'var(--off-black)' %>;
-        --avatar-color-bg-top: <%= message.avatar_color_bg_top || 'var(--off-white)' %>;
-        --avatar-color-bg-bottom: <%= message.avatar_color_bg_bottom || 'var(--off-gray)' %>;
+        --avatar-color-fg: <%#= message.avatar_color_fg || 'var(--off-black)' %>;
+        --avatar-color-bg-top: <%#= message.avatar_color_bg_top || 'var(--off-white)' %>;
+        --avatar-color-bg-bottom: <%#= message.avatar_color_bg_bottom || 'var(--off-gray)' %>;
       ">
       <span class="emoji avatar-emoji-small-size" role="img" aria-label="avatar image">
-        <!-- 🐈‍⬛ -->
-        <%= message.avatarLetter %>
+        <%#= message.avatarLetter %>
       </span>
+    </div> -->
+
+    <div class="margin-right">
+      <div 
+        class="avatar-container avatar-container-size-small avatar-background circle " 
+        style="
+          --avatar-color-fg: <%= message.avatar_color_fg || 'var(--off-black)' %>;
+          --avatar-color-bg-top: <%= message.avatar_color_bg_top || 'var(--off-white)' %>;
+          --avatar-color-bg-bottom: <%= message.avatar_color_bg_bottom || 'var(--off-gray)' %>;
+        ">
+        <span class="emoji emoji-size-small" role="image" aria-label="avatar image">
+          <%= message.avatarLetter %>
+        </span>
+      </div>          
     </div>
     <div class="message-name-and-title">
       <p class="message-name bold"><%= message.first_name %> <%= message.last_name %></p>

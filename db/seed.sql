@@ -39,19 +39,19 @@ WHERE u.email = 'admin@can.org'
 
 INSERT INTO topics (slug, name, description, sort_order)
 VALUES
-  ('announcements', 'Announcements', 'Updates and notices', 0),
-  ('safety-alerts', 'Safety Alerts', 'Suspicious activity and crime', 10),
-  ('events', 'Events', 'Neighborhood events, meetings, and activities', 20),
-  ('general', 'General Discussion', 'General neighborhood conversations', 30),
-  ('harrisburg', 'Harrisburg', 'City government conversations', 40),
-  ('nuisances', 'Nuisances', 'Noise, vandalism, and general irritations', 50),
+  ('announcements', 'Announcements', 'Important updates and notices', 0),
+  ('safety-alerts', 'Safety Alerts', 'Crime and suspicious activity', 10),
+  ('events', 'Events', 'Neighborhood meetings and activities', 20),
+  ('general', 'General Discussion', 'Neighborhood conversations', 30),
+  ('harrisburg', 'Harrisburg', 'All things city and governance', 40),
+  ('nuisances', 'Nuisances', 'Noise, vandalism, and irritations', 50),
   ('help-requests', 'Help Requests', 'Ask neighbors for assistance', 60),
-  ('lost-found', 'Lost and Found', 'Lost or found pets and items', 70),
-  ('buy-sell', 'Buy and Sell', 'Items for sale/items wanted', 80),
-  ('free-stuff', 'Free Stuff', 'Give away items you no longer need or want', 90),
+  ('lost-found', 'Lost and Found', 'Lost and found for items or pets', 70),
+  ('buy-sell', 'Buy and Sell', 'Items for sale, or items wanted', 80),
+  ('free-stuff', 'Free Stuff', 'Get rid of your stuff', 90),
   ('businesses', 'Local Businesses', 'Recommendations for local services and restaurants', 100),
   ('introductions', 'Introductions', 'Welcome new neighbors', 110),
-  ('feedback', 'Feedback', 'Suggestions and feedback for this site', 120)
+  ('feedback', 'Feedback', 'Suggestions to improve this site', 120)
 ON CONFLICT (slug) DO NOTHING;
 
 
@@ -128,7 +128,7 @@ LEFT JOIN (
     ('alan@can.local', '', '', '', '#997a98',  '', '', '', '', '', '', false),
     ('bruce@can.local', '', '', '#a91313', '',  '', '', '', '', '', '', true),
     ('chuck@can.local', '🦍', '', '#92cfe4', '#7de9e9',  '555-111-2222', '123 Maple St', 'Harrisburg', 'PA', '17102', 'likes peanut brittle and has been known to watch squirrels in the park on hot summer days', true),
-    ('dave@can.local', '🐅', '#521313', '#eeee7d', '#83741d', '555-333-4444', '456 Oak Ave',  'Harrisburg', 'PA', '17101', '', true),
+    ('dave@can.local', '🦙', '#521313', '#eeee7d', '#83741d', '555-333-4444', '456 Oak Ave',  'Harrisburg', 'PA', '17101', '', true),
     ('evil@can.local', '', '#2b0505', '#bfbf0c', '#1d2c83', '555-313-4444', '45 Nope Ave',  'Harrisburg', 'PA', '17101', '', false)
 ) AS v(email, avatar_type, avatar_color_fg, avatar_color_bg_top, avatar_color_bg_bottom, phone, street_address, city, us_state, zip_code, notes, verified_by_admin)
 ON u.email = v.email

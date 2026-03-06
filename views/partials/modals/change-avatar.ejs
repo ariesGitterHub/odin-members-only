@@ -3,16 +3,15 @@
     Scroll the selection to chose a new avatar, or change avatar color scheme by clicking colors below.
   </p> 
 </div>
-<div class="element-container-row-center ">
-  <!-- <form class="profile-data-form" action="/app/???" method="POST">  -->
-  <form class="change-avatar-form" action="/app/???" method="POST"> 
-    <div class="change-avatar-hide-element element-container-col">
-      <div class="element-container-row-space">
-        <div class="element-container-col">
+<div class="element-container-row-default ">
+  <form action="/app/???" method="POST"> 
+    <div class="change-avatar-hide-element element-container-col-start-center">
+      <div class="element-container-row-space-evenly">
+        <div class="element-container-col-start-center">
           <p class="capitalize">current</p>
           <span id="current-avatar-change-avatar" class="emoji preview-current"></span>        
         </div>
-        <div class="element-container-col">
+        <div class="element-container-col-start-center">
           <p class="capitalize">preview</p>
           <span id="new-avatar-change-avatar" class="emoji preview-new"></span>        
         </div>
@@ -58,7 +57,7 @@
         type="color"
         name="avatar_color_bg_bottom"
       />
-      <div class="button-container">
+      <div class="button-container-row-space-evenly">
         <button class="wide-button" type="submit">submit avatar changes</button>
       </div> 
     </form> 

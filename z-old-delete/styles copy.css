@@ -1,0 +1,741 @@
+@font-face {
+  font-family: "OpenMoji";
+  src: url("/fonts/OpenMoji-color-colr1_svg.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NotoColorEmoji";
+  src: url("/fonts/NotoColorEmoji-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NotoEmoji";
+  src: url("/fonts/NotoEmoji-VariableFont_wght.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --white: #fff;
+  --black: #000;
+
+  --off-white: #e5dfd5;
+  --off-gray: #768179;
+  --off-black: #1a1b1c;
+
+  --off-red: #994e4e;
+  --off-orange: #a18553;
+  --off-yellow: #a0a054;
+  --off-green: #519d64;
+  --off-teal: #4b9595;
+  --off-blue: #4c7d98;
+  --off-purple: #864e97;
+
+  --dk-red: #521313;
+  --dk-orange: #8a581a;
+  --dk-yellow: #83741d;
+  --dk-green: #324632;
+  --dk-teal: #394d4d;
+  --dk-blue: #2d2d3d;
+  --dk-purple: #483548;
+
+  --lt-red: #edabab;
+  --lt-orange: #ddb66d;
+  --lt-yellow: #eeee7d;
+  --lt-green: #a9eda9;
+  --lt-teal: #7de9e9;
+  --lt-blue: #92cfe4;
+  --lt-purple: #d080eb;
+
+  --avatar-fg: var(--off-black);
+  --avatar-bg-top: var(--off-white);
+  --avatar-bg-bottom: var(--off-gray);
+
+  --font-text: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  /* --font-emoji: 'OpenMoji', system-ui, sans-serif; */
+  /* --font-emoji: "NotoColorEmoji", sans-serif; */
+  --font-emoji: "NotoEmoji", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.app-link {
+  color: var(--off-red);
+  font-weight: 600;
+}
+
+.app-link:link,
+.app-link:visited,
+.app-link:hover {
+  color: var(--off-red); /* mouse over */
+}
+
+/* ul, */
+.info-ul {
+  background-color: var(--white);
+  border: 0.125rem solid var(--off-gray);
+  border-radius: 0.5rem;
+  margin: 0.125rem 0;
+  padding: 0.25rem;
+}
+
+li {
+  list-style: none;
+  margin-bottom: 0.5rem;
+}
+
+li:last-child {
+  margin-bottom: 0;
+}
+
+.topic-list {
+  width: 100%;
+}
+
+html,
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  background: linear-gradient(05deg, var(--off-black), var(--off-gray));
+  color: var(--off-black);
+  font-family: var(--font-text);
+  font-size: 1rem;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+}
+
+.user-nav {
+  height: 4rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  /* flex-wrap: wrap; */
+  gap: 0.5rem;
+  background-color: var(--off-red);
+  /* margin-bottom: 0; */
+  /* padding: 1rem; */
+}
+
+/* .user-info {
+  height: 1.75rem;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--off-white);
+  font-family: var(--font-text);
+  font-size: 0.8rem;
+  font-weight: 300;
+  text-transform: uppercase;
+} */
+
+.logged-in-bar {
+  background-color: var(--off-black);
+  color: var(--off-white);
+  font-size: 0.8rem;
+  padding: 0.125rem;
+  text-align: center;
+}
+
+/* .page-title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem; 
+} */
+
+.page-title {
+  display: inline-block;
+  /* background: linear-gradient(90deg, #ff00cc, #3333ff); */
+  background: linear-gradient(180deg, var(--off-red), var(--off-black));
+  -webkit-background-clip: text; /* Clips background to text shape */
+  -webkit-text-fill-color: transparent; /* Makes original text color transparent */
+  font-size: 3rem;
+  padding: 0.5rem;
+}
+
+.page-title-off-card {
+  display: inline-block;
+  /* background: linear-gradient(90deg, #ff00cc, #3333ff); */
+  background: linear-gradient(180deg, var(--white), var(--off-white));
+  -webkit-background-clip: text; /* Clips background to text shape */
+  -webkit-text-fill-color: transparent; /* Makes original text color transparent */
+  font-size: 3rem;
+  padding: 0.5rem;
+}
+
+.red-letter {
+  /* color: var(--off-red); */
+  /* background-color: var(--off-black); */
+  /* border: 1px solid red; */
+}
+
+.page-subtitle {
+  color: var(--off-gray);
+  padding: 0 0.5rem;
+}
+
+h1 {
+  /* font-size: 1.75rem; */
+  font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+/* h3 {
+  font-size: 1.125rem;
+} */
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* margin: 1rem; */
+}
+
+.card {
+  height: fit-content;
+  /* width: 17rem; */
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  background-color: var(--off-white);
+  /* background: linear-gradient(05deg, var(--off-white), var(--white)); */
+  /* border: 0.25rem solid var(--off-blue); */
+  border-radius: 1rem;
+  /* box-shadow: inset 0 0.125rem 0.5rem var(--off-black); */
+  box-shadow: 0 1rem 1rem var(--off-black);
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.home-image {
+  height: 15rem;
+  width: auto;
+  border-radius: 50%;
+  border: 0.125rem solid var(--off-gray);
+  box-shadow: inset 0 0.25rem 1rem var(--off-gray);
+  margin: 0.5rem;
+  /* opacity: 0.8; */
+  /* padding: 0.5rem; */
+}
+
+.profile {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--off-black);
+  border-radius: 1rem;
+  /* box-shadow: inset 0 0.25rem 1rem var(--off-black); */
+  box-shadow: inset 0 0.25rem 1rem var(--off-gray);
+  /* margin: 1rem;       */
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+/* .profile-admin {
+width: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+border-radius: 1rem;
+box-shadow: inset 0 0.25rem 1rem var(--off-gray);
+margin-bottom: 1rem;
+padding: 1rem;
+} */
+
+.profile-avatar-image-container {
+  height: 10rem;
+  width: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    05deg,
+    var(--avatar-bg-bottom),
+    var(--avatar-bg-top)
+  );
+  border: 0.125rem solid var(--off-gray);
+  border-radius: 50%;
+  color: var(--avatar-fg);
+  margin-bottom: 0.5rem;
+}
+
+.letter {
+  font-weight: 600;
+}
+
+/* .emoji-avatar-fg {
+color: var(--avatar-fg-default);
+} */
+
+/* .emoji-avatar-bg-top {
+color: var(--avatar-bg-top-default);
+}
+
+.emoji-avatar-bg-bottom {
+color: var(--avatar-bg-bottom-default);
+} */
+
+.emoji {
+  display: inline-block;
+  font-family: var(--font-emoji);
+  font-size: 2.5rem;
+  font-weight: 100;
+  line-height: 1;
+  margin: 0.75rem;
+  vertical-align: middle;
+}
+
+.emoji-avatar {
+  font-size: 6rem;
+  /* transform-origin: 70% 70%; */
+  /* BELOW KICKS IN IF NOT A MEMBER WITH A "SPIRIT EMOJI" */
+  /* color: var(--off-white);
+  font-weight: 600; */
+}
+
+.emoji-like {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dk-red);
+  font-family: var(--font-emoji);
+  /* vertical-align: middle; */
+}
+
+/* @keyframes wave-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.waving {
+  animation: wave-animation 6s ease-in-out infinite;
+  will-change: transform;
+} */
+
+/* .profile-data-row {
+  width: 100%;
+  display: flex;
+  gap:0.5rem;
+} */
+
+/* .profile-data-grid {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  gap: 1rem;
+  align-items: center;
+} */
+
+.profile-data,
+.profile-data-admin {
+  width: 100%;
+  font-size: 1rem;
+  /* margin: 0.5rem 0; */
+  /* padding: 0.5rem; */
+}
+
+.profile-data {
+  color: var(--off-white);
+}
+
+.profile-data-admin {
+  color: var(--off-black);
+}
+
+.profile-data div,
+.profile-data-admin div {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 0.75rem;
+}
+
+.button-container-col {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* .button-container-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+} */
+
+button,
+.fake-button {
+  all: unset; /* nukes browser defaults */
+  height: 1.75rem;
+  width: 5.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  border: 0.125rem solid var(--off-gray);
+  border-radius: 0.5rem;
+  box-shadow: inset 0 0.25rem 1rem var(--off-gray);
+  color: var(--off-black);
+  cursor: pointer;
+  font-family: var(--font-text);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0 0.25rem;
+  text-transform: uppercase;
+}
+
+.fake-button:link,
+.fake-button:visited,
+.fake-button:hover {
+  color: var(--off-black); /* mouse over */
+}
+
+button:hover,
+.fake-button:hover {
+  background-color: var(--off-red);
+  box-shadow: none;
+  color: var(--off-white);
+  transform: scale(1.03);
+}
+
+.wide-button {
+  width: 95%;
+}
+
+.nav-button {
+  height: 2rem;
+  width: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  line-height: 1;
+  margin: 0.25rem 0;
+  padding: 0.25rem;
+}
+
+.nav-image {
+  font-size: 1.75rem;
+  font-weight: 100;
+  text-align: center;
+}
+
+/* .nav-avatar-image {
+  font-size: 1.75rem;
+  font-weight: 100;
+  text-align: center;
+} */
+
+.nav-button:hover {
+  background-color: var(--off-black);
+  box-shadow: none;
+  color: var(--off-white);
+}
+
+.ui-message {
+  width: 100%;
+  margin: 0.25rem 0;
+}
+
+.sign-up-form,
+.log-in-form,
+.become-member-form,
+.update-profile-form,
+.change-avatar-form {
+  width: 100%;
+  margin: 0.25rem 0;
+}
+
+.sign-up-form,
+.log-in-form,
+.become-member-form {
+  color: var(--off-black);
+}
+
+.update-profile-form,
+.change-avatar-form {
+  color: var(--off-white);
+}
+
+/* .form-reset {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+} */
+
+label {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+input {
+  width: 100%;
+  background-color: var(--white);
+  border: 0.125rem solid var(--off-gray);
+  /* border-radius: 0.125rem; */
+  margin-bottom: 0.25rem;
+  padding: 0.125rem;
+}
+
+input::placeholder {
+  text-transform: capitalize;
+}
+footer {
+  color: var(--off-white);
+  font-size: 0.8rem;
+  margin: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+fieldset {
+  padding: 0.5rem;
+}
+
+fieldset input {
+  width: 100%;
+  /* margin-left: 0.5rem; */
+  text-align: center;
+}
+
+fieldset input::placeholder {
+  text-align: left;
+}
+
+.page-errors h1 {
+  color: var(--off-red);
+}
+
+.page-errors p {
+  font-size: 1.25rem;
+}
+
+.error-messages {
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  background: linear-gradient(05deg, var(--off-yellow), var(--white));
+  border: 0.125rem solid var(--off-gray);
+  border-radius: 1rem;
+  margin-top: 0.25rem;
+  padding: 0.5rem;
+}
+
+.errors {
+  color: var(--off-red);
+  font-family: var(--font-text);
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+}
+
+.warning {
+  font-size: 0.8rem;
+}
+
+/* Message-card */
+
+.message-card {
+  background-color: var(--white);
+  /* border: 0.125rem solid var(--off-gray); */
+  border-radius: 0.5rem;
+  color: var(--off-black);
+  padding: 0.5rem;
+}
+
+.message-header {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  /* background-color: var(--lt-red); */
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  padding: 0.25rem;
+}
+
+.message-avatar-image-container {
+  /* height: 3.75rem;  
+  width: 3.75rem; */
+  height: 3.75rem;
+  width: 3.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: pink; */
+  background: linear-gradient(
+    05deg,
+    var(--avatar-bg-bottom),
+    var(--avatar-bg-top)
+  );
+  /* border: 0.125rem solid var(--off-black); */
+  border-radius: 50%;
+  box-shadow: inset 0 0.125rem 0.5rem var(--off-gray);
+  color: var(--avatar-fg);
+  margin-right: 0.5rem;
+  padding: 0.25rem;
+  /* font-size: 2.5rem; */
+}
+
+.message-name-and-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.message-name {
+  color: var(--off-red);
+}
+
+.message-title {
+  border-top: 0.125rem solid var(--off-white);
+  font-size: 0.9rem;
+}
+
+.message-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+  /* background-color: var(--lt-green); */
+
+  font-size: 0.7rem;
+  padding: 0.25rem;
+}
+
+.message-details span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--off-white);
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  text-align: center;
+}
+
+.message-body {
+  /* background-color: var(--lt-yellow); */
+  /* border-top: 0.125rem solid var(--off-gray); */
+  /* border-bottom: 0.125rem solid var(--off-gray); */
+  /* font-size: 0.9rem; */
+  padding: 0.25rem;
+}
+
+.message-footer {
+  /* background-color: var(--lt-blue); */
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  padding: 0.25rem;
+}
+.message-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  /* margin-top: 0.75rem; */
+}
+
+.message-button {
+  width: fit-content;
+  color: var(--off-black);
+}
+
+/* TODO - test this again, and only keep one hidden! */
+.hidden {
+  display: none;
+}
+
+/* I can't recall the last time I had to use !important, 
+but I had elements on admin.ejs that would not get properly hidden. 
+It might have something to do with my use of dt and dd elements; unsure. */
+div.hidden {
+  display: none !important; /* Ensures it's not overridden */
+}
+
+/* @media (prefers-reduced-motion: reduce) {
+  .waving {
+    animation: none;
+  }
+} */

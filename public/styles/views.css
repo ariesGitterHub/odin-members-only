@@ -1,184 +1,6 @@
-/* GENERAL */
+/* UNIQUE TO ONE VIEW (GLOBAL GLASSES GO IN LAYOUT-BASICS.CSS) */
 
-/* --View Headings */
-
-.page-title {
-  display: inline-block;
-  /* background: linear-gradient(90deg, #ff00cc, #3333ff); */
-  background: linear-gradient(180deg, var(--off-red), var(--off-black));
-  -webkit-background-clip: text; /* Clips background to text shape */
-  -webkit-text-fill-color: transparent; /* Makes original text color transparent */
-  /* font-size: var(--page-title-all); */
-  padding: 0.25rem 0 0 0 ;
-}
-
-.page-subtitle {
-  color: var(--off-gray);
-  padding: 0 0.5rem;
-}
-
-.page-section-title {
-  font-size: 1.125rem;
-  text-transform: uppercase;
-}
-
-.page-title-off-card {
-  width: 100%;
-  display: inline-block;
-  /* background: linear-gradient(90deg, #ff00cc, #3333ff); */
-  background: linear-gradient(180deg, var(--white), var(--off-white));
-  -webkit-background-clip: text; /* Clips background to text shape */
-  -webkit-text-fill-color: transparent; /* Makes original text color transparent */
-  /* font-size: var(--page-title-all); */
-  padding: 0.5rem;
-  text-align: center;
-}
-
-.page-subtitle-off-card {
-  width: 100%;
-  display: inline-block;
-  /* background: linear-gradient(90deg, #ff00cc, #3333ff); */
-  background: linear-gradient(180deg, var(--white), var(--off-gray));
-  -webkit-background-clip: text; /* Clips background to text shape */
-  -webkit-text-fill-color: transparent; /* Makes original text color transparent */
-  /* font-size: var(--page-title-all); */
-  font-size: 0.85rem;
-  padding: 0.5rem;
-  text-align: center;
-}
-
-.page-title-modal {
-  width: 80%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: start;
-  justify-content: start;
-  /* background: linear-gradient(90deg, #ff00cc, #3333ff); */
-  background: linear-gradient(180deg, var(--off-red), var(--off-black));
-  -webkit-background-clip: text; /* Clips background to text shape */
-  -webkit-text-fill-color: transparent; /* Makes original text color transparent */
-  /* font-size: var(--page-title-all); */
-  padding: 0.25rem 0;
-}
-
-/* -- View Card */
-
-.card {
-  height: fit-content;
-  /* width: 17rem; */
-  /* width: 300px; */
-  width: var(--card-width);
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: center;
-  background-color: var(--off-white);
-  /* background: linear-gradient(05deg, var(--off-white), var(--white)); */
-  /* border: 0.25rem solid var(--off-blue); */
-  border-radius: 1rem;
-  /* box-shadow: inset 0 0.125rem 0.5rem var(--off-black); */
-  box-shadow: var(--box-shadow-black);
-  /* font-size: 1rem; */
-  /* margin: 1rem; */
-  margin: 0.5rem;
-  padding: 1rem;
-}
-
-.admin-card {
-  background-color: var(--black);
-    border: 0.25rem double var(--off-red);
-  color: var(--off-white);
-}
-.member-card {
-  /* background-color: var(--lt-blue); */
-    border: 0.25rem solid var(--off-red);
-  /* color: var(--off-red); */
-}
-.guest-card {
-  /* background-color: var(--lt-green); */
-    border: 0.25rem dotted var(--off-red);
-}
-
-.user-card {
-/* on admin panel, used to grab via js */
-background-color: var(--white);
-}
-
-/* .profile {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--off-black);
-  border-radius: 1rem;
-  box-shadow: inset 0 0.25rem 1rem var(--off-gray);
-  margin-bottom: 1rem;
-  padding: 1rem;
-} */
-
-/* .profile-avatar-image-container {
-  height: 10rem;
-  width: 10rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(
-    05deg,
-    var(--avatar-color-bg-bottom),
-    var(--avatar-color-bg-top)
-  );
-  border: 0.125rem solid var(--off-gray);
-  border-radius: 50%;
-  color: var(--avatar-color-fg);
-  margin-bottom: 0.5rem;
-} */
-
-
-/* ONLY ON ADMIN RIGHT NOW---ADD TO ALL SIMILAR USES */
-
-.admin-panel-names-container {
-  width: 100%;
-  display: flex;
-  align-items: start;
-  justify-content: start;
-  flex-wrap: wrap;
-}
-.profile-name {
-  font-size: 1.25rem;
-  /* margin: 0; */
-}
-
-/* TODO - SHOULD FORM GO HERE??? */
-.profile-data, .profile-data-dl {
-  width: 100%;
-  /* color: var(--off-black); */
-  font-size: 1rem;
-  /* margin: 0.5rem 0; */
-  /* padding: 0.5rem; */
-    margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
-}
-
-.profile-data-dl div {
-  display: grid;
-  grid-template-columns: 4rem 1fr;
-  gap: 1rem;
-  line-height: 1.5;
-}
-
-.ui-message {
-  width: 100%;
-  font-size: var(--message-body-size);
-  font-weight: 300;
-  margin: 0.25rem 0;
-}
-
-.ui-message-warning {
-  font-size: 0.8rem;
-}
-
-/* INDEX */
+/* --index.ejs */
 .index-image {
   height: var(--index-image-size);
   width: auto;
@@ -186,16 +8,9 @@ background-color: var(--white);
   border: 0.125rem solid var(--off-gray);
   box-shadow: var(--box-shadow-gray);
   margin: 0.5rem;
-  /* opacity: 0.8; */
-  /* padding: 0.5rem; */
 }
 
-/* SIGN-UP */
-
-/* LOG-IN */
-
-/* ADMIN  */
-
+/* -- admin.ejs */
 .admin-quick-view-bar {
   width:100%;
   display: flex;
@@ -207,15 +22,12 @@ background-color: var(--white);
   padding: 0.5rem;
 }
 
-
 .admin-card .admin-quick-view-bar {
   background-color: var(--off-black);
-  /* border: 0.125rem solid var(--off-gray); */
 }
 
 .user-card .admin-quick-view-bar {
   background-color: var(--off-white);
-  /* border: 0.125rem solid var(--off-gray); */
 }
 
 .admin-quick-view-bar span {
@@ -225,12 +37,7 @@ background-color: var(--white);
   background-color: var(--off-gray);
   border-radius: 0.25rem;
   padding: 0.25rem;
-  /* text-align: center; */
 }
-
-/* .admin-quick-view-bar span, .admin-quick-view-bar p {
-    font-size: 1.125rem;
-} */
 
 .admin-card .admin-quick-view-bar span {
   background-color: var(--off-white);
@@ -241,6 +48,179 @@ background-color: var(--white);
   background-color: var(--off-black);
   color: var(--off-white);
 }
+
+.admin-panel-name {
+  font-size: 1.25rem;
+  margin-left: 0.5rem;
+}
+
+.admin-card .neighbor-relevant-data {
+  background-color: var(--off-black);
+}
+
+.user-card .neighbor-relevant-data {
+  background-color: var(--off-white);
+}
+
+.upgrade-me {
+  background-color: var(--member-request-alert);
+}
+
+
+/* -- message-boards.ejs */
+
+
+
+/* -- your-profile.ejs */
+.your-profile-card {
+ background-color: var(--off-white);
+ color: var(--off-black);
+}
+
+.your-profile-card .neighbor-relevant-data {
+  background-color: var(--white);
+}
+.your-profile-card .app-relevant-data {
+  background-color: var(--white);
+}
+
+/* -- member-directory.ejs */
+.member-card .neighbor-relevant-data {
+  background-color: var(--off-white);
+}
+
+.member-directory-extra-avatar-container {
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  padding: 0.75rem 0 0.25rem 0;
+}
+
+/* -- change-avatar.ejs */
+.preview-current, .preview-new {
+  height: 6rem;
+  width: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.125rem solid var(--off-gray);
+  border-radius: 50%;
+  font-family: var(--font-emoji);
+  font-size: 3.5rem;
+  padding: 2rem;
+}
+
+.emoji-panel-change-avatar {
+  width: 100%;
+}
+
+.emoji-list-change-avatar {
+  height: 230px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-evenly;
+  background-color: var(--white);
+  border: 0.125rem solid var(--off-gray);
+  box-shadow: 0 4px 8px var(--off-black-trans);
+  margin-bottom: 0.5rem;
+  overflow-y: auto;
+}
+
+.emoji-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: var(--off-black);
+  margin-bottom: 0.5rem; /* Adds space between options */
+  margin-left: 0.25rem;
+  padding: 0.5rem;
+}
+
+/* ---- Hide the default radio button */
+.emoji-option input[type="radio"] {
+  display: none;
+}
+
+/* ---- Custom radio button styling */
+.emoji-option label {
+  display: flex;
+  align-items: center;
+  transition: color 0.3s;
+}
+
+/* ---- Emoji styling */
+.emoji-option .emoji {
+  cursor: pointer;
+  font-size: 2rem; /* Larger emoji */
+  margin-right: 0.5rem; /* Adds space between the emoji and the text */
+  transition: transform 0.2s ease-in-out;
+}
+
+/* ---- Text styling */
+.emoji-option p {
+  color: var(--off-black); /* Lighter color for text */
+  cursor: pointer;
+  font-size: 1.125rem; /* Slightly smaller font for the text */
+
+  margin: 0; /* Remove default margin */
+}
+
+.emoji-option:hover {
+  background-color: var(--off-white);
+  border-radius: 0.125rem;
+}
+
+/* ---- Hover effect: changes emoji size and label text color */
+.emoji-option:hover .emoji {
+  transform: scale(1.2); /* Slightly enlarge the emoji */
+}
+
+.emoji-option:hover label {
+  color: var(--off-red); /* Blue color on hover for the label */
+}
+
+/* ---- Checked state - when the radio button is selected */
+.emoji-option input[type="radio"]:checked + label .emoji {
+  transform: scale(1.2); /* Slightly enlarge the emoji when selected */
+  color: var(--dk-red); /* Change emoji color when selected */
+}
+
+.emoji-option input[type="radio"]:checked + label p {
+  color: var(--black);
+  font-weight: bold; /* Make the text bold when the radio button is selected */
+}
+
+/* -- admin-create.ejs */
+
+
+/* -- admin-edit.ejs */
+/* ---- Makes emoji input width more suitable for a small emoji */
+.element-container-row-space-between .emoji {
+  width: 2.75rem;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* TODO - MOVE BELOW UP! */
+
+/* START HERE ON 3/7/2026 */
+
+
 
 
 /* INFO */
@@ -325,7 +305,7 @@ background-color: var(--white);
 } */
 
 .message-name-and-title {
-  margin: auto 0;
+  /* margin: auto 0; */
   display: flex;
   flex-direction: column;
 }

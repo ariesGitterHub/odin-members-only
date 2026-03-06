@@ -1,25 +1,9 @@
-/* TODO - delete whichever below is unused... */
-@font-face {
-  font-family: "OpenMoji";
-  src: url("/fonts/OpenMoji-color-colr1_svg.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "NotoColorEmoji";
-  src: url("/fonts/NotoColorEmoji-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
 @font-face {
   font-family: "NotoEmoji";
   src: url("/fonts/NotoEmoji-VariableFont_wght.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
-
 
 :root {
   --white: #fff;
@@ -63,15 +47,15 @@
   --box-shadow-black: 0 1rem 1rem var(--off-black);
 
   --font-text: "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  /* TODO - delete whichever below is unused... */
-  --font-emoji3: 'OpenMoji', system-ui, sans-serif;
-  --font-emoji2: "NotoColorEmoji", sans-serif;
   --font-emoji: "NotoEmoji", sans-serif !important;
 
   /* Root sizing for Media Queries */
-  /* --main-max-width: 1000px; */
+  --width100per: 100%;
+  --border-radius-circle: 50%;
+
+  --nav-button-h-w: 2.5rem;
+  --nav-bar-h: 4rem;
   --card-width: 300px;
-  /* --message-card-width: 100%; */
 
   --page-title-all: 1.65rem;
   --page-subtitle-all: 1.45rem;
@@ -87,12 +71,12 @@
   --avatar-emoji-nav-size: 1.75rem;
   --avatar-emoji-small-size: 2.5rem;
   --avatar-emoji-large-size: 5.65rem;
+  --avatar-emoji-largest-size: 8rem;
 
   --message-name-size: 1.125rem;
   --message-title-size: 1rem;
   --message-details-size: 0.875rem;
   --message-body-size: 1.1rem;
-
 }
 
 *,

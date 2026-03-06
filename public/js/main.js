@@ -25,8 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Toggle .hidden for that profile's details on admin panel
   document.querySelectorAll(".show-profile-button").forEach((btn) => {
     btn.addEventListener("click", () => {
-      // const profileData = btn.closest(".profile-data")
-      const profileData = btn.closest(".card").querySelector(".profile-data");
+      // const profileData = btn.closest(".profile-data-container")
+      const profileData = btn.closest(".card").querySelector(".profile-data-container");
       profileData.classList.toggle("hidden");
       profileData.classList.contains("hidden")
         ? (btn.textContent = "open this profile")
@@ -65,24 +65,22 @@ document.addEventListener("DOMContentLoaded", () => {
     el.addEventListener("click", closeModal);
   });
 
-  // openModal/closeModal eventListeners - STOP USING; TODO - MAKE NEW EVENT LISTENER FOR become-member, etc.
-  // document.querySelectorAll(".open-modal-btn").forEach((btn) => {
-  //   btn.addEventListener("click", () => {
-  //     const sectionId = btn.dataset.section;
-  //     const titleId = btn.dataset.title;
-  //     openModal(sectionId, titleId);
-  //   });
-  // });
-
   // FETCH DATA WITH USER.ID...
-  async function fetchUserData(userId) {
-    const response = await fetch(`/app/user/${userId}`);
-    if (!response.ok) throw new Error("Failed to fetch user");
+  // async function fetchUserData(userId) {
+  //   const response = await fetch(`/app/user/${userId}`);
+  //   if (!response.ok) throw new Error("Failed to fetch user");
+  //   return await response.json();
+  // }
+  
+  // FETCH DATA WITH TOPIC.ID...
+  async function fetchTopicNameData(topicId) {
+    const response = await fetch("/app/topics");
+    if (!response.ok) throw new Error("Failed to fetch topics");
     return await response.json();
   }
 
   // FETCH DATA FOR CURRENTUSER...
-  async function fetchCurrentUserData() {
+  async function fetchCurrentUserData(userId) {
     const response = await fetch("/app/current-user");
     if (!response.ok) throw new Error("Failed to fetch user");
     const user = await response.json();
@@ -90,102 +88,80 @@ document.addEventListener("DOMContentLoaded", () => {
     return user;
   }
 
-  fetchCurrentUserData().then((user) => {
-    if (user) {
-      console.log("Welcome", user.first_name);
-    }
-  });
+  // fetchCurrentUserData().then((user) => {
+  //   if (user) {
+  //     console.log("Welcome", user.first_name);
+  //   }
+  // });
 
-  fetchCurrentUserData().then((user) => {
-    console.log("User from API:", user);
-  });
+  // fetchCurrentUserData().then((user) => {
+  //   console.log("User from API:", user);
+  // });
 
   // POPULATE MODAL FIELDS (UNIVERSALLY) WITH USER.ID DATA FROM DB...
 
-  function populateEditProfileAdmin(user) {
-    document.getElementById("first-name-edit-profile-admin").value = user.first_name;
-    document.getElementById("last-name-edit-profile-admin").value = user.last_name;
-    document.getElementById("permission-status-edit-profile-admin").value = user.permission_status;
-    document.getElementById("verified-by-admin-edit-profile-admin").value = user.verified_by_admin;
-    document.getElementById("upgrade-request-edit-profile-admin").value = user.member_request;
-    document.getElementById("is-active-edit-profile-admin").value = user.is_active;
-    document.getElementById("email-edit-profile-admin").value = user.email;
-    document.getElementById("phone-edit-profile-admin").value = user.phone || "";
-    document.getElementById("birthdate-edit-profile-admin").value = user.birthdate;
-    document.getElementById("password-edit-profile-admin").value = user.password_hash;
-    document.getElementById("street-address-edit-profile-admin").value = user.street_address || "";
-    document.getElementById("apt-unit-edit-profile-admin").value = user.apt_unit || "";
-    document.getElementById("city-edit-profile-admin").value = user.city || "";
-    document.getElementById("us-state-edit-profile-admin").value = user.us_state || "";
-    document.getElementById("zip-code-edit-profile-admin").value = user.zip_code || "";
-    document.getElementById("avatar-type-edit-profile-admin").value = user.avatar_type || "";
-    document.getElementById("avatar-color-fg-edit-profile-admin").value = user.avatar_color_fg || "";
-    document.getElementById("avatar-color-bg-top-edit-profile-admin").value = user.avatar_color_bg_top || "";
-    document.getElementById("avatar-color-bg-bottom-edit-profile-admin").value = user.avatar_color_bg_bottom || "";
-    document.getElementById("notes-edit-profile-admin").value = user.notes || "";
-  }
+  // function populateEditProfileAdmin(user) {
+  //   document.getElementById("first-name-edit-profile-admin").value = user.first_name;
+  //   document.getElementById("last-name-edit-profile-admin").value = user.last_name;
+  //   document.getElementById("permission-status-edit-profile-admin").value = user.permission_status;
+  //   document.getElementById("verified-by-admin-edit-profile-admin").value = user.verified_by_admin;
+  //   document.getElementById("upgrade-request-edit-profile-admin").value = user.member_request;
+  //   document.getElementById("is-active-edit-profile-admin").value = user.is_active;
+  //   document.getElementById("email-edit-profile-admin").value = user.email;
+  //   document.getElementById("phone-edit-profile-admin").value = user.phone || "";
+  //   document.getElementById("birthdate-edit-profile-admin").value = user.birthdate;
+  //   document.getElementById("password-edit-profile-admin").value = user.password_hash;
+  //   document.getElementById("street-address-edit-profile-admin").value = user.street_address || "";
+  //   document.getElementById("apt-unit-edit-profile-admin").value = user.apt_unit || "";
+  //   document.getElementById("city-edit-profile-admin").value = user.city || "";
+  //   document.getElementById("us-state-edit-profile-admin").value = user.us_state || "";
+  //   document.getElementById("zip-code-edit-profile-admin").value = user.zip_code || "";
+  //   document.getElementById("avatar-type-edit-profile-admin").value = user.avatar_type || "";
+  //   document.getElementById("avatar-color-fg-edit-profile-admin").value = user.avatar_color_fg || "";
+  //   document.getElementById("avatar-color-bg-top-edit-profile-admin").value = user.avatar_color_bg_top || "";
+  //   document.getElementById("avatar-color-bg-bottom-edit-profile-admin").value = user.avatar_color_bg_bottom || "";
+  //   document.getElementById("notes-edit-profile-admin").value = user.notes || "";
+  // }
 
     function populateEditProfileUser(user) {
-    document.getElementById("first-name-edit-profile-user").value = user.first_name;
-    document.getElementById("last-name-edit-profile-user").value = user.last_name;
-    document.getElementById("email-edit-profile-user").value = user.email;
-    document.getElementById("phone-edit-profile-user").value = user.phone || "";
-    document.getElementById("birthdate-edit-profile-user").value = user.birthdate;
-    document.getElementById("password-edit-profile-user").value = user.password_hash;
-    document.getElementById("street-address-edit-profile-user").value = user.street_address || "";
-    document.getElementById("apt-unit-edit-profile-user").value = user.apt_unit || "";
-    document.getElementById("city-edit-profile-user").value = user.city || "";
-    document.getElementById("us-state-edit-profile-user").value = user.us_state || "";
-    document.getElementById("zip-code-edit-profile-user").value = user.zip_code || "";
+    document.getElementById("first-name-edit-profile").value = user.first_name;
+    document.getElementById("last-name-edit-profile").value = user.last_name;
+    document.getElementById("email-edit-profile").value = user.email;
+    document.getElementById("phone-edit-profile").value = user.phone || "";
+    document.getElementById("birthdate-edit-profile").value = user.birthdate;
+    document.getElementById("password-edit-profile").value = user.password_hash;
+    document.getElementById("street-address-edit-profile").value = user.street_address || "";
+    document.getElementById("apt-unit-edit-profile").value = user.apt_unit || "";
+    document.getElementById("city-edit-profile").value = user.city || "";
+    document.getElementById("us-state-edit-profile").value = user.us_state || "";
+    document.getElementById("zip-code-edit-profile").value = user.zip_code || "";
+  } 
+
+  function populateNewPostWithTopics(topics) {
+    const select = document.getElementById("topic-new-post");
+
+    // Clear existing options
+    select.innerHTML = "";
+
+    // Add placeholder option
+    const placeholder = document.createElement("option");
+    placeholder.value = ""; // empty value so "required" works
+    placeholder.textContent = "Choose a topic";
+    placeholder.disabled = true; // cannot select once another is chosen
+    placeholder.selected = true; // initially selected
+    select.appendChild(placeholder);
+
+    // Add real topic options
+    topics.forEach((topic) => {
+      const option = document.createElement("option");
+      option.value = topic.id;
+      option.textContent = topic.name;
+      select.appendChild(option);
+    });
+
+    // Ensure the <select> is required
+    select.required = true;
   }
-
-  // async function populateChangeAvatar(user) {
-  //   //Hide fields that are not mean to be used by a "guest"
-  //   if (user.permission_status === "guest") {
-  //     document
-  //       .querySelector(".change-avatar-hide-element")
-  //       .classList.add("hidden");
-  //   } else {
-  //     document
-  //       .querySelector(".change-avatar-hide-element")
-  //       .classList.remove("hidden");
-  //   }
-
-  //   // Access CSS variables
-  //   const rootStyles = getComputedStyle(document.documentElement);
-  //   // Use these values
-  //   const avatarColorFg = rootStyles
-  //     .getPropertyValue("--avatar-color-fg")
-  //     .trim();
-  //   const avatarColorBgTop = rootStyles
-  //     .getPropertyValue("--avatar-color-bg-top")
-  //     .trim();
-  //   const avatarColorBgBottom = rootStyles
-  //     .getPropertyValue("--avatar-color-bg-bottom")
-  //     .trim();
-  //   document.getElementById("avatar_type").value = user.avatar_type || "";
-  //   document.getElementById("avatar_color_fg").value =
-  //     user.avatar_color_fg || avatarColorFg;
-  //   document.getElementById("avatar_color_bg_top").value =
-  //     user.avatar_color_bg_top || avatarColorBgTop;
-  //   document.getElementById("avatar_color_bg_bottom").value =
-  //     user.avatar_color_bg_bottom || avatarColorBgBottom;
-
-  //   const currentAvatarElement = document.getElementById("current_avatar");
-  //   if (currentAvatarElement) {
-  //     currentAvatarElement.textContent = user.avatar_type || "";
-  //     currentAvatarElement.style.color = user.avatar_color_fg || avatarColorFg;
-  //     currentAvatarElement.style.background = `linear-gradient(5deg, ${user.avatar_color_bg_bottom || avatarColorBgTop}, ${user.avatar_color_bg_top || avatarColorBgBottom})`;
-  //   }
-
-  //   const avatarTypeText = document.getElementById("avatar-type-text");
-  //   if (avatarTypeText) {
-  //     avatarTypeText.textContent = await findInitialEmojiText(user.avatar_type);
-  //   }
-
-  //   // Call the emoji picker initialization
-  //   emojiPickerDiv();
-  // }
 
   async function populateChangeAvatar(user) {
     //Hide fields that are not mean to be used by a "guest"
@@ -231,57 +207,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Call the emoji picker initialization
     emojiPickerDiv();
   }
-  // async function handleModalOpen(userId, sectionId, titleId) {
-  //   try {
-  //     const user = await fetchUserData(userId);
-
-  //     if (sectionId === "modal-edit-profile-admin") {
-  //       populateEditProfileAdmin(user);
-  //       openModal(sectionId, titleId);
-  //     }
-
-  //     if (sectionId === "modal-change-avatar") {
-  //       populateChangeAvatar(user);
-  //       openModal(sectionId, titleId);
-  //       initChangeAvatarModal();
-  //     }
-
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert("Failed to load user data");
-  //   }
-  // }
-
-  // async function handleModalOpen(userId, sectionId, titleId) {
-  //   try {
-  //     if (userId) {
-  //       // Fetch user data only if userId is provided
-  //       const user = await fetchUserData(userId);
-
-  //       if (sectionId === "modal-edit-profile-admin") {
-  //         populateEditProfileAdmin(user);
-  //         openModal(sectionId, titleId);
-  //       }
-
-  //       if (sectionId === "modal-change-avatar") {
-  //         populateChangeAvatar(user);
-  //         openModal(sectionId, titleId);
-  //         initChangeAvatarModal();
-  //       }
-  //     } else {
-  //       // No userId, handle the case when we don't need user data
-  //       if (sectionId === "modal-create-profile-admin") {
-  //         // Handle the creation form (doesn't require user data)
-  //         openModal(sectionId, titleId);
-  //         // You can initialize any other functions for this modal here
-  //         // populateCreateProfileAdmin(); // If needed, add any default population logic
-  //       }
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert("Failed to load user data");
-  //   }
-  // }
 
   async function handleModalOpen(userId, sectionId, titleId) {
     try {
@@ -289,27 +214,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Check if userId exists (not null or undefined)
       if (userId != null && userId !== "") {
-        // Fetch user data only if userId exists
-        const user = await fetchUserData(userId);
-        const currentUser = await fetchCurrentUserData(userId);
 
-        if (sectionId === "modal-edit-profile-admin") {
-          populateEditProfileAdmin(user);
-          openModal(sectionId, titleId);
-        }
-
-        if (sectionId === "modal-edit-profile-user") {
+        if (sectionId === "modal-edit-profile") {
+          const currentUser = await fetchCurrentUserData(userId);
           populateEditProfileUser(currentUser);
           openModal(sectionId, titleId);
         }
 
-        // if (sectionId === "modal-change-avatar-admin") {
-        //   populateChangeAvatar(user);
-        //   openModal(sectionId, titleId);
-        //   initChangeAvatarModal();
-        // }
-
         if (sectionId === "modal-become-member") {
+          const currentUser = await fetchCurrentUserData(userId);
           populateChangeAvatar(currentUser);
           openModal(sectionId, titleId);
           initChangeAvatarModal();
@@ -317,21 +230,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (sectionId === "modal-change-avatar-user") {
+          const currentUser = await fetchCurrentUserData(userId);
           populateChangeAvatar(currentUser);
           openModal(sectionId, titleId);
           initChangeAvatarModal();
-          console.log("modal-change-avatar-use");
+          console.log("modal-change-avatar-user");
         }
         
       } else {
-        // If userId is not provided (for "create profile" modal or others)
-        if (sectionId === "modal-create-profile-admin") {
-          openModal(sectionId, titleId);
-          // Populate the modal for creating a profile (no user data needed)
-          // Optionally, call a function to initialize default values for the "create" modal
-        }
-
         if (sectionId === "modal-new-post") {
+          const topic = await fetchTopicNameData();
+          populateNewPostWithTopics(topic)
           openModal(sectionId, titleId);
           console.log("clicko!");
         }
@@ -341,13 +250,6 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Failed to load user data");
     }
   }
-
-  // The only modal that does't require user db data
-  // const createProfileAdminButton = document.querySelector(".create-profile-admin-button");
-  // createProfileAdminButton.addEventListener("click", (e) => {
-  //     const { section, title } = e.currentTarget.dataset;
-  //     handleModalOpen(null, section, title);
-  //   });
 
   const createProfileAdminButton = document.querySelector(
     ".create-profile-admin-button",
@@ -366,6 +268,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // });
 
   const newPostButton = document.querySelector(".new-post-button");
+  // const newPostButton = document.getElementById("new-post-button");
   if (newPostButton) {
     newPostButton.addEventListener("click", (e) => {
       const { section, title } = e.currentTarget.dataset;
@@ -541,6 +444,4 @@ document.addEventListener("DOMContentLoaded", () => {
       ); // Truncates input if too long
     }
   });
-
-  //   end
 });

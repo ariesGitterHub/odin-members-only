@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
-const pool = require("../db/pool"); // PostgreSQL pool
-const { hasRole, requireRole } = require("../utils/permissions.js");
+// const pool = require("../db/pool"); // PostgreSQL pool
+// const { hasRole, requireRole } = require("../utils/permissions.js");
 const passport = require("passport");
 
 const {
@@ -8,16 +8,11 @@ const {
   getUserById,
   checkIfEmailExists,
   insertNewUser,
-  // getTopics,
+  getTopicNames,
   getAllTopics,
   getTopicBySlug,
-  getMessagesByTopicId,
   getValidMessagesByTopic,
-  getMessagesByUser,
-  getMessagesByTopic,
-  softDeleteExpiredMessages,
-  hardDeleteMessages,
-  cleanupMessages,
+
 } = require("../db/queries");
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
@@ -29,7 +24,6 @@ const {
 } = require("../utils/zodiacSigns");
 const {
   addBirthdateFields,
-  // addDateFields,
   addSessionCreateDateFields,
   addSessionUpdateDateFields,
   addZodiacSigns,
@@ -37,21 +31,6 @@ const {
   addChineseZodiacSigns,
   addAvatarFields,
 } = require("../utils/viewFormatters");
-
-// currentUser Info
-// appController.js
-
-// async function getCurrentUser(req, res, next) {
-//   try {
-//     if (req.user) {
-//       res.json(req.user); // optionally pick only needed fields
-//     } else {
-//       res.json(null);
-//     }
-//   } catch (err) {
-//     next(err);
-//   }
-// }
 
 async function getCurrentUser(req, res, next) {
   try {
@@ -94,18 +73,6 @@ async function getHome(req, res, next) {
 }
 
 // Sign-Up
-
-// async function getSignUp(req, res, next) {
-//   try {
-//     res.render("sign-up", {
-//       title: "Sign Up",
-//       user: req.user,
-//       errors: [],
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// }
 
 async function getSignUp(req, res, next) {
   try {
@@ -244,36 +211,6 @@ async function postLogOut(req, res, next) {
   }
 }
 
-// async function getYourProfile(req, res, next) {
-//   const users = await getUsers();
-
-//   users.forEach((user) => {
-//     if (user.birthdate instanceof Date) {
-//       user.birthdate = user.birthdate.toISOString().split("T")[0];
-//     }
-//   });
-
-//   const usersWithBirthDates = addBirthdateFields(
-//     users,
-//     calculateAge,
-//     formatShortDate,
-//   );
-//   const usersWithAvatars = addAvatarFields(
-//     usersWithBirthDates,
-//     avatarTypeDefault,
-//   );
-
-//   try {
-//     res.render("your-profile", {
-//       title: "Your Profile",
-//       users: usersWithAvatars,
-//       errors: [],
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// }
-
 async function getYourProfile(req, res, next) {
   if (!req.user) {
     return res.redirect("/app/log-in"); // No logged-in user
@@ -361,6 +298,17 @@ async function getMessageBoards(req, res, next) {
   }
 }
 
+// getTopicNames
+
+const getTopicNamesForDropdown = async (req, res, next) => {
+  try {
+    const topics = await getTopicNames(); // returns [{id, name}, ...]
+    res.json(topics); // MUST be an array
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function getTopicPage(req, res, next) {
   try {
     const { slug } = req.params;
@@ -374,30 +322,6 @@ async function getTopicPage(req, res, next) {
 
     // Get messages for this topic
     const messages = await getValidMessagesByTopic(topic.id);
-
-    // Check avatar, if none select, gets a letter
-    // const avatarLetter = avatarTypeDefault(
-    //   messages.avatar_type,
-    //   messages.permission_status,
-    //   messages.first_name,
-    // );
-
-    // const avatarLetter = messages.map((message) => {
-    //   avatarTypeDefault(
-    //   message.avatar_type,
-    //   message.permission_status,
-    //   message.first_name,
-    // )});
-
-    // Attach avatarLetter to each message - TODO - I need to remember below!
-    // const messagesWithAvatars = messages.map((message) => ({
-    //   ...message,
-    //   avatarLetter: avatarTypeDefault(
-    //     message.avatar_type,
-    //     message.permission_status,
-    //     message.first_name,
-    //   ),
-    // }));
 
     const messagesWithAvatars = addAvatarFields(messages, avatarTypeDefault);
 
@@ -414,60 +338,8 @@ async function getTopicPage(req, res, next) {
   }
 }
 
-// async function getTopicBySlug(req, res, next) {
-//   try {
-//     const { slug } = req.params;
-
-//     const topic = await getTopicBySlug(slug);
-
-//     if (!topic) {
-//       return res.status(404).render("404");
-//     }
-
-//     const messages = await getValidMessagesByTopic(topic.id);
-
-//     res.render("topic", {
-//       title: topic.name,
-//       topic,
-//       messages,
-//       errors: [],
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// }
-
-// async function getBecomeMember(req, res, next) {
-//   try {
-//     res.render("become-member", {
-//       title: "Become Member",
-//       user: req.user,
-//       errors: [],
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// }
-
-// async function getAdmin(req, res, next) {
-//   const users = await getUsers();
-//   const age = calculateAge(users.birthdate);
-//   const formattedBirthdate = formatShortDate(users.birthdate);
-
-//   try {
-//     res.render("admin", {
-//       title: "Admin",
-//       users,
-//       age,
-//       formattedBirthdate,
-//       errors: [],
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// }
-
 // -- Log-out
+
 // REMINDER - Don't use async or try/catch — below is the correct pattern.
 
 async function getMemberDirectory(req, res, next) {
@@ -489,7 +361,7 @@ async function getMemberDirectory(req, res, next) {
   }
 }
 
-async function getAdmin(req, res, next) {
+async function getAdminPage(req, res, next) {
   try {
     const users = await getUsers();
 
@@ -553,22 +425,32 @@ async function getAdmin(req, res, next) {
   }
 }
 
-// Function to fetch individual user data for modal
-// async function getUserDetails(req, res, next) {
-//   const userId = req.params.id;  // Get user ID from URL parameter
-//   try {
-//     const user = await getUserById(userId);
-//     if (user) {
-//       res.json(user);  // Send user data as JSON
-//     } else {
-//       res.status(404).send('User not found');
-//     }
-//   } catch (err) {
-//     next(err);
-//   }
-// }
+async function getAdminEditPage(req, res, next) {
+  try {
+    const userId = req.params.id;
+    const user = await getUserById(userId);
+    if (!user) return res.status(404).send("User not found");
+    res.render("admin-edit", {
+      title: "Admin Edit",
+      user,
+      errors: [],
+    }); // Pass user to EJS view
+  } catch (err) {
+    next(err);
+  }
+}
 
-// Function to fetch individual user data for modal
+function getAdminCreatePage(req, res, next) {
+  try {
+    res.render("admin-create", {
+      title: "Admin Create",
+      errors: [],
+    }); // Just render an empty form
+  } catch (err) {
+    next(err);
+  }
+}
+
 // Function to fetch individual user data for modal
 async function getUserDetails(req, res, next) {
   const userId = req.params.id; // Get user ID from URL parameter
@@ -588,13 +470,6 @@ async function getUserDetails(req, res, next) {
   }
 }
 
-// function postLogOut(req, res, next) {
-//   req.logout((err) => {
-//     if (err) return next(err);
-//     res.redirect("/app");
-//   });
-// }
-
 module.exports = {
   getCurrentUser,
   getHome,
@@ -603,16 +478,16 @@ module.exports = {
   getLogIn,
   postLogIn,
   postLogOut,
-
   getYourProfile,
   getMemberDirectory,
   getUpdateProfile,
   getChangeAvatar,
   getInfo,
   getMessageBoards,
-  // getMessageBoardBySlug,
+  getTopicNamesForDropdown,
   getTopicPage,
-  // getBecomeMember,
-  getAdmin,
+  getAdminPage,
+  getAdminEditPage,
+  getAdminCreatePage,
   getUserDetails,
 };

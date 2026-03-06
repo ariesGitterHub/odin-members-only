@@ -51,32 +51,19 @@
   font-weight: 600;
 }
 
-.neighbor-data {
-  /* background-color: var(--off-white); */
-  /* border-bottom: 2px solid var(--white); */
-  border-radius: 0.25rem;
-  padding-left: 0.125rem;
+.circle {
+border-radius: var(--border-radius-circle);
 }
 
-.admin-card .neighbor-data {
-  background-color: var(--off-black);
+.margin-bottom {
+  margin-bottom: 0.5rem;
 }
 
-.user-card .neighbor-data {
-  background-color: var(--off-white);
+.margin-right {
+  margin-right: 0.5rem;
 }
 
-.app-data {
-  padding-left: 0.125rem;
-}
 
-.neighbor-data, .app-data {
- margin-bottom: 2px;
-}
-
-.upgrade-me {
-  background-color: var(--member-request-alert);
-}
 
 /* .col {
   width:6rem;

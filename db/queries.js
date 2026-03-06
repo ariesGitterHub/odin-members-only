@@ -1,45 +1,19 @@
 const pool = require("./pool");
 
-// const getUsers = async function getUsers() {
-//   const { rows } = await pool.query(`
-//     SELECT
-//       u.*,
-//       up.avatar_type,
-//       up.avatar_color_fg,
-//       up.avatar_color_bg_top,
-//       up.avatar_color_bg_bottom,
-//       up.phone,
-//       up.street_address,
-//       up.apt_unit,
-//       up.city,
-//       up.us_state,
-//       up.zip_code,
-//       up.notes,
-//       up.verified_by_admin
-//     FROM users u
-//     LEFT JOIN user_profiles up
-//       ON u.id = up.user_id
-//     ORDER BY u.id;
-//   `);
-
-//   return rows;
-// };
-
-// Query to get avatar-related data by user ID
-// const getAvatarByUserId = `
-//   SELECT
-//     avatar_type,
-//     avatar_color_fg,
-//     avatar_color_bg_top,
-//     avatar_color_bg_bottom
-//   FROM user_profiles
-//   WHERE user_id = $1;
-// `;
-
 const getUsers = async function getUsers() {
   const { rows } = await pool.query(`
     SELECT
-      u.*,
+      u.id,
+      u.email,
+      u.first_name,
+      u.last_name,
+      u.birthdate,
+      u.permission_status,
+      u.member_request,
+      u.is_active,
+      u.created_at,
+      u.updated_at,
+      u.last_login_at,
       up.avatar_type,
       up.avatar_color_fg,
       up.avatar_color_bg_top,
@@ -69,12 +43,22 @@ const getUsers = async function getUsers() {
   return rows;
 };
 
-// NEW...............................................................................
+// BELOW exposes data, see in appRputer.js and on localhost:XXXX/app/user/1
 const getUserById = async function getUserById(userId) {
   const { rows } = await pool.query(
     `
     SELECT
-      u.*,
+      u.id,
+      u.email,
+      u.first_name,
+      u.last_name,
+      u.birthdate,
+      u.permission_status,
+      u.member_request,
+      u.is_active,
+      u.created_at,
+      u.updated_at,
+      u.last_login_at,
       up.avatar_type,
       up.avatar_color_fg,
       up.avatar_color_bg_top,
@@ -126,17 +110,16 @@ async function insertNewUser(
   return result.rows[0]; // Return the inserted user
 }
 
+const getTopicNames = async () => {
+  const { rows } = await pool.query(`
+    SELECT id, name
+    FROM topics
+    WHERE is_active = true
+    ORDER BY sort_order;
+  `);
 
-// const getAllTopics = async () => {
-//   const query = `
-//     SELECT *
-//     FROM topics
-//     WHERE is_active = true
-//     ORDER BY sort_order;
-//   `;
-//   const res = await pool.query(query);
-//   return res.rows;
-// };
+  return rows;
+};
 
 const getAllTopics = async () => {
   const { rows } = await pool.query(`
@@ -155,7 +138,6 @@ const getAllTopics = async () => {
   return rows;
 };
 
-
 const getTopicBySlug = async (slug) => {
   const query = `
     SELECT *
@@ -167,73 +149,6 @@ const getTopicBySlug = async (slug) => {
   const res = await pool.query(query, [slug]);
   return res.rows[0];
 };
-
-// const getMessagesByTopicId = async (topicId, limit = 50) => {
-//   const query = `
-//     SELECT
-//       m.id,
-//       m.topic_id,
-//       m.user_id,
-//       m.title,
-//       m.like_count,
-//       m.body,
-//       m.created_at,
-//       u.first_name,
-//       u.last_name
-//     FROM messages m
-//     JOIN users u ON m.user_id = u.id
-//     WHERE m.topic_id = $1
-//       AND m.is_deleted = false
-//       AND (m.expires_at IS NULL OR m.expires_at > NOW())
-//     ORDER BY m.created_at DESC
-//     LIMIT $2;
-//   `;
-//   const res = await pool.query(query, [topicId, limit]);
-//   return res.rows;
-// };
-
-/**
- * Fetch messages that are not deleted and not expired.
- * Ordered by newest first.
- * @param limit: number of messages to return
- */
-// const getValidMessages = async (limit = 50) => {
-//   const query = `
-//     SELECT id, topic_id, user_id, title, like_count, body, created_at, expires_at
-//     FROM messages
-//     WHERE is_deleted = false
-//       AND (expires_at IS NULL OR expires_at > NOW())
-//     ORDER BY created_at DESC
-//     LIMIT $1;
-//   `;
-//   const res = await pool.query(query, [limit]);
-//   return res.rows;
-// };
-
-// const getValidMessagesByTopic = async (topicId, limit = 50) => {
-//   const query = `
-//     SELECT
-//       m.id,
-//       m.topic_id,
-//       m.user_id,
-//       m.title,
-//       m.like_count,
-//       m.body,
-//       m.created_at,
-//       m.expires_at,
-//       u.first_name,
-//       u.last_name
-//     FROM messages m
-//     JOIN users u ON m.user_id = u.id
-//     WHERE m.topic_id = $1
-//       AND m.is_deleted = false
-//       AND (m.expires_at IS NULL OR m.expires_at > NOW())
-//     ORDER BY m.created_at DESC
-//     LIMIT $2;
-//   `;
-//   const res = await pool.query(query, [topicId, limit]);
-//   return res.rows;
-// };
 
 const getValidMessagesByTopic = async (topicId, limit = 50) => {
   const query = `
@@ -385,85 +300,15 @@ const getMessagesByTopic = async (topicId, limit = 50) => {
   return res.rows;
 };
 
-//
-//
-//
-
-// /**
-//  * [Brief description of the query]
-//  * @param params: array of query parameters (if any)
-//  * @param limit: optional, number of rows to return
-//  * @returns Array of result rows
-//  */
-// const queryTemplate = async (sql, params = []) => {
-//   try {
-//     const res = await pool.query(sql, params);
-//     return res.rows;
-//   } catch (err) {
-//     console.error("Database query error:", err.message);
-//     throw err;
-//   }
-// };
-
-// /**
-//  * Fetch messages containing a keyword in the title or body
-//  * @param keyword: string to search for
-//  * @param limit: optional number of rows to return
-//  */
-// const getMessagesByKeyword = async (keyword, limit = 50) => {
-//   const sql = `
-//     SELECT id, user_id, topic_id, title, body, created_at, expires_at
-//     FROM messages
-//     WHERE is_deleted = false
-//       AND (expires_at IS NULL OR expires_at > NOW())
-//       AND (title ILIKE $1 OR body ILIKE $1)
-//     ORDER BY created_at DESC
-//     LIMIT $2;
-//   `;
-//   return queryTemplate(sql, [`%${keyword}%`, limit]);
-// };
-
-// /**
-//  * Update the title of a specific message
-//  * @param messageId: ID of the message
-//  * @param newTitle: new title string
-//  * @returns Number of rows updated
-//  */
-// const updateMessageTitle = async (messageId, newTitle) => {
-//   const sql = `
-//     UPDATE messages
-//     SET title = $1
-//     WHERE id = $2
-//       AND is_deleted = false
-//   `;
-//   const res = await pool.query(sql, [newTitle, messageId]);
-//   return res.rowCount;
-// };
-
-// // const client = await pool.connect();
-// // try {
-// //   await client.query("BEGIN");
-// //   await client.query("UPDATE ...");
-// //   await client.query("DELETE ...");
-// //   await client.query("COMMIT");
-// // } catch (err) {
-// //   await client.query("ROLLBACK");
-// //   throw err;
-// // } finally {
-// //   client.release();
-// // }
-
 module.exports = {
   getUsers,
   getUserById,
   checkIfEmailExists,
   insertNewUser,
-  // getTopics,
+  getTopicNames,
   getAllTopics,
   getTopicBySlug,
-  // getMessagesByTopicId,
   getValidMessagesByTopic,
-  // getMessagesByUser,
   getMessagesByTopic,
   softDeleteExpiredMessages,
   hardDeleteMessages,

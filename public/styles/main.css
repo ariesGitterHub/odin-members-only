@@ -1,14 +1,23 @@
 /* IMPORTS, VARIABLES, PRESETS & RESETS */
 @import "./base.css";
 
-/* BODY, HEADER, NAV, MAIN, FOOTER */
-@import "./layout.css";
+/* LAYOUT-BASICS */
+@import "./layout-basics.css";
+@import "./header.css";
+@import "./footer.css";
 
-/* BUTTONS, BUTTON-LIKE ELEMENTS, FORM ELEMENTS, TOOLTIPS */
+/* COMPONENTS */
 @import "./components.css";
 
-/* ANYTHING VIEW/PAGE RELATED*/
+/* ANYTHING VIEW/PAGE/MODAL RELATED*/
+
+
 @import "./views.css";
+
+@import "./modal.css";
+
+
+
 
 /* MISC and other stuff that needs to come later in CSS order */
 @import "./misc.css";

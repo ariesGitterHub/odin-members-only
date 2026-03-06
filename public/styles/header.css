@@ -1,0 +1,23 @@
+.sticky-header {
+  position: sticky;
+  top: 0;
+  width: var(--width100per);
+}
+
+.nav-bar {
+  height: var(--nav-bar-h);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 0.5rem;
+  background-color: var(--off-red);
+}
+
+.logged-in-bar {
+  background-color: var(--off-black);
+  color: var(--off-white);
+  font-size: 0.8rem;
+  padding: 0.125rem;
+  text-align: center;
+}

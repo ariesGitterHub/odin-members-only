@@ -13,36 +13,51 @@
       <% if (users.length === 0) { %> 
       <p>There are no current members.</p>
       <% } else { users.forEach(function(user) { %> 
-          <% if (user.permission_status === "member") { %> 
+          <% if (user && user.permission_status === "member") { %> 
           <div class="card member-card">
-            <div class="profile-data">
-              <div class="avatar-image-container-wide">
+            <div class="profile-data-container">
+              <!-- <div class="avatar-image-container-wide">
                 <div 
-                  class="avatar-image-circle avatar-circle-large" 
+                  class="avatar-image-container avatar-member-directory"
                   style="
-                    --avatar-color-fg: <%= user.avatar_color_fg || 'var(--off-black)' %>;
-                    --avatar-color-bg-top: <%= user.avatar_color_bg_top || 'var(--off-white)' %>;
-                    --avatar-color-bg-bottom: <%= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
+                    --avatar-color-fg: <%#= user.avatar_color_fg || 'var(--off-black)' %>;
+                    --avatar-color-bg-top: <%#= user.avatar_color_bg_top || 'var(--off-white)' %>;
+                    --avatar-color-bg-bottom: <%#= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
                   ">
                   <span class="emoji avatar-emoji-large-size" role="img" aria-label="avatar image">
                     <%= user.avatarLetter %>
                   </span>
                 </div>            
+              </div> -->
+              <div class="member-directory-extra-avatar-container avatar-background" 
+              style="
+                --avatar-color-bg-top: <%= user.avatar_color_bg_top || 'var(--off-white)' %>;
+                --avatar-color-bg-bottom: <%= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
+              ">
+                <div 
+                  class="avatar-container avatar-container-size-large" 
+                  style="
+                    --avatar-color-fg: <%= user.avatar_color_fg || 'var(--off-black)' %>;
+                  ">
+                  <span class="emoji emoji-size-largest" role="image" aria-label="avatar image">
+                    <%= user.avatarLetter %>
+                  </span>
+                </div>           
               </div>
               <dl class="profile-data-dl">
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">name</dt>
                   <dd class="capitalize bold"><%= user.first_name %> <%= user.last_name %></dd>
-                </div>
+                </div class="app-relevant-data">
                 <div>
                   <dt class="capitalize">status</dt>
                   <dd class="bold"><%= user.permission_status %></dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">email</dt>
                   <dd class="bold"><%= user.email%></dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">phone</dt>
                   <dd class="bold"><%= user.phone || "n/a" %></dd>
                 </div>
@@ -50,23 +65,23 @@
                   <dt class="capitalize">birthdate</dt>
                   <dd class="bold"><%#= user.formattedBirthdate %> (age: <%#= user.age %>)</dd>
                 </div> -->
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">street</dt>
                   <dd class="bold"><%= user.street_address || "n/a" %></dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">apt/unit</dt>
                   <dd class="bold"><%= user.apt_unit || "n/a" %></dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">city</dt>
                   <dd class="bold"><%= user.city || "n/a" %></dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">state</dt>
                   <dd class="bold"><%= user.us_state || "n/a" %></dd>
                 </div>
-                <div>
+                <div class="neighbor-relevant-data">
                   <dt class="capitalize">zip code</dt>
                   <dd class="bold"><%= user.zip_code || "n/a" %></dd>
                 </div>
