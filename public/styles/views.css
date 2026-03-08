@@ -15,12 +15,16 @@
   width: var(--width-default-percent);
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   gap: var(--spacer-medium);
   border-radius: var(--border-radius-default);
   font-size: var(--emoji-quick-view-bar-size);
   padding: var(--spacer-default);
 }
+
+/* .o-card .admin-quick-view-bar {
+  background-color: var(--off-blue);
+} */
 
 .admin-card .admin-quick-view-bar {
   background-color: var(--off-black);
@@ -39,6 +43,11 @@
   padding: var(--spacer-medium);
 }
 
+/* .o-card .admin-quick-view-bar span {
+  background-color: var(--off-white);
+  color: var(--off-black);
+} */
+
 .admin-card .admin-quick-view-bar span {
   background-color: var(--off-white);
   color: var(--off-black);
@@ -53,6 +62,10 @@
   font-size: var(--font-size-largest);
   margin-left: var(--spacer-default);
 }
+
+/* .o-card .neighbor-relevant-data {
+  background-color: var(--off-blue);
+} */
 
 .admin-card .neighbor-relevant-data {
   background-color: var(--off-black);
@@ -89,6 +102,14 @@
   color: var(--off-black);
   font-size: var(--font-size-large);
   margin-bottom: var(--spacer-default);
+}
+
+.topic-new-post {
+background-color: var(--lt-red);
+}
+
+.topic-new-post:focus {
+border: var(--off-red);
 }
 
 /* -- message-boards.ejs */
@@ -234,8 +255,8 @@
 /* -- change-avatar.ejs */
 .preview-current,
 .preview-new {
-  height: 6rem;
-  width: 6rem;
+  height: 5rem;
+  width: 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -251,7 +272,7 @@
 }
 
 .emoji-list-change-avatar {
-  height: 230px;
+  height: var(--emoji-list-change-avatar-picker-h);
   width: var(--width-default-percent);
   display: flex;
   flex-direction: column;

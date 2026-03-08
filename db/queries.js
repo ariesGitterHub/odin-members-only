@@ -95,6 +95,21 @@ async function checkIfEmailExists(email) {
 }
 
 // Function to insert a new user
+// async function insertNewUser(
+//   first_name,
+//   last_name,
+//   email,
+//   birthdate,
+//   password_hash,
+//   permission_status = "guest",
+// ) {
+//   const result = await pool.query(
+//     "INSERT INTO users (first_name, last_name, email, birthdate, password_hash, permission_status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+//     [first_name, last_name, email, birthdate, password_hash, permission_status],
+//   );
+//   return result.rows[0]; // Return the inserted user
+// }
+
 async function insertNewUser(
   first_name,
   last_name,
@@ -103,10 +118,21 @@ async function insertNewUser(
   password_hash,
   permission_status = "guest",
 ) {
+  // Insert user into users table
   const result = await pool.query(
     "INSERT INTO users (first_name, last_name, email, birthdate, password_hash, permission_status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
     [first_name, last_name, email, birthdate, password_hash, permission_status],
   );
+
+  // After inserting user, create a profile with default avatar_type
+  const avatar_type = first_name.charAt(0).toUpperCase(); // Default avatar type from the first name's first letter
+
+  // Insert into user_profile table
+  await pool.query(
+    "INSERT INTO user_profiles (user_id, avatar_type) VALUES ($1, $2)",
+    [result.rows[0].id, avatar_type],
+  );
+
   return result.rows[0]; // Return the inserted user
 }
 

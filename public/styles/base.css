@@ -44,6 +44,7 @@
 
   --member-request-alert: var(--lt-orange);
 
+  /* --border-o-card: 0.125rem double var(--off-blue); */
   --border-admin-card: 0.125rem double var(--off-red);
   --border-member-card: 0.125rem solid var(--off-gray);
   --border-guest-card: 0.125rem solid var(--off-gray);
@@ -76,11 +77,12 @@
 
   --index-image-size: 15rem;
   
-  --avatar-circle-small-h-w: 3.75rem;
-  --avatar-circle-large-h-w: 8rem;
+  --avatar-circle-small-h-w: 4rem;
+  --avatar-circle-large-h-w: 10rem;
 
   --emoji-quick-view-bar-size: 1.125rem;
 
+  --emoji-list-change-avatar-picker-h: 180px;
 
   /* Font related */
 
@@ -93,10 +95,10 @@
   --font-size-page-subtitle: 1.45rem;
 
   --avatar-emoji-nav-size: 1.75rem;
-  --avatar-emoji-preview-size: 3.25rem;
+  --avatar-emoji-preview-size: 3rem;
   --avatar-emoji-option-size: 2rem;
-  --avatar-emoji-small-size: 2.5rem;
-  --avatar-emoji-large-size: 5.65rem;
+  --avatar-emoji-small-size: 2rem;
+  --avatar-emoji-large-size: 6rem;
   --avatar-emoji-largest-size: 8rem;
 
   --message-name-size: 1.125rem;

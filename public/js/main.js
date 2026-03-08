@@ -196,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (currentAvatarElement) {
       currentAvatarElement.textContent = user.avatar_type || "";
       currentAvatarElement.style.color = user.avatar_color_fg || avatarColorFg;
-      currentAvatarElement.style.background = `linear-gradient(5deg, ${user.avatar_color_bg_bottom || avatarColorBgTop}, ${user.avatar_color_bg_top || avatarColorBgBottom})`;
+      currentAvatarElement.style.background = `linear-gradient(5deg, ${user.avatar_color_bg_bottom || avatarColorBgBottom}, ${user.avatar_color_bg_top || avatarColorBgTop})`;
     }
 
     const avatarTypeText = document.getElementById("avatar-type-text-change-avatar");
@@ -444,4 +444,15 @@ document.addEventListener("DOMContentLoaded", () => {
       ); // Truncates input if too long
     }
   });
+
+  //   document.getElementById("first-name-sign-up").addEventListener("input", function() {
+  //   const firstName = this.value.trim(); // Get the first name
+  //   if (firstName) {
+  //     // Get the first letter, uppercase it, and assign it as the avatar emoji
+  //     const firstLetter = firstName.charAt(0).toUpperCase();
+  //     document.getElementById("avatar-type-sign-up").value = firstLetter; // Set the hidden field value
+  //   }
+  // });
+
+
 });

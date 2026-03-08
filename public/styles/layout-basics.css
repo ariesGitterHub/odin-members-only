@@ -99,6 +99,12 @@ main {
   padding: var(--spacer-biggest);
 }
 
+/* .o-card {
+  background-color: var(--dk-blue);
+  border: var(--border-o-card);
+  color: var(--off-white);
+} */
+
 .admin-card {
   background-color: var(--black);
   border: var(--border-admin-card);
@@ -129,7 +135,7 @@ main {
 
 .profile-data-dl div {
   display: grid;
-  grid-template-columns: 4.75rem 1fr;
+  grid-template-columns: 4.125rem 1fr;
   gap: var(--spacer-biggest);
   line-height: 1.5;
 }

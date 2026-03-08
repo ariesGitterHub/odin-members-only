@@ -1,15 +1,20 @@
+// This code effectively performs both authentication adn authorization checks, but conceptually it’s primarily an authorization guard that includes a basic authentication check.
+
+//This ia na Role-Based Access Control (RBAC) set up.
 const ROLE_LEVEL = {
-  guest: 1,
-  member: 2,
-  admin: 3,
+  guest: 10,
+  member: 20,
+  admin: 30,
+  owner: 100,
 };
 
+// Authentication guard
 function hasRole(user, requiredRole) {
   if (!user) return false;
 
   return ROLE_LEVEL[user.permission_status] >= ROLE_LEVEL[requiredRole];
 }
-
+// Authorization guard
 function requireRole(requiredRole) {
   return function (req, res, next) {
     const user = res.locals.currentUser;

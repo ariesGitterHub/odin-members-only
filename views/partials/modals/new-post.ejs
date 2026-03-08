@@ -1,9 +1,9 @@
 <form action="/app/????" method="POST">
-  <h2 class="new-post-author">By <%= currentUser.first_name %> <span class="emoji"><%= currentUser.avatar_type %></span></h2>
+  <h2 class="new-post-author">By <%= currentUser.first_name %></h2>
   <label class="capitalize" for="topic-new-post"> Message Topic </label>
   <select
     id="topic-new-post"
-    class="uppercase"
+    class="topic-new-post uppercase"
     name="topic_id"
     required
   ></select>

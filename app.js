@@ -4,7 +4,7 @@ require("./config/passport"); // This initializes the Passport strategies
 // 1. Imports at the top
 const express = require("express");
 const path = require("node:path");
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const passport = require("passport");
 // const { body, validationResult } = require("express-validator");
@@ -12,7 +12,7 @@ const passport = require("passport");
 const PORT = process.env.PORT || 3000;
 const appRouter = require("./routes/appRouter");
 const { log } = require("node:console");
-const permissions = require("./utils/permissions");
+// const permissions = require("./utils/permissions");
 const { avatarTypeDefault } = require("./utils/avatarTypeDefault");
 const { addAvatarFields } = require("./utils/viewFormatters");
 

@@ -1,6 +1,6 @@
 <header class="sticky-header">
   <nav class="nav-bar" aria-label="user menu">
-    <% if (currentUser && currentUser.permission_status === "admin") { %>
+    <% if (currentUser && (currentUser.permission_status === "admin" || currentUser.permission_status === "owner")) { %>
     <a class="button-default nav-button" href="/app/admin">
       <span class="emoji emoji-nav-size" role="img" aria-label="admin's overview">
       ⚙

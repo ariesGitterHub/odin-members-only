@@ -25,7 +25,8 @@ const {
 } = require("../controllers/appControllers");
 
 const appRouter = Router();
-appRouter.get("/current-user", requireRole("admin"), getCurrentUser);
+// appRouter.get("/current-user", requireRole("admin"), getCurrentUser);
+appRouter.get("/current-user", getCurrentUser);
 // appRouter.get("/current-user", getCurrentUser); // USE IN DEV
 appRouter.get("/", getHome);
 appRouter.get("/sign-up", getSignUp);
@@ -49,10 +50,12 @@ appRouter.get("/admin-edit/:id", requireRole("admin"), getAdminEditPage);
 appRouter.get("/admin-create", requireRole("admin"), getAdminCreatePage);
 // Ensure you add the route for this
 // appRouter.get("/user/:id", getUserDetails);
-appRouter.get("/user/:id", requireRole("admin"), getUserDetails);
+// appRouter.get("/user/:id", requireRole("admin"), getUserDetails);
+appRouter.get("/user/:id", getUserDetails);
 appRouter.get("/info", getInfo);
 appRouter.get("/message-boards", getMessageBoards);
-appRouter.get("/topics", requireRole("admin"), getTopicNamesForDropdown);
+// appRouter.get("/topics", requireRole("admin"), getTopicNamesForDropdown);
+appRouter.get("/topics", getTopicNamesForDropdown);
 appRouter.get("/message-boards/:slug", getTopicPage);
 appRouter.get("/your-profile", getYourProfile);
 appRouter.get("/member-directory", requireRole("member"), getMemberDirectory);

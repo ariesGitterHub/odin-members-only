@@ -194,6 +194,7 @@ button:hover,
 .avatar-container-size-small {
   height: var(--avatar-circle-small-h-w);
   width: var(--avatar-circle-small-h-w);
+  margin: 0;
 }
 
 .avatar-container-size-large {

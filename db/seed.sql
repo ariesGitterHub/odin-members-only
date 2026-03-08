@@ -12,7 +12,7 @@ INSERT INTO users (
 VALUES (
   'admin@can.org',
   '$2b$12$RF0Zoj3moNJOziNwh2bSa.DxlWqUSn0QZNnhYPDjCHjWyzagrsHD6',
-  'CAN Admin',
+  'CAN Board Admin',
   '#1',
   '1974-04-20',
   'admin',
@@ -70,11 +70,12 @@ INSERT INTO users (
   member_request
 )
 VALUES
-  ('alan@can.local',  '$2b$12$DUMMY_HASH', 'Alan',  'Rivera', '1961-01-05', 'guest', true),
-  ('bruce@can.local', '$2b$12$DUMMY_HASH', 'Bruce', 'Chen', '1951-04-05', 'guest', false),
-  ('chuck@gimmesomeletuceyoufools.com', '$2b$12$DUMMY_HASH', 'Chuck', 'Thompson', '1941-08-05', 'member', true),
-  ('dave@can.local',  '$2b$12$DUMMY_HASH', 'Dave',  'Brooks', '1951-10-05', 'member', true),
-  ('evil@can.local',  '$2b$12$DUMMY_HASH', 'Evil',  'Hater', '1966-06-05', 'guest', false)
+  ('alan@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Alan',  'Rivera', '1961-01-05', 'guest', true),
+  ('bruce@can.org', '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Bruce', 'Chen', '1951-04-05', 'guest', false),
+  ('chuck@can.org', '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Chuck', 'Thompson', '1941-08-05', 'member', true),
+  ('dave@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Dave',  'Brooks', '1951-10-05', 'member', true),
+  ('evil@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Evil',  'Hater', '1966-06-05', 'guest', false),
+  ('ace@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Ace',  'One', '1982-04-01', 'member', true)
 ON CONFLICT (email) DO NOTHING;
 
 
@@ -87,10 +88,10 @@ ON CONFLICT (email) DO NOTHING;
 -- FROM users u
 -- LEFT JOIN user_profiles p ON p.user_id = u.id
 -- WHERE u.email IN (
---   'alan@can.local',
---   'bruce@can.local',
---   'chuck@gimmesomeletuceyoufools.com',
---   'dave@can.local'
+--   'alan@can.org',
+--   'bruce@can.org',
+--   'chuck@can.org',
+--   'dave@can.org'
 -- )
 -- AND p.user_id IS NULL;
 
@@ -125,22 +126,24 @@ FROM users u
 
 LEFT JOIN (
   VALUES
-    ('alan@can.local', '', '', '', '#997a98',  '', '', '', '', '', '', false),
-    ('bruce@can.local', '', '', '#a91313', '',  '', '', '', '', '', '', true),
-    ('chuck@gimmesomeletuceyoufools.com', '🦍', '', '#92cfe4', '#7de9e9',  '555-111-2222', '123 Maple St', 'Harrisburg', 'PA', '17102', 'likes peanut brittle and has been known to watch squirrels in the park on hot summer days', true),
-    ('dave@can.local', '🦙', '#521313', '#eeee7d', '#83741d', '555-333-4444', '456 Oak Ave',  'Harrisburg', 'PA', '17101', '', true),
-    ('evil@can.local', '', '#2b0505', '#bfbf0c', '#1d2c83', '555-313-4444', '45 Nope Ave',  'Harrisburg', 'PA', '17101', '', false)
+    ('alan@can.org', '', '', '', '#997a98',  '', '', '', '', '', '', false),
+    ('bruce@can.org', '', '', '#a91313', '',  '', '', '', '', '', '', true),
+    ('chuck@can.org', '🦍', '', '#92cfe4', '#7de9e9',  '555-111-2222', '123 Maple St', 'Harrisburg', 'PA', '17102', 'likes peanut brittle and has been known to watch squirrels in the park on hot summer days', true),
+    ('dave@can.org', '🦙', '#521313', '#eeee7d', '#83741d', '555-333-4444', '456 Oak Ave',  'Harrisburg', 'PA', '17101', '', true),
+    ('evil@can.org', '', '#2b0505', '#bfbf0c', '#1d2c83', '555-313-4444', '45 Nope Ave',  'Harrisburg', 'PA', '17101', '', false),
+    ('ace@can.org', 'A', '', '', '', '', '',  '', '', '', '', true)
 ) AS v(email, avatar_type, avatar_color_fg, avatar_color_bg_top, avatar_color_bg_bottom, phone, street_address, city, us_state, zip_code, notes, verified_by_admin)
 ON u.email = v.email
 
 LEFT JOIN user_profiles p ON p.user_id = u.id
 
 WHERE u.email IN (
-  'alan@can.local',
-  'bruce@can.local',
-  'chuck@gimmesomeletuceyoufools.com',
-  'dave@can.local',
-  'evil@can.local'
+  'alan@can.org',
+  'bruce@can.org',
+  'chuck@can.org',
+  'dave@can.org',
+  'evil@can.org',
+  'ace@can.org'
 )
 AND p.user_id IS NULL;
 
@@ -159,7 +162,7 @@ SELECT t.id, u.id,
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
 WHERE t.slug = 'introductions'
-  AND u.email = 'alan@can.local'
+  AND u.email = 'alan@can.org'
 LIMIT 1;
 
 
@@ -171,7 +174,7 @@ SELECT t.id, u.id,
   NOW() + INTERVAL '14 days'
 FROM topics t, users u
 WHERE t.slug = 'safety-alerts'
-  AND u.email = 'bruce@can.local'
+  AND u.email = 'bruce@can.org'
 LIMIT 1;
 
 
@@ -183,7 +186,7 @@ SELECT t.id, u.id,
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
-  AND u.email = 'chuck@gimmesomeletuceyoufools.com'
+  AND u.email = 'chuck@can.org'
 LIMIT 1;
 
 -- 3️⃣ Buy & Sell
@@ -194,7 +197,7 @@ SELECT t.id, u.id,
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
-  AND u.email = 'evil@can.local'
+  AND u.email = 'evil@can.org'
 LIMIT 1;
 
 -- 3️⃣ Buy & Sell
@@ -205,7 +208,7 @@ SELECT t.id, u.id,
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
-  AND u.email = 'chuck@gimmesomeletuceyoufools.com'
+  AND u.email = 'chuck@can.org'
 LIMIT 1;
 
 
@@ -217,7 +220,7 @@ SELECT t.id, u.id,
   NOW() + INTERVAL '10 days'
 FROM topics t, users u
 WHERE t.slug = 'free-stuff'
-  AND u.email = 'dave@can.local'
+  AND u.email = 'dave@can.org'
 LIMIT 1;
 
 
@@ -229,7 +232,7 @@ SELECT t.id, u.id,
   NOW() + INTERVAL '15 days'
 FROM topics t, users u
 WHERE t.slug = 'help-requests'
-  AND u.email = 'alan@can.local'
+  AND u.email = 'alan@can.org'
 LIMIT 1;
 
 
@@ -241,7 +244,7 @@ SELECT t.id, u.id,
   NOW() + INTERVAL '7 days'
 FROM topics t, users u
 WHERE t.slug = 'events'
-  AND u.email = 'bruce@can.local'
+  AND u.email = 'bruce@can.org'
 LIMIT 1;
 
 
@@ -253,7 +256,7 @@ SELECT t.id, u.id,
   NOW() + INTERVAL '5 days'
 FROM topics t, users u
 WHERE t.slug = 'lost-found'
-  AND u.email = 'chuck@gimmesomeletuceyoufools.com'
+  AND u.email = 'chuck@can.org'
 LIMIT 1;
 
 
@@ -265,5 +268,5 @@ SELECT t.id, u.id,
   NOW() + INTERVAL '20 days'
 FROM topics t, users u
 WHERE t.slug = 'nuisances'
-  AND u.email = 'dave@can.local'
+  AND u.email = 'dave@can.org'
 LIMIT 1;

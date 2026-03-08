@@ -45,13 +45,15 @@
       <div class="message-button-container">
         <!-- <button class="message-button" type="button">Edit</button> -->
         <!-- BELOW NEEDS DELETE ACCESS TO THE PERSON WHO WROTE IT -->
-        <%# if (message.permission_status === "admin") { %>
+        <% if (message && message.permission_status === "admin") { %>
          <button class="button-default message-button" type="button"><span class="emoji">📌</span></button>
+        <% } %>
+        <% if (message && (message.user_id === currentUser.id || message.permission_status === "admin")) { %>
          <button class="button-default message-button" type="button"><span class="emoji">🗑</span></button>
-        <%# } %>
+        <% } %>
         <!-- BELOW NEEDS TO BE HIDDEN TO THE PERSON WHO WROTE IT -->
         <button class="button-default message-button" type="button"><span class="emoji">↩</span>(<%= message.reply_count %>)</button>
-        <%# } %>
+        
         <form action="/messages/<%= message.id %>/like" method="POST">
         
         <button class="button-default message-button" type="submit"><span class="emoji">❤</span>(<%= message.like_count %>)</button>
