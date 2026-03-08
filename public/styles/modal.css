@@ -1,4 +1,3 @@
-/* Modal related */
 .modal {
   position: fixed;
   inset: 0;
@@ -18,19 +17,19 @@
 .modal-content-card {
   position: relative;
   height: fit-content;
-  width: calc(var(--card-width) + 0.5rem);
+  width: calc(var(--card-width) + var(--spacer-default));
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: center;
   background-color: var(--off-white);
-  border-radius: 1rem;
+  border-radius: var(--border-radius-big);
   box-shadow: var(--box-shadow-black);
-  margin: 0.5rem;
-  padding: 1rem;
+  margin: var(--spacer-default);
+  padding: var(--spacer-biggest);
   z-index: 1;
 }
 
 .modal-section {
-  width: 100%;
+  width: var(--width-default-percent);
 }

@@ -6,18 +6,12 @@
 @import "./header.css";
 @import "./footer.css";
 
-/* COMPONENTS */
-@import "./components.css";
-
 /* ANYTHING VIEW/PAGE/MODAL RELATED*/
-
-
 @import "./views.css";
-
 @import "./modal.css";
 
-
-
+/* COMPONENTS */
+@import "./components.css";
 
 /* MISC and other stuff that needs to come later in CSS order */
 @import "./misc.css";

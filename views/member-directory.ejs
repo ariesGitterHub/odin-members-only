@@ -25,7 +25,7 @@
                     --avatar-color-bg-bottom: <%#= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
                   ">
                   <span class="emoji avatar-emoji-large-size" role="img" aria-label="avatar image">
-                    <%= user.avatarLetter %>
+                    <%#= user.avatarLetter %>
                   </span>
                 </div>            
               </div> -->
@@ -47,43 +47,44 @@
               <dl class="profile-data-dl">
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">name</dt>
-                  <dd class="capitalize bold"><%= user.first_name %> <%= user.last_name %></dd>
+                  <dd class="capitalize"><%= user.first_name %> <%= user.last_name %></dd>
                 </div class="app-relevant-data">
-                <div>
+                <!-- TODO - DELETE PERMISSION_STATUES ENTRY BELOW AFTER TESTING -->
+                <!-- <div>
                   <dt class="capitalize">status</dt>
-                  <dd class="bold"><%= user.permission_status %></dd>
-                </div>
+                  <dd><%#= user.permission_status %></dd>
+                </div> -->
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">email</dt>
-                  <dd class="bold"><%= user.email%></dd>
+                  <dd><%= user.email%></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">phone</dt>
-                  <dd class="bold"><%= user.phone || "n/a" %></dd>
+                  <dd><%= user.phone || "n/a" %></dd>
                 </div>
                 <!-- <div>
                   <dt class="capitalize">birthdate</dt>
-                  <dd class="bold"><%#= user.formattedBirthdate %> (age: <%#= user.age %>)</dd>
+                  <dd><%#= user.formattedBirthdate %> (age: <%#= user.age %>)</dd>
                 </div> -->
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">street</dt>
-                  <dd class="bold"><%= user.street_address || "n/a" %></dd>
+                  <dd><%= user.street_address || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">apt/unit</dt>
-                  <dd class="bold"><%= user.apt_unit || "n/a" %></dd>
+                  <dd><%= user.apt_unit || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">city</dt>
-                  <dd class="bold"><%= user.city || "n/a" %></dd>
+                  <dd><%= user.city || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">state</dt>
-                  <dd class="bold"><%= user.us_state || "n/a" %></dd>
+                  <dd><%= user.us_state || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">zip code</dt>
-                  <dd class="bold"><%= user.zip_code || "n/a" %></dd>
+                  <dd><%= user.zip_code || "n/a" %></dd>
                 </div>
               </dl>
             </div>

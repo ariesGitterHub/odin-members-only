@@ -72,7 +72,7 @@ INSERT INTO users (
 VALUES
   ('alan@can.local',  '$2b$12$DUMMY_HASH', 'Alan',  'Rivera', '1961-01-05', 'guest', true),
   ('bruce@can.local', '$2b$12$DUMMY_HASH', 'Bruce', 'Chen', '1951-04-05', 'guest', false),
-  ('chuck@can.local', '$2b$12$DUMMY_HASH', 'Chuck', 'Thompson', '1941-08-05', 'member', true),
+  ('chuck@gimmesomeletuceyoufools.com', '$2b$12$DUMMY_HASH', 'Chuck', 'Thompson', '1941-08-05', 'member', true),
   ('dave@can.local',  '$2b$12$DUMMY_HASH', 'Dave',  'Brooks', '1951-10-05', 'member', true),
   ('evil@can.local',  '$2b$12$DUMMY_HASH', 'Evil',  'Hater', '1966-06-05', 'guest', false)
 ON CONFLICT (email) DO NOTHING;
@@ -89,7 +89,7 @@ ON CONFLICT (email) DO NOTHING;
 -- WHERE u.email IN (
 --   'alan@can.local',
 --   'bruce@can.local',
---   'chuck@can.local',
+--   'chuck@gimmesomeletuceyoufools.com',
 --   'dave@can.local'
 -- )
 -- AND p.user_id IS NULL;
@@ -127,7 +127,7 @@ LEFT JOIN (
   VALUES
     ('alan@can.local', '', '', '', '#997a98',  '', '', '', '', '', '', false),
     ('bruce@can.local', '', '', '#a91313', '',  '', '', '', '', '', '', true),
-    ('chuck@can.local', '🦍', '', '#92cfe4', '#7de9e9',  '555-111-2222', '123 Maple St', 'Harrisburg', 'PA', '17102', 'likes peanut brittle and has been known to watch squirrels in the park on hot summer days', true),
+    ('chuck@gimmesomeletuceyoufools.com', '🦍', '', '#92cfe4', '#7de9e9',  '555-111-2222', '123 Maple St', 'Harrisburg', 'PA', '17102', 'likes peanut brittle and has been known to watch squirrels in the park on hot summer days', true),
     ('dave@can.local', '🦙', '#521313', '#eeee7d', '#83741d', '555-333-4444', '456 Oak Ave',  'Harrisburg', 'PA', '17101', '', true),
     ('evil@can.local', '', '#2b0505', '#bfbf0c', '#1d2c83', '555-313-4444', '45 Nope Ave',  'Harrisburg', 'PA', '17101', '', false)
 ) AS v(email, avatar_type, avatar_color_fg, avatar_color_bg_top, avatar_color_bg_bottom, phone, street_address, city, us_state, zip_code, notes, verified_by_admin)
@@ -138,7 +138,7 @@ LEFT JOIN user_profiles p ON p.user_id = u.id
 WHERE u.email IN (
   'alan@can.local',
   'bruce@can.local',
-  'chuck@can.local',
+  'chuck@gimmesomeletuceyoufools.com',
   'dave@can.local',
   'evil@can.local'
 )
@@ -183,7 +183,7 @@ SELECT t.id, u.id,
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
-  AND u.email = 'chuck@can.local'
+  AND u.email = 'chuck@gimmesomeletuceyoufools.com'
 LIMIT 1;
 
 -- 3️⃣ Buy & Sell
@@ -205,7 +205,7 @@ SELECT t.id, u.id,
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
-  AND u.email = 'chuck@can.local'
+  AND u.email = 'chuck@gimmesomeletuceyoufools.com'
 LIMIT 1;
 
 
@@ -253,7 +253,7 @@ SELECT t.id, u.id,
   NOW() + INTERVAL '5 days'
 FROM topics t, users u
 WHERE t.slug = 'lost-found'
-  AND u.email = 'chuck@can.local'
+  AND u.email = 'chuck@gimmesomeletuceyoufools.com'
 LIMIT 1;
 
 

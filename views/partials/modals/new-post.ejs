@@ -1,4 +1,5 @@
 <form action="/app/????" method="POST">
+  <h2 class="new-post-author">By <%= currentUser.first_name %> <span class="emoji"><%= currentUser.avatar_type %></span></h2>
   <label class="capitalize" for="topic-new-post"> Message Topic </label>
   <select
     id="topic-new-post"
@@ -7,13 +8,13 @@
     required
   ></select>
   <label class="capitalize" for="title-new-post"> Message Title </label>
-  <input id="title-new-post" class="bold" type="text" name="title" required />
+  <input id="title-new-post" type="text" name="title" required />
   <div class="element-container-col-start-center">
     <label class="capitalize" for="body-new-post"> Message Body </label>
-    <textarea id="body-new-post" class="bold" type="text" name="body" required>
+    <textarea id="body-new-post" type="text" name="body" required>
     </textarea>
     <div class="button-container-row-space-evenly">
-      <button class="wide-button" type="submit">submit new post</button>
+      <button class="button-default wide-button" type="submit">submit new post</button>
     </div>
   </div>
 </form>

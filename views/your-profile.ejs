@@ -40,56 +40,56 @@
                   </span>
                 </div>           
               </div>
-              <dl class="profile-data-dl margin-bottom">
+              <dl class="profile-data-dl">
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">name</dt>
-                  <dd class="capitalize bold"><%= currentUser.first_name %> <%= currentUser.last_name %></dd>
+                  <dd class="capitalize"><%= currentUser.first_name %> <%= currentUser.last_name %></dd>
                 </div>
                 <div class="app-relevant-data">
                   <dt class="capitalize">status</dt>
-                  <dd class="bold"><%= currentUser.permission_status %></dd>
+                  <dd><%= currentUser.permission_status %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">email</dt>
-                  <dd class="bold"><%= currentUser.email%></dd>
+                  <dd><%= currentUser.email%></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">phone</dt>
-                  <dd class="bold"><%= currentUser.phone || "n/a" %></dd>
+                  <dd><%= currentUser.phone || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">birthdate</dt>
-                  <dd class="bold"><%= currentUser.formattedBirthdate %> (age: <%= currentUser.age %>)</dd>
+                  <dd><%= currentUser.formattedBirthdate %> (age: <%= currentUser.age %>)</dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">street</dt>
-                  <dd class="bold"><%= currentUser.street_address || "n/a" %></dd>
+                  <dd><%= currentUser.street_address || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">apt/unit</dt>
-                  <dd class="bold"><%= currentUser.apt_unit || "n/a" %></dd>
+                  <dd><%= currentUser.apt_unit || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">city</dt>
-                  <dd class="bold"><%= currentUser.city || "n/a" %></dd>
+                  <dd><%= currentUser.city || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">state</dt>
-                  <dd class="bold"><%= currentUser.us_state || "n/a" %></dd>
+                  <dd><%= currentUser.us_state || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">zip code</dt>
-                  <dd class="bold"><%= currentUser.zip_code || "n/a" %></dd>
+                  <dd><%= currentUser.zip_code || "n/a" %></dd>
                 </div>
               </dl>
               <div class="button-container-col">
                 <% if (currentUser && currentUser.permission_status !== "admin") { %>
-                  <a class="fake-button wide-button" href="/app/delete">delete account</a> 
+                  <a class="button-default wide-button" href="/app/delete">delete account</a> 
                   <span class="ui-message-warning uppercase">deletion of account is permanent.</span>                
                 <% } %>
                 <% if (currentUser && currentUser.permission_status === "guest" && currentUser.member_request === false) { %>
                   <button 
-                    class="wide-button open-modal-btn" 
+                    class="button-default wide-button open-modal-btn" 
                     data-section="modal-become-member" 
                     data-title="modal-title-become-member"
                     data-user-id="<%= currentUser.id %>">
@@ -97,17 +97,17 @@
                   </button>
                 <% } %>
                 <% if (currentUser && currentUser.permission_status !== "guest") { %>
-                <a class="fake-button wide-button" href="/app/member-directory">member directory</a>
+                <a class="button-default wide-button" href="/app/member-directory">member directory</a>
                 <% } %>
                 <button 
-                  class="wide-button open-modal-btn" 
+                  class="button-default wide-button open-modal-btn" 
                   data-section="modal-edit-profile"
                   data-title="modal-title-edit-profile"
                   data-user-id="<%= currentUser.id %>">
                     update your profile
                   </button>
                 <button 
-                  class="wide-button edit-change-avatar-button" 
+                  class="button-default wide-button edit-change-avatar-button" 
                   data-section="modal-change-avatar-user"
                   data-title="modal-title-change-avatar-user"
                   data-user-id="<%= currentUser.id %>"

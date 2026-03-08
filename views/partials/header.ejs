@@ -1,19 +1,19 @@
 <header class="sticky-header">
   <nav class="nav-bar" aria-label="user menu">
     <% if (currentUser && currentUser.permission_status === "admin") { %>
-    <a class="fake-button nav-button" href="/app/admin">
+    <a class="button-default nav-button" href="/app/admin">
       <span class="emoji emoji-nav-size" role="img" aria-label="admin's overview">
       ⚙
       </span>
     </a>
     <% } %>
-    <a class="fake-button nav-button" href="/app/info">
+    <a class="button-default nav-button" href="/app/info">
       <span class="emoji emoji-nav-size" role="img" aria-label="this site's info">
         ℹ
       </span>
     </a>
       <button 
-        class="fake-button nav-button new-post-button"
+        class="button-default nav-button new-post-button"
         data-section="modal-new-post"
         data-title="modal-title-new-post"
         >
@@ -21,21 +21,21 @@
           ✍🏼
         </span>
     </button>
-    <a class="fake-button nav-button" href="/app/message-boards">
+    <a class="button-default nav-button" href="/app/message-boards">
       <span class="emoji emoji-nav-size" role="img" aria-label="message board link">
       💬
       </span>
     </a>
     </a>
     <% if (currentUser) { %>
-    <a class="fake-button nav-button" href="/app/your-profile">
+    <a class="button-default nav-button" href="/app/your-profile">
       <span class="emoji emoji-nav-size" role="img" aria-label="avatar image and link to your profile">
         <%= currentUser.avatarLetter %>
       </span>
     </a>
     <% } %>
     <form action="/app/log-out" method="POST">
-      <button class="fake-button nav-button" type="submit">
+      <button class="button-default nav-button" type="submit">
         <span class="emoji emoji-nav-size" role="img" aria-label="log out">
           📴
         </span>

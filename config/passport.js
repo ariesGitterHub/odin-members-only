@@ -130,7 +130,7 @@ passport.use(
 //   done(null, { id: user.id, permission_status: user.permission_status });
 // });
 passport.serializeUser((user, done) => {
-    console.log("Serializing user:", user.id);
+    // console.log("Serializing user:", user.id);
   done(null, user.id);
 });
 
@@ -176,7 +176,7 @@ passport.serializeUser((user, done) => {
 //   }
 // });
 passport.deserializeUser(async (id, done) => {
-  console.log("Deserializing user:", id);
+  // console.log("Deserializing user:", id);
   try {
     const { rows } = await pool.query(
       `

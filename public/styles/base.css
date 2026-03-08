@@ -43,6 +43,13 @@
   --avatar-color-bg-bottom: var(--off-gray);
 
   --member-request-alert: var(--lt-orange);
+
+  --border-admin-card: 0.125rem double var(--off-red);
+  --border-member-card: 0.125rem solid var(--off-gray);
+  --border-guest-card: 0.125rem solid var(--off-gray);
+  --border-default: 0.125rem solid var(--off-gray);
+  --border-message: 0.125rem solid var(--off-white);
+
   --box-shadow-gray: inset 0 0.25rem 1rem var(--off-gray);
   --box-shadow-black: 0 1rem 1rem var(--off-black);
 
@@ -50,16 +57,22 @@
   --font-emoji: "NotoEmoji", sans-serif !important;
 
   /* Root sizing for Media Queries */
-  --width100per: 100%;
+  --width-default-percent: 100%;
   --border-radius-circle: 50%;
+  --border-radius-big: 1rem;
+  --border-radius-default: 0.5rem;
+  --border-radius-small: 0.25rem;
+
+  --spacer-biggest: 1rem;
+  --spacer-big: 0.75rem;
+  --spacer-default: 0.5rem;
+  --spacer-medium: 0.25rem;
+  --spacer-small: 0.125rem;
+
 
   --nav-button-h-w: 2.5rem;
   --nav-bar-h: 4rem;
   --card-width: 300px;
-
-  --page-title-all: 1.65rem;
-  --page-subtitle-all: 1.45rem;
-  --page-h3-all: calc(var(--page-subtitle-all) - 0.25rem);
 
   --index-image-size: 15rem;
   
@@ -68,7 +81,20 @@
 
   --emoji-quick-view-bar-size: 1.125rem;
 
+
+  /* Font related */
+
+  --font-size-small: 0.8rem;
+  --font-size-default: 1rem;
+  --font-size-large: 1.125rem;
+  --font-size-largest: 1.25rem;
+
+  --font-size-page-title: 1.65rem;
+  --font-size-page-subtitle: 1.45rem;
+
   --avatar-emoji-nav-size: 1.75rem;
+  --avatar-emoji-preview-size: 3.25rem;
+  --avatar-emoji-option-size: 2rem;
   --avatar-emoji-small-size: 2.5rem;
   --avatar-emoji-large-size: 5.65rem;
   --avatar-emoji-largest-size: 8rem;
@@ -77,6 +103,11 @@
   --message-title-size: 1rem;
   --message-details-size: 0.875rem;
   --message-body-size: 1.1rem;
+
+  --font-weight-light: 100;
+  --font-weight-medium: 100;
+  --font-weight-heavy: 600;
+
 }
 
 *,

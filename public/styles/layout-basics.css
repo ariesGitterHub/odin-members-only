@@ -13,15 +13,15 @@ body {
   background: linear-gradient(05deg, var(--off-black), var(--off-gray));
   color: var(--off-black);
   font-family: var(--font-text);
-  font-size: 1rem;
+  font-size: var(--font-size-default);
 }
 
 h1 {
-  font-size: var(--page-title-all);
+  font-size: var(--font-size-page-title);
 }
 
 h2 {
-  font-size: var(--page-subtitle-all);
+  font-size: var(--font-size-page-subtitle);
 }
 
 main {
@@ -38,16 +38,16 @@ main {
   background: linear-gradient(180deg, var(--off-red), var(--off-black));
   -webkit-background-clip: text; /* Clips background to text shape */
   -webkit-text-fill-color: transparent; /* Makes original text color transparent */
-  /* padding: 0.25rem 0 0 0 ; */
+  /* padding: var(--spacer-medium) 0 0 0 ; */
 }
 
 .page-title-off-card {
-  /* width: 100%; */
+  /* width: var(--width-default-percent); */
   display: inline-block;
   background: linear-gradient(180deg, var(--white), var(--off-white));
   -webkit-background-clip: text; /* Clips background to text shape */
   -webkit-text-fill-color: transparent; /* Makes original text color transparent */
-  padding: 0.5rem;
+  padding: var(--spacer-default);
   text-align: center;
 }
 
@@ -60,32 +60,31 @@ main {
   background: linear-gradient(180deg, var(--off-red), var(--off-black));
   -webkit-background-clip: text; /* Clips background to text shape */
   -webkit-text-fill-color: transparent; /* Makes original text color transparent */
-  padding: 0.25rem 0;
+  padding: var(--spacer-medium) 0;
 }
 
 .page-subtitle {
   color: var(--off-gray);
-  padding: 0 0.5rem;
+  padding: 0 var(--spacer-default);
 }
 
 .page-subtitle-off-card {
-  width: 100%;
+  width: var(--width-default-percent);
   display: inline-block;
   background: linear-gradient(180deg, var(--white), var(--off-gray));
   -webkit-background-clip: text; /* Clips background to text shape */
   -webkit-text-fill-color: transparent; /* Makes original text color transparent */
-  font-size: 0.85rem;
-  padding: 0.5rem;
+  font-size: var(--font-size-small);
+  padding: var(--spacer-default);
   text-align: center;
 }
 
 .page-section-title {
-  font-size: 1.125rem;
+  font-size: var(--font-size-large);
   text-transform: uppercase;
 }
 
 /* -- Card */
-
 .card {
   height: fit-content;
   width: var(--card-width);
@@ -94,57 +93,61 @@ main {
   align-items: start;
   justify-content: center;
   background-color: var(--off-white);
-  border-radius: 1rem;
+  border-radius: var(--border-radius-big);
   box-shadow: var(--box-shadow-black);
-  margin: 0.5rem;
-  padding: 1rem;
+  margin: var(--spacer-default);
+  padding: var(--spacer-biggest);
 }
 
 .admin-card {
   background-color: var(--black);
-  border: 0.25rem double var(--off-red);
+  border: var(--border-admin-card);
   color: var(--off-white);
 }
 
 .member-card {
   background-color: var(--white);
-  border: 0.25rem solid var(--off-red);
+  border: var(--border-member-card);
 }
 
 .guest-card {
-  border: 0.25rem dotted var(--off-red);
+  border: var(--border-guest-card);
 }
 
-.user-card {
   /* on admin panel, used to grab via js */
+.user-card {
   background-color: var(--white);
 }
 
 /* -- Profile Data, using dl, dt, & dd special elements, and their related classes */
 .profile-data-container, .profile-data-dl {
-  width: 100%;
-  /* color: var(--off-black); */
-  font-size: 1rem;
-  /* margin: 0.5rem 0; */
-  /* padding: 0.5rem; */
-    margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
+  width: var(--width-default-percent);
+  font-size: var(--font-size-default);
+  margin-top: var(--spacer-medium);
+  /* margin-bottom: var(--spacer-big); */
 }
 
 .profile-data-dl div {
   display: grid;
-  grid-template-columns: 4rem 1fr;
-  gap: 1rem;
+  grid-template-columns: 4.75rem 1fr;
+  gap: var(--spacer-biggest);
   line-height: 1.5;
 }
 
+.profile-data-dl dd {
+  font-weight: var(--font-weight-heavy);
+  word-wrap: break-word; /* Ensures text breaks to the next line if too long */
+  overflow-wrap: break-word; /* Ensures long words also break if they overflow */
+  word-break: break-all; /* Forces breaking of very long words */
+}
+
 .neighbor-relevant-data {
-  border-radius: 0.25rem;
-  padding-left: 0.125rem;
+  border-radius: var(--spacer-medium);
+  padding-left: var(--spacer-small);
 }
 
 .app-relevant-data {
-  padding-left: 0.125rem;
+  padding-left: var(--spacer-small);
 }
 
 .neighbor-relevant-data, .app-relevant-data {

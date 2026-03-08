@@ -1,3 +1,4 @@
+/* Font case */
 .capitalize {
   text-transform: capitalize;
 }
@@ -10,78 +11,65 @@
   text-transform: lowercase;
 }
 
-.bold {
-  font-weight: 600;
+/* Font color */
+.black {
+  color: var(--off-black);
 }
 
+.white {
+  color: var(--off-white);
+}
+
+.green {
+  color: var(--off-green);
+}
+
+.red {
+  color: var(--off-red);
+}
+
+/* Font style */
 .italic {
   font-style: italic;
 }
 
-.black {
-    color: var(--off-black);
+/* Font weight */
+.bold {
+  font-weight: var(--font-weight-heavy);
 }
 
-.white {
-    color: var(--off-white);
-}
-
-.green {
-    color: var(--off-green);
-}
-
-.red {
-    color: var(--off-red);
-}
-
-
-/* -- ???? Assigned via permission_status, must be able to override other css, put last in misc.css ???? */
-
-
-
-/* .directory-name {
-  background-color: grey;
-} */
-
-
-.red-letter {
-  color: var(--off-red);
-  /* background-color: var(--off-black); */
-  /* border: 1px solid red; */
-  font-weight: 600;
-}
+/* Special border radius */
 
 .circle {
-border-radius: var(--border-radius-circle);
+  border-radius: var(--border-radius-circle);
 }
 
+/* Special text styling */
+.red-letter {
+  color: var(--off-red);
+  font-weight: var(--font-weight-heavy);
+}
+
+/* Special spacing */
 .margin-bottom {
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacer-default);
 }
 
 .margin-right {
-  margin-right: 0.5rem;
+  margin-right: var(--spacer-default);
 }
 
 
-
-/* .col {
-  width:6rem;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: start;
-} */
-
+/* Force uniform emoji pointers in change-avatar.ejs */
 input[type="button"],
 input[type="submit"],
 input[type="checkbox"],
-input[type="radio"], 
+input[type="radio"],
 input[type="color"] {
   cursor: pointer !important;
 }
 
-/* TODO - test this again, and only keep one hidden! */
+/* Make hidden */
 .hidden {
   display: none;
 }

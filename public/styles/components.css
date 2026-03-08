@@ -1,7 +1,7 @@
 /* A element classes for text-based links */
 .text-link {
   color: var(--off-red);
-  font-weight: 600;
+  font-weight: var(--font-weight-heavy);
 }
 
 .text-link:link,
@@ -11,36 +11,35 @@
 }
 
 /* A and BUTTON element */
-button,
-.fake-button {
+.button-default {
   all: unset; /* nukes browser defaults */
-  height: 1.75rem;
+  height: 2rem;
   width: 5.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--white);
-  border: 0.125rem solid var(--off-gray);
-  border-radius: 0.5rem;
+  border: var(--border-default);
+  border-radius: var(--border-radius-default);
   box-shadow: var(--box-shadow-gray);
   color: var(--off-black);
   cursor: pointer;
   font-family: var(--font-text);
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--font-size-default);
+  font-weight: var(--font-weight-heavy);
   margin: 0;
-  padding: 0 0.25rem;
+  padding: 0 var(--spacer-medium);
   text-transform: uppercase;
 }
 
-.fake-button:link,
-.fake-button:visited,
-.fake-button:hover {
+.button-default:link,
+.button-default:visited,
+.button-default:hover {
   color: var(--off-black); /* mouse over */
 }
 
 button:hover,
-.fake-button:hover {
+.button-default:hover {
   background-color: var(--off-red);
   box-shadow: none;
   color: var(--off-white);
@@ -50,11 +49,11 @@ button:hover,
   width: 95%;
 }
 
-.fake-button.nav-button {
+.button-default.nav-button {
   height: var(--nav-button-h-w);
   width: var(--nav-button-h-w);
-  margin: 0.25rem 0;
-  padding: 0.25rem;
+  margin: var(--spacer-medium) 0;
+  padding: var(--spacer-medium);
 }
 
 .nav-button:hover {
@@ -69,17 +68,18 @@ button:hover,
 }
 
 .close-button {
-  height: 1.5rem;
-  width: 1.5rem;
+  height: 2.25rem;
+  width: 2.25rem;
   position: absolute;
   right: 10px;
   top: 10px;
   background-color: transparent;
+  border: var(--border-default);
   border-radius: var(--border-radius-circle);
   box-shadow: var(--box-shadow-gray);
   cursor: pointer;
-  font-size: 1rem;
-  padding: 0.25rem;
+  font-size: var(--font-size-large);
+  margin: 0;
 }
 
 
@@ -87,29 +87,29 @@ button:hover,
 
 /* -- button based */
 .button-container-col {
-  width: 100%;
+  width: var(--width-default-percent);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--spacer-default);
 }
 
 .button-container-row-space-evenly {
-  width: 100%;
+  width: var(--width-default-percent);
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
+  gap: var(--spacer-default);
+  margin-top: var(--spacer-big);
 }
 
 .button-container-row {
-  width: 100%;
+  width: var(--width-default-percent);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--spacer-default);
 }
 
 /* --column-based */
@@ -122,12 +122,12 @@ button:hover,
 
 
 .element-container-col-start-center {
-  /* width: 100%; */
+  /* width: var(--width-default-percent); */
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: center;
-  /* gap: 0.25rem; */
+  /* gap: var(--spacer-medium); */
 }
 
 /* --row-based */
@@ -138,51 +138,44 @@ button:hover,
 }
 
 .element-container-row-default {
-  width: 100%;
+  width: var(--width-default-percent);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* TODO - make changes */
-
 .element-container-row-space-evenly {
-  width: 100%;
+  width: var(--width-default-percent);
   display: flex;
   align-items: center;
   justify-content: space-evenly;
 }
 .element-container-row-space-between {
-  width: 100%;
+  width: var(--width-default-percent);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.25rem;
+  gap: var(--spacer-medium);
 }
 
 .element-container-profile-block {
-  width: 100%;
+  width: var(--width-default-percent);
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  gap: 0.25rem;
+  gap: var(--spacer-medium);
   background-color: var(--lt-red);
-  border: 0.125rem solid var(--off-gray);
-  border-radius: 0.5rem;
-  font-size: 0.85rem;
-  margin: 0.25rem 0;
-  padding: 0.25rem;
+  border: var(border-gray);
+  border-radius: var(--border-radius-default);
+  font-size: var(--font-size-small);
+  margin: var(--spacer-medium) 0;
+  padding: var(--spacer-medium);
   text-transform: uppercase;
-}
-
-.element-container-row-space-between .emoji {
-  width: 2.75rem;
-  text-align: center;
 }
 
 /* Emoji/avatar related */
 .avatar-container {
-  width: 100%;
+  width: var(--width-default-percent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -233,24 +226,24 @@ button:hover,
 
 .emoji {
   font-family: var(--font-emoji) !important;
-  font-weight: 100;
+  font-weight: var(--font-weight-light);
 }
 
 /* FORM related */
 label, .fake-label {
-  width: 100%;
+  width: var(--width-default-percent);
   text-transform: capitalize;
 }
 
 input, .fake-input, textarea, select {
-  width: 100%;
-  border: 0.125rem solid var(--off-gray);
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-  padding: 0.125rem;
+  width: var(--width-default-percent);
+  border: var(border-gray);
+  font-weight: var(--font-weight-heavy);
+  margin-bottom: var(--spacer-medium);
+  padding: var(--spacer-small);
 }
 
-input, .fake-button, select {
+input, .button-default, select {
   height: 1.65rem;
 }
 
@@ -264,7 +257,7 @@ input::placeholder {
 
 .fake-input {
   background-color: var(--off-white);
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius-default);
 }
 
 textarea {
@@ -278,22 +271,21 @@ textarea {
 /* LIST related */
 li {
   list-style: none;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacer-default);
 }
 
 li:last-child {
   margin-bottom: 0;
 }
 
-
 /* UI Messages */
 .ui-message {
-  width: 100%;
+  width: var(--width-default-percent);
   font-size: var(--message-body-size);
-  font-weight: 300;
-  margin: 0.25rem 0;
+  font-weight: var(--font-weight-medium);
+  margin: var(--spacer-medium) 0;
 }
 
 .ui-message-warning {
-  font-size: 0.8rem;
+  font-size: var(--font-size-small);
 }

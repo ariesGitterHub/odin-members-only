@@ -4,22 +4,22 @@
 .index-image {
   height: var(--index-image-size);
   width: auto;
-  border-radius: 50%;
-  border: 0.125rem solid var(--off-gray);
+  border: var(--border-default);
+  border-radius: var(--border-radius-circle);
   box-shadow: var(--box-shadow-gray);
-  margin: 0.5rem;
+  margin: var(--spacer-default);
 }
 
 /* -- admin.ejs */
 .admin-quick-view-bar {
-  width:100%;
+  width: var(--width-default-percent);
   display: flex;
   align-items: center;
   justify-content: space-around;
-  gap: 0.25rem;
-  border-radius: 0.5rem;
+  gap: var(--spacer-medium);
+  border-radius: var(--border-radius-default);
   font-size: var(--emoji-quick-view-bar-size);
-  padding: 0.5rem;
+  padding: var(--spacer-default);
 }
 
 .admin-card .admin-quick-view-bar {
@@ -35,8 +35,8 @@
   align-items: center;
   justify-content: center;
   background-color: var(--off-gray);
-  border-radius: 0.25rem;
-  padding: 0.25rem;
+  border-radius: var(--border-radius-small);
+  padding: var(--spacer-medium);
 }
 
 .admin-card .admin-quick-view-bar span {
@@ -50,8 +50,8 @@
 }
 
 .admin-panel-name {
-  font-size: 1.25rem;
-  margin-left: 0.5rem;
+  font-size: var(--font-size-largest);
+  margin-left: var(--spacer-default);
 }
 
 .admin-card .neighbor-relevant-data {
@@ -66,15 +66,146 @@
   background-color: var(--member-request-alert);
 }
 
+/* -- admin-create.ejs */
+
+/* -- admin-edit.ejs */
+/* ---- Makes emoji input width more suitable for a small emoji */
+.element-container-row-space-between .emoji {
+  width: 2.75rem;
+  text-align: center;
+}
+
+/* -- info.ejs */
+.info-ul {
+  background-color: var(--white);
+  border: var(--border-default);
+  border-radius: var(--border-radius-default);
+  margin: var(--spacer-small) 0;
+  padding: var(--spacer-medium);
+}
+
+/* -- new-post.ejs */
+.new-post-author {
+  color: var(--off-black);
+  font-size: var(--font-size-large);
+  margin-bottom: var(--spacer-default);
+}
 
 /* -- message-boards.ejs */
+.topic-list {
+  width: var(--width-default-percent);
+}
 
+.topic-list .button-default {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
 
+.topic-title {
+  font-size: var(--font-size-large);
+}
+
+/* -- topic.ejs */
+.topic-card {
+  /* 750px is good for reading... */
+  max-width: 750px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-biggest);
+  margin: var(--spacer-biggest);
+}
+
+/* -- message-card.ejs */
+.message-card {
+  background-color: var(--white);
+  border-radius: var(--border-radius-default);
+  box-shadow: var(--box-shadow-black);
+  color: var(--off-black);
+  line-height: 1.5;
+  padding: var(--spacer-default);
+}
+
+.message-header {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  border-top-left-radius: var(--border-radius-default);
+  border-top-right-radius: var(--border-radius-default);
+  /* padding: var(--spacer-medium); */
+  padding-bottom: var(--spacer-medium);
+}
+
+.message-name-and-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.message-name {
+  /* border-bottom: var(--border-message); */
+  border-bottom: transparent;
+  color: var(--off-red);
+  font-size: var(--message-name-size);
+}
+
+.message-title {
+  border-top: var(--border-message);
+  color: var(--dk-green);
+  font-size: var(--message-title-size);
+}
+
+.message-details {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: var(--spacer-medium);
+  /* background-color: var(--lt-green); */
+  font-size: var(--message-details-size);
+  /* padding: var(--spacer-medium); */
+  padding-bottom: var(--spacer-medium);
+}
+
+.message-details span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--off-white);
+  border-radius: var(--border-radius-default);
+  padding: var(--spacer-medium);
+  text-align: center;
+}
+
+.message-body {
+  border: var(--border-message);
+  border-radius: var(--border-radius-default);
+  font-size: var(--message-body-size);
+  padding: var(--spacer-big);
+}
+
+/* .message-body-max {
+} */
+
+.message-footer {
+  border-bottom-left-radius: var(--border-radius-default);
+  border-bottom-right-radius: var(--border-radius-default);
+  padding: var(--spacer-medium);
+}
+.message-button-container {
+  width: var(--width-default-percent);
+  display: flex;
+  justify-content: end;
+  gap: var(--spacer-default);
+}
+
+.message-button {
+  width: fit-content;
+  color: var(--off-black);
+}
 
 /* -- your-profile.ejs */
 .your-profile-card {
- background-color: var(--off-white);
- color: var(--off-black);
+  background-color: var(--off-white);
+  color: var(--off-black);
 }
 
 .your-profile-card .neighbor-relevant-data {
@@ -91,54 +222,56 @@
 
 .member-directory-extra-avatar-container {
   height: fit-content;
-  width: 100%;
+  width: var(--width-default-percent);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.5rem;
-  padding: 0.75rem 0 0.25rem 0;
+  border-radius: var(--border-radius-default);
+  /* padding: var(--spacer-big) 0 var(--spacer-medium) 0; */
+  padding: var(--spacer-big);
 }
 
 /* -- change-avatar.ejs */
-.preview-current, .preview-new {
+.preview-current,
+.preview-new {
   height: 6rem;
   width: 6rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 0.125rem solid var(--off-gray);
-  border-radius: 50%;
+  border: var(--border-default);
+  border-radius: var(--border-radius-circle);
   font-family: var(--font-emoji);
-  font-size: 3.5rem;
-  padding: 2rem;
+  font-size: var(--avatar-emoji-preview-size);
+  padding: var(--spacer-biggest);
 }
 
 .emoji-panel-change-avatar {
-  width: 100%;
+  width: var(--width-default-percent);
 }
 
 .emoji-list-change-avatar {
   height: 230px;
-  width: 100%;
+  width: var(--width-default-percent);
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: space-evenly;
   background-color: var(--white);
-  border: 0.125rem solid var(--off-gray);
+  border: var(--border-default);
   box-shadow: 0 4px 8px var(--off-black-trans);
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacer-default);
   overflow-y: auto;
 }
 
 .emoji-option {
-  width: 100%;
+  width: var(--width-default-percent);
   display: flex;
   align-items: center;
   color: var(--off-black);
-  margin-bottom: 0.5rem; /* Adds space between options */
-  margin-left: 0.25rem;
-  padding: 0.5rem;
+  margin-bottom: var(--spacer-default);
+  margin-left: var(--spacer-medium);
+  padding: var(--spacer-default);
 }
 
 /* ---- Hide the default radio button */
@@ -156,257 +289,76 @@
 /* ---- Emoji styling */
 .emoji-option .emoji {
   cursor: pointer;
-  font-size: 2rem; /* Larger emoji */
-  margin-right: 0.5rem; /* Adds space between the emoji and the text */
+  font-size: var(--avatar-emoji-option-size);
+  margin-right: var(--spacer-default);
   transition: transform 0.2s ease-in-out;
 }
 
 /* ---- Text styling */
 .emoji-option p {
-  color: var(--off-black); /* Lighter color for text */
+  color: var(--off-black);
   cursor: pointer;
-  font-size: 1.125rem; /* Slightly smaller font for the text */
-
-  margin: 0; /* Remove default margin */
+  font-size: var(--font-size-large);
+  margin: 0; 
 }
 
 .emoji-option:hover {
   background-color: var(--off-white);
-  border-radius: 0.125rem;
+  border-radius: var(--border-radius-small);
 }
 
-/* ---- Hover effect: changes emoji size and label text color */
 .emoji-option:hover .emoji {
-  transform: scale(1.2); /* Slightly enlarge the emoji */
+  transform: scale(1.25); 
 }
 
 .emoji-option:hover label {
-  color: var(--off-red); /* Blue color on hover for the label */
+  color: var(--off-red); 
 }
 
 /* ---- Checked state - when the radio button is selected */
 .emoji-option input[type="radio"]:checked + label .emoji {
-  transform: scale(1.2); /* Slightly enlarge the emoji when selected */
-  color: var(--dk-red); /* Change emoji color when selected */
+  transform: scale(1.25);
+  color: var(--dk-red); 
 }
 
+ /* ---- Makes the text bold when the radio button is selected */
 .emoji-option input[type="radio"]:checked + label p {
   color: var(--black);
-  font-weight: bold; /* Make the text bold when the radio button is selected */
-}
-
-/* -- admin-create.ejs */
-
-
-/* -- admin-edit.ejs */
-/* ---- Makes emoji input width more suitable for a small emoji */
-.element-container-row-space-between .emoji {
-  width: 2.75rem;
-  text-align: center;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-/* TODO - MOVE BELOW UP! */
-
-/* START HERE ON 3/7/2026 */
-
-
-
-
-/* INFO */
-
-.info-ul {
-  background-color: var(--white);
-  border: 0.125rem solid var(--off-gray);
-  border-radius: 0.5rem;
-  margin: 0.125rem 0;
-  padding: 0.25rem;
-}
-
-/* MESSAGE BOARDS */
-.topic-list {
-   width: 100%;
-}
-
-.topic-list .fake-button {
-  /* color: red; */
-  display: flex;
-  align-items: center;
-  justify-content: start;
-}
-
-.topic-title {
-  font-size: 1.125rem;
-}
-
-/* TOPIC */
-
-.topic-card {
-  /* width: 900px; */
-
-  /* 750px is good for reading... */
-  max-width: 750px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin: 1rem;
-}
-
-/* -- Message Card */
-
-.message-card {
-  /* width: var(--message-card-width); */
-  background-color: var(--white);
-  /* border: 0.125rem solid var(--off-gray); */
-  border-radius: 0.5rem;
-  box-shadow: var(--box-shadow-black);
-  color: var(--off-black);
-  line-height: 1.5;
-  padding: 0.5rem;
-}
-
-.message-header {
-  display: flex;
-  align-items: start;
-  justify-content: start;
-  /* background-color: var(--lt-red); */
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
-  padding: 0.25rem;
-}
-
-/* .message-avatar-image-container {
-  height: 3.75rem;
-  width: 3.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: pink;
-  background: linear-gradient(
-    05deg,
-    var(--avatar-color-bg-bottom),
-    var(--avatar-color-bg-top)
+  font-weight: var(
+    --font-weight-heavy
   );
-  border-radius: 50%;
-  box-shadow: var(--box-shadow-gray);
-  color: var(--avatar-color-fg);
-  margin-right: 0.5rem;
-  padding: 2rem;
-} */
-
-.message-name-and-title {
-  /* margin: auto 0; */
-  display: flex;
-  flex-direction: column;
 }
 
-.message-name {
-  border-bottom: 0.125rem solid var(--white);
-  color: var(--off-red);
-  font-size: var(--message-name-size);
-}
-
-.message-title {
-  border-top: 0.125rem solid var(--off-white);
-  color: var(--dk-green);
-  font-size: var(--message-title-size);
-}
-
-.message-details {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  gap: 0.25rem;
-  /* background-color: var(--lt-green); */
-  font-size: var(--message-details-size);
-  padding: 0.25rem;
-}
-
-.message-details span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--off-white);
-  border-radius: 0.5rem;
-  padding: 0.25rem;
-  text-align: center;
-}
-
-.message-body {
-  /* background-color: var(--lt-yellow); */
-  /* border-top: 0.125rem solid var(--off-gray); */
-  /* border-bottom: 0.125rem solid var(--off-gray); */
-  font-size: var(--message-body-size);
-  padding: 0.5rem;
-}
-
-.message-body-max {
-  
-}
-
-.message-footer {
-  /* background-color: var(--lt-blue); */
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
-  padding: 0.25rem;
-}
-.message-button-container {
-  width: 100%;
-  display: flex;
-  justify-content: end;
-  gap: 0.5rem;
-  /* margin-top: 0.75rem; */
-}
-
-.message-button {
-  width: fit-content;
-  color: var(--off-black);
-}
-
-/* YOUR PROFILE */
-
-
-/* ERRORS & 404/500 */
+/* error-page.ejs */
 
 .page-errors h1 {
   color: var(--off-red);
 }
 
 .page-errors p {
-  font-size: 1.25rem;
+  font-size: var(--font-size-largest);
 }
 
 .error-messages {
   height: fit-content;
-  width: 100%;
+  width: var(--width-default-percent);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 0.25rem;
+  gap: var(--spacer-medium);
   background: linear-gradient(05deg, var(--off-yellow), var(--white));
-  border: 0.125rem solid var(--off-gray);
-  border-radius: 1rem;
-  margin-top: 0.25rem;
-  padding: 0.5rem;
+  border: var(--border-default);
+  border-radius: var(--spacer-biggest);
+  margin-top: var(--spacer-medium);
+  padding: var(--spacer-default);
 }
 
 .errors {
   color: var(--off-red);
   font-family: var(--font-text);
-  font-size: 1rem;
+  font-size: var(--font-size-default);
   margin: 0;
   padding: 0;
   text-transform: uppercase;
 }
-

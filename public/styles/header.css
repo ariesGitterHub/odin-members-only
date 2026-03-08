@@ -1,7 +1,7 @@
 .sticky-header {
   position: sticky;
   top: 0;
-  width: var(--width100per);
+  width: var(--width-default-percent);
 }
 
 .nav-bar {
@@ -10,14 +10,14 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
-  gap: 0.5rem;
+  gap: var(--spacer-default);
   background-color: var(--off-red);
 }
 
 .logged-in-bar {
   background-color: var(--off-black);
   color: var(--off-white);
-  font-size: 0.8rem;
-  padding: 0.125rem;
+  font-size: var(--font-size-small);
+  padding: var(--spacer-small);
   text-align: center;
 }
