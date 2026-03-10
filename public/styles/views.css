@@ -105,11 +105,18 @@
 }
 
 .topic-new-post {
-background-color: var(--lt-red);
+/* background-color: var(--lt-red); */
 }
 
-.topic-new-post:focus {
-border: var(--off-red);
+/* .topic-new-post-option {
+color: var(--off-red);
+} */
+
+/* NOTE - On most browsers, the hover effect for <option> doesn’t work because the browser controls the dropdown, and these UI controls are not part of the regular document flow. This makes it difficult to style them with traditional CSS. */
+.topic-new-post-option:focus,
+.topic-new-post-option:hover
+ {
+background-color: var(--off-red);
 }
 
 /* -- message-boards.ejs */

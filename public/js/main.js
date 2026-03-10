@@ -66,11 +66,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // FETCH DATA WITH USER.ID...
-  // async function fetchUserData(userId) {
-  //   const response = await fetch(`/app/user/${userId}`);
-  //   if (!response.ok) throw new Error("Failed to fetch user");
-  //   return await response.json();
-  // }
+  async function fetchUserData(userId) {
+    const response = await fetch(`/app/user/${userId}`);
+    if (!response.ok) throw new Error("Failed to fetch user");
+    return await response.json();
+  }
   
   // FETCH DATA WITH TOPIC.ID...
   async function fetchTopicNameData(topicId) {
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //   document.getElementById("notes-edit-profile-admin").value = user.notes || "";
   // }
 
-    function populateEditProfileUser(user) {
+  function populateEditProfileUser(user) {
     document.getElementById("first-name-edit-profile").value = user.first_name;
     document.getElementById("last-name-edit-profile").value = user.last_name;
     document.getElementById("email-edit-profile").value = user.email;
@@ -154,6 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add real topic options
     topics.forEach((topic) => {
       const option = document.createElement("option");
+      option.className = "topic-new-post-option"
       option.value = topic.id;
       option.textContent = topic.name;
       select.appendChild(option);
@@ -162,6 +163,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Ensure the <select> is required
     select.required = true;
   }
+
+    function populateDeletionWarning(user) {
+      document.getElementById("first-name-deletion-warning").innerText = user.first_name;
+      document.getElementById("last-name-deletion-warning").innerText = user.last_name;
+    } 
 
   async function populateChangeAvatar(user) {
     //Hide fields that are not mean to be used by a "guest"
@@ -221,12 +227,25 @@ document.addEventListener("DOMContentLoaded", () => {
           openModal(sectionId, titleId);
         }
 
+        // if (sectionId === "modal-become-member") {
+        //   const currentUser = await fetchCurrentUserData(userId);
+        //   populateChangeAvatar(currentUser);
+        //   openModal(sectionId, titleId);
+        //   initChangeAvatarModal();
+        //   console.log("modal-become-member");
+        // }
+
         if (sectionId === "modal-become-member") {
-          const currentUser = await fetchCurrentUserData(userId);
-          populateChangeAvatar(currentUser);
           openModal(sectionId, titleId);
-          initChangeAvatarModal();
           console.log("modal-become-member");
+        }
+
+        if (sectionId === "modal-deletion-warning") {
+          const user = await fetchUserData(userId);
+          // const currentUser = await fetchCurrentUserData(userId);
+          populateDeletionWarning(user);
+          openModal(sectionId, titleId);
+          console.log("modal-deletion-warning");
         }
 
         if (sectionId === "modal-change-avatar-user") {
@@ -238,12 +257,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
       } else {
+
+        // if (sectionId === "modal-become-member") {
+        //   openModal(sectionId, titleId);
+        //   console.log("modal-become-member");
+        // }
+
         if (sectionId === "modal-new-post") {
           const topic = await fetchTopicNameData();
           populateNewPostWithTopics(topic)
           openModal(sectionId, titleId);
-          console.log("clicko!");
         }
+
+        // if (sectionId === "modal-deletion-warning") {
+        //   openModal(sectionId, titleId);
+        // }
       }
     } catch (err) {
       console.error(err);
@@ -279,6 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-user-id]").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const { userId, section, title } = e.currentTarget.dataset;
+      console.log("###:", userId)
       handleModalOpen(userId, section, title);
     });
   });
@@ -433,17 +462,17 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   const maxChars = 700;
 
-  newPostMessageBody.addEventListener("input", () => {
-    const currentLength = newPostMessageBody.value.length;
-    newPostMaxCharCount.textContent = `Characters remaining: ${maxChars - currentLength}`;
+  // newPostMessageBody.addEventListener("input", () => {
+  //   const currentLength = newPostMessageBody.value.length;
+  //   newPostMaxCharCount.textContent = `Characters remaining: ${maxChars - currentLength}`;
 
-    if (currentLength > maxChars) {
-      newPostMessageBody.value = newPostMessageBody.value.substring(
-        0,
-        maxChars,
-      ); // Truncates input if too long
-    }
-  });
+  //   if (currentLength > maxChars) {
+  //     newPostMessageBody.value = newPostMessageBody.value.substring(
+  //       0,
+  //       maxChars,
+  //     ); // Truncates input if too long
+  //   }
+  // });
 
   //   document.getElementById("first-name-sign-up").addEventListener("input", function() {
   //   const firstName = this.value.trim(); // Get the first name
@@ -454,5 +483,22 @@ document.addEventListener("DOMContentLoaded", () => {
   //   }
   // });
 
+  const deleteButtons = document.querySelectorAll(
+    ".delete-user-button",
+  );
 
+  const deleteForm = document.getElementById("delete-user-form");
+  const userIdInput = document.getElementById("delete-user-id");
+
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const userId = button.dataset.userId;
+      const action = button.dataset.action;
+
+      userIdInput.value = userId;
+      deleteForm.action = action;
+    });
+  });
+
+  // end
 });

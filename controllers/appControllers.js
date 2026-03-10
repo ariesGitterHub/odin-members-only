@@ -8,11 +8,12 @@ const {
   getUserById,
   checkIfEmailExists,
   insertNewUser,
+  insertAdminCreatedUser,
   getTopicNames,
   getAllTopics,
   getTopicBySlug,
   getValidMessagesByTopic,
-
+  deleteUserById,
 } = require("../db/queries");
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
@@ -86,6 +87,82 @@ async function getSignUp(req, res, next) {
   }
 }
 
+// async function postSignUp(req, res, next) {
+//   const {
+//     first_name,
+//     avatar_type,
+//     last_name,
+//     email,
+//     birthdate,
+//     password,
+//     confirm_password,
+//   } = req.body;
+//   const errors = [];
+
+//   // Simple validation checks
+//   if (
+//     !first_name ||
+//     !avatar_type ||
+//     !last_name ||
+//     !email ||
+//     !birthdate ||
+//     !password ||
+//     !confirm_password
+//   ) {
+//     errors.push("All fields are required.");
+//   }
+
+//   if (password !== confirm_password) {
+//     errors.push("Passwords do not match.");
+//   }
+
+//   if (errors.length > 0) {
+//     return res.render("sign-up", {
+//       title: "Sign Up",
+//       user: req.user,
+//       errors,
+//     });
+//   }
+
+//   try {
+//     // Use the query function from queries.js to check if email exists
+//     const existingUser = await checkIfEmailExists(email);
+
+//     if (existingUser.length > 0) {
+//       errors.push("Email is already taken.");
+//       return res.render("sign-up", {
+//         title: "Sign Up",
+//         user: req.user,
+//         errors,
+//       });
+//     }
+
+//     // Generate avatar_type from the first letter of the first name
+//     //const avatar_type = first_name.charAt(0).toUpperCase(); // Get first letter of first name
+
+//     // Hash the password before saving it to the database
+//     const password_hash = await bcrypt.hash(password, 12);
+
+//     // Use the query function from queries.js to insert the new user
+//     // await insertNewUser(first_name, last_name, email, birthdate, password_hash);
+
+//     // Use the query function from queries.js to insert the new user
+//     await insertNewUser(
+//       first_name,
+//       last_name,
+//       email,
+//       birthdate,
+//       password_hash,
+//       // avatar_type,
+//     );
+
+//     // Redirect to the login page after successful sign-up
+//     res.redirect("/app/log-in");
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
 async function postSignUp(req, res, next) {
   const {
     first_name,
@@ -95,9 +172,9 @@ async function postSignUp(req, res, next) {
     password,
     confirm_password,
   } = req.body;
+
   const errors = [];
 
-  // Simple validation checks
   if (
     !first_name ||
     !last_name ||
@@ -122,10 +199,9 @@ async function postSignUp(req, res, next) {
   }
 
   try {
-    // Use the query function from queries.js to check if email exists
     const existingUser = await checkIfEmailExists(email);
 
-    if (existingUser.length > 0) {
+    if (existingUser) {
       errors.push("Email is already taken.");
       return res.render("sign-up", {
         title: "Sign Up",
@@ -134,13 +210,10 @@ async function postSignUp(req, res, next) {
       });
     }
 
-    // Hash the password before saving it to the database
     const password_hash = await bcrypt.hash(password, 12);
 
-    // Use the query function from queries.js to insert the new user
     await insertNewUser(first_name, last_name, email, birthdate, password_hash);
 
-    // Redirect to the login page after successful sign-up
     res.redirect("/app/log-in");
   } catch (err) {
     next(err);
@@ -307,7 +380,7 @@ const getTopicNamesForDropdown = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-}
+};
 
 async function getTopicPage(req, res, next) {
   try {
@@ -346,10 +419,7 @@ async function getMemberDirectory(req, res, next) {
   try {
     const users = await getUsers();
 
-    const usersWithAvatars = addAvatarFields(
-      users,
-      avatarTypeDefault,
-    );
+    const usersWithAvatars = addAvatarFields(users, avatarTypeDefault);
 
     res.render("member-directory", {
       title: "Admin",
@@ -425,6 +495,176 @@ async function getAdminPage(req, res, next) {
   }
 }
 
+function getAdminCreatePage(req, res, next) {
+  try {
+    res.render("admin-create", {
+      title: "Admin Create",
+      errors: [],
+    }); // Just render an empty form
+  } catch (err) {
+    next(err);
+  }
+}
+
+// async function postAdminCreatePage(req, res, next) {
+//   const {
+//     first_name,
+//     avatar_type,
+//     last_name,
+//     email,
+//     birthdate,
+//     password,
+//     confirm_password,
+//     notes,
+//   } = req.body;
+//   const errors = [];
+
+//   // Simple validation checks
+//   if (
+//     !first_name ||
+//     !last_name ||
+//     !email ||
+//     !birthdate ||
+//     !password ||
+//     !confirm_password ||
+//     !notes
+//   ) {
+//     errors.push("All fields are required.");
+//   }
+
+//   if (password !== confirm_password) {
+//     errors.push("Passwords do not match.");
+//   }
+
+//   if (errors.length > 0) {
+//     return res.render("admin-create", {
+//       title: "Admin Create",
+//       user: req.user,
+//       errors,
+//     });
+//   }
+
+//   try {
+//     // Use the query function from queries.js to check if email exists
+//     const existingUser = await checkIfEmailExists(email);
+
+//     if (existingUser.length > 0) {
+//       errors.push("Email is already taken.");
+//       return res.render("admin-create", {
+//         title: "Admin Create",
+//         user: req.user,
+//         errors,
+//       });
+//     }
+
+//     // Generate avatar_type from the first letter of the first name
+//     const avatar_type = first_name.charAt(0).toUpperCase(); // Get first letter of first name
+
+//     // Hash the password before saving it to the database
+//     const password_hash = await bcrypt.hash(password, 12);
+
+//     // Use the query function from queries.js to insert the new user
+//     // await insertNewUser(first_name, last_name, email, birthdate, password_hash);
+
+//     // Use the query function from queries.js to insert the new user
+//     await insertAdminCreatedUser(
+//       first_name,
+//       last_name,
+//       email,
+//       birthdate,
+//       password_hash,
+//       avatar_type,
+//       notes,
+//     );
+
+//     // Redirect to the login page after successful sign-up
+//     res.redirect("/app/admin");
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
+async function postAdminCreatePage(req, res, next) {
+
+  console.log("Controller hit!");
+  console.log("req.user:", req.user);
+  console.log("req.body:", req.body);
+
+  const {
+    first_name,
+    last_name,
+    email,
+    birthdate,
+    password,
+    confirm_password,
+    notes,
+  } = req.body;
+  const errors = [];
+
+  // Simple validation checks
+  if (
+    !first_name ||
+    !last_name ||
+    !email ||
+    !birthdate ||
+    !password ||
+    !confirm_password
+    
+  ) {
+    errors.push("All fields are required.");
+  }
+
+  if (password !== confirm_password) {
+    errors.push("Passwords do not match.");
+  }
+
+  if (errors.length > 0) {
+    return res.render("admin-create", {
+      title: "Admin Create",
+      user: req.user,
+      errors,
+      // formData: req.body,
+    });
+  }
+
+  try {
+    const existingUser = await checkIfEmailExists(email);
+
+    if (existingUser?.length) {
+      errors.push("Email is already taken.");
+      return res.render("admin-create", {
+        title: "Admin Create",
+        user: req.user,
+        errors,
+        // formData: req.body,
+      });
+    }
+
+    // Hash the password before saving
+    const password_hash = await bcrypt.hash(password, 12);
+    console.log("Password hashed");
+
+    // Insert the new admin-created user (avatar_type generated inside the function)
+    await insertAdminCreatedUser(
+      first_name,
+      last_name,
+      email,
+      birthdate,
+      password_hash,
+      "guest", // undefined, //permission_status defaults to "guest"
+      notes,
+    );
+    console.log("User inserted successfully");
+
+    // Redirect after successful creation
+    res.redirect("/app/admin");
+    console.log("Redirected to /app/admin");
+  } catch (err) {
+    next(err);
+  }
+}
+
+
 async function getAdminEditPage(req, res, next) {
   try {
     const userId = req.params.id;
@@ -440,16 +680,6 @@ async function getAdminEditPage(req, res, next) {
   }
 }
 
-function getAdminCreatePage(req, res, next) {
-  try {
-    res.render("admin-create", {
-      title: "Admin Create",
-      errors: [],
-    }); // Just render an empty form
-  } catch (err) {
-    next(err);
-  }
-}
 
 // Function to fetch individual user data for modal
 async function getUserDetails(req, res, next) {
@@ -470,6 +700,32 @@ async function getUserDetails(req, res, next) {
   }
 }
 
+async function deleteUserAccount(req, res, next) {
+  try {
+    const { userId } = req.body;
+
+    // await queries.deleteUserById(userId);
+    await deleteUserById(userId);
+
+    res.redirect("/app/admin");
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function deleteYourAccount(req, res, next) {
+  try {
+    const { userId } = req.body;
+
+    // await queries.deleteUserById(userId);
+    await deleteUserById(userId);
+
+    res.redirect("/app");
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   getCurrentUser,
   getHome,
@@ -486,8 +742,11 @@ module.exports = {
   getMessageBoards,
   getTopicNamesForDropdown,
   getTopicPage,
-  getAdminPage,
-  getAdminEditPage,
+  getAdminPage, 
   getAdminCreatePage,
+  postAdminCreatePage,
+  getAdminEditPage,
   getUserDetails,
+  deleteUserAccount,
+  deleteYourAccount,
 };

@@ -18,15 +18,24 @@ const {
   getTopicNamesForDropdown,
   getTopicPage,
   getAdminPage,
-  getAdminEditPage,
   getAdminCreatePage,
+  postAdminCreatePage,
+  getAdminEditPage,
   getUserDetails,
-  
+  deleteUserAccount,
+  deleteYourAccount,
 } = require("../controllers/appControllers");
 
 const appRouter = Router();
+
+// appRouter.post("/admin-create", async (req, res) => {
+//   console.log("POST /admin-create hit!");
+//   console.log("req.body:", req.body);
+//   res.send("Test"); // temporary
+// });
+
 // appRouter.get("/current-user", requireRole("admin"), getCurrentUser);
-appRouter.get("/current-user", getCurrentUser);
+appRouter.get("/current-user", requireRole("guest"), getCurrentUser);
 // appRouter.get("/current-user", getCurrentUser); // USE IN DEV
 appRouter.get("/", getHome);
 appRouter.get("/sign-up", getSignUp);
@@ -46,18 +55,25 @@ appRouter.post(
 // TODO - Place protected routes together.
 
 appRouter.get("/admin", requireRole("admin"), getAdminPage);
-appRouter.get("/admin-edit/:id", requireRole("admin"), getAdminEditPage);
 appRouter.get("/admin-create", requireRole("admin"), getAdminCreatePage);
-// Ensure you add the route for this
-// appRouter.get("/user/:id", getUserDetails);
-// appRouter.get("/user/:id", requireRole("admin"), getUserDetails);
-appRouter.get("/user/:id", getUserDetails);
-appRouter.get("/info", getInfo);
-appRouter.get("/message-boards", getMessageBoards);
-// appRouter.get("/topics", requireRole("admin"), getTopicNamesForDropdown);
-appRouter.get("/topics", getTopicNamesForDropdown);
-appRouter.get("/message-boards/:slug", getTopicPage);
-appRouter.get("/your-profile", getYourProfile);
+appRouter.post("/admin-create", requireRole("admin"), postAdminCreatePage);
+
+appRouter.get("/admin-edit/:id", requireRole("admin"), getAdminEditPage);
+
+appRouter.get("/user/:id", requireRole("guest"), getUserDetails);
+appRouter.get("/info", requireRole("guest"), getInfo);
+appRouter.get("/message-boards", requireRole("guest"), getMessageBoards);
+appRouter.get("/topics", requireRole("guest"), getTopicNamesForDropdown);
+appRouter.get("/message-boards/:slug", requireRole("guest"), getTopicPage);
+appRouter.get("/your-profile", requireRole("guest"), getYourProfile);
 appRouter.get("/member-directory", requireRole("member"), getMemberDirectory);
+
+// appRouter.post("/admin/delete-user", deleteUserAccount);
+// appRouter.post("/your-profile/delete-your-account", deleteYourAccount);
+appRouter.post("/admin/delete-user-account", requireRole("admin"), deleteUserAccount);
+appRouter.post("/your-profile/delete-your-account", requireRole("guest"), deleteYourAccount);
+
+// appRouter.post("/admin-create", requireRole("admin"), postAdminCreatePage);
+
 
 module.exports = appRouter;

@@ -62,8 +62,8 @@ CREATE TABLE topics (
 CREATE TABLE messages (
   id SERIAL PRIMARY KEY,
 
-  topic_id INTEGER NOT NULL REFERENCES topics(id),
-  user_id INTEGER NOT NULL REFERENCES users(id),
+  topic_id INTEGER NOT NULL REFERENCES topics(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   like_count INTEGER DEFAULT 0,
   reply_count INTEGER DEFAULT 0,
   title TEXT NOT NULL,

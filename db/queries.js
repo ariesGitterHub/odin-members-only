@@ -1,6 +1,7 @@
 const pool = require("./pool");
 
-const getUsers = async function getUsers() {
+// const getUsers = async function getUsers() {
+const getUsers = async () => {
   const { rows } = await pool.query(`
     SELECT
       u.id,
@@ -31,20 +32,28 @@ const getUsers = async function getUsers() {
     LEFT JOIN user_profiles up ON u.id = up.user_id
     LEFT JOIN messages m ON u.id = m.user_id AND m.is_deleted = false
     GROUP BY u.id, up.user_id
-    ORDER BY 
+    /*  ORDER BY 
       CASE 
         WHEN u.permission_status = 'admin' THEN 0
         ELSE 1
       END,
       u.last_name,  -- Sort by last name in alphabetical order
       u.first_name; -- If last names are the same, then by first name
+    */
+    -- GROUP BY u.id, up.id
+    ORDER BY
+    (u.permission_status = 'admin') DESC,
+    u.last_name,
+    u.first_name;
+      
   `);
 
   return rows;
 };
 
 // BELOW exposes data, see in appRputer.js and on localhost:XXXX/app/user/1
-const getUserById = async function getUserById(userId) {
+// const getUserById = async function getUserById(userId) {
+const getUserById = async (userId) => {
   const { rows } = await pool.query(
     `
     SELECT
@@ -86,13 +95,14 @@ const getUserById = async function getUserById(userId) {
 
 // Sign Up 
 // Function to check if email exists
-async function checkIfEmailExists(email) {
-  const { rows } = await pool.query(
-    "SELECT * FROM users WHERE email = $1",
-    [email]
-  );
-  return rows;
-}
+// async function checkIfEmailExists(email) {
+const checkIfEmailExists = async (email) => {
+  const { rows } = await pool.query("SELECT * FROM users WHERE email = $1", [
+    email,
+  ]);
+  // return rows; //changed to below..........................................................
+  return rows[0];
+};
 
 // Function to insert a new user
 // async function insertNewUser(
@@ -110,31 +120,205 @@ async function checkIfEmailExists(email) {
 //   return result.rows[0]; // Return the inserted user
 // }
 
-async function insertNewUser(
+// async function insertNewUser(
+// const insertNewUser = async (
+//   first_name,
+//   last_name,
+//   email,
+//   birthdate,
+//   password_hash,
+//   permission_status = "guest",
+// ) => {
+//   // Insert user into users table
+//   const result = await pool.query(
+//     "INSERT INTO users (first_name, last_name, email, birthdate, password_hash, permission_status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+//     [first_name, last_name, email, birthdate, password_hash, permission_status],
+//   );
+
+//   // After inserting user, create a profile with default avatar_type
+//   const avatar_type = first_name.charAt(0).toUpperCase(); // Default avatar type from the first name's first letter
+
+//   // Insert into user_profile table
+//   await pool.query(
+//     "INSERT INTO user_profiles (user_id, avatar_type) VALUES ($1, $2)",
+//     [result.rows[0].id, avatar_type],
+//   );
+
+//   return result.rows[0]; // Return the inserted user
+// }
+
+// FIXED TO BELOW...insertNewUser Should Use a Transaction
+// Sign-up.ejs form query for new users
+const insertNewUser = async (
   first_name,
   last_name,
   email,
   birthdate,
   password_hash,
   permission_status = "guest",
-) {
-  // Insert user into users table
-  const result = await pool.query(
-    "INSERT INTO users (first_name, last_name, email, birthdate, password_hash, permission_status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-    [first_name, last_name, email, birthdate, password_hash, permission_status],
-  );
+) => {
+  const client = await pool.connect();
 
-  // After inserting user, create a profile with default avatar_type
-  const avatar_type = first_name.charAt(0).toUpperCase(); // Default avatar type from the first name's first letter
+  try {
+    await client.query("BEGIN");
 
-  // Insert into user_profile table
-  await pool.query(
-    "INSERT INTO user_profiles (user_id, avatar_type) VALUES ($1, $2)",
-    [result.rows[0].id, avatar_type],
-  );
+    const userRes = await client.query(
+      `INSERT INTO users
+      (first_name, last_name, email, birthdate, password_hash, permission_status)
+      VALUES ($1,$2,$3,$4,$5,$6)
+      RETURNING *`,
+      [
+        first_name,
+        last_name,
+        email,
+        birthdate,
+        password_hash,
+        permission_status,
+      ],
+    );
 
-  return result.rows[0]; // Return the inserted user
-}
+    const user = userRes.rows[0];
+
+    const avatar_type = first_name.charAt(0).toUpperCase();
+
+    await client.query(
+      `INSERT INTO user_profiles (user_id, avatar_type)
+       VALUES ($1,$2)`,
+      [user.id, avatar_type],
+    );
+
+    await client.query("COMMIT");
+
+    return user;
+  } catch (err) {
+    await client.query("ROLLBACK");
+    throw err;
+  } finally {
+    client.release();
+  }
+};
+
+
+// Admin-create.ejs form query for admin created users. Mirrors sign-up form requirements, with the added fields of avatar_type, like insertNewUser, and notes for admin purposes.
+// const insertAdminCreatedUser = async (
+//   first_name,
+//   last_name,
+//   email,
+//   birthdate,
+//   password_hash,
+//   permission_status = "guest",
+//   notes = "Admin created user."
+// ) => {
+//   const client = await pool.connect();
+
+//   try {
+//     await client.query("BEGIN");
+
+//     const userRes = await client.query(
+//       `INSERT INTO users
+//       (first_name, last_name, email, birthdate, password_hash, permission_status)
+//       VALUES ($1,$2,$3,$4,$5,$6)
+//       RETURNING *`,
+//       [
+//         first_name,
+//         last_name,
+//         email,
+//         birthdate,
+//         password_hash,
+//         permission_status,
+//       ],
+//     );
+
+//     const user = userRes.rows[0];
+
+//     const avatar_type = first_name.charAt(0).toUpperCase();
+
+//     await client.query(
+//       `INSERT INTO user_profiles (user_id, avatar_type, notes)
+//        VALUES ($1,$2,$3)`,
+//       [user.id, avatar_type, notes],
+//     );
+
+//     await client.query("COMMIT");
+
+//     return user;
+//   } catch (err) {
+//     await client.query("ROLLBACK");
+//     throw err;
+//   } finally {
+//     client.release();
+//   }
+// };
+
+const insertAdminCreatedUser = async (
+  first_name,
+  last_name,
+  email,
+  birthdate,
+  password_hash,
+  permission_status = "guest",
+  notes = "Admin created user."
+) => {
+  console.log("Starting insertAdminCreatedUser...");
+  const client = await pool.connect();
+
+  try {
+    console.log("Beginning transaction...");
+    await client.query("BEGIN");
+
+    console.log("Inserting into users table:", {
+      first_name,
+      last_name,
+      email,
+      birthdate,
+      permission_status,
+    });
+    const userRes = await client.query(
+      `INSERT INTO users
+       (first_name, last_name, email, birthdate, password_hash, permission_status)
+       VALUES ($1,$2,$3,$4,$5,$6)
+       RETURNING *`,
+      [
+        first_name,
+        last_name,
+        email,
+        birthdate,
+        password_hash,
+        permission_status,
+      ],
+    );
+
+    const user = userRes.rows[0];
+    console.log("User inserted successfully:", user);
+
+    const avatar_type = first_name.charAt(0).toUpperCase();
+    console.log("Generated avatar_type:", avatar_type);
+
+    console.log("Inserting into user_profiles table:", {
+      user_id: user.id,
+      avatar_type,
+      notes,
+    });
+    await client.query(
+      `INSERT INTO user_profiles (user_id, avatar_type, notes)
+       VALUES ($1,$2,$3)`,
+      [user.id, avatar_type, notes],
+    );
+
+    console.log("Committing transaction...");
+    await client.query("COMMIT");
+
+    console.log("insertAdminCreatedUser completed successfully.");
+    return user;
+  } catch (err) {
+    console.error("Error in insertAdminCreatedUser:", err);
+    await client.query("ROLLBACK");
+    throw err;
+  } finally {
+    client.release();
+    console.log("Database client released.");
+  }
+};
 
 const getTopicNames = async () => {
   const { rows } = await pool.query(`
@@ -326,11 +510,16 @@ const getMessagesByTopic = async (topicId, limit = 50) => {
   return res.rows;
 };
 
+const deleteUserById = async (id) => {
+  await pool.query("DELETE FROM users WHERE id = $1", [id]);
+};
+
 module.exports = {
   getUsers,
   getUserById,
   checkIfEmailExists,
   insertNewUser,
+  insertAdminCreatedUser,
   getTopicNames,
   getAllTopics,
   getTopicBySlug,
@@ -339,4 +528,5 @@ module.exports = {
   softDeleteExpiredMessages,
   hardDeleteMessages,
   cleanupMessages,
+  deleteUserById,
 };

@@ -44,14 +44,16 @@ VALUES
   ('events', 'Events', 'Neighborhood meetings and activities', 20),
   ('general', 'General Discussion', 'Neighborhood conversations', 30),
   ('harrisburg', 'Harrisburg', 'All things city and governance', 40),
-  ('nuisances', 'Nuisances', 'Noise, vandalism, and irritations', 50),
-  ('help-requests', 'Help Requests', 'Ask neighbors for assistance', 60),
-  ('lost-found', 'Lost and Found', 'Lost and found for items or pets', 70),
-  ('buy-sell', 'Buy and Sell', 'Items for sale, or items wanted', 80),
-  ('free-stuff', 'Free Stuff', 'Get rid of your stuff', 90),
-  ('businesses', 'Local Businesses', 'Recommendations for local services and restaurants', 100),
-  ('introductions', 'Introductions', 'Welcome new neighbors', 110),
-  ('feedback', 'Feedback', 'Suggestions to improve this site', 120)
+  ('parking', 'Parking', 'Harrisburg and neighborhood parking', 50),
+  ('nuisances', 'Nuisances', 'Noise, vandalism, and irritations', 60),
+  ('help-requests', 'Help Requests', 'Ask neighbors for assistance', 70),
+  ('lost-found', 'Lost and Found', 'Lost and found for items or pets', 80),
+  ('buy-sell', 'Buy and Sell', 'Items for sale, or items wanted', 90),
+  ('free-stuff', 'Free Stuff', 'Get rid of your stuff', 100),
+  ('businesses', 'Local Businesses', 'Recommendations for local services and restaurants', 110),
+  ('introductions', 'Introductions', 'Welcome new neighbors', 120),
+  ('feedback', 'Feedback', 'Suggestions to improve this site', 130),
+  ('members-only', 'Members Only', 'Posts visible only to members', 140)
 ON CONFLICT (slug) DO NOTHING;
 
 

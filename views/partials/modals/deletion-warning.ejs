@@ -1,0 +1,17 @@
+<div class="ui-message">
+  <p class="bold">Deletions are permanent and cannot be undone.</p>
+</div>
+<form id="delete-user-form" method="POST">
+  <input id="delete-user-id" type="hidden" name="userId">
+  <p>
+    Do you wish to proceed with the deletion of the the account belonging to
+    <span id="first-name-deletion-warning" class="bold italic"></span>
+    <span id="last-name-deletion-warning" class="bold italic"></span>
+    ?
+  </p>
+  <div class="button-container-row-space-evenly">
+    <button class="button-default wide-button" type="submit">
+      proceed with deletion
+    </button>
+  </div>
+</form>

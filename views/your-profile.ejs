@@ -84,8 +84,16 @@
               </dl>
               <div class="button-container-col">
                 <% if (currentUser && currentUser.permission_status !== "admin") { %>
-                  <a class="button-default wide-button" href="/app/delete">delete account</a> 
-                  <span class="ui-message-warning uppercase">deletion of account is permanent.</span>                
+                  <button 
+                    class="button-default wide-button delete-user-button"
+                    data-section="modal-deletion-warning"
+                    data-title="modal-title-deletion-warning"
+                    data-user-id="<%= currentUser.id %>"
+                    data-action="/app/your-profile/delete-your-account"
+                  >
+                  delete your account
+                  </button> 
+                  <!-- <span class="ui-message-warning uppercase">deletion of account is permanent.</span>                 -->
                 <% } %>
                 <% if (currentUser && currentUser.permission_status === "guest" && currentUser.member_request === false) { %>
                   <button 
@@ -95,9 +103,6 @@
                     data-user-id="<%= currentUser.id %>">
                     upgrade to member
                   </button>
-                <% } %>
-                <% if (currentUser && currentUser.permission_status !== "guest") { %>
-                <a class="button-default wide-button" href="/app/member-directory">member directory</a>
                 <% } %>
                 <button 
                   class="button-default wide-button open-modal-btn" 
@@ -114,6 +119,9 @@
                   >
                   change your avatar
                 </button>
+                <% if (currentUser && currentUser.permission_status !== "guest") { %>
+                  <a class="button-default wide-button" href="/app/member-directory">member directory</a>
+                <% } %>
               </div>
             </div>
           <% } %>

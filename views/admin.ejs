@@ -167,7 +167,15 @@
             </dl>
             <div class="button-container-col">
               <% if (user && user.permission_status !== "admin") { %>
-                <a class="button-default wide-button" href="/app/delete">delete this user</a>
+                <button 
+                  class="button-default wide-button delete-user-button" 
+                  data-section="modal-deletion-warning"
+                  data-title="modal-title-deletion-warning"
+                  data-user-id="<%= user.id %>"
+                  data-action="/app/admin/delete-user-account"
+                >
+                  delete this user
+                </button>
               <% } %>
               <% if (user && user.permission_status === "guest" && user.verified_by_admin === false) { %>
                 <button class="button-default wide-button">admin verify user</button>
