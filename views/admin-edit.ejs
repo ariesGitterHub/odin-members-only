@@ -34,7 +34,7 @@
                 value="<%= formData?.last_name || '' %>"
                 required
             />
-            <% if (user && user.permission_status !== "admin") { %> 
+            <%# if (user && user.permission_status !== "admin") { %> 
             <div class="element-container-profile-block">
                 <div class="element-container-col-default">
                   <label for="permission-status-admin-edit-page">
@@ -88,7 +88,7 @@
                 </select>
                 </div>
             </div>
-            <% } %>
+            <%# } %>
             <label class="capitalize" for="email-admin-edit-page">
                 email address
             </label>
@@ -105,7 +105,7 @@
                 <label class="capitalize" for="phone-admin-edit-page"> phone </label>
                 <input
                     id="phone-admin-edit-page"
-                    type="phone"
+                    type="tel"
                     name="phone"
                     value="<%= formData?.phone || '' %>"
                 />
@@ -281,12 +281,13 @@
                 </div>
             </div>
             <label class="capitalize" for="notes-admin-edit-page">notes</label>
-            <textarea
+            <!-- <textarea
               id="notes-admin-edit-page"
               name="notes"
             ><%#= formData?.notes || '' %>
-            <%= (formData?.notes || '').trim() %>
-            </textarea>
+            <%#= (formData?.notes || '').trim() %>
+            </textarea> -->
+            <textarea id="notes-admin-edit-page" name="notes"><%= formData?.notes || '' %></textarea>
             <div class="button-container-col">
               <a class="button-default wide-button" href="/app/admin">cancel changes</a>
               <button class="button-default wide-button" type="submit">submit profile changes</button>

@@ -101,7 +101,7 @@
               </div>
               <div class="neighbor-relevant-data">
                 <dt class="capitalize">email</dt>
-                <dd><%= user.email%></dd>
+                <dd class="word-breaker"><%= user.email%></dd>
               </div>
               <div class="<%= user.phone ? '' : 'hidden' %> neighbor-relevant-data">
                 <dt class="capitalize">phone</dt>
@@ -223,6 +223,7 @@
               create new user
             </button> -->
             <a class="button-default wide-button" href="/app/admin-create">create new user</a>
+            <a class="button-default wide-button" href="/app/admin-create">open site controls</a>
             <button id="show-guests-button" class="button-default wide-button" type="button">open guest profiles</button>
             <button id="show-members-button" class="button-default wide-button" type="button">open member profiles</button>
           <% } %> 

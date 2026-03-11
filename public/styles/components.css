@@ -231,6 +231,10 @@ button:hover,
 }
 
 /* FORM related */
+/* form {
+  width: var(--width-default-percent);
+} */
+
 label, .fake-label {
   width: var(--width-default-percent);
   text-transform: capitalize;
@@ -271,6 +275,7 @@ textarea {
 
 /* LIST related */
 li {
+  width: var(--width-default-percent);
   list-style: none;
   margin-bottom: var(--spacer-default);
 }

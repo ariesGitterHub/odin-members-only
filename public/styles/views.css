@@ -129,8 +129,22 @@ background-color: var(--off-red);
 }
 
 /* -- message-boards.ejs */
+/* .message-boards-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+} */
+
 .topic-list {
   width: var(--width-default-percent);
+}
+
+.topic-list li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .topic-list .button-default {

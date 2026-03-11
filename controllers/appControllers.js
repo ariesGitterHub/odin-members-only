@@ -8,6 +8,8 @@ const {
   insertNewUser,
   insertAdminCreatedUser,
   updateAdminEditedUser,
+  updateUser,
+  updateUserAvatar,
   getTopicNames,
   getAllTopics,
   getTopicBySlug,
@@ -38,15 +40,22 @@ async function getCurrentUser(req, res, next) {
       // Only send safe fields
       const safeUser = {
         id: req.user.id,
+        email: req.user.email,
         first_name: req.user.first_name,
         last_name: req.user.last_name,
-        email: req.user.email,
+        birthdate: req.user.birthdate,
         permission_status: req.user.permission_status,
         avatarLetter: req.user.avatarLetter,
         avatar_type: req.user.avatar_type,
         avatar_color_fg: req.user.avatar_color_fg,
         avatar_color_bg_top: req.user.avatar_color_bg_top,
         avatar_color_bg_bottom: req.user.avatar_color_bg_bottom,
+        phone: req.user.phone,
+        street_address: req.user.street_address,
+        apt_unit: req.user.apt_unit,
+        city: req.user.city,
+        us_state: req.user.us_state,
+        zip_code: req.user.zip_code,
       };
 
       res.json(safeUser);
@@ -215,7 +224,7 @@ async function postLogOut(req, res, next) {
 
 // CONTROLLER: YOUR PROFILE (your-profile.ejs)
 
-async function getYourProfile(req, res, next) {
+async function getYourProfilePage(req, res, next) {
   if (!req.user) {
     return res.redirect("/app/log-in"); // No logged-in user
   }
@@ -247,6 +256,158 @@ async function getYourProfile(req, res, next) {
       currentUser: currentUserWithAvatar, // send single processed user
       errors: [],
     });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function postYourProfilePageEdit(req, res, next) {
+  console.log("Controller hit!");
+
+  const currentUser_id = req.user.id; // Always use logged-in user ID
+
+  const {
+    first_name,
+    last_name,
+    email,
+    birthdate,
+    password,
+    confirm_password,
+    phone,
+    street_address,
+    apt_unit,
+    city,
+    us_state,
+    zip_code,
+  } = req.body;
+
+  const errors = [];
+
+  // Simple validation checks
+  if (password && password !== confirm_password) {
+    errors.push("Passwords do not match.");
+  }
+
+  const existingUser = await checkIfEmailExists(email, currentUser_id);
+
+  if (existingUser.length > 0) {
+    errors.push("Email is already taken.");
+    return res.render("your-profile", {
+      title: "Your Profile",
+      user: req.user,
+      errors,
+      formData: req.body || {},
+    });
+  }
+
+  if (errors.length > 0) {
+    return res.render("your-profile", {
+      title: "Your Profile",
+      user: req.user,
+      errors,
+      formData: req.body || {},
+    });
+  }
+
+  try {
+    const sanitize = (v) => (v === "" ? null : v); // Empty strings -> null
+
+    // --- Update the user ---
+    await updateUser(
+      currentUser_id,
+      sanitize(first_name),
+      sanitize(last_name),
+      sanitize(email),
+      sanitize(birthdate), // Keep as string 'yyyy-MM-dd' for <input type="date">
+      password, // hashed inside updateAdminEditedUser if provided
+      sanitize(phone),
+      sanitize(street_address),
+      sanitize(apt_unit),
+      sanitize(city),
+      sanitize(us_state),
+      sanitize(zip_code),
+    );
+    console.log("User inserted successfully");
+
+    // Redirect after successful creation
+    res.redirect("/app/your-profile");
+    console.log("Redirected to /app/your-profile");
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function postYourProfilePageAvatar(req, res, next) {
+  console.log("Controller hit!");
+
+  const currentUser_id = req.user.id; // Always use logged-in user ID
+
+  const {
+    first_name,
+    last_name,
+    email,
+    birthdate,
+    password,
+    confirm_password,
+    phone,
+    street_address,
+    apt_unit,
+    city,
+    us_state,
+    zip_code,
+  } = req.body;
+
+  const errors = [];
+
+  // Simple validation checks
+  if (password && password !== confirm_password) {
+    errors.push("Passwords do not match.");
+  }
+
+  const existingUser = await checkIfEmailExists(email, currentUser_id);
+
+  if (existingUser.length > 0) {
+    errors.push("Email is already taken.");
+    return res.render("your-profile", {
+      title: "Your Profile",
+      user: req.user,
+      errors,
+      formData: req.body || {},
+    });
+  }
+
+  if (errors.length > 0) {
+    return res.render("your-profile", {
+      title: "Your Profile",
+      user: req.user,
+      errors,
+      formData: req.body || {},
+    });
+  }
+
+  try {
+    const sanitize = (v) => (v === "" ? null : v); // Empty strings -> null
+
+    // --- Update the user ---
+    await updateUser(
+      currentUser_id,
+      sanitize(first_name),
+      sanitize(last_name),
+      sanitize(email),
+      sanitize(birthdate), // Keep as string 'yyyy-MM-dd' for <input type="date">
+      password, // hashed inside updateAdminEditedUser if provided
+      sanitize(phone),
+      sanitize(street_address),
+      sanitize(apt_unit),
+      sanitize(city),
+      sanitize(us_state),
+      sanitize(zip_code),
+    );
+    console.log("User inserted successfully");
+
+    // Redirect after successful creation
+    res.redirect("/app/your-profile");
+    console.log("Redirected to /app/your-profile");
   } catch (err) {
     next(err);
   }
@@ -623,27 +784,19 @@ async function postAdminEditPage(req, res, next) {
       }
 
     try {
-      // const existingUser = await checkIfEmailExists(email);
 
-      // if (existingUser?.length) {
-      //   errors.push("Email is already taken.");
-      //   return res.render("admin-edit", {
-      //     title: "Admin Edit",
-      //     user: req.user,
-      //     errors,
-      //     // formData: req.body,
-      //   });
-      // }
+    const sanitize = (v) => (v === "" ? null : v); // Empty strings -> null
 
-      // Hash the password before saving
-      // let password_hash = null;
+    const toBool = (v) => {
+      if (v === undefined || v === null) return null;
+      if (typeof v === "boolean") return v;
+      return v === "true";
+    };
 
-      // if (password) {
-      //   password_hash = await bcrypt.hash(password, 12);
-      //   console.log("Password hashed");
-      //         }
-      // const password_hash = await bcrypt.hash(password, 12);
-      // console.log("Password hashed");
+    // Convert boolean-like form values
+    const safeMemberRequest = toBool(member_request);
+    const safeIsActive = toBool(is_active);
+    const safeVerifiedByAdmin = toBool(verified_by_admin);
 
       // Convert form "true"/"false" strings from <select> inputs into real booleans.
       // Or, more explicitly...the following happens...
@@ -653,37 +806,13 @@ async function postAdminEditPage(req, res, next) {
       // "true" === "true" → true
       // "false" === "true" → false
       // This safely converts form values to booleans for the database.
-      const safeMemberRequest =
-        member_request === "true" || member_request === true;
-      const safeIsActive = is_active === "true" || is_active === true;
-      const safeVerifiedByAdmin =
-        verified_by_admin === "true" || verified_by_admin === true;
-      // Insert the new admin-created user (avatar_type generated inside the function)
-      const sanitize = (v) => (v === "" ? null : v);
-
-      // await updateAdminEditedUser(
-      //   user_id,
-      //   sanitize(first_name),
-      //   sanitize(last_name),
-      //   sanitize(email),
-      //   sanitize(birthdate),
-      //   password_hash || null, // only hash if password provided
-      //   sanitize(permission_status),
-      //   member_request, // boolean
-      //   is_active, // boolean
-      //   sanitize(avatar_type),
-      //   sanitize(avatar_color_fg),
-      //   sanitize(avatar_color_bg_top),
-      //   sanitize(avatar_color_bg_bottom),
-      //   sanitize(phone),
-      //   sanitize(street_address),
-      //   sanitize(apt_unit),
-      //   sanitize(city),
-      //   sanitize(us_state),
-      //   sanitize(zip_code),
-      //   sanitize(notes),
-      //   verified_by_admin, // boolean
-      // );
+      // const safeMemberRequest =
+      //   member_request === "true" || member_request === true;
+      // const safeIsActive = is_active === "true" || is_active === true;
+      // const safeVerifiedByAdmin =
+      //   verified_by_admin === "true" || verified_by_admin === true;
+      // // Insert the new admin-created user (avatar_type generated inside the function)
+      // const sanitize = (v) => (v === "" ? null : v);
 
       // --- Update the user ---
       await updateAdminEditedUser(
@@ -691,11 +820,11 @@ async function postAdminEditPage(req, res, next) {
         sanitize(first_name),
         sanitize(last_name),
         sanitize(email),
-        birthdate ? new Date(birthdate) : null,
+        sanitize(birthdate), // Keep as string 'yyyy-MM-dd' for <input type="date">
         password, // hashed inside updateAdminEditedUser if provided
-        permission_status || "guest",
-        safeMemberRequest,
-        safeIsActive,
+        permission_status, // ENUM string, defaults handled in updateAdminEditedUser if needed
+        safeMemberRequest, // Boolean
+        safeIsActive, // Boolean
         sanitize(avatar_type),
         sanitize(avatar_color_fg),
         sanitize(avatar_color_bg_top),
@@ -707,7 +836,7 @@ async function postAdminEditPage(req, res, next) {
         sanitize(us_state),
         sanitize(zip_code),
         sanitize(notes),
-        safeVerifiedByAdmin,
+        safeVerifiedByAdmin, // Boolean
       );
       console.log("User inserted successfully");
 
@@ -740,7 +869,7 @@ async function getUserDetails(req, res, next) {
   }
 }
 
-// CONTROLLER: DELETE VIA USER (your-profile.ejs) OR VIA ADMIN (admin.ejs)
+// CONTROLLER: DELETE VIA USER (your-profile.ejs) OR DELETE VIA ADMIN (admin.ejs)
 
 async function deleteUserAccount(req, res, next) {
   try {
@@ -770,7 +899,9 @@ module.exports = {
   getLogIn,
   postLogIn,
   postLogOut,
-  getYourProfile,
+  getYourProfilePage,
+  postYourProfilePageEdit,
+  postYourProfilePageAvatar,
   getMemberDirectory,
   // getUpdateProfile,
   getChangeAvatar,

@@ -53,7 +53,6 @@ const getUsers = async () => {
   return rows;
 };
 
-
 // QUERY: GET USERS BY ID
 
 // BELOW exposes data, see in appRouter.js and on localhost:XXXX/app/user/1
@@ -244,7 +243,7 @@ const insertAdminCreatedUser = async (
   }
 };
 
-// QUERY: UPDATE A USER VIA ADMIN (admin-edit.ejs)
+// QUERY: UPDATE OF A USER VIA ADMIN (admin-edit.ejs)
 
 // const updateAdminEditedUser = async (
 //   user_id,
@@ -411,9 +410,6 @@ const updateAdminEditedUser = async (
     console.log("Beginning transaction...");
     await client.query("BEGIN");
 
-    // Helper: convert empty strings to null so COALESCE works properly
-    const sanitize = (v) => (v === "" ? null : v);
-
     // Hash password only if a new password is provided
     let password_hash = null;
     if (password) {
@@ -421,24 +417,11 @@ const updateAdminEditedUser = async (
       console.log("Password hashed successfully");
     }
 
-    // // Ensure safe defaults for ENUMs / booleans
-    // const safePermission = permission_status || "guest";
-    // const safeMemberRequest =
-    //   member_request === undefined ? false : member_request;
-    // const safeIsActive = is_active === undefined ? true : is_active; // default active
-
-    // // Convert birthdate string to JS Date if provided
-    // const safeBirthdate = birthdate ? new Date(birthdate) : null;
-
-    // --- Update users table ---
+    // Update users table
     console.log("Updating users table with sanitized values...", {
       first_name,
       last_name,
       email,
-      // safeBirthdate,
-      // safePermission,
-      // safeMemberRequest,
-      // safeIsActive,
       birthdate,
       permission_status,
       member_request,
@@ -459,21 +442,13 @@ const updateAdminEditedUser = async (
         WHERE id = $9
         RETURNING *;`,
       [
-        // sanitize(first_name),
-        // sanitize(last_name),
-        // sanitize(email),
-        // safeBirthdate,
-        // password_hash,
-        // safePermission,
-        // safeMemberRequest,
-        // safeIsActive,
-        // user_id,
-        sanitize(first_name),
-        sanitize(last_name),
-        sanitize(email),
-        birthdate || null, // Date object or null
+
+        first_name,
+        last_name,
+        email,
+        birthdate,
         password_hash, // Only hashed if provided
-        permission_status || "guest",
+        permission_status, // boolean
         member_request, // boolean
         is_active, // boolean
         user_id,
@@ -481,10 +456,10 @@ const updateAdminEditedUser = async (
     );
 
     const user = userRes.rows[0];
+
     console.log("Users table updated successfully:", user);
 
-    // --- Update user_profiles table ---
-    // Optional: If row doesn't exist, you can switch to INSERT ... ON CONFLICT (upsert)
+    // Update user_profiles table
     console.log("Updating user_profiles table with sanitized values...", {
       user_id: user.id,
       avatar_type,
@@ -501,79 +476,46 @@ const updateAdminEditedUser = async (
       verified_by_admin,
     });
 
-    // await client.query(
-    //   `UPDATE user_profiles
-    //     SET
-    //       avatar_type = $1,
-    //       avatar_color_fg = $2,
-    //       avatar_color_bg_top = $3,
-    //       avatar_color_bg_bottom = $4,
-    //       phone = $5,
-    //       street_address = $6,
-    //       apt_unit = $7,
-    //       city = $8,
-    //       us_state = $9,
-    //       zip_code = $10,
-    //       notes = $11,
-    //       verified_by_admin = $12
-    //     WHERE user_id = $13`,
-    //   [
-    //     sanitize(avatar_type),
-    //     sanitize(avatar_color_fg),
-    //     sanitize(avatar_color_bg_top),
-    //     sanitize(avatar_color_bg_bottom),
-    //     sanitize(phone),
-    //     sanitize(street_address),
-    //     sanitize(apt_unit),
-    //     sanitize(city),
-    //     sanitize(us_state),
-    //     sanitize(zip_code),
-    //     sanitize(notes),
-    //     verified_by_admin, // Boolean
-    //     user.id,
-    //   ],
-    // );
-
-    // --- Commit transaction ---
-
-    // --- Update user_profiles table ---
+    // Update user_profiles table
     await client.query(
       `UPDATE user_profiles
        SET
-         avatar_type       = COALESCE($1, avatar_type),
-         avatar_color_fg   = COALESCE($2, avatar_color_fg),
-         avatar_color_bg_top = COALESCE($3, avatar_color_bg_top),
+         avatar_type            = COALESCE($1, avatar_type),
+         avatar_color_fg        = COALESCE($2, avatar_color_fg),
+         avatar_color_bg_top    = COALESCE($3, avatar_color_bg_top),
          avatar_color_bg_bottom = COALESCE($4, avatar_color_bg_bottom),
-         phone             = COALESCE($5, phone),
-         street_address    = COALESCE($6, street_address),
-         apt_unit          = COALESCE($7, apt_unit),
-         city              = COALESCE($8, city),
-         us_state          = COALESCE($9, us_state),
-         zip_code          = COALESCE($10, zip_code),
-         notes             = COALESCE($11, notes),
-         verified_by_admin = COALESCE($12, verified_by_admin)
+         phone                  = COALESCE($5, phone),
+         street_address         = COALESCE($6, street_address),
+         apt_unit               = COALESCE($7, apt_unit),
+         city                   = COALESCE($8, city),
+         us_state               = COALESCE($9, us_state),
+         zip_code               = COALESCE($10, zip_code),
+         notes                  = COALESCE($11, notes),
+         verified_by_admin      = COALESCE($12, verified_by_admin)
        WHERE user_id = $13;`,
       [
-        sanitize(avatar_type),
-        sanitize(avatar_color_fg),
-        sanitize(avatar_color_bg_top),
-        sanitize(avatar_color_bg_bottom),
-        sanitize(phone),
-        sanitize(street_address),
-        sanitize(apt_unit),
-        sanitize(city),
-        sanitize(us_state),
-        sanitize(zip_code),
-        sanitize(notes),
-        verified_by_admin, // boolean from controller
+        avatar_type,
+        avatar_color_fg,
+        avatar_color_bg_top,
+        avatar_color_bg_bottom,
+        phone,
+        street_address,
+        apt_unit,
+        city,
+        us_state,
+        zip_code,
+        notes,
+        verified_by_admin, // boolean
         user.id,
       ],
     );
 
     console.log("Committing transaction...");
+
     await client.query("COMMIT");
 
     console.log("updateAdminEditedUser completed successfully.");
+
     return user;
   } catch (err) {
     console.error("Error in updateAdminEditedUser:", err);
@@ -586,7 +528,176 @@ const updateAdminEditedUser = async (
 };
 
 
-// QUERY: DELETE VIA USER (your-profile.ejs) OR VIA ADMIN (admin.ejs)
+// QUERY: UPDATE OF A USER BY A USER (your-profile.ejs/edit-profile.ejs modal)
+
+const updateUser = async (
+  user_id,
+  first_name,
+  last_name,
+  email,
+  birthdate,
+  password, // raw password from form; may be empty
+  phone,
+  street_address,
+  apt_unit,
+  city,
+  us_state,
+  zip_code
+) => {
+  console.log("Starting updateUser...");
+  const client = await pool.connect();
+
+  try {
+    console.log("Beginning transaction...");
+    await client.query("BEGIN");
+
+    // Hash password only if a new password is provided
+    let password_hash = null;
+    if (password) {
+      password_hash = await bcrypt.hash(password, 12);
+      console.log("Password hashed successfully");
+    }
+
+    // Update users table
+    console.log("Updating users table with sanitized values...", {
+      first_name,
+      last_name,
+      email,
+      birthdate,
+    });
+
+    const userRes = await client.query(
+      `UPDATE users
+        SET
+          first_name        = COALESCE($1, first_name),
+          last_name         = COALESCE($2, last_name),
+          email             = COALESCE($3, email),
+          birthdate         = COALESCE($4, birthdate),
+          password_hash     = COALESCE($5, password_hash)
+        WHERE id = $6
+        RETURNING *;`,
+      [
+        first_name,
+        last_name,
+        email,
+        birthdate,
+        password_hash, // Only hashed if provided
+        user_id
+      ],
+    );
+
+    const currentUser = userRes.rows[0];
+
+    console.log("Users table updated successfully:", currentUser);
+
+    // Update user_profiles table
+    console.log("Updating user_profiles table with sanitized values...", {
+      user_id: currentUser.id,
+      phone,
+      street_address,
+      apt_unit,
+      city,
+      us_state,
+      zip_code,
+    });
+
+    // Update user_profiles table
+    await client.query(
+      `UPDATE user_profiles
+       SET
+         phone                  = COALESCE($1, phone),
+         street_address         = COALESCE($2, street_address),
+         apt_unit               = COALESCE($3, apt_unit),
+         city                   = COALESCE($4, city),
+         us_state               = COALESCE($5, us_state),
+         zip_code               = COALESCE($6, zip_code)
+       WHERE user_id = $7;`,
+      [
+        phone,
+        street_address,
+        apt_unit,
+        city,
+        us_state,
+        zip_code,
+        currentUser.id,
+      ],
+    );
+
+    console.log("Committing transaction...");
+
+    await client.query("COMMIT");
+
+    console.log("updateUser completed successfully.");
+
+    return currentUser;
+  } catch (err) {
+    console.error("Error in updateUser:", err);
+    await client.query("ROLLBACK");
+    throw err;
+  } finally {
+    client.release();
+    console.log("Database client released.");
+  }
+};
+
+// QUERY: UPDATE OF A USER'S AVATAR BY A USER (your-profile.ejs/change-avatar.ejs modal)
+
+const updateUserAvatar = async (
+  user_id,
+  avatar_type,
+  avatar_color_fg,
+  avatar_color_bg_top,
+  avatar_color_bg_bottom
+) => {
+  console.log("Starting updateUserAvatar...");
+  const client = await pool.connect();
+
+  try {
+    console.log("Beginning transaction...");
+    await client.query("BEGIN");
+
+    // Update user_profiles table
+    console.log("Updating user_profiles table with sanitized values...", {
+      avatar_type,
+      avatar_color_fg,
+      avatar_color_bg_top,
+      avatar_color_bg_bottom,
+    });
+
+    const userRes = await client.query(
+      `UPDATE user_profiles
+        SET
+          avatar_type             = COALESCE($1, avatar_type),
+          avatar_color_fg         = COALESCE($2, avatar_color_fg),
+          avatar_color_bg_top     = COALESCE($3, avatar_color_bg_top),
+          avatar_color_bg_bottom  = COALESCE($4, avatar_color_bg_bottom)
+        WHERE id = $5
+        RETURNING *;`,
+      [avatar_type, avatar_color_fg, avatar_color_bg_top, avatar_color_bg_bottom, user_id],
+    );
+
+    const currentUser = userRes.rows[0];
+
+    console.log("Users table updated successfully:", currentUser);
+
+    console.log("Committing transaction...");
+
+    await client.query("COMMIT");
+
+    console.log("updateUserAvatar completed successfully.");
+
+    return currentUser;
+  } catch (err) {
+    console.error("Error in updateUserAvatar:", err);
+    await client.query("ROLLBACK");
+    throw err;
+  } finally {
+    client.release();
+    console.log("Database client released.");
+  }
+};
+
+// QUERY: DELETE VIA USER (your-profile.ejs) OR DELETE VIA ADMIN (admin.ejs)
 
 const deleteUserById = async (id) => {
   await pool.query("DELETE FROM users WHERE id = $1", [id]);
@@ -794,6 +905,8 @@ module.exports = {
   insertNewUser,
   insertAdminCreatedUser,
   updateAdminEditedUser,
+  updateUser,
+  updateUserAvatar,
   getTopicNames,
   getAllTopics,
   getTopicBySlug,

@@ -1,7 +1,7 @@
 <div class="ui-message">
   <p>Make updates to your profile here.</p>
 </div>
-<form action="/app/???" method="POST">
+<form action="/app/your-profile/edit-profile" method="POST">
   <label class="capitalize" for="first-name-edit-profile">
     first name (fname)
   </label>
@@ -38,7 +38,7 @@
       <input
         id="phone-edit-profile"
         class="bold"
-        type="phone"
+        type="tel"
         name="phone"
       />
     </div>
@@ -61,7 +61,6 @@
     type="password"
     name="password"
     placeholder="select a password"
-    required
   />
   <label for="confirm-password-edit-profile"> confirm password </label>
   <input
@@ -69,7 +68,6 @@
     type="password"
     name="confirm_password"
     placeholder="re-enter chosen password"
-    required
   />
   <label class="capitalize" for="street-address-edit-profile">
     street address
@@ -97,6 +95,7 @@
         state
       </label>
       <select id="us-state-edit-profile" name="us_state">
+        <option value="" disabled>Choose state</option>
         <option value="AL">Alabama</option>
         <option value="AK">Alaska</option>
         <option value="AZ">Arizona</option>

@@ -11,7 +11,8 @@ const {
   getLogIn,
   postLogIn,
   postLogOut,
-  getYourProfile,
+  getYourProfilePage,
+  postYourProfilePageEdit,
   getMemberDirectory,
   getInfo,
   getMessageBoards,
@@ -76,7 +77,14 @@ appRouter.get("/info", requireRole("guest"), getInfo);
 appRouter.get("/message-boards", requireRole("guest"), getMessageBoards);
 appRouter.get("/topics", requireRole("guest"), getTopicNamesForDropdown);
 appRouter.get("/message-boards/:slug", requireRole("guest"), getTopicPage);
-appRouter.get("/your-profile", requireRole("guest"), getYourProfile);
+
+appRouter.get("/your-profile", requireRole("guest"), getYourProfilePage);
+appRouter.post(
+  "/your-profile/edit",
+  requireRole("guest"),
+  postYourProfilePageEdit,
+);
+
 appRouter.get("/member-directory", requireRole("member"), getMemberDirectory);
 
 // appRouter.post("/admin/delete-user", deleteUserAccount);

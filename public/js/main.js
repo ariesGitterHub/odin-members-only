@@ -128,13 +128,44 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("last-name-edit-profile").value = user.last_name;
     document.getElementById("email-edit-profile").value = user.email;
     document.getElementById("phone-edit-profile").value = user.phone || "";
-    document.getElementById("birthdate-edit-profile").value = user.birthdate;
-    document.getElementById("password-edit-profile").value = user.password_hash;
-    document.getElementById("street-address-edit-profile").value = user.street_address || "";
-    document.getElementById("apt-unit-edit-profile").value = user.apt_unit || "";
+
+    // document.getElementById("birthdate-edit-profile").value = user.birthdate;
+
+    // Format birthdate for input/display
+    let rawBirthdate = user.birthdate;
+    console.log(rawBirthdate);
+    
+    // if (rawBirthdate instanceof Date) {
+    //   rawBirthdate = rawBirthdate.toISOString().split("T")[0];
+    // }
+
+    // if (rawBirthdate instanceof Date) {
+    //   rawBirthdate = rawBirthdate.toISOString();
+    // }
+
+    // if (typeof rawBirthdate === "string") {
+    //   rawBirthdate = rawBirthdate.split("T")[0];
+    // }
+
+    if (rawBirthdate.includes("T")) {
+      rawBirthdate = rawBirthdate.split("T")[0];
+    }
+
+    console.log(rawBirthdate);
+    document.getElementById("birthdate-edit-profile").value = rawBirthdate
+    // document.getElementById("password-edit-profile").value = user.password_hash;
+    document.getElementById("street-address-edit-profile").value =
+      user.street_address || "";
+    document.getElementById("apt-unit-edit-profile").value =
+      user.apt_unit || "";
     document.getElementById("city-edit-profile").value = user.city || "";
-    document.getElementById("us-state-edit-profile").value = user.us_state || "";
-    document.getElementById("zip-code-edit-profile").value = user.zip_code || "";
+    document.getElementById("us-state-edit-profile").value =
+      user.us_state || "";
+    document.getElementById("zip-code-edit-profile").value =
+      user.zip_code || "";
+
+    console.log(user);
+    console.log(user.birthdate);
   } 
 
   function populateNewPostWithTopics(topics) {
@@ -224,6 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (sectionId === "modal-edit-profile") {
           const currentUser = await fetchCurrentUserData(userId);
+          console.log(JSON.stringify(currentUser.birthdate))
           populateEditProfileUser(currentUser);
           openModal(sectionId, titleId);
         }
