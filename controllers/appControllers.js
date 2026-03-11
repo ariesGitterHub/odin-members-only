@@ -222,6 +222,19 @@ async function postLogOut(req, res, next) {
   }
 }
 
+// CONTROLLER: INFO (info.ejs)
+async function getInfo(req, res, next) {
+  try {
+    res.render("info", {
+      title: "Site Information",
+      user: req.user,
+      errors: [],
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 // CONTROLLER: YOUR PROFILE (your-profile.ejs)
 
 async function getYourProfilePage(req, res, next) {
@@ -261,6 +274,7 @@ async function getYourProfilePage(req, res, next) {
   }
 }
 
+// CONTROLLER: EDIT PROFILE (edit-profile.ejs)
 async function postYourProfilePageEdit(req, res, next) {
   console.log("Controller hit!");
 
@@ -337,73 +351,44 @@ async function postYourProfilePageEdit(req, res, next) {
   }
 }
 
+// CONTROLLER: CHANGE AVATAR (change-avatar.ejs)
+
+// async function getChangeAvatar(req, res, next) {
+//   try {
+//     res.render("change-avatar", {
+//       title: "Change Avatar",
+//       user: req.user,
+//       errors: [],
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
 async function postYourProfilePageAvatar(req, res, next) {
   console.log("Controller hit!");
 
   const currentUser_id = req.user.id; // Always use logged-in user ID
 
   const {
-    first_name,
-    last_name,
-    email,
-    birthdate,
-    password,
-    confirm_password,
-    phone,
-    street_address,
-    apt_unit,
-    city,
-    us_state,
-    zip_code,
+    avatar_type,
+    avatar_color_fg,
+    avatar_color_bg_top,
+    avatar_color_bg_bottom
   } = req.body;
-
-  const errors = [];
-
-  // Simple validation checks
-  if (password && password !== confirm_password) {
-    errors.push("Passwords do not match.");
-  }
-
-  const existingUser = await checkIfEmailExists(email, currentUser_id);
-
-  if (existingUser.length > 0) {
-    errors.push("Email is already taken.");
-    return res.render("your-profile", {
-      title: "Your Profile",
-      user: req.user,
-      errors,
-      formData: req.body || {},
-    });
-  }
-
-  if (errors.length > 0) {
-    return res.render("your-profile", {
-      title: "Your Profile",
-      user: req.user,
-      errors,
-      formData: req.body || {},
-    });
-  }
 
   try {
     const sanitize = (v) => (v === "" ? null : v); // Empty strings -> null
 
     // --- Update the user ---
-    await updateUser(
+    await updateUserAvatar(
       currentUser_id,
-      sanitize(first_name),
-      sanitize(last_name),
-      sanitize(email),
-      sanitize(birthdate), // Keep as string 'yyyy-MM-dd' for <input type="date">
-      password, // hashed inside updateAdminEditedUser if provided
-      sanitize(phone),
-      sanitize(street_address),
-      sanitize(apt_unit),
-      sanitize(city),
-      sanitize(us_state),
-      sanitize(zip_code),
+      sanitize(avatar_type),
+      sanitize(avatar_color_fg),
+      sanitize(avatar_color_bg_top),
+      sanitize(avatar_color_bg_bottom)
     );
-    console.log("User inserted successfully");
+    console.log("User avatar changes inserted successfully");
 
     // Redirect after successful creation
     res.redirect("/app/your-profile");
@@ -424,30 +409,6 @@ async function postYourProfilePageAvatar(req, res, next) {
 //     next(err);
 //   }
 // }
-
-async function getChangeAvatar(req, res, next) {
-  try {
-    res.render("change-avatar", {
-      title: "Change Avatar",
-      user: req.user,
-      errors: [],
-    });
-  } catch (err) {
-    next(err);
-  }
-}
-
-async function getInfo(req, res, next) {
-  try {
-    res.render("info", {
-      title: "Site Information",
-      user: req.user,
-      errors: [],
-    });
-  } catch (err) {
-    next(err);
-  }
-}
 
 async function getMessageBoards(req, res, next) {
   try {
@@ -904,7 +865,7 @@ module.exports = {
   postYourProfilePageAvatar,
   getMemberDirectory,
   // getUpdateProfile,
-  getChangeAvatar,
+  // getChangeAvatar,
   getInfo,
   getMessageBoards,
   getTopicNamesForDropdown,

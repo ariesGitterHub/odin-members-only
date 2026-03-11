@@ -13,6 +13,7 @@ const {
   postLogOut,
   getYourProfilePage,
   postYourProfilePageEdit,
+  postYourProfilePageAvatar,
   getMemberDirectory,
   getInfo,
   getMessageBoards,
@@ -79,11 +80,8 @@ appRouter.get("/topics", requireRole("guest"), getTopicNamesForDropdown);
 appRouter.get("/message-boards/:slug", requireRole("guest"), getTopicPage);
 
 appRouter.get("/your-profile", requireRole("guest"), getYourProfilePage);
-appRouter.post(
-  "/your-profile/edit",
-  requireRole("guest"),
-  postYourProfilePageEdit,
-);
+appRouter.post("/your-profile/edit-profile", requireRole("guest"), postYourProfilePageEdit);
+appRouter.post("/your-profile/change-avatar", requireRole("guest"), postYourProfilePageAvatar);
 
 appRouter.get("/member-directory", requireRole("member"), getMemberDirectory);
 

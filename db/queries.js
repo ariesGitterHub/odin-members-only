@@ -642,12 +642,13 @@ const updateUser = async (
 
 // QUERY: UPDATE OF A USER'S AVATAR BY A USER (your-profile.ejs/change-avatar.ejs modal)
 
+// Only updating one table. Only use transactions when updating multiple tables.
 const updateUserAvatar = async (
   user_id,
   avatar_type,
   avatar_color_fg,
   avatar_color_bg_top,
-  avatar_color_bg_bottom
+  avatar_color_bg_bottom,
 ) => {
   console.log("Starting updateUserAvatar...");
   const client = await pool.connect();
@@ -656,8 +657,7 @@ const updateUserAvatar = async (
     console.log("Beginning transaction...");
     await client.query("BEGIN");
 
-    // Update user_profiles table
-    console.log("Updating user_profiles table with sanitized values...", {
+    console.log("Updating user_profiles avatar...", {
       avatar_type,
       avatar_color_fg,
       avatar_color_bg_top,
@@ -667,24 +667,26 @@ const updateUserAvatar = async (
     const userRes = await client.query(
       `UPDATE user_profiles
         SET
-          avatar_type             = COALESCE($1, avatar_type),
-          avatar_color_fg         = COALESCE($2, avatar_color_fg),
-          avatar_color_bg_top     = COALESCE($3, avatar_color_bg_top),
-          avatar_color_bg_bottom  = COALESCE($4, avatar_color_bg_bottom)
-        WHERE id = $5
+          avatar_type            = COALESCE($1, avatar_type),
+          avatar_color_fg        = COALESCE($2, avatar_color_fg),
+          avatar_color_bg_top    = COALESCE($3, avatar_color_bg_top),
+          avatar_color_bg_bottom = COALESCE($4, avatar_color_bg_bottom)
+        WHERE user_id = $5
         RETURNING *;`,
-      [avatar_type, avatar_color_fg, avatar_color_bg_top, avatar_color_bg_bottom, user_id],
+      [
+        avatar_type,
+        avatar_color_fg,
+        avatar_color_bg_top,
+        avatar_color_bg_bottom,
+        user_id,
+      ],
     );
 
     const currentUser = userRes.rows[0];
 
-    console.log("Users table updated successfully:", currentUser);
-
-    console.log("Committing transaction...");
+    console.log("Avatar updated successfully:", currentUser);
 
     await client.query("COMMIT");
-
-    console.log("updateUserAvatar completed successfully.");
 
     return currentUser;
   } catch (err) {
