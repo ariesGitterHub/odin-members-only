@@ -21,6 +21,7 @@ const {
   getAdminCreatePage,
   postAdminCreatePage,
   getAdminEditPage,
+  postAdminEditPage,
   getUserDetails,
   deleteUserAccount,
   deleteYourAccount,
@@ -54,11 +55,21 @@ appRouter.post(
 
 // TODO - Place protected routes together.
 
+// ROUTES: ADMIN PAGE (admin.ejs) 
+
 appRouter.get("/admin", requireRole("admin"), getAdminPage);
+
+// ROUTES: ADMIN CREATE PAGE (admin-create.ejs) 
+
 appRouter.get("/admin-create", requireRole("admin"), getAdminCreatePage);
 appRouter.post("/admin-create", requireRole("admin"), postAdminCreatePage);
 
+// ROUTES: ADMIN EDIT PAGE (admin-edit.ejs) 
+
 appRouter.get("/admin-edit/:id", requireRole("admin"), getAdminEditPage);
+appRouter.post("/admin-edit/:id", requireRole("admin"), postAdminEditPage);
+
+
 
 appRouter.get("/user/:id", requireRole("guest"), getUserDetails);
 appRouter.get("/info", requireRole("guest"), getInfo);

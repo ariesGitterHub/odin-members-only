@@ -165,7 +165,7 @@ button:hover,
   justify-content: space-evenly;
   gap: var(--spacer-medium);
   background-color: var(--lt-red);
-  border: var(border-gray);
+  border: var(--border-default);
   border-radius: var(--border-radius-default);
   font-size: var(--font-size-small);
   margin: var(--spacer-medium) 0;
@@ -238,7 +238,7 @@ label, .fake-label {
 
 input, .fake-input, textarea, select {
   width: var(--width-default-percent);
-  border: var(border-gray);
+  border: var(--border-default);
   font-weight: var(--font-weight-heavy);
   margin-bottom: var(--spacer-medium);
   padding: var(--spacer-small);
@@ -285,8 +285,4 @@ li:last-child {
   font-size: var(--message-body-size);
   font-weight: var(--font-weight-medium);
   margin: var(--spacer-medium) 0;
-}
-
-.ui-message-warning {
-  font-size: var(--font-size-small);
 }

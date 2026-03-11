@@ -1,6 +1,4 @@
 const bcrypt = require("bcryptjs");
-// const pool = require("../db/pool"); // PostgreSQL pool
-// const { hasRole, requireRole } = require("../utils/permissions.js");
 const passport = require("passport");
 
 const {
@@ -9,6 +7,7 @@ const {
   checkIfEmailExists,
   insertNewUser,
   insertAdminCreatedUser,
+  updateAdminEditedUser,
   getTopicNames,
   getAllTopics,
   getTopicBySlug,
@@ -59,7 +58,7 @@ async function getCurrentUser(req, res, next) {
   }
 }
 
-// Index (Home)
+// CONTROLLER: INDEX (index.ejs)
 
 async function getHome(req, res, next) {
   try {
@@ -73,7 +72,7 @@ async function getHome(req, res, next) {
   }
 }
 
-// Sign-Up
+// CONTROLLER: SIGN-UP (sign-up.ejs)
 
 async function getSignUp(req, res, next) {
   try {
@@ -81,87 +80,12 @@ async function getSignUp(req, res, next) {
       title: "Sign Up",
       user: req.user,
       errors: [],
+      formData: req.body || {},
     });
   } catch (err) {
     next(err);
   }
 }
-
-// async function postSignUp(req, res, next) {
-//   const {
-//     first_name,
-//     avatar_type,
-//     last_name,
-//     email,
-//     birthdate,
-//     password,
-//     confirm_password,
-//   } = req.body;
-//   const errors = [];
-
-//   // Simple validation checks
-//   if (
-//     !first_name ||
-//     !avatar_type ||
-//     !last_name ||
-//     !email ||
-//     !birthdate ||
-//     !password ||
-//     !confirm_password
-//   ) {
-//     errors.push("All fields are required.");
-//   }
-
-//   if (password !== confirm_password) {
-//     errors.push("Passwords do not match.");
-//   }
-
-//   if (errors.length > 0) {
-//     return res.render("sign-up", {
-//       title: "Sign Up",
-//       user: req.user,
-//       errors,
-//     });
-//   }
-
-//   try {
-//     // Use the query function from queries.js to check if email exists
-//     const existingUser = await checkIfEmailExists(email);
-
-//     if (existingUser.length > 0) {
-//       errors.push("Email is already taken.");
-//       return res.render("sign-up", {
-//         title: "Sign Up",
-//         user: req.user,
-//         errors,
-//       });
-//     }
-
-//     // Generate avatar_type from the first letter of the first name
-//     //const avatar_type = first_name.charAt(0).toUpperCase(); // Get first letter of first name
-
-//     // Hash the password before saving it to the database
-//     const password_hash = await bcrypt.hash(password, 12);
-
-//     // Use the query function from queries.js to insert the new user
-//     // await insertNewUser(first_name, last_name, email, birthdate, password_hash);
-
-//     // Use the query function from queries.js to insert the new user
-//     await insertNewUser(
-//       first_name,
-//       last_name,
-//       email,
-//       birthdate,
-//       password_hash,
-//       // avatar_type,
-//     );
-
-//     // Redirect to the login page after successful sign-up
-//     res.redirect("/app/log-in");
-//   } catch (err) {
-//     next(err);
-//   }
-// }
 
 async function postSignUp(req, res, next) {
   const {
@@ -195,13 +119,16 @@ async function postSignUp(req, res, next) {
       title: "Sign Up",
       user: req.user,
       errors,
+      formData: req.body || {},
     });
   }
 
   try {
+    // Below - no id needed at sign-up, only use id for edits/updates
+    // const existingUser = await checkIfEmailExists(email, user_id);
     const existingUser = await checkIfEmailExists(email);
 
-    if (existingUser) {
+    if (existingUser.length > 0) {
       errors.push("Email is already taken.");
       return res.render("sign-up", {
         title: "Sign Up",
@@ -220,7 +147,7 @@ async function postSignUp(req, res, next) {
   }
 }
 
-// Log-In
+// CONTROLLER: LOG-IN (log-in.ejs)
 
 async function getLogIn(req, res, next) {
   try {
@@ -228,6 +155,7 @@ async function getLogIn(req, res, next) {
       title: "Log In",
       user: req.user,
       errors: [],
+      formData: req.body || {},
     });
   } catch (err) {
     next(err);
@@ -250,6 +178,7 @@ async function postLogIn(req, res, next) {
       return res.render("log-in", {
         title: "Log In",
         errors: [info.message || "Invalid email or password"],
+        formData: req.body || {},
       });
     }
 
@@ -264,13 +193,13 @@ async function postLogIn(req, res, next) {
       }
 
       console.log("Login successful! Redirecting to message boards...");
-      // Redirect to homepage (or the intended route after successful login)
       res.redirect("/app/message-boards");
     });
   })(req, res, next);
 }
 
-// Log out the user
+// CONTROLLER: LOG-OUT
+
 async function postLogOut(req, res, next) {
   try {
     req.logout((err) => {
@@ -283,6 +212,8 @@ async function postLogOut(req, res, next) {
     next(err);
   }
 }
+
+// CONTROLLER: YOUR PROFILE (your-profile.ejs)
 
 async function getYourProfile(req, res, next) {
   if (!req.user) {
@@ -321,17 +252,17 @@ async function getYourProfile(req, res, next) {
   }
 }
 
-async function getUpdateProfile(req, res, next) {
-  try {
-    res.render("update-profile", {
-      title: "Update Profile",
-      user: req.user,
-      errors: [],
-    });
-  } catch (err) {
-    next(err);
-  }
-}
+// async function getUpdateProfile(req, res, next) {
+//   try {
+//     res.render("update-profile", {
+//       title: "Update Profile",
+//       user: req.user,
+//       errors: [],
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// }
 
 async function getChangeAvatar(req, res, next) {
   try {
@@ -431,6 +362,7 @@ async function getMemberDirectory(req, res, next) {
   }
 }
 
+// CONTROLLER: ADMIN PAGE (admin.ejs) 
 async function getAdminPage(req, res, next) {
   try {
     const users = await getUsers();
@@ -495,94 +427,18 @@ async function getAdminPage(req, res, next) {
   }
 }
 
+// CONTROLLER: ADMIN CREATE PAGE (admin-create.ejs)
 function getAdminCreatePage(req, res, next) {
   try {
     res.render("admin-create", {
       title: "Admin Create",
       errors: [],
+      formData: req.body || {},
     }); // Just render an empty form
   } catch (err) {
     next(err);
   }
 }
-
-// async function postAdminCreatePage(req, res, next) {
-//   const {
-//     first_name,
-//     avatar_type,
-//     last_name,
-//     email,
-//     birthdate,
-//     password,
-//     confirm_password,
-//     notes,
-//   } = req.body;
-//   const errors = [];
-
-//   // Simple validation checks
-//   if (
-//     !first_name ||
-//     !last_name ||
-//     !email ||
-//     !birthdate ||
-//     !password ||
-//     !confirm_password ||
-//     !notes
-//   ) {
-//     errors.push("All fields are required.");
-//   }
-
-//   if (password !== confirm_password) {
-//     errors.push("Passwords do not match.");
-//   }
-
-//   if (errors.length > 0) {
-//     return res.render("admin-create", {
-//       title: "Admin Create",
-//       user: req.user,
-//       errors,
-//     });
-//   }
-
-//   try {
-//     // Use the query function from queries.js to check if email exists
-//     const existingUser = await checkIfEmailExists(email);
-
-//     if (existingUser.length > 0) {
-//       errors.push("Email is already taken.");
-//       return res.render("admin-create", {
-//         title: "Admin Create",
-//         user: req.user,
-//         errors,
-//       });
-//     }
-
-//     // Generate avatar_type from the first letter of the first name
-//     const avatar_type = first_name.charAt(0).toUpperCase(); // Get first letter of first name
-
-//     // Hash the password before saving it to the database
-//     const password_hash = await bcrypt.hash(password, 12);
-
-//     // Use the query function from queries.js to insert the new user
-//     // await insertNewUser(first_name, last_name, email, birthdate, password_hash);
-
-//     // Use the query function from queries.js to insert the new user
-//     await insertAdminCreatedUser(
-//       first_name,
-//       last_name,
-//       email,
-//       birthdate,
-//       password_hash,
-//       avatar_type,
-//       notes,
-//     );
-
-//     // Redirect to the login page after successful sign-up
-//     res.redirect("/app/admin");
-//   } catch (err) {
-//     next(err);
-//   }
-// }
 
 async function postAdminCreatePage(req, res, next) {
 
@@ -623,26 +479,35 @@ async function postAdminCreatePage(req, res, next) {
       title: "Admin Create",
       user: req.user,
       errors,
-      // formData: req.body,
+      formData: req.body || {},
     });
   }
 
   try {
+    // Below - no id needed at sign-up, only use id for edits/updates
+    // const existingUser = await checkIfEmailExists(email, user_id);
     const existingUser = await checkIfEmailExists(email);
 
-    if (existingUser?.length) {
+    if (existingUser.length > 0) {
       errors.push("Email is already taken.");
       return res.render("admin-create", {
         title: "Admin Create",
         user: req.user,
         errors,
-        // formData: req.body,
+        formData: req.body || {},
       });
     }
 
     // Hash the password before saving
     const password_hash = await bcrypt.hash(password, 12);
     console.log("Password hashed");
+
+    // let notes = req.body.notes;
+    // if (!notes) notes = "Admin created user.";
+    const notes = req.body.notes || "Admin created user.";
+    console.log("Notes created");
+
+    const permission_status = req.body.permission_status || "guest";
 
     // Insert the new admin-created user (avatar_type generated inside the function)
     await insertAdminCreatedUser(
@@ -651,7 +516,7 @@ async function postAdminCreatePage(req, res, next) {
       email,
       birthdate,
       password_hash,
-      "guest", // undefined, //permission_status defaults to "guest"
+      permission_status,
       notes,
     );
     console.log("User inserted successfully");
@@ -664,22 +529,197 @@ async function postAdminCreatePage(req, res, next) {
   }
 }
 
+// CONTROLLER: ADMIN EDIT PAGE (admin-edit.ejs)
 
 async function getAdminEditPage(req, res, next) {
   try {
     const userId = req.params.id;
     const user = await getUserById(userId);
+    
+    //Format birthdate for input/display
+    if (user.birthdate instanceof Date) {
+      user.birthdate = user.birthdate.toISOString().split("T")[0];
+    }
     if (!user) return res.status(404).send("User not found");
     res.render("admin-edit", {
       title: "Admin Edit",
       user,
       errors: [],
+      formData: user,
     }); // Pass user to EJS view
   } catch (err) {
     next(err);
   }
 }
 
+async function postAdminEditPage(req, res, next) {
+    console.log("Controller hit!");
+
+    const user_id = req.params.id;
+
+    const {
+      first_name,
+      last_name,
+      email,
+      birthdate,
+      password,
+      confirm_password,
+      permission_status,
+      member_request,
+      is_active,
+      avatar_type,
+      avatar_color_fg,
+      avatar_color_bg_top,
+      avatar_color_bg_bottom,
+      phone,
+      street_address,
+      apt_unit,
+      city,
+      us_state,
+      zip_code,
+      notes,
+      verified_by_admin,
+    } = req.body;
+
+    const errors = [];
+
+    // Simple validation checks
+    // if (
+    //   !first_name ||
+    //   !last_name ||
+    //   !email ||
+    //   !birthdate ||
+    //   !permission_status ||
+    //   !member_request ||
+    //   !active_status ||
+    //   !verified_by_admin
+    // ) {
+    //   errors.push("All fields are required.");
+    // }
+
+      if (password && password !== confirm_password) {
+        errors.push("Passwords do not match.");
+      }
+
+      const existingUser = await checkIfEmailExists(email, user_id);
+
+      if (existingUser.length > 0) {
+        errors.push("Email is already taken.");
+        return res.render("admin-edit", {
+          title: "Admin Edit",
+          user: req.user,
+          errors,
+          formData: req.body || {},
+        });
+      }
+      
+      if (errors.length > 0) {
+        return res.render("admin-edit", {
+          title: "Admin Edit",
+          user: req.user,
+          errors,
+          formData: req.body || {},
+        });
+      }
+
+    try {
+      // const existingUser = await checkIfEmailExists(email);
+
+      // if (existingUser?.length) {
+      //   errors.push("Email is already taken.");
+      //   return res.render("admin-edit", {
+      //     title: "Admin Edit",
+      //     user: req.user,
+      //     errors,
+      //     // formData: req.body,
+      //   });
+      // }
+
+      // Hash the password before saving
+      // let password_hash = null;
+
+      // if (password) {
+      //   password_hash = await bcrypt.hash(password, 12);
+      //   console.log("Password hashed");
+      //         }
+      // const password_hash = await bcrypt.hash(password, 12);
+      // console.log("Password hashed");
+
+      // Convert form "true"/"false" strings from <select> inputs into real booleans.
+      // Or, more explicitly...the following happens...
+      // Form select elements send strings, not booleans ("true" / "false"), as HTML <select> fields always submit values as strings ("true" or "false").
+      // Below converts them to real booleans by comparing to the string "true".
+      // In comparing to "true" converts the value into a proper boolean:
+      // "true" === "true" → true
+      // "false" === "true" → false
+      // This safely converts form values to booleans for the database.
+      const safeMemberRequest =
+        member_request === "true" || member_request === true;
+      const safeIsActive = is_active === "true" || is_active === true;
+      const safeVerifiedByAdmin =
+        verified_by_admin === "true" || verified_by_admin === true;
+      // Insert the new admin-created user (avatar_type generated inside the function)
+      const sanitize = (v) => (v === "" ? null : v);
+
+      // await updateAdminEditedUser(
+      //   user_id,
+      //   sanitize(first_name),
+      //   sanitize(last_name),
+      //   sanitize(email),
+      //   sanitize(birthdate),
+      //   password_hash || null, // only hash if password provided
+      //   sanitize(permission_status),
+      //   member_request, // boolean
+      //   is_active, // boolean
+      //   sanitize(avatar_type),
+      //   sanitize(avatar_color_fg),
+      //   sanitize(avatar_color_bg_top),
+      //   sanitize(avatar_color_bg_bottom),
+      //   sanitize(phone),
+      //   sanitize(street_address),
+      //   sanitize(apt_unit),
+      //   sanitize(city),
+      //   sanitize(us_state),
+      //   sanitize(zip_code),
+      //   sanitize(notes),
+      //   verified_by_admin, // boolean
+      // );
+
+      // --- Update the user ---
+      await updateAdminEditedUser(
+        user_id,
+        sanitize(first_name),
+        sanitize(last_name),
+        sanitize(email),
+        birthdate ? new Date(birthdate) : null,
+        password, // hashed inside updateAdminEditedUser if provided
+        permission_status || "guest",
+        safeMemberRequest,
+        safeIsActive,
+        sanitize(avatar_type),
+        sanitize(avatar_color_fg),
+        sanitize(avatar_color_bg_top),
+        sanitize(avatar_color_bg_bottom),
+        sanitize(phone),
+        sanitize(street_address),
+        sanitize(apt_unit),
+        sanitize(city),
+        sanitize(us_state),
+        sanitize(zip_code),
+        sanitize(notes),
+        safeVerifiedByAdmin,
+      );
+      console.log("User inserted successfully");
+
+      // Redirect after successful creation
+      res.redirect("/app/admin");
+      console.log("Redirected to /app/admin");
+    } catch (err) {
+      next(err);
+    }
+  }
+
+// CONTROLLER: GET USERS BY ID
 
 // Function to fetch individual user data for modal
 async function getUserDetails(req, res, next) {
@@ -700,13 +740,12 @@ async function getUserDetails(req, res, next) {
   }
 }
 
+// CONTROLLER: DELETE VIA USER (your-profile.ejs) OR VIA ADMIN (admin.ejs)
+
 async function deleteUserAccount(req, res, next) {
   try {
     const { userId } = req.body;
-
-    // await queries.deleteUserById(userId);
     await deleteUserById(userId);
-
     res.redirect("/app/admin");
   } catch (err) {
     next(err);
@@ -716,10 +755,7 @@ async function deleteUserAccount(req, res, next) {
 async function deleteYourAccount(req, res, next) {
   try {
     const { userId } = req.body;
-
-    // await queries.deleteUserById(userId);
     await deleteUserById(userId);
-
     res.redirect("/app");
   } catch (err) {
     next(err);
@@ -736,7 +772,7 @@ module.exports = {
   postLogOut,
   getYourProfile,
   getMemberDirectory,
-  getUpdateProfile,
+  // getUpdateProfile,
   getChangeAvatar,
   getInfo,
   getMessageBoards,
@@ -746,6 +782,7 @@ module.exports = {
   getAdminCreatePage,
   postAdminCreatePage,
   getAdminEditPage,
+  postAdminEditPage,
   getUserDetails,
   deleteUserAccount,
   deleteYourAccount,

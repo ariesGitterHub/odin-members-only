@@ -23,6 +23,9 @@
           <% } else { %>
           guest-card user-card hidden
           <% } %>
+        <% if (user && user.is_active === false) { %> 
+            dead-account
+        <% } %>
           ">
           <div class="element-container-row margin-bottom">
               <div 
@@ -58,7 +61,7 @@
             </span>
             <% if (user.message_count) { %>
               <span class="black">
-                <p class="emoji"><%= user.message_count %></p>
+                <p><%= user.message_count %></p>
               </span>
             <% } %>
             <% if (user.birthdate) { %>
@@ -85,16 +88,16 @@
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">verified</dt>
-                <dd><%= user.verified_by_admin %></dd>
+                <dd class="<%= user.verified_by_admin ? 'green' : 'red' %>"><%= user.verified_by_admin %></dd>
               </div>
               <!-- TODO - ??? if status === member, then show; else hidden -->
               <div class="app-relevant-data">
                 <dt class="capitalize">upgrade</dt>
-                <dd>member request (<%= user.member_request %>)</dd>
+                <dd>member request (<span class="<%= user.member_request ? 'green' : 'red' %>"><%= user.member_request %></span>)</dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">activity</dt>
-                <dd>active status (<%= user.is_active%>)</dd>
+                <dd>active status (<span class="<%= user.is_active ? 'green' : 'red' %>"><%= user.is_active%></span>)</dd>
               </div>
               <div class="neighbor-relevant-data">
                 <dt class="capitalize">email</dt>
@@ -102,7 +105,7 @@
               </div>
               <div class="<%= user.phone ? '' : 'hidden' %> neighbor-relevant-data">
                 <dt class="capitalize">phone</dt>
-                <dd><%= user.phone || "n/a" %></dd>
+                <dd><%= user.phone %></dd>
               </div>
               <div class="neighbor-relevant-data">
                 <dt class="capitalize">birthdate</dt>
@@ -110,23 +113,23 @@
               </div>
               <div class="<%= user.street_address ? '' : 'hidden' %> neighbor-relevant-data">
                 <dt class="capitalize">street</dt>
-                <dd><%= user.street_address || "n/a" %></dd>
+                <dd><%= user.street_address %></dd>
               </div>
               <div class="<%= user.apt_unit ? '' : 'hidden' %> neighbor-relevant-data">
                 <dt class="capitalize">apt/unit</dt>
-                <dd><%= user.apt_unit || "n/a" %></dd>
+                <dd><%= user.apt_unit %></dd>
               </div>
               <div class="<%= user.city ? '' : 'hidden' %> neighbor-relevant-data">
                 <dt class="capitalize">city</dt>
-                <dd><%= user.city || "n/a" %></dd>
+                <dd><%= user.city %></dd>
               </div>
               <div class="<%= user.us_state ? '' : 'hidden' %> neighbor-relevant-data">
                 <dt class="capitalize">state</dt>
-                <dd><%= user.us_state || "n/a" %></dd>
+                <dd><%= user.us_state %></dd>
               </div>
               <div class="<%= user.zip_code ? '' : 'hidden' %> neighbor-relevant-data">
                 <dt class="capitalize">zip code</dt>
-                <dd><%= user.zip_code || "n/a" %></dd>
+                <dd><%= user.zip_code %></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">count</dt>
@@ -134,23 +137,28 @@
               </div>
               <div class="<%= user.avatar_type ? '' : 'hidden' %> app-relevant-data">
                 <dt class="capitalize">avatar</dt>
-                <dd class="emoji"><%= user.avatar_type || "n/a" %></dd>
+                <dd><span class="emoji regular"><%= user.avatar_type %></span></dd>
               </div>
               <div class="<%= user.avatar_color_fg ? '' : 'hidden' %> app-relevant-data">
                 <dt class="capitalize">colorFG</dt>
-                <dd><%= user.avatar_color_fg || "n/a" %></dd>
+                <dd><%= user.avatar_color_fg %></dd>
               </div>
               <div class="<%= user.avatar_color_bg_top ? '' : 'hidden' %> app-relevant-data">
                 <dt class="capitalize">colorBG↑</dt>
-                <dd><%= user.avatar_color_bg_top || "n/a" %></dd>
+                <dd><%= user.avatar_color_bg_top %></dd>
               </div>
               <div class="<%= user.avatar_color_bg_bottom ? '' : 'hidden' %> app-relevant-data">
                 <dt class="capitalize">colorBG↓</dt>
-                <dd><%= user.avatar_color_bg_bottom || "n/a" %></dd>
+                <dd><%= user.avatar_color_bg_bottom %></dd>
               </div>
-              <div class="<%= user.notes ? '' : 'hidden' %> app-relevant-data">
+              <!-- <div class="<%#= user.notes ? '' : 'hidden' %> app-relevant-data">
                 <dt class="capitalize">notes</dt>
-                <dd><%= user.notes || "n/a" %></dd>
+                <dd><%#= user.notes %></dd>
+              </div> -->
+              <% const notesValue = (user.notes || '').trim(); %>
+              <div class="<%= notesValue ? '' : 'hidden' %> app-relevant-data">
+                <dt class="capitalize">notes</dt>
+                <dd><%= notesValue %></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">created</dt>
@@ -177,13 +185,13 @@
                   delete this user
                 </button>
               <% } %>
-              <% if (user && user.permission_status === "guest" && user.verified_by_admin === false) { %>
-                <button class="button-default wide-button">admin verify user</button>
-              <% } %>
+              <%# if (user && user.permission_status === "guest" && user.verified_by_admin === false) { %>
+                <!-- <button class="button-default wide-button">admin verify user</button> -->
+              <%# } %>
               <!-- A guest has clicked upgrade and set flag to true, admin's turn to see the button and decide whether to click and make upgrade happen -->
-              <% if (user && user.permission_status === "guest" && user.member_request === true) { %>
-                <button class="button-default wide-button">upgrade to member</button>
-              <% } %>
+              <%# if (user && user.permission_status === "guest" && user.member_request === true) { %>
+                <!-- <button class="button-default wide-button">upgrade to member</button> -->
+              <%# } %>
                 <!-- <button 
                   class="wide-button edit-profile-admin-button"
                   data-section="modal-edit-profile-admin"

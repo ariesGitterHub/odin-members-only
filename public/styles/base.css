@@ -30,6 +30,7 @@
   --dk-blue: #2d2d3d;
   --dk-purple: #483548;
 
+  --lt-gray: #acb2ae;
   --lt-red: #edabab;
   --lt-orange: #e7b537;
   --lt-yellow: #eeee7d;
@@ -43,11 +44,13 @@
   --avatar-color-bg-bottom: var(--off-gray);
 
   --member-request-alert: var(--lt-orange);
+  --account-is-inactive: var(--lt-gray);
 
   /* --border-o-card: 0.125rem double var(--off-blue); */
   --border-admin-card: 0.125rem double var(--off-red);
-  --border-member-card: 0.125rem solid var(--off-gray);
-  --border-guest-card: 0.125rem solid var(--off-gray);
+  --border-member-card: 0.125rem solid var(--off-red);
+  --border-guest-card: 0.125rem dotted var(--off-red);
+  --border-inactive-card: 0.125rem solid var(--off-white);
   --border-default: 0.125rem solid var(--off-gray);
   --border-message: 0.125rem solid var(--off-white);
 
@@ -97,7 +100,7 @@
   --avatar-emoji-nav-size: 1.75rem;
   --avatar-emoji-preview-size: 3rem;
   --avatar-emoji-option-size: 2rem;
-  --avatar-emoji-small-size: 2rem;
+  --avatar-emoji-small-size: 2.5rem;
   --avatar-emoji-large-size: 6rem;
   --avatar-emoji-largest-size: 8rem;
 

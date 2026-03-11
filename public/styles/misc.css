@@ -38,6 +38,10 @@
   font-weight: var(--font-weight-heavy);
 }
 
+.regular {
+  font-weight: var(--font-weight-light);
+}
+
 /* Special border radius */
 
 .circle {

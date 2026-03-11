@@ -79,6 +79,11 @@
   background-color: var(--member-request-alert);
 }
 
+.dead-account {
+  background-color: var(--account-is-inactive);
+  border: var(--border-inactive-card);
+}
+
 /* -- admin-create.ejs */
 
 /* -- admin-edit.ejs */
@@ -86,6 +91,10 @@
 .element-container-row-space-between .emoji {
   width: 2.75rem;
   text-align: center;
+}
+
+.profile-block-select {
+  width: fit-content;
 }
 
 /* -- info.ejs */

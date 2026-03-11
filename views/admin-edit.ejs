@@ -13,7 +13,7 @@
         <div class="page-title uppercase">
           <h1><%=user.first_name%> <%=user.last_name%></h1>
         </div>
-        <form action="/app/???" method="POST">
+        <form action="/app/admin-edit/<%= user.id %>" method="POST">
             <label class="capitalize" for="first-name-admin-edit-page">
                 first name (fname)
             </label>
@@ -21,7 +21,7 @@
                 id="first-name-admin-edit-page"
                 type="text"
                 name="first_name"
-                value="<%=user.first_name%>"
+                value="<%= formData?.first_name || '' %>"
                 required
             />
             <label class="capitalize" for="last-name-admin-edit-page">
@@ -31,7 +31,7 @@
                 id="last-name-admin-edit-page"
                 type="text"
                 name="last_name"
-                value="<%=user.last_name%>"
+                value="<%= formData?.last_name || '' %>"
                 required
             />
             <% if (user && user.permission_status !== "admin") { %> 
@@ -42,46 +42,49 @@
                   </label>
                   <select
                       id="permission-status-admin-edit-page"
-                      class="lowercase"
+                      class="profile-block-select lowercase"
                       name="permission_status"
                       required
                   >
-                    <option value="guest" <%= user.permission_status === "guest" ? "selected" : "" %>>guest</option>
-                    <option value="member" <%= user.permission_status === "member" ? "selected" : "" %>>member</option>
-                    <option value="admin" <%= user.permission_status === "admin" ? "selected" : "" %>>admin</option>
+                    <option value="guest" <%= formData?.permission_status === "guest" ? "selected" : "" %>>guest</option>
+                    <option value="member" <%= formData?.permission_status === "member" ? "selected" : "" %>>member</option>
+                    <option value="admin" <%= formData?.permission_status === "admin" ? "selected" : "" %>>admin</option>
                   </select>
                 </div>
                 <div class="element-container-col-default">
                   <label for="verified-by-admin-admin-edit-page"> admin verified </label>
                   <select
                       id="verified-by-admin-admin-edit-page"
-                      class="lowercase"
+                      class=" profile-block-select lowercase"
                       name="verified_by_admin"
+                      required
                   >
-                    <option value="false" <%= user.verified_by_admin === false ? "selected" : "" %>>false</option>
-                    <option value="true" <%= user.verified_by_admin === true ? "selected" : "" %>>true</option>
+                    <option value="false" <%= String(formData?.verified_by_admin) === "false" ? "selected" : "" %>>false</option>
+                    <option value="true" <%= String(formData?.verified_by_admin) === "true" ? "selected" : "" %>>true</option>
                   </select>
                 </div>
                 <div class="element-container-col-default">
                 <label for="member-request-admin-edit-page"> member request </label>
                 <select
                     id="member-request-admin-edit-page"
-                    class="lowercase"
+                    class="profile-block-select lowercase"
                     name="member_request"
+                    required
                 >
-                    <option value="false" <%= user.member_request === false ? "selected" : "" %>>false</option>
-                    <option value="true" <%= user.member_request === true ? "selected" : "" %>>true</option>
+                    <option value="false" <%= String(formData?.member_request) === "false" ? "selected" : "" %>>false</option>
+                    <option value="true" <%= String(formData?.member_request) === "true" ? "selected" : "" %>>true</option>
                 </select>
                 </div>
                 <div class="element-container-col-default">
                 <label for="is-active-admin-edit-page"> active status </label>
                 <select
                     id="is-active-admin-edit-page"
-                    class="lowercase"
+                    class="profile-block-select lowercase"
                     name="is_active"
+                    required
                 >
-                    <option value="false" <%= user.is_active === false ? "selected" : "" %>>false</option>
-                    <option value="true" <%= user.is_active === true ? "selected" : "" %>>true</option>
+                    <option value="false" <%= String(formData?.is_active) === "false" ? "selected" : "" %>>false</option>
+                    <option value="true" <%= String(formData?.is_active) === "true" ? "selected" : "" %>>true</option>
                 </select>
                 </div>
             </div>
@@ -94,7 +97,7 @@
                 class="lowercase"
                 type="email"
                 name="email"
-                value="<%=user.email%>"
+                value="<%= formData?.email || '' %>"
                 required
             />
             <div class="element-container-row-space-between">
@@ -104,7 +107,7 @@
                     id="phone-admin-edit-page"
                     type="phone"
                     name="phone"
-                    value="<%=user.phone%>"
+                    value="<%= formData?.phone || '' %>"
                 />
                 </div>
                 <div class="element-container-col-start-center">
@@ -115,7 +118,7 @@
                     id="birthdate-admin-edit-page"
                     type="date"
                     name="birthdate"
-                    value="<%=user.birthdate%>"
+                    value="<%= formData?.birthdate || '' %>"
                     required
                 />
                 </div>
@@ -126,7 +129,6 @@
                 type="password"
                 name="password"
                 placeholder="select new password"
-                required
             />
             <label for="confirm-password-admin-edit-page"> confirm password </label>
             <input
@@ -134,7 +136,6 @@
                 type="password"
                 name="confirm_password"
                 placeholder="re-enter new password"
-                required
             />
             <label class="capitalize" for="street-address-admin-edit-page">
                 street address
@@ -143,7 +144,7 @@
                 id="street-address-admin-edit-page"
                 type="text"
                 name="street_address"
-                value="<%=user.street_address%>"
+                value="<%= formData?.street_address || '' %>"
             />
             <div class="element-container-row-space-between">
                 <div class="element-container-col-start-center">
@@ -154,65 +155,66 @@
                     id="apt-unit-admin-edit-page"
                     type="text"
                     name="apt_unit"
-                    value="<%=user.apt_unit%>"
+                    value="<%= formData?.apt_unit || '' %>"
                 />
                 </div>
                 <div class="element-container-col-start-center">
                 <label class="capitalize" for="us-state-admin-edit-page">
                     state
                 </label>
-                <select id="us-state-admin-edit-page" name="us_state" required>
-                    <option value="AL" <%= user.us_state === "AL" ? "selected" : "" %>>Alabama</option>
-                    <option value="AK" <%= user.us_state === "AK" ? "selected" : "" %>>Alaska</option>
-                    <option value="AZ" <%= user.us_state === "AZ" ? "selected" : "" %>>Arizona</option>
-                    <option value="AR" <%= user.us_state === "AR" ? "selected" : "" %>>Arkansas</option>
-                    <option value="CA" <%= user.us_state === "CA" ? "selected" : "" %>>California</option>
-                    <option value="CO" <%= user.us_state === "CO" ? "selected" : "" %>>Colorado</option>
-                    <option value="CT" <%= user.us_state === "CT" ? "selected" : "" %>>Connecticut</option>
-                    <option value="DE" <%= user.us_state === "DE" ? "selected" : "" %>>Delaware</option>
-                    <option value="DC" <%= user.us_state === "DC" ? "selected" : "" %>>Washington, DC</option>
-                    <option value="FL" <%= user.us_state === "FL" ? "selected" : "" %>>Florida</option>
-                    <option value="GA" <%= user.us_state === "GA" ? "selected" : "" %>>Georgia</option>
-                    <option value="HI" <%= user.us_state === "HI" ? "selected" : "" %>>Hawaii</option>
-                    <option value="ID" <%= user.us_state === "ID" ? "selected" : "" %>>Idaho</option>
-                    <option value="IL" <%= user.us_state === "IL" ? "selected" : "" %>>Illinois</option>
-                    <option value="IN" <%= user.us_state === "IN" ? "selected" : "" %>>Indiana</option>
-                    <option value="IA" <%= user.us_state === "IA" ? "selected" : "" %>>Iowa</option>
-                    <option value="KS" <%= user.us_state === "KS" ? "selected" : "" %>>Kansas</option>
-                    <option value="KY" <%= user.us_state === "KY" ? "selected" : "" %>>Kentucky</option>
-                    <option value="LA" <%= user.us_state === "LA" ? "selected" : "" %>>Louisiana</option>
-                    <option value="ME" <%= user.us_state === "ME" ? "selected" : "" %>>Maine</option>
-                    <option value="MD" <%= user.us_state === "MD" ? "selected" : "" %>>Maryland</option>
-                    <option value="MA" <%= user.us_state === "MA" ? "selected" : "" %>>Massachusetts</option>
-                    <option value="MI" <%= user.us_state === "MI" ? "selected" : "" %>>Michigan</option>
-                    <option value="MN" <%= user.us_state === "MN" ? "selected" : "" %>>Minnesota</option>
-                    <option value="MS" <%= user.us_state === "MS" ? "selected" : "" %>>Mississippi</option>
-                    <option value="MO" <%= user.us_state === "MO" ? "selected" : "" %>>Missouri</option>
-                    <option value="MT" <%= user.us_state === "MT" ? "selected" : "" %>>Montana</option>
-                    <option value="NE" <%= user.us_state === "NE" ? "selected" : "" %>>Nebraska</option>
-                    <option value="NV" <%= user.us_state === "NV" ? "selected" : "" %>>Nevada</option>
-                    <option value="NH" <%= user.us_state === "NH" ? "selected" : "" %>>New Hampshire</option>
-                    <option value="NJ" <%= user.us_state === "NJ" ? "selected" : "" %>>New Jersey</option>
-                    <option value="NM" <%= user.us_state === "NM" ? "selected" : "" %>>New Mexico</option>
-                    <option value="NY" <%= user.us_state === "NY" ? "selected" : "" %>>New York</option>
-                    <option value="NC" <%= user.us_state === "NC" ? "selected" : "" %>>North Carolina</option>
-                    <option value="ND" <%= user.us_state === "ND" ? "selected" : "" %>>North Dakota</option>
-                    <option value="OH" <%= user.us_state === "OH" ? "selected" : "" %>>Ohio</option>
-                    <option value="OK" <%= user.us_state === "OK" ? "selected" : "" %>>Oklahoma</option>
-                    <option value="OR" <%= user.us_state === "OR" ? "selected" : "" %>>Oregon</option>
-                    <option value="PA" <%= user.us_state === "PA" ? "selected" : "" %> selected>Pennsylvania</option>
-                    <option value="RI" <%= user.us_state === "RI" ? "selected" : "" %>>Rhode Island</option>
-                    <option value="SC" <%= user.us_state === "SC" ? "selected" : "" %>>South Carolina</option>
-                    <option value="SD" <%= user.us_state === "SD" ? "selected" : "" %>>South Dakota</option>
-                    <option value="TN" <%= user.us_state === "TN" ? "selected" : "" %>>Tennessee</option>
-                    <option value="TX" <%= user.us_state === "TX" ? "selected" : "" %>>Texas</option>
-                    <option value="UT" <%= user.us_state === "UT" ? "selected" : "" %>>Utah</option>
-                    <option value="VT" <%= user.us_state === "VT" ? "selected" : "" %>>Vermont</option>
-                    <option value="VA" <%= user.us_state === "VA" ? "selected" : "" %>>Virginia</option>
-                    <option value="WA" <%= user.us_state === "WA" ? "selected" : "" %>>Washington</option>
-                    <option value="WV" <%= user.us_state === "WV" ? "selected" : "" %>>West Virginia</option>
-                    <option value="WI" <%= user.us_state === "WI" ? "selected" : "" %>>Wisconsin</option>
-                    <option value="WY" <%= user.us_state === "WY" ? "selected" : "" %>>Wyoming</option>
+                <select id="us-state-admin-edit-page" name="us_state">
+                    <option value="" disabled <%= !formData?.us_state ? "selected" : "" %>>Choose state</option>
+                    <option value="AL" <%= formData?.us_state === "AL" ? "selected" : "" %>>Alabama</option>
+                    <option value="AK" <%= formData?.us_state === "AK" ? "selected" : "" %>>Alaska</option>
+                    <option value="AZ" <%= formData?.us_state === "AZ" ? "selected" : "" %>>Arizona</option>
+                    <option value="AR" <%= formData?.us_state === "AR" ? "selected" : "" %>>Arkansas</option>
+                    <option value="CA" <%= formData?.us_state === "CA" ? "selected" : "" %>>California</option>
+                    <option value="CO" <%= formData?.us_state === "CO" ? "selected" : "" %>>Colorado</option>
+                    <option value="CT" <%= formData?.us_state === "CT" ? "selected" : "" %>>Connecticut</option>
+                    <option value="DE" <%= formData?.us_state === "DE" ? "selected" : "" %>>Delaware</option>
+                    <option value="DC" <%= formData?.us_state === "DC" ? "selected" : "" %>>Washington, DC</option>
+                    <option value="FL" <%= formData?.us_state === "FL" ? "selected" : "" %>>Florida</option>
+                    <option value="GA" <%= formData?.us_state === "GA" ? "selected" : "" %>>Georgia</option>
+                    <option value="HI" <%= formData?.us_state === "HI" ? "selected" : "" %>>Hawaii</option>
+                    <option value="ID" <%= formData?.us_state === "ID" ? "selected" : "" %>>Idaho</option>
+                    <option value="IL" <%= formData?.us_state === "IL" ? "selected" : "" %>>Illinois</option>
+                    <option value="IN" <%= formData?.us_state === "IN" ? "selected" : "" %>>Indiana</option>
+                    <option value="IA" <%= formData?.us_state === "IA" ? "selected" : "" %>>Iowa</option>
+                    <option value="KS" <%= formData?.us_state === "KS" ? "selected" : "" %>>Kansas</option>
+                    <option value="KY" <%= formData?.us_state === "KY" ? "selected" : "" %>>Kentucky</option>
+                    <option value="LA" <%= formData?.us_state === "LA" ? "selected" : "" %>>Louisiana</option>
+                    <option value="ME" <%= formData?.us_state === "ME" ? "selected" : "" %>>Maine</option>
+                    <option value="MD" <%= formData?.us_state === "MD" ? "selected" : "" %>>Maryland</option>
+                    <option value="MA" <%= formData?.us_state === "MA" ? "selected" : "" %>>Massachusetts</option>
+                    <option value="MI" <%= formData?.us_state === "MI" ? "selected" : "" %>>Michigan</option>
+                    <option value="MN" <%= formData?.us_state === "MN" ? "selected" : "" %>>Minnesota</option>
+                    <option value="MS" <%= formData?.us_state === "MS" ? "selected" : "" %>>Mississippi</option>
+                    <option value="MO" <%= formData?.us_state === "MO" ? "selected" : "" %>>Missouri</option>
+                    <option value="MT" <%= formData?.us_state === "MT" ? "selected" : "" %>>Montana</option>
+                    <option value="NE" <%= formData?.us_state === "NE" ? "selected" : "" %>>Nebraska</option>
+                    <option value="NV" <%= formData?.us_state === "NV" ? "selected" : "" %>>Nevada</option>
+                    <option value="NH" <%= formData?.us_state === "NH" ? "selected" : "" %>>New Hampshire</option>
+                    <option value="NJ" <%= formData?.us_state === "NJ" ? "selected" : "" %>>New Jersey</option>
+                    <option value="NM" <%= formData?.us_state === "NM" ? "selected" : "" %>>New Mexico</option>
+                    <option value="NY" <%= formData?.us_state === "NY" ? "selected" : "" %>>New York</option>
+                    <option value="NC" <%= formData?.us_state === "NC" ? "selected" : "" %>>North Carolina</option>
+                    <option value="ND" <%= formData?.us_state === "ND" ? "selected" : "" %>>North Dakota</option>
+                    <option value="OH" <%= formData?.us_state === "OH" ? "selected" : "" %>>Ohio</option>
+                    <option value="OK" <%= formData?.us_state === "OK" ? "selected" : "" %>>Oklahoma</option>
+                    <option value="OR" <%= formData?.us_state === "OR" ? "selected" : "" %>>Oregon</option>
+                    <option value="PA" <%= formData?.us_state === "PA" ? "selected" : "" %>>Pennsylvania</option>
+                    <option value="RI" <%= formData?.us_state === "RI" ? "selected" : "" %>>Rhode Island</option>
+                    <option value="SC" <%= formData?.us_state === "SC" ? "selected" : "" %>>South Carolina</option>
+                    <option value="SD" <%= formData?.us_state === "SD" ? "selected" : "" %>>South Dakota</option>
+                    <option value="TN" <%= formData?.us_state === "TN" ? "selected" : "" %>>Tennessee</option>
+                    <option value="TX" <%= formData?.us_state === "TX" ? "selected" : "" %>>Texas</option>
+                    <option value="UT" <%= formData?.us_state === "UT" ? "selected" : "" %>>Utah</option>
+                    <option value="VT" <%= formData?.us_state === "VT" ? "selected" : "" %>>Vermont</option>
+                    <option value="VA" <%= formData?.us_state === "VA" ? "selected" : "" %>>Virginia</option>
+                    <option value="WA" <%= formData?.us_state === "WA" ? "selected" : "" %>>Washington</option>
+                    <option value="WV" <%= formData?.us_state === "WV" ? "selected" : "" %>>West Virginia</option>
+                    <option value="WI" <%= formData?.us_state === "WI" ? "selected" : "" %>>Wisconsin</option>
+                    <option value="WY" <%= formData?.us_state === "WY" ? "selected" : "" %>>Wyoming</option>
                   </select>
                 </div>
             </div>
@@ -223,7 +225,7 @@
                     id="city-admin-edit-page"
                     type="text"
                     name="city"
-                    value="<%=user.city%>"
+                    value="<%= formData?.city || '' %>"
                 />
                 </div>
                 <div class="element-container-col-start-center">
@@ -232,7 +234,7 @@
                     id="zip-code-admin-edit-page"
                     type="text"
                     name="zip_code"
-                    value="<%=user.zip_code%>"
+                    value="<%= formData?.zip_code || '' %>"
                 />
                 </div>
             </div>
@@ -241,10 +243,10 @@
                 <label for="avatar-type-admin-edit-page"> avatar </label>
                 <input
                     id="avatar-type-admin-edit-page"
-                    class="emoji lowercase"
+                    class="emoji capitalize"
                     type="text"
                     name="avatar_type"
-                    value="<%=user.avatar_type%>"
+                    value="<%= formData?.avatar_type || '' %>"
                 />
                 </div>
                 <div class="element-container-col-start-center">
@@ -254,7 +256,7 @@
                     class="lowercase"
                     type="text"
                     name="avatar_color_fg"
-                    value="<%=user.avatar_color_fg%>"
+                    value="<%= formData?.avatar_color_fg || '' %>"
                 />
                 </div>
                 <div class="element-container-col-start-center">
@@ -264,7 +266,7 @@
                     class="lowercase"
                     type="text"
                     name="avatar_color_bg_top"
-                    value="<%=user.avatar_color_bg_top%>"
+                    value="<%= formData?.avatar_color_bg_top || '' %>"
                 />
                 </div>
                 <div class="element-container-col-start-center">
@@ -274,7 +276,7 @@
                     class="lowercase"
                     type="text"
                     name="avatar_color_bg_bottom"
-                    value="<%=user.avatar_color_bg_bottom%>"
+                    value="<%= formData?.avatar_color_bg_bottom || '' %>"
                 />
                 </div>
             </div>
@@ -282,7 +284,8 @@
             <textarea
               id="notes-admin-edit-page"
               name="notes"
-            ><%= user.notes %>
+            ><%#= formData?.notes || '' %>
+            <%= (formData?.notes || '').trim() %>
             </textarea>
             <div class="button-container-col">
               <a class="button-default wide-button" href="/app/admin">cancel changes</a>

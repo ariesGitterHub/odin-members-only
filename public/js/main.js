@@ -167,6 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function populateDeletionWarning(user) {
       document.getElementById("first-name-deletion-warning").innerText = user.first_name;
       document.getElementById("last-name-deletion-warning").innerText = user.last_name;
+      document.getElementById("email-deletion-warning").innerText = user.email;
     } 
 
   async function populateChangeAvatar(user) {

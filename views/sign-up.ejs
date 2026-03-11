@@ -23,22 +23,16 @@
             id="first-name-sign-up"
             type="text"          
             name="first_name"
+            value="<%= formData?.first_name || '' %>"
             placeholder="enter first name"
             required
           />
-          <!-- <label for="avatar-type-sign-up"> avatar type </label>
-          <input
-            id="avatar-type-sign-up"
-            type="text"          
-            name="avatar_type"
-            value=""
-            required
-          /> -->
           <label for="last-name-sign-up"> last name </label>
           <input
             id="last-name-sign-up"
             type="text"          
             name="last_name"
+            value="<%= formData?.last_name || '' %>"
             placeholder="enter last name"
             required
           />
@@ -47,6 +41,7 @@
             id="email-sign-up"
             type="email"            
             name="email"
+            value="<%= formData?.email || '' %>"
             placeholder="enter email address"
             required
           />
@@ -55,6 +50,7 @@
             id="birthdate-sign-up"
             type="date"            
             name="birthdate"
+            value="<%= formData?.birthdate || '' %>"
             placeholder="enter birthdate"
             required
           />

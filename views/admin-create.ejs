@@ -18,6 +18,7 @@
             id="first-name-admin-create-page"
             type="text"
             name="first_name"
+            value="<%= formData?.first_name || '' %>"
             required
           />
           <label class="capitalize" for="last-name-admin-create-page">
@@ -27,6 +28,7 @@
             id="last-name-admin-create-page"
             type="text"
             name="last_name"
+            value="<%= formData?.last_name || '' %>"
             required
           />
 
@@ -38,6 +40,7 @@
             class="lowercase"
             type="email"
             name="email"
+            value="<%= formData?.email || '' %>"
             required
           />
           <label class="capitalize" for="birthdate-admin-create-page">
@@ -47,6 +50,7 @@
             id="birthdate-admin-create-page"
             type="date"
             name="birthdate"
+            value="<%= formData?.birthdate || '' %>"
             required
           />
           <label for="password-admin-create-page"> password </label>
