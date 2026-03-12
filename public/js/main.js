@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const option = document.createElement("option");
       option.className = "topic-new-post-option"
       option.value = topic.id;
-      option.textContent = topic.name;
+      option.textContent = `➤ ${topic.name}`;
       select.appendChild(option);
     });
 

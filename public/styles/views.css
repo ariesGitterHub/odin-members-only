@@ -112,11 +112,13 @@
   font-size: var(--font-size-large);
   margin-bottom: var(--spacer-default);
 }
- 
-#body-new-post {
 
+.topic-new-post, .title-new-post, .body-new-post {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 1rem;  /* Set a readable font size */  
+}
  
-
+.body-new-post {
   width: 100%;      /* Make the textarea span full width */
   height: 180px;    /* Set a fixed height, adjust as needed */
   border: 1px solid gold; /* Define a border for clarity */ 
@@ -178,10 +180,17 @@ background-color: var(--off-red);
   font-size: var(--font-size-large);
 }
 
+.topic-hr {
+  width: var(--width-default-percent);
+  border: 0;   
+  border-top: var(--border-hr-top); 
+  /* border-bottom: var(--border-hr-bottom);  */
+}
+
 /* -- topic.ejs */
 .topic-card {
   /* 750px is good for reading... */
-  max-width: 750px;
+  max-width: var(--max-width);
   display: flex;
   flex-direction: column;
   gap: var(--spacer-biggest);

@@ -131,7 +131,7 @@ button:hover,
 }
 
 /* --row-based */
-.element-container-row {
+.element-container-row-center-start  {
   display: flex;
   align-items: center;
   justify-content: start;
@@ -290,4 +290,12 @@ li:last-child {
   font-size: var(--message-body-size);
   font-weight: var(--font-weight-medium);
   margin: var(--spacer-medium) 0;
+}
+
+.ui-message-bubble {
+  max-width: var(--max-width);
+  background-color: var(--off-white);
+  border: var(--border-default);
+  border-radius: var(--border-radius-default);
+  padding: var(--spacer-default);
 }

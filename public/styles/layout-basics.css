@@ -42,9 +42,9 @@ main {
 }
 
 .page-title-off-card {
-  /* width: var(--width-default-percent); */
+  width: var(--width-default-percent);
   display: inline-block;
-  background: linear-gradient(180deg, var(--white), var(--off-white));
+  background: linear-gradient(180deg, var(--white), var(--off-gray));
   -webkit-background-clip: text; /* Clips background to text shape */
   -webkit-text-fill-color: transparent; /* Makes original text color transparent */
   padding: var(--spacer-default);
@@ -74,7 +74,7 @@ main {
   background: linear-gradient(180deg, var(--white), var(--off-gray));
   -webkit-background-clip: text; /* Clips background to text shape */
   -webkit-text-fill-color: transparent; /* Makes original text color transparent */
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-default);
   padding: var(--spacer-default);
   text-align: center;
 }

@@ -9,13 +9,13 @@
     <main>
       <div>
         <h1 class="page-title-off-card uppercase"><%= topic.name %></h1>
-        <hr>
+        <hr class="topic-hr">
         <h2 class="page-subtitle-off-card uppercase"><%= topic.description %></h2>
       </div>
 
       <div class="topic-card">
         <% if (messages.length === 0) { %>
-          <p>No messages yet. Be the first to post!</p>
+          <div class="element-container-row-center-start ui-message ui-message-bubble"><span class="emoji emoji-size-small margin-right">🤓</span><p>There are no current messages in this topic thread. Be the first to add a new post here!</p></div>
         <% } else { %>
           <% messages.forEach(message => { %>
             <%- include('./partials/message-card', { message }) %>
