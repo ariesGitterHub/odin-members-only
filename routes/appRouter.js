@@ -16,6 +16,7 @@ const {
   postYourProfilePageAvatar,
   getMemberDirectory,
   getInfo,
+  postNewPost,
   getMessageBoards,
   getTopicNamesForDropdown,
   getTopicPage,
@@ -71,10 +72,10 @@ appRouter.post("/admin-create", requireRole("admin"), postAdminCreatePage);
 appRouter.get("/admin-edit/:id", requireRole("admin"), getAdminEditPage);
 appRouter.post("/admin-edit/:id", requireRole("admin"), postAdminEditPage);
 
-
-
 appRouter.get("/user/:id", requireRole("guest"), getUserDetails);
 appRouter.get("/info", requireRole("guest"), getInfo);
+appRouter.post("/new-post", requireRole("guest"), postNewPost);
+
 appRouter.get("/message-boards", requireRole("guest"), getMessageBoards);
 appRouter.get("/topics", requireRole("guest"), getTopicNamesForDropdown);
 appRouter.get("/message-boards/:slug", requireRole("guest"), getTopicPage);

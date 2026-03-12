@@ -719,6 +719,60 @@ const getTopicNames = async () => {
   return rows;
 };
 
+// QUERY: INSERT NEW POST TO MESSAGE BOARD TOPIC (new-post.ejs)
+
+// const insertNewPost = async (
+//   user_id,
+//   topic_id, 
+//   title,
+//   body
+// ) => {
+  
+//   const client = await pool.connect();
+
+//   try {
+//     await client.query("BEGIN");
+
+//     const userRes = await client.query(
+//       `INSERT INTO messages
+//       (user_id, topic_id, title, body)
+//       VALUES ($1,$2,$3,$4)
+//       RETURNING *`,
+//       [user_id, topic_id, title, body],
+//     );
+
+//     const currentUser = userRes.rows[0];
+
+//     await client.query("COMMIT");
+
+//     return currentUser;
+//   } catch (err) {
+//     await client.query("ROLLBACK");
+//     throw err;
+//   } finally {
+//     client.release();
+//   }
+// };
+
+const insertNewPost = async (user_id, topic_id, title, body) => {
+  const client = await pool.connect();
+
+  try {
+    const userRes = await client.query(
+      `INSERT INTO messages (user_id, topic_id, title, body)
+       VALUES ($1, $2, $3, $4)
+       RETURNING id, user_id, topic_id, title, body, like_count, reply_count`,
+      [user_id, topic_id, title, body],
+    );
+
+    return userRes.rows[0]; // Return the inserted message with all necessary fields
+  } catch (err) {
+    console.error("Error inserting new post:", err);
+    throw err;
+  } finally {
+    client.release();
+  }
+};
 
 const getAllTopics = async () => {
   const { rows } = await pool.query(`
@@ -910,6 +964,7 @@ module.exports = {
   updateUser,
   updateUserAvatar,
   getTopicNames,
+  insertNewPost,
   getAllTopics,
   getTopicBySlug,
   getValidMessagesByTopic,

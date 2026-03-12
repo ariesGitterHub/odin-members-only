@@ -107,10 +107,28 @@
 }
 
 /* -- new-post.ejs */
-.new-post-author {
+.author-new-post {
   color: var(--off-black);
   font-size: var(--font-size-large);
   margin-bottom: var(--spacer-default);
+}
+ 
+#body-new-post {
+  margin: 0;        /* Remove default margin */
+  padding: 0;       /* Remove default padding */
+  border: 1px solid gold; /* Define a border for clarity */
+  width: 100%;      /* Make the textarea span full width */
+  height: 150px;    /* Set a fixed height, adjust as needed */
+  resize: vertical; /* Allows vertical resizing, remove if not needed */
+  font-family: Arial, sans-serif;  /* Control the font */
+  font-size: 14px;  /* Set a readable font size */
+  line-height: 1.4; /* Control line height for readability */
+  outline: none;    /* Remove the default focus outline (optional, use with caution) */
+}
+
+#body-new-post:focus {
+  border-color: #007bff; /* Change border color on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle focus shadow */
 }
 
 .topic-new-post {

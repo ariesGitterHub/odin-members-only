@@ -1,6 +1,6 @@
-<form action="/app/????" method="POST">
+<form action="/app/new-post" method="POST">
   <% if (currentUser) { %> 
-  <h2 class="new-post-author">By <%= currentUser.first_name %></h2>
+  <h2 class="author-new-post">By <%= currentUser.first_name %> <%= currentUser.last_name %></h2>
   <% } %>
   <label class="capitalize" for="topic-new-post"> Message Topic </label>
   <select

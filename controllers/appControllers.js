@@ -8,6 +8,7 @@ const {
   insertNewUser,
   insertAdminCreatedUser,
   updateAdminEditedUser,
+  insertNewPost, 
   updateUser,
   updateUserAvatar,
   getTopicNames,
@@ -230,6 +231,25 @@ async function getInfo(req, res, next) {
       user: req.user,
       errors: [],
     });
+  } catch (err) {
+    next(err);
+  }
+}
+
+// CONTROLLER: NEW POST (new-post.ejs)
+async function postNewPost(req, res, next) {
+  const { topic_id, title, body } = req.body;
+
+  // Assuming you're using session-based authentication
+  const currentUser_id = req.user.id; // or whatever key stores user_id in the session
+
+  if (!currentUser_id) {
+    return res.status(401).send("User is not logged in.");
+  }
+
+  try {
+    await insertNewPost(currentUser_id, topic_id, title, body); // Pass user_id from session
+    res.redirect("/app/message-boards");
   } catch (err) {
     next(err);
   }
@@ -867,6 +887,7 @@ module.exports = {
   // getUpdateProfile,
   // getChangeAvatar,
   getInfo,
+  postNewPost,
   getMessageBoards,
   getTopicNamesForDropdown,
   getTopicPage,
