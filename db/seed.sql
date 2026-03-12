@@ -53,7 +53,7 @@ VALUES
   ('businesses', 'Local Businesses', 'Recommendations for local services and restaurants', 110),
   ('introductions', 'Introductions', 'Welcome new neighbors', 120),
   ('feedback', 'Feedback', 'Suggestions to improve this site', 130),
-  ('members-only', 'Members Only', 'Posts visible only to members', 140)
+  ('members-only', 'Members Only', 'Messages visible only to members', 140)
 ON CONFLICT (slug) DO NOTHING;
 
 

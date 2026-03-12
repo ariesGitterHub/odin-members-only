@@ -1,0 +1,23 @@
+<form id="delete-user-form" method="POST">
+  <input id="delete-user-id" type="hidden" name="userId" />
+  <div class="element-container-col-start-center ui-message ui-message-bubble">
+    <div class="element-container-row-center-start">
+      <span class="emoji emoji-size-small margin-right">🤔</span>
+      <p> 
+        <span class="bold">Deletions are permanent and cannot be undone.</span>
+      </p>
+    </div>
+    <br>
+    <p>
+      Do you wish to proceed with the deletion of the account belonging to
+      "<span id="first-name-warning-account-deletion" class="bold italic"></span>
+      <span id="last-name-warning-account-deletion" class="bold italic"></span>" 
+      (<span id="email-warning-account-deletion" class="bold italic"></span>)?
+    </p>
+  </div>
+  <div class="button-container-row-space-evenly">
+    <button class="button-default wide-button" type="submit">
+      proceed with deletion
+    </button>
+  </div>
+</form>

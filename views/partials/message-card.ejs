@@ -46,13 +46,20 @@
         <!-- <button class="message-button" type="button">Edit</button> -->
         <!-- BELOW NEEDS DELETE ACCESS TO THE PERSON WHO WROTE IT -->
         <!-- <%# if (message && message.permission_status === "admin") { %> -->
-        <% if (message && currentUser && currentUser.permission_status === "admin") { %>
-         <button class="button-default message-button" type="button"><span class="emoji">📌</span></button>
-        <% } %>
+        <%# if (message && currentUser && currentUser.permission_status === "admin") { %>
+         <button class="button-default message-button <%= canPerformHasRole(currentUser, 'sticky-post', message) ? '' : 'hidden' %>" type="button"><span class="emoji">📌</span></button>
+        <%# } %>
         <!-- <%# if (message && (message.user_id === currentUser.id || message.permission_status === "admin")) { %> -->
-        <% if (message && currentUser && (currentUser.permission_status === "admin" || message.user_id === currentUser.id)) { %>
-         <button class="button-default message-button" type="button"><span class="emoji">🗑</span></button>
-        <% } %>
+        <%# if (message && currentUser && (currentUser.permission_status === "admin" || message.user_id === currentUser.id)) { %>
+         <button 
+          class="button-default message-button delete-post-button <%= canPerformHasRole(currentUser, 'delete-post', message) ? '' : 'hidden' %>" type="button"
+          data-section="modal-warning-post-deletion"
+          data-title="modal-title-warning-post-deletion"
+          data-user-id="<%= message.id %>"
+        >
+          <span class="emoji">🗑</span>
+        </button>
+        <%# } %>
         <!-- BELOW NEEDS TO BE HIDDEN TO THE PERSON WHO WROTE IT -->
         <button class="button-default message-button" type="button"><span class="emoji">↩</span>(<%= message.reply_count %>)</button>
         

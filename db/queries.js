@@ -705,8 +705,7 @@ const deleteUserById = async (id) => {
   await pool.query("DELETE FROM users WHERE id = $1", [id]);
 };
 
-
-// QUERY: GET TOPIC LIST FOR DROPDOWN IN NEW POST (new-post.ejs)
+// QUERY: GET TOPIC LIST FOR DROPDOWN IN NEW MESSAGE (new-message.ejs)
 
 const getTopicNames = async () => {
   const { rows } = await pool.query(`
@@ -719,9 +718,9 @@ const getTopicNames = async () => {
   return rows;
 };
 
-// QUERY: INSERT NEW POST TO MESSAGE BOARD TOPIC (new-post.ejs)
+// QUERY: INSERT NEW MESSAGE TO MESSAGE BOARD TOPIC (new-message.ejs)
 
-// const insertNewPost = async (
+// const insertNewMessage = async (
 //   user_id,
 //   topic_id, 
 //   title,
@@ -754,7 +753,7 @@ const getTopicNames = async () => {
 //   }
 // };
 
-const insertNewPost = async (user_id, topic_id, title, body) => {
+const insertNewMessage = async (user_id, topic_id, title, body) => {
   const client = await pool.connect();
 
   try {
@@ -767,7 +766,7 @@ const insertNewPost = async (user_id, topic_id, title, body) => {
 
     return userRes.rows[0]; // Return the inserted message with all necessary fields
   } catch (err) {
-    console.error("Error inserting new post:", err);
+    console.error("Error inserting new message:", err);
     throw err;
   } finally {
     client.release();
@@ -834,6 +833,20 @@ const getValidMessagesByTopic = async (topicId, limit = 50) => {
   `;
   const res = await pool.query(query, [topicId, limit]);
   return res.rows;
+};
+
+// QUERY: DELETE MESSAGE BY USER OR ADMIN VIA BUTTON (message-boards.ejs/by topic slug)
+
+const softDelete = async (messageId) => {
+  const query = `
+    UPDATE messages
+    SET is_deleted = true,
+        deleted_at = NOW()
+    WHERE id = $1
+      AND is_deleted = false;
+  `;
+  const res = await pool.query(query, [messageId]);
+  return res.rowCount; // number of rows updated
 };
 
 /**
@@ -964,7 +977,7 @@ module.exports = {
   updateUser,
   updateUserAvatar,
   getTopicNames,
-  insertNewPost,
+  insertNewMessage,
   getAllTopics,
   getTopicBySlug,
   getValidMessagesByTopic,
@@ -973,4 +986,6 @@ module.exports = {
   hardDeleteMessages,
   cleanupMessages,
   deleteUserById,
+  // deleteMessageById,
+  softDelete,
 };

@@ -106,24 +106,25 @@
   padding: var(--spacer-medium);
 }
 
-/* -- new-post.ejs */
-.author-new-post {
+/* -- new-message.ejs */
+.author-new-message {
   color: var(--off-black);
   font-size: var(--font-size-large);
   margin-bottom: var(--spacer-default);
 }
 
-.topic-new-post, .title-new-post, .body-new-post {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  font-size: 1rem;  /* Set a readable font size */  
+.topic-new-message, .title-new-message, .body-new-message {
+  /* font-family: var(--font-text); */
+  /* font-size: var(--font-size-default); */
+}
+
+.title-new-message {
+  outline: none;    /* Remove the default focus outline (optional, use with caution) */  
 }
  
-.body-new-post {
+.body-new-message {
   width: 100%;      /* Make the textarea span full width */
   height: 180px;    /* Set a fixed height, adjust as needed */
-  border: 1px solid gold; /* Define a border for clarity */ 
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  font-size: 1rem;  /* Set a readable font size */
   line-height: 1.5; /* Control line height for readability */
   outline: none;    /* Remove the default focus outline (optional, use with caution) */  
   resize: vertical; /* Allows vertical resizing, remove if not needed */
@@ -131,24 +132,8 @@
   padding: 0;
 }
 
-#body-new-post:focus {
-  border-color: #007bff; /* Change border color on focus */
-  /* box-shadow: 0 0 5px rgba(255, 25, 0, 0.5); */
-}
-
-.topic-new-post {
-/* background-color: var(--lt-red); */
-}
-
-/* .topic-new-post-option {
-color: var(--off-red);
-} */
-
-/* NOTE - On most browsers, the hover effect for <option> doesn’t work because the browser controls the dropdown, and these UI controls are not part of the regular document flow. This makes it difficult to style them with traditional CSS. */
-.topic-new-post-option:focus,
-.topic-new-post-option:hover
- {
-background-color: var(--off-red);
+.topic-new-message:focus, .title-new-message:focus, .body-new-message:focus {
+ border: var(--border-highlight);
 }
 
 /* -- message-boards.ejs */

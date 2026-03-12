@@ -42,8 +42,9 @@
                   </label>
                   <select
                       id="permission-status-admin-edit-page"
-                      class="profile-block-select lowercase"
+                      class="profile-block-select lowercase "
                       name="permission_status"
+                      <%= canPerformHasRole(currentUser, 'changePermissionStatus', formData) ? '' : 'disabled' %>
                       required
                   >
                     <option value="guest" <%= formData?.permission_status === "guest" ? "selected" : "" %>>guest</option>
@@ -55,8 +56,9 @@
                   <label for="verified-by-admin-admin-edit-page"> admin verified </label>
                   <select
                       id="verified-by-admin-admin-edit-page"
-                      class=" profile-block-select lowercase"
+                      class="profile-block-select lowercase"
                       name="verified_by_admin"
+                      <%= canPerformHasRole(currentUser, 'changeVerifiedByAdmin', formData) ? '' : 'disabled' %>
                       required
                   >
                     <option value="false" <%= String(formData?.verified_by_admin) === "false" ? "selected" : "" %>>false</option>
@@ -69,6 +71,7 @@
                     id="member-request-admin-edit-page"
                     class="profile-block-select lowercase"
                     name="member_request"
+                    <%= canPerformHasRole(currentUser, 'changeMemberRequest', formData) ? '' : 'disabled' %>
                     required
                 >
                     <option value="false" <%= String(formData?.member_request) === "false" ? "selected" : "" %>>false</option>
@@ -81,6 +84,7 @@
                     id="is-active-admin-edit-page"
                     class="profile-block-select lowercase"
                     name="is_active"
+                    <%= canPerformHasRole(currentUser, 'changeIsActive', formData) ? '' : 'disabled' %>
                     required
                 >
                     <option value="false" <%= String(formData?.is_active) === "false" ? "selected" : "" %>>false</option>

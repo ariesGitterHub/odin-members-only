@@ -1,0 +1,23 @@
+<form action="/app/delete-message" method="POST">
+  <input id="delete-message-id" type="hidden" name="userId" />
+  <div class="element-container-col-start-center ui-message ui-message-bubble">
+    <div class="element-container-row-center-start">
+      <span class="emoji emoji-size-small margin-right">🗑</span>
+      <p> 
+        <span class="bold">Deletions are permanent and cannot be undone.</span>
+      </p>
+    </div>
+    <br>
+    <p>
+      Do you wish to proceed with the deletion of this <span class="bold">message</span> belonging to user
+      "<span id="first-name-warning-message-deletion" class="bold italic"></span>
+      <span id="last-name-warning-message-deletion" class="bold italic"></span>" 
+      (<span id="email-warning-message-deletion" class="bold italic"></span>)?
+    </p>
+  </div>
+  <div class="button-container-row-space-evenly">
+    <button class="button-default wide-button" type="submit">
+      proceed with deletion
+    </button>
+  </div>
+</form>

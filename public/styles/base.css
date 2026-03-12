@@ -55,6 +55,7 @@
   --border-inactive-card: 0.125rem solid var(--off-white);
   --border-default: 0.125rem solid var(--off-gray);
   --border-message: 0.125rem solid var(--off-white);
+  --border-highlight: 0.125rem solid var(--off-red);
 
   --box-shadow-gray: inset 0 0.25rem 1rem var(--off-gray);
   --box-shadow-black: 0 1rem 1rem var(--off-black);

@@ -176,8 +176,8 @@
               <% if (user && user.permission_status !== "admin") { %>
                 <button 
                   class="button-default wide-button delete-user-button" 
-                  data-section="modal-deletion-warning"
-                  data-title="modal-title-deletion-warning"
+                  data-section="modal-warning-account-deletion"
+                  data-title="modal-title-warning-account-deletion"
                   data-user-id="<%= user.id %>"
                   data-action="/app/admin/delete-user-account"
                 >

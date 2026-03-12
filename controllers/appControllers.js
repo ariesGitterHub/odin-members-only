@@ -8,7 +8,7 @@ const {
   insertNewUser,
   insertAdminCreatedUser,
   updateAdminEditedUser,
-  insertNewPost, 
+  insertNewMessage,
   updateUser,
   updateUserAvatar,
   getTopicNames,
@@ -16,6 +16,7 @@ const {
   getTopicBySlug,
   getValidMessagesByTopic,
   deleteUserById,
+  deleteMessageById,
 } = require("../db/queries");
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
@@ -236,8 +237,8 @@ async function getInfo(req, res, next) {
   }
 }
 
-// CONTROLLER: NEW POST (new-post.ejs)
-async function postNewPost(req, res, next) {
+// CONTROLLER: NEW MESSAGE (new-message.ejs)
+async function postNewMessage(req, res, next) {
   const { topic_id, title, body } = req.body;
 
   // Assuming you're using session-based authentication
@@ -248,7 +249,7 @@ async function postNewPost(req, res, next) {
   }
 
   try {
-    await insertNewPost(currentUser_id, topic_id, title, body); // Pass user_id from session
+    await insertNewMessage(currentUser_id, topic_id, title, body); // Pass user_id from session
     res.redirect("/app/message-boards");
   } catch (err) {
     next(err);
@@ -887,7 +888,7 @@ module.exports = {
   // getUpdateProfile,
   // getChangeAvatar,
   getInfo,
-  postNewPost,
+  postNewMessage,
   getMessageBoards,
   getTopicNamesForDropdown,
   getTopicPage,

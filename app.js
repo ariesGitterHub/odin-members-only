@@ -8,6 +8,7 @@ const path = require("node:path");
 const session = require("express-session");
 const passport = require("passport");
 // const { body, validationResult } = require("express-validator");
+const { canPerformHasRole } = require("./utils/permissions");
 
 const PORT = process.env.PORT || 3000;
 const appRouter = require("./routes/appRouter");
@@ -105,6 +106,12 @@ app.use((req, res, next) => {
     res.locals.currentUser = null;
   }
 
+  next();
+});
+
+// canPerformHasPermissionStatus permissions for certain buttons
+app.use((req, res, next) => {
+  res.locals.canPerformHasRole = canPerformHasRole;
   next();
 });
 

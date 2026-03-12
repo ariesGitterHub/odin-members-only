@@ -168,8 +168,8 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(user.birthdate);
   } 
 
-  function populateNewPostWithTopics(topics) {
-    const select = document.getElementById("topic-new-post");
+  function populateNewMessageWithTopics(topics) {
+    const select = document.getElementById("topic-new-message");
 
     // Clear existing options
     select.innerHTML = "";
@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add real topic options
     topics.forEach((topic) => {
       const option = document.createElement("option");
-      option.className = "topic-new-post-option"
+      option.className = "topic-new-message-option"
       option.value = topic.id;
       option.textContent = `➤ ${topic.name}`;
       select.appendChild(option);
@@ -195,10 +195,23 @@ document.addEventListener("DOMContentLoaded", () => {
     select.required = true;
   }
 
-    function populateDeletionWarning(user) {
-      document.getElementById("first-name-deletion-warning").innerText = user.first_name;
-      document.getElementById("last-name-deletion-warning").innerText = user.last_name;
-      document.getElementById("email-deletion-warning").innerText = user.email;
+    function populateWarningAccountDeletion(user) {
+      document.getElementById("first-name-warning-account-deletion").innerText = user.first_name;
+      document.getElementById("last-name-warning-account-deletion").innerText =
+        user.last_name;
+      document.getElementById("email-warning-account-deletion").innerText =
+        user.email;
+    } 
+
+    function populateWarningMessageDeletion(user) {
+      document.getElementById(
+        "first-name-warning-message-deletion",
+      ).innerText = user.first_name;
+      document.getElementById(
+        "last-name-warning-message-deletion",
+      ).innerText = user.last_name;
+      document.getElementById("email-warning-message-deletion").innerText =
+        user.email;
     } 
 
   async function populateChangeAvatar(user) {
@@ -273,12 +286,20 @@ document.addEventListener("DOMContentLoaded", () => {
           console.log("modal-become-member");
         }
 
-        if (sectionId === "modal-deletion-warning") {
+        if (sectionId === "modal-warning-account-deletion") {
           const user = await fetchUserData(userId);
           // const currentUser = await fetchCurrentUserData(userId);
-          populateDeletionWarning(user);
+          populateWarningAccountDeletion(user);
           openModal(sectionId, titleId);
-          console.log("modal-deletion-warning");
+          console.log("modal-warning-account-deletion");
+        }
+
+        if (sectionId === "modal-warning-message-deletion") {
+          const user = await fetchUserData(userId);
+          // const currentUser = await fetchCurrentUserData(userId);
+          populateWarningMessageDeletion(user);
+          openModal(sectionId, titleId);
+          console.log("modal-warning-message-deletion");
         }
 
         if (sectionId === "modal-change-avatar-user") {
@@ -290,19 +311,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
       } else {
-
         // if (sectionId === "modal-become-member") {
         //   openModal(sectionId, titleId);
         //   console.log("modal-become-member");
         // }
 
-        if (sectionId === "modal-new-post") {
+        if (sectionId === "modal-new-message") {
           const topic = await fetchTopicNameData();
-          populateNewPostWithTopics(topic)
+          populateNewMessageWithTopics(topic);
           openModal(sectionId, titleId);
         }
 
-        // if (sectionId === "modal-deletion-warning") {
+        // if (sectionId === "modal-warning-account-deletion") {
         //   openModal(sectionId, titleId);
         // }
       }
@@ -322,20 +342,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  //   const newPostButton = document.querySelector(".new-post-button");
-  // newPostButton.addEventListener("click", (e) => {
+  //   const newMessageButton = document.querySelector(".new-message-button");
+  // newMessageButton.addEventListener("click", (e) => {
   //   const { section, title } = e.currentTarget.dataset;
   //   handleModalOpen(null, section, title);
   // });
 
-  const newPostButton = document.querySelector(".new-post-button");
-  // const newPostButton = document.getElementById("new-post-button");
-  if (newPostButton) {
-    newPostButton.addEventListener("click", (e) => {
+  const newMessageButton = document.querySelector(".new-message-button");
+  // const newMessageButton = document.getElementById("new-message-button");
+  if (newMessageButton) {
+    newMessageButton.addEventListener("click", (e) => {
       const { section, title } = e.currentTarget.dataset;
       handleModalOpen(null, section, title);
     });
   }
+  
 
   document.querySelectorAll("[data-user-id]").forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -487,25 +508,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  //Dynamically set maximum number of characters for a new post (use db to hold values? Interesting idea...)
+  //Dynamically set maximum number of characters for a new message (use db to hold values? Interesting idea...)
 
-  const newPostMessageBody = document.getElementById("new-post-message-body");
-  const newPostMaxCharCount = document.getElementById(
-    "new-post-max-char-count",
+  const bodyNewMessage = document.getElementById("body-new-message");
+  const maxCharCountNewMessage = document.getElementById(
+    "max-char-count-new-message",
   );
   const maxChars = 700;
 
-  // newPostMessageBody.addEventListener("input", () => {
-  //   const currentLength = newPostMessageBody.value.length;
-  //   newPostMaxCharCount.textContent = `Characters remaining: ${maxChars - currentLength}`;
+  bodyNewMessage.addEventListener("input", () => {
+    const currentMessageLength = bodyNewMessage.value.length;
+    maxCharCountNewMessage.textContent = `(characters remaining: ${currentMessageLength}/${maxChars})`;
 
-  //   if (currentLength > maxChars) {
-  //     newPostMessageBody.value = newPostMessageBody.value.substring(
-  //       0,
-  //       maxChars,
-  //     ); // Truncates input if too long
-  //   }
-  // });
+    if (currentLength > maxChars) {
+      bodyNewMessage.value = bodyNewMessage.value.substring(0, maxChars); // Truncates input if too long
+    }
+  });
 
   //   document.getElementById("first-name-sign-up").addEventListener("input", function() {
   //   const firstName = this.value.trim(); // Get the first name
