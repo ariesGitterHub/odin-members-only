@@ -66,21 +66,28 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // FETCH DATA WITH USER.ID...
-  async function fetchUserData(userId) {
-    const response = await fetch(`/app/user/${userId}`);
+  async function fetchUserData(targetId) {
+    const response = await fetch(`/app/user/${targetId}`);
     if (!response.ok) throw new Error("Failed to fetch user");
+    return await response.json();
+  }
+
+  // FETCH DATA WITH MESSAGE.ID...
+  async function fetchMessageData(targetId) {
+    const response = await fetch(`/app/message/${targetId}`);
+    if (!response.ok) throw new Error("Failed to fetch message");
     return await response.json();
   }
   
   // FETCH DATA WITH TOPIC.ID...
-  async function fetchTopicNameData(topicId) {
+  async function fetchTopicNameData(targetId) {
     const response = await fetch("/app/topics");
     if (!response.ok) throw new Error("Failed to fetch topics");
     return await response.json();
   }
 
   // FETCH DATA FOR CURRENTUSER...
-  async function fetchCurrentUserData(userId) {
+  async function fetchCurrentUserData(targetId) {
     const response = await fetch("/app/current-user");
     if (!response.ok) throw new Error("Failed to fetch user");
     const user = await response.json();
@@ -203,15 +210,17 @@ document.addEventListener("DOMContentLoaded", () => {
         user.email;
     } 
 
-    function populateWarningMessageDeletion(user) {
+    function populateWarningMessageDeletion(message) {
       document.getElementById(
         "first-name-warning-message-deletion",
-      ).innerText = user.first_name;
+      ).innerText = message.first_name;
       document.getElementById(
         "last-name-warning-message-deletion",
-      ).innerText = user.last_name;
+      ).innerText = message.last_name;
       document.getElementById("email-warning-message-deletion").innerText =
-        user.email;
+        message.email;
+      document.getElementById("topic-name-warning-message-deletion").innerText =
+        message.topic_name;
     } 
 
   async function populateChangeAvatar(user) {
@@ -259,22 +268,22 @@ document.addEventListener("DOMContentLoaded", () => {
     emojiPickerDiv();
   }
 
-  async function handleModalOpen(userId, sectionId, titleId) {
+  async function handleModalOpen(targetId, sectionId, titleId) {
     try {
-      console.log("userId:", userId); // Debugging line
+      console.log("targetId:", targetId); // Debugging line
 
-      // Check if userId exists (not null or undefined)
-      if (userId != null && userId !== "") {
+      // Check if targetId exists (not null or undefined)
+      if (targetId != null && targetId !== "") {
 
         if (sectionId === "modal-edit-profile") {
-          const currentUser = await fetchCurrentUserData(userId);
+          const currentUser = await fetchCurrentUserData(targetId);
           console.log(JSON.stringify(currentUser.birthdate))
           populateEditProfileUser(currentUser);
           openModal(sectionId, titleId);
         }
 
         // if (sectionId === "modal-become-member") {
-        //   const currentUser = await fetchCurrentUserData(userId);
+        //   const currentUser = await fetchCurrentUserData(targetId);
         //   populateChangeAvatar(currentUser);
         //   openModal(sectionId, titleId);
         //   initChangeAvatarModal();
@@ -287,23 +296,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (sectionId === "modal-warning-account-deletion") {
-          const user = await fetchUserData(userId);
-          // const currentUser = await fetchCurrentUserData(userId);
+          const user = await fetchUserData(targetId);
+          // const currentUser = await fetchCurrentUserData(targetId);
           populateWarningAccountDeletion(user);
           openModal(sectionId, titleId);
           console.log("modal-warning-account-deletion");
         }
 
         if (sectionId === "modal-warning-message-deletion") {
-          const user = await fetchUserData(userId);
-          // const currentUser = await fetchCurrentUserData(userId);
-          populateWarningMessageDeletion(user);
+          const message = await fetchMessageData(targetId);
+          // const currentUser = await fetchCurrentUserData(targetId);
+          populateWarningMessageDeletion(message);
           openModal(sectionId, titleId);
           console.log("modal-warning-message-deletion");
         }
 
         if (sectionId === "modal-change-avatar-user") {
-          const currentUser = await fetchCurrentUserData(userId);
+          const currentUser = await fetchCurrentUserData(targetId);
           populateChangeAvatar(currentUser);
           openModal(sectionId, titleId);
           initChangeAvatarModal();
@@ -358,11 +367,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
 
-  document.querySelectorAll("[data-user-id]").forEach((btn) => {
+  document.querySelectorAll("[data-target-id]").forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      const { userId, section, title } = e.currentTarget.dataset;
-      console.log("###:", userId)
-      handleModalOpen(userId, section, title);
+      const { targetId, section, title } = e.currentTarget.dataset;
+      console.log("Magic Number is:", targetId)
+      handleModalOpen(targetId, section, title);
     });
   });
 
@@ -444,7 +453,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return "No text found.";
       }
     }
-    return "Invalid userId."; // Optional: handle if userId is not valid
+    return "Invalid targetId."; // Optional: handle if targetId is not valid
   }
 
   async function emojiPickerDiv() {
@@ -518,7 +527,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   bodyNewMessage.addEventListener("input", () => {
     const currentMessageLength = bodyNewMessage.value.length;
-    maxCharCountNewMessage.textContent = `(characters remaining: ${currentMessageLength}/${maxChars})`;
+    maxCharCountNewMessage.textContent = `(${currentMessageLength}/${maxChars})`;
 
     if (currentLength > maxChars) {
       bodyNewMessage.value = bodyNewMessage.value.substring(0, maxChars); // Truncates input if too long
@@ -535,19 +544,40 @@ document.addEventListener("DOMContentLoaded", () => {
   // });
 
   const deleteButtons = document.querySelectorAll(
-    ".delete-user-button",
+    ".delete-button",
   );
 
-  const deleteForm = document.getElementById("delete-user-form");
-  const userIdInput = document.getElementById("delete-user-id");
+  // const deleteForm = document.getElementById("delete-target-form");
+  // const targetIdInput = document.getElementById("delete-target-id");
+
+  // deleteButtons.forEach((button) => {
+  //   button.addEventListener("click", () => {
+  //     const targetId = button.dataset.targetId;
+  //     const action = button.dataset.action;
+
+  //     targetIdInput.value = targetId;
+  //     deleteForm.action = action;
+  //   });
+  // });
+
+    const deleteUserForm = document.getElementById("delete-user-form");
+    const deleteMessageForm = document.getElementById("delete-message-form");
+    const deleteUserTargetId = document.getElementById("delete-user-target-id");
 
   deleteButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const userId = button.dataset.userId;
+      const targetId = button.dataset.targetId;
       const action = button.dataset.action;
 
-      userIdInput.value = userId;
-      deleteForm.action = action;
+      if (deleteUserForm) {
+        deleteUserForm.action = action;  
+      }
+
+      if (deleteMessageForm) {
+        deleteMessageForm.action = action;
+      }
+      
+      deleteUserTargetId.value = targetId;
     });
   });
 

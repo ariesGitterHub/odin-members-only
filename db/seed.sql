@@ -12,8 +12,8 @@ INSERT INTO users (
 VALUES (
   'admin@can.org',
   '$2b$12$RF0Zoj3moNJOziNwh2bSa.DxlWqUSn0QZNnhYPDjCHjWyzagrsHD6',
-  'CAN Board Admin',
-  '#1',
+  'CAN Board',
+  'Admin',
   '1974-04-20',
   'admin',
   true

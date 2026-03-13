@@ -51,8 +51,8 @@ app.use(
 
 // app.use(async (req, res, next) => {
 //   try {
-//     if (req.session.userId) {
-//       const user = await getUserById(req.session.userId);
+//     if (req.session.targetId) {
+//       const user = await getUserById(req.session.targetId);
 //       res.locals.currentUser = user;
 //     } else {
 //       res.locals.currentUser = null;

@@ -13,8 +13,8 @@
 /* A and BUTTON element */
 .button-default {
   all: unset; /* nukes browser defaults */
-  height: 2rem;
-  width: 5.5rem;
+  height: var(--button-default-h);
+  width: var(--button-default-w);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,7 +46,9 @@ button:hover,
 }
 
 .wide-button {
-  width: 95%;
+  width: var(--width-default-percent);
+  /* the padding setting below keeps the button-default settings above from letting the left and right "button" ends from pushing beyond where they should be at  */
+  padding: 0; 
 }
 
 .button-default.nav-button {
@@ -231,9 +233,9 @@ button:hover,
 }
 
 /* FORM related */
-/* form {
+.card form {
   width: var(--width-default-percent);
-} */
+}
 
 label, .fake-label {
   width: var(--width-default-percent);
@@ -243,13 +245,13 @@ label, .fake-label {
 input, .fake-input, textarea, select {
   width: var(--width-default-percent);
   border: var(--border-default);
-  font-weight: var(--font-weight-heavy);
+  font-weight: var(--font-weight-medium);
   margin-bottom: var(--spacer-medium);
   padding: var(--spacer-small);
 }
 
-input, .button-default, select {
-  height: 1.65rem;
+input, select {
+  height: var(--button-default-h);
 }
 
 input, textarea{
@@ -265,8 +267,14 @@ input::placeholder {
   border-radius: var(--border-radius-default);
 }
 
+select {
+  font-size: var(--font-size-small);
+}
+
 textarea {
-  height: 200px;
+  /* height: 200px; */
+  resize: vertical; /* Allows vertical resizing, remove if not needed */
+  white-space: pre-line
 }
 
 #notes-edit-profile-admin, #notes-create-profile-admin {

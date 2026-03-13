@@ -2,7 +2,7 @@
   <% if (currentUser) { %> 
   <h2 class="author-new-message">By <%= currentUser.first_name %> <%= currentUser.last_name %></h2>
   <% } %>
-  <label class="capitalize" for="topic-new-message">Message Topic</label>
+  <label class="bold capitalize" for="topic-new-message">Message Topic</label>
   <select
     id="topic-new-message"
     class="topic-new-message uppercase"
@@ -10,12 +10,11 @@
     required
   >
   </select>
-  <label class="capitalize" for="title-new-message">Message Title</label>
+  <label class="bold capitalize" for="title-new-message">Message Title</label>
   <input id="title-new-message" class="title-new-message word-breaker" type="text" name="title" required />
   <div class="element-container-col-start-center">
-    <label class="capitalize" for="body-new-message">Message Body <span id="max-char-count-new-message" class="max-char-count-new-message uppercase red"></span></label>
-    <textarea id="body-new-message" class="body-new-message" type="text" name="body" required>
-    </textarea>
+    <label class="bold capitalize" for="body-new-message">Message Body <span id="max-char-count-new-message" class="max-char-count-new-message"></span></label>
+    <textarea id="body-new-message" class="body-new-message" type="text" name="body" maxlength="700" required></textarea>
     <div class="button-container-row-space-evenly">
       <button class="button-default wide-button" type="submit">submit new message</button>
     </div>

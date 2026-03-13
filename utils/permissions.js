@@ -67,6 +67,7 @@ function canPerformHasRole(user, action, resource) {
     "changeVerifiedByAdmin",
     "changeMemberRequest",
     "changeIsActive",
+    "noSelfDeleteByAdmin", // Unused right now until I figure out how to do it from the frontend
   ];
 
   // Prevent admin from acting on themselves for these sensitive fields
@@ -76,15 +77,21 @@ function canPerformHasRole(user, action, resource) {
 
   switch (action) {
     // Post-related actions (not related to admin panel)
-    case "sticky-post":
+    case "sticky-message":
       return hasRole(user, "admin");
 
-    case "delete-post":
+    case "delete-message":
       return (
         hasRole(user, "admin") || (resource && resource.user_id === user.id)
       );
 
+    // Unused at this time...
     case "admin-edit-profile":
+      return (
+        hasRole(user, "admin") || (resource && resource.user_id === user.id)
+      );
+    // Unused at this time...
+    case "admin-delete-profile":
       return (
         hasRole(user, "admin") || (resource && resource.user_id === user.id)
       );
@@ -94,6 +101,7 @@ function canPerformHasRole(user, action, resource) {
     case "changeVerifiedByAdmin":
     case "changeMemberRequest":
     case "changeIsActive":
+    case "noSelfDeleteByAdmin": // Unused right now until I figure out how to do it from the frontend
       return hasRole(user, "admin"); // Only admins can change others, self-target already blocked
 
     default:

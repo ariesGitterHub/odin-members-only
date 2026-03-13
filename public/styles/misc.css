@@ -28,6 +28,12 @@
   color: var(--off-red);
 }
 
+
+/* Font size */
+.font-size-small {
+  font-size: var(--font-size-small);
+}
+
 /* Font style */
 .italic {
   font-style: italic;
@@ -42,6 +48,12 @@
   font-weight: var(--font-weight-light);
 }
 
+/* Special text styling */
+.red-letter {
+  color: var(--off-red);
+  font-weight: var(--font-weight-heavy);
+}
+
 /* Word breakers to prevent field stretching by long single words like emails */
 .word-breaker {
   word-wrap: break-word; /* Ensures text breaks to the next line if too long */
@@ -53,12 +65,6 @@
 
 .circle {
   border-radius: var(--border-radius-circle);
-}
-
-/* Special text styling */
-.red-letter {
-  color: var(--off-red);
-  font-weight: var(--font-weight-heavy);
 }
 
 /* Special spacing */

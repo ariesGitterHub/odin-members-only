@@ -56,7 +56,7 @@ const getUsers = async () => {
 // QUERY: GET USERS BY ID
 
 // BELOW exposes data, see in appRouter.js and on localhost:XXXX/app/user/1
-const getUserById = async (userId) => {
+const getUserById = async (targetId) => {
   const { rows } = await pool.query(
     `
     SELECT
@@ -90,10 +90,46 @@ const getUserById = async (userId) => {
     WHERE u.id = $1
     GROUP BY u.id, up.user_id
   `,
-    [userId],
+    [targetId],
   );
 
   return rows[0]; // Returning only the first row (one user)
+};
+
+// QUERY: GET MESSAGES BY ID
+
+const getMessageById = async (targetId) => {
+  const query = `
+  SELECT 
+    m.id AS message_id,
+    m.title,
+    m.body,
+    m.like_count,
+    m.reply_count,
+    m.created_at,
+    m.expires_at,
+    m.is_sticky,
+    m.is_deleted,
+    m.deleted_at,
+    u.id AS user_id,
+    u.first_name,
+    u.last_name,
+    u.email,
+    t.name AS topic_name
+  FROM messages m
+  JOIN users u ON m.user_id = u.id
+  LEFT JOIN topics t ON m.topic_id = t.id
+  WHERE m.is_deleted = false
+  AND m.id = $1;
+  `;
+
+  const res = await pool.query(query, [targetId]);
+
+  if (res.rowCount === 0) {
+    return null; // not found
+  }
+
+  return res.rows[0]; // the message object
 };
 
 // QUERY: CHECK IF EMAIL ALREADY EXISTS IN THE DB (SET UP TO NOT AFFECT USER EDITS TO SAME ENTRY)
@@ -802,7 +838,7 @@ const getTopicBySlug = async (slug) => {
   return res.rows[0];
 };
 
-const getValidMessagesByTopic = async (topicId, limit = 50) => {
+const getValidMessagesByTopic = async (targetId, limit = 50) => {
   const query = `
     SELECT 
       m.id,
@@ -831,13 +867,13 @@ const getValidMessagesByTopic = async (topicId, limit = 50) => {
     ORDER BY m.created_at DESC
     LIMIT $2;
   `;
-  const res = await pool.query(query, [topicId, limit]);
+  const res = await pool.query(query, [targetId, limit]);
   return res.rows;
 };
 
 // QUERY: DELETE MESSAGE BY USER OR ADMIN VIA BUTTON (message-boards.ejs/by topic slug)
 
-const softDelete = async (messageId) => {
+const softDeleteMessageById = async (targetId) => {
   const query = `
     UPDATE messages
     SET is_deleted = true,
@@ -845,7 +881,7 @@ const softDelete = async (messageId) => {
     WHERE id = $1
       AND is_deleted = false;
   `;
-  const res = await pool.query(query, [messageId]);
+  const res = await pool.query(query, [targetId]);
   return res.rowCount; // number of rows updated
 };
 
@@ -930,10 +966,10 @@ const cleanupMessages = async (olderThanDays = 30) => {
 
 /**
  * Fetch messages by a specific user
- * @param userId: ID of the user
+ * @param targetId: ID of the user
  * @param limit: number of messages to return
  */
-// const getMessagesByUser = async (userId, limit = 50) => {
+// const getMessagesByUser = async (targetId, limit = 50) => {
 //   const query = `
 //     SELECT id, topic_id, title, body, created_at, expires_at
 //     FROM messages
@@ -943,7 +979,7 @@ const cleanupMessages = async (olderThanDays = 30) => {
 //     ORDER BY created_at DESC
 //     LIMIT $2;
 //   `;
-//   const res = await pool.query(query, [userId, limit]);
+//   const res = await pool.query(query, [targetId, limit]);
 //   return res.rows;
 // };
 
@@ -952,7 +988,7 @@ const cleanupMessages = async (olderThanDays = 30) => {
  * @param topicId: ID of the topic
  * @param limit: number of messages to return
  */
-const getMessagesByTopic = async (topicId, limit = 50) => {
+const getMessagesByTopic = async (targetId, limit = 50) => {
   const query = `
     SELECT id, user_id, title, body, created_at, expires_at
     FROM messages
@@ -962,7 +998,7 @@ const getMessagesByTopic = async (topicId, limit = 50) => {
     ORDER BY created_at DESC
     LIMIT $2;
   `;
-  const res = await pool.query(query, [topicId, limit]);
+  const res = await pool.query(query, [targetId, limit]);
   return res.rows;
 };
 
@@ -970,6 +1006,7 @@ const getMessagesByTopic = async (topicId, limit = 50) => {
 module.exports = {
   getUsers,
   getUserById,
+  getMessageById,
   checkIfEmailExists,
   insertNewUser,
   insertAdminCreatedUser,
@@ -987,5 +1024,5 @@ module.exports = {
   cleanupMessages,
   deleteUserById,
   // deleteMessageById,
-  softDelete,
+  softDeleteMessageById,
 };

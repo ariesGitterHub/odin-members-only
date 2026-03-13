@@ -4,6 +4,7 @@ const passport = require("passport");
 const {
   getUsers,
   getUserById,
+  getMessageById,
   checkIfEmailExists,
   insertNewUser,
   insertAdminCreatedUser,
@@ -16,7 +17,7 @@ const {
   getTopicBySlug,
   getValidMessagesByTopic,
   deleteUserById,
-  deleteMessageById,
+  softDeleteMessageById,
 } = require("../db/queries");
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
@@ -68,6 +69,46 @@ async function getCurrentUser(req, res, next) {
     next(err);
   }
 }
+
+// CONTROLLER: GET USERS BY ID
+
+// Function to fetch individual user data for modal
+async function getUserDetails(req, res, next) {
+  const targetId = req.params.id; // Get user ID from URL parameter
+  try {
+    const user = await getUserById(targetId); // Replace with your actual query
+    if (user.birthdate instanceof Date) {
+      user.birthdate = user.birthdate.toISOString().split("T")[0];
+    }
+
+    if (user) {
+      res.json(user); // Send user data as JSON
+    } else {
+      res.status(404).send("User not found");
+    }
+  } catch (err) {
+    next(err); // Pass error to the error handling middleware
+  }
+}
+
+// CONTROLLER: GET MESSAGES BY ID
+
+// Function to fetch individual user data for modal
+async function getMessageDetails(req, res, next) {
+  const targetId = req.params.id;
+  try {
+    const message = await getMessageById(targetId);
+
+    if (message) {
+      res.json(message); // Send user data as JSON
+    } else {
+      res.status(404).send("Message not found");
+    }
+  } catch (err) {
+    next(err);
+  }
+}
+
 
 // CONTROLLER: INDEX (index.ejs)
 
@@ -251,6 +292,30 @@ async function postNewMessage(req, res, next) {
   try {
     await insertNewMessage(currentUser_id, topic_id, title, body); // Pass user_id from session
     res.redirect("/app/message-boards");
+  } catch (err) {
+    next(err);
+  }
+}
+
+// CONTROLLER: DELETE MESSAGE (message-boards/topic slug)
+// async function deleteUserMessage(req, res, next) {
+//   try {
+//     const { messageId } = req.body;
+
+//     await softDeleteMessageById(messageId);
+
+//     res.redirect("/app/message-boards");
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
+async function deleteUserMessage(req, res, next) {
+  try {
+    const { targetId } = req.body;
+    const rowsUpdated = await softDeleteMessageById(targetId);
+    if (rowsUpdated === 0) return res.status(404).send("Message not found");
+    res.redirect("/app/message-boards"); // or wherever you want
   } catch (err) {
     next(err);
   }
@@ -676,8 +741,8 @@ async function postAdminCreatePage(req, res, next) {
 
 async function getAdminEditPage(req, res, next) {
   try {
-    const userId = req.params.id;
-    const user = await getUserById(userId);
+    const targetId = req.params.id;
+    const user = await getUserById(targetId);
     
     //Format birthdate for input/display
     if (user.birthdate instanceof Date) {
@@ -830,33 +895,12 @@ async function postAdminEditPage(req, res, next) {
     }
   }
 
-// CONTROLLER: GET USERS BY ID
-
-// Function to fetch individual user data for modal
-async function getUserDetails(req, res, next) {
-  const userId = req.params.id; // Get user ID from URL parameter
-  try {
-    const user = await getUserById(userId); // Replace with your actual query
-    if (user.birthdate instanceof Date) {
-      user.birthdate = user.birthdate.toISOString().split("T")[0];
-    }
-
-    if (user) {
-      res.json(user); // Send user data as JSON
-    } else {
-      res.status(404).send("User not found");
-    }
-  } catch (err) {
-    next(err); // Pass error to the error handling middleware
-  }
-}
-
 // CONTROLLER: DELETE VIA USER (your-profile.ejs) OR DELETE VIA ADMIN (admin.ejs)
 
 async function deleteUserAccount(req, res, next) {
   try {
-    const { userId } = req.body;
-    await deleteUserById(userId);
+    const { targetId } = req.body;
+    await deleteUserById(targetId);
     res.redirect("/app/admin");
   } catch (err) {
     next(err);
@@ -865,8 +909,8 @@ async function deleteUserAccount(req, res, next) {
 
 async function deleteYourAccount(req, res, next) {
   try {
-    const { userId } = req.body;
-    await deleteUserById(userId);
+    const { targetId } = req.body;
+    await deleteUserById(targetId);
     res.redirect("/app");
   } catch (err) {
     next(err);
@@ -875,6 +919,9 @@ async function deleteYourAccount(req, res, next) {
 
 module.exports = {
   getCurrentUser,
+  getUserDetails,
+  getMessageDetails,
+
   getHome,
   getSignUp,
   postSignUp,
@@ -892,12 +939,13 @@ module.exports = {
   getMessageBoards,
   getTopicNamesForDropdown,
   getTopicPage,
-  getAdminPage, 
+  getAdminPage,
   getAdminCreatePage,
   postAdminCreatePage,
   getAdminEditPage,
   postAdminEditPage,
-  getUserDetails,
+
   deleteUserAccount,
   deleteYourAccount,
+  deleteUserMessage,
 };

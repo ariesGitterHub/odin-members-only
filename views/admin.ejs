@@ -175,10 +175,10 @@
             <div class="button-container-col">
               <% if (user && user.permission_status !== "admin") { %>
                 <button 
-                  class="button-default wide-button delete-user-button" 
+                  class="button-default wide-button delete-button" 
                   data-section="modal-warning-account-deletion"
                   data-title="modal-title-warning-account-deletion"
-                  data-user-id="<%= user.id %>"
+                 data-target-id="<%= user.id %>"
                   data-action="/app/admin/delete-user-account"
                 >
                   delete this user
@@ -195,7 +195,7 @@
                   class="wide-button edit-profile-admin-button"
                   data-section="modal-edit-profile-admin"
                   data-title="modal-title-edit-profile-admin"
-                  data-user-id="<%#= user.id %>">
+                 data-target-id="<%#= user.id %>">
                   update this profile
                 </button> -->
                 <a class="button-default wide-button" href="/app/admin-edit/<%= user.id %>">edit this profile</a>
@@ -203,7 +203,7 @@
                   class="wide-button edit-change-avatar-button" 
                   data-section="modal-change-avatar-admin"
                   data-title="modal-title-change-avatar-admin"
-                  data-user-id="<%#= user.id %>"
+                 data-target-id="<%#= user.id %>"
                   >
                   change this avatar
                 </button> -->

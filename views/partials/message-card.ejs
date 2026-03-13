@@ -32,12 +32,15 @@
   </div>
   <div class="message-details uppercase">
     <span>created: <%= new Date(message.created_at).toLocaleDateString() %></span>
-    <span>chars: <%= message.body.length %>/700</span>    
+    <!-- <span>chars: <%#= message.body.length %>/700</span>     -->
     <span>expires: <%= new Date(message.expires_at).toLocaleDateString() %></span>   
     <!-- <span>likes: <%= message.like_count %></span>  -->
   </div>
   <div class="message-body">
-    <p><span class="emoji">🗨️</span> <%= message.body %></p>
+    <p>
+      <!-- <span class="emoji">🗨️</span>  -->
+      <%= message.body %>
+    </p>
   </div>
   <div class="message-footer">
   <%# if (currentUser) { %>
@@ -47,20 +50,30 @@
         <!-- BELOW NEEDS DELETE ACCESS TO THE PERSON WHO WROTE IT -->
         <!-- <%# if (message && message.permission_status === "admin") { %> -->
         <%# if (message && currentUser && currentUser.permission_status === "admin") { %>
-         <button class="button-default message-button <%= canPerformHasRole(currentUser, 'sticky-post', message) ? '' : 'hidden' %>" type="button"><span class="emoji">📌</span></button>
+         <button class="button-default message-button <%= canPerformHasRole(currentUser, 'sticky-message', message) ? '' : 'hidden' %>" type="button"><span class="emoji">📌</span></button>
         <%# } %>
         <!-- <%# if (message && (message.user_id === currentUser.id || message.permission_status === "admin")) { %> -->
         <%# if (message && currentUser && (currentUser.permission_status === "admin" || message.user_id === currentUser.id)) { %>
+         <!-- <button 
+          class="button-default message-button delete-button <%#= canPerformHasRole(currentUser, 'delete-message', message) ? '' : 'hidden' %>" type="button"
+          data-section="modal-warning-message-deletion"
+          data-title="modal-title-warning-message-deletion"
+          data-target-id="<%#= message.id %>"
+          data-action="/app/delete-message"
+        >
+          <span class="emoji">🗑</span>
+        </button> -->
          <button 
-          class="button-default message-button delete-post-button <%= canPerformHasRole(currentUser, 'delete-post', message) ? '' : 'hidden' %>" type="button"
-          data-section="modal-warning-post-deletion"
-          data-title="modal-title-warning-post-deletion"
-          data-user-id="<%= message.id %>"
+          class="button-default message-button delete-button <%= canPerformHasRole(currentUser, 'delete-message', message) ? '' : 'hidden' %>" type="button"
+          data-section="modal-warning-message-deletion"
+          data-title="modal-title-warning-message-deletion"
+          data-target-id="<%= message.id %>"
+          data-action="/app/message-boards/delete-message"
         >
           <span class="emoji">🗑</span>
         </button>
         <%# } %>
-        <!-- BELOW NEEDS TO BE HIDDEN TO THE PERSON WHO WROTE IT -->
+        <!-- TODO - BELOW NEEDS TO BE HIDDEN TO THE PERSON WHO WROTE IT **OR** DOES IT??????-->
         <button class="button-default message-button" type="button"><span class="emoji">↩</span>(<%= message.reply_count %>)</button>
         
         <form action="/messages/<%= message.id %>/like" method="POST">

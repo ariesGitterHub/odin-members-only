@@ -85,10 +85,10 @@
               <div class="button-container-col">
                 <% if (currentUser && currentUser.permission_status !== "admin") { %>
                   <button 
-                    class="button-default wide-button delete-user-button"
-                    data-section="modal-deletion-warning"
-                    data-title="modal-title-deletion-warning"
-                    data-user-id="<%= currentUser.id %>"
+                    class="button-default wide-button delete-button"
+                    data-section="modal-warning-account-deletion"
+                    data-title="modal-title-warning-account-deletion"
+                    data-target-id="<%= currentUser.id %>"
                     data-action="/app/your-profile/delete-your-account"
                   >
                   delete your account
@@ -99,7 +99,7 @@
                     class="button-default wide-button open-modal-btn" 
                     data-section="modal-become-member" 
                     data-title="modal-title-become-member"
-                    data-user-id="<%= currentUser.id %>">
+                    data-target-id="<%= currentUser.id %>">
                     upgrade to member
                   </button>
                 <% } %>
@@ -107,14 +107,14 @@
                   class="button-default wide-button open-modal-btn" 
                   data-section="modal-edit-profile"
                   data-title="modal-title-edit-profile"
-                  data-user-id="<%= currentUser.id %>">
+                  data-target-id="<%= currentUser.id %>">
                     update your profile
                   </button>
                 <button 
                   class="button-default wide-button edit-change-avatar-button" 
                   data-section="modal-change-avatar-user"
                   data-title="modal-title-change-avatar-user"
-                  data-user-id="<%= currentUser.id %>"
+                  data-target-id="<%= currentUser.id %>"
                   >
                   change your avatar
                 </button>
