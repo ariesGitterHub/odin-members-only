@@ -35,7 +35,8 @@
                   --avatar-color-bg-bottom: <%= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
                 ">
                 <span class="emoji emoji-size-small" role="image" aria-label="avatar image">
-                  <%= user.avatarLetter %>
+                  <%#= user.avatarLetter %>
+                  <%= user.avatar_type %>
                 </span>
               </div>   
               <h2 class="admin-panel-name italic"><%= user.first_name %> <%= user.last_name %></h2>         
@@ -222,7 +223,7 @@
               create new user
             </button> -->
             <a class="button-default wide-button" href="/app/admin-create">create new user</a>
-            <a class="button-default wide-button" href="/app/admin-create">open site controls</a>
+            <a class="button-default wide-button" href="/app/admin-???">open site controls</a>
             <button id="show-guests-button" class="button-default wide-button" type="button">open guest profiles</button>
             <button id="show-members-button" class="button-default wide-button" type="button">open member profiles</button>
           <% } %> 

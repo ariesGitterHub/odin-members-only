@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
+const { canPerformHasRole } = require("../utils/permissions");
 
 const {
   getUsers,
@@ -279,6 +280,7 @@ async function getInfo(req, res, next) {
 }
 
 // CONTROLLER: NEW MESSAGE (new-message.ejs)
+
 async function postNewMessage(req, res, next) {
   const { topic_id, title, body } = req.body;
 
@@ -298,21 +300,10 @@ async function postNewMessage(req, res, next) {
 }
 
 // CONTROLLER: DELETE MESSAGE (message-boards/topic slug)
-// async function deleteUserMessage(req, res, next) {
-//   try {
-//     const { messageId } = req.body;
-
-//     await softDeleteMessageById(messageId);
-
-//     res.redirect("/app/message-boards");
-//   } catch (err) {
-//     next(err);
-//   }
-// }
 
 async function deleteUserMessage(req, res, next) {
   try {
-    console.log("Delete message body sanity check:", req.body);
+    console.log("Delete message body sanity:", req.body);
     // slug was undefined for use in redirect, I forgot to extract it from req.body!!!!
     const { targetId, slug } = req.body;
     const rowsUpdated = await softDeleteMessageById(targetId);
@@ -534,6 +525,39 @@ const getTopicNamesForDropdown = async (req, res, next) => {
   }
 };
 
+// async function getTopicPage(req, res, next) {
+//   try {
+//     const { slug } = req.params;
+
+//     // Get topic info
+//     const topic = await getTopicBySlug(slug);
+
+//     if (!topic) {
+//       return res.status(404).render("404");
+//     }
+
+//     // Get messages for this topic
+//     const messages = await getValidMessagesByTopic(topic.id);
+
+//     const messagesWithAvatars = addAvatarFields(messages, avatarTypeDefault);
+
+//     res.render("topic", {
+//       title: topic.name,
+//       topic,
+//       // messages,
+//       messages: messagesWithAvatars,
+//       // avatarLetter,
+//       errors: [],
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
+// -- Log-out
+
+// REMINDER - Don't use async or try/catch — below is the correct pattern.
+
 async function getTopicPage(req, res, next) {
   try {
     const { slug } = req.params;
@@ -545,6 +569,19 @@ async function getTopicPage(req, res, next) {
       return res.status(404).render("404");
     }
 
+    // Ensure currentUser is defined (guests may be undefined)
+    const currentUser = req.user || res.locals.currentUser || null;
+
+    // Block guests from members-only topic
+    if (
+      slug === "members-only" &&
+      !canPerformHasRole(currentUser, "members-only")
+    ) {
+      const err = new Error("Forbidden: must be a member to view this topic.");
+      err.status = 403;
+      return next(err);
+    }
+
     // Get messages for this topic
     const messages = await getValidMessagesByTopic(topic.id);
 
@@ -553,19 +590,15 @@ async function getTopicPage(req, res, next) {
     res.render("topic", {
       title: topic.name,
       topic,
-      // messages,
       messages: messagesWithAvatars,
-      // avatarLetter,
+      currentUser,
       errors: [],
     });
   } catch (err) {
-    next(err);
+    console.error("Error in getTopicPage:", err);
+    next(err); // properly forward the error
   }
 }
-
-// -- Log-out
-
-// REMINDER - Don't use async or try/catch — below is the correct pattern.
 
 async function getMemberDirectory(req, res, next) {
   try {
@@ -629,16 +662,17 @@ async function getAdminPage(req, res, next) {
       getChineseZodiacFull,
     );
     // NOTE - that usersWithDates is added into the const below...because there can only be a single "users" far below (see "!!!-HERE-!!!") on "users: usersWithAvatars" or it blows a 500 error.
-    const usersWithAvatars = addAvatarFields(
-      usersWithChineseZodiacSigns,
-      avatarTypeDefault,
-    );
+    // const usersWithAvatars = addAvatarFields(
+    //   usersWithChineseZodiacSigns,
+    //   avatarTypeDefault,
+    // );
 
     res.render("admin", {
       title: "Admin",
       // users: usersWithDates,
       // "!!!-HERE-!!!" (see comments above in this controller)
-      users: usersWithAvatars,
+      // users: usersWithAvatars,
+      users: usersWithChineseZodiacSigns,
       // usersWithDates,
       // usersWithAvatars,
       errors: [],

@@ -128,11 +128,11 @@ FROM users u
 
 LEFT JOIN (
   VALUES
-    ('alan@can.org', '', '', '', '#997a98',  '', '', '', '', '', '', false),
-    ('bruce@can.org', '', '', '#a91313', '',  '', '', '', '', '', '', true),
+    ('alan@can.org', 'A', '', '', '#997a98',  '', '', '', '', '', '', false),
+    ('bruce@can.org', 'B', '', '#a91313', '',  '', '', '', '', '', '', true),
     ('chuck@can.org', '🦍', '', '#92cfe4', '#7de9e9',  '555-111-2222', '123 Maple St', 'Harrisburg', 'PA', '17102', 'likes peanut brittle and has been known to watch squirrels in the park on hot summer days', true),
     ('dave@can.org', '🦙', '#521313', '#eeee7d', '#83741d', '555-333-4444', '456 Oak Ave',  'Harrisburg', 'PA', '17101', '', true),
-    ('evil@can.org', '', '#2b0505', '#bfbf0c', '#1d2c83', '555-313-4444', '45 Nope Ave',  'Harrisburg', 'PA', '17101', '', false),
+    ('evil@can.org', 'E', '#2b0505', '#bfbf0c', '#1d2c83', '555-313-4444', '45 Nope Ave',  'Harrisburg', 'PA', '17101', '', false),
     ('ace@can.org', 'A', '', '', '', '', '',  '', '', '', '', true)
 ) AS v(email, avatar_type, avatar_color_fg, avatar_color_bg_top, avatar_color_bg_bottom, phone, street_address, city, us_state, zip_code, notes, verified_by_admin)
 ON u.email = v.email

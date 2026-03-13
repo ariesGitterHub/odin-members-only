@@ -40,7 +40,8 @@
                     --avatar-color-fg: <%= user.avatar_color_fg || 'var(--off-black)' %>;
                   ">
                   <span class="emoji emoji-size-largest" role="image" aria-label="avatar image">
-                    <%= user.avatarLetter %>
+                    <%#= user.avatarLetter %>
+                    <%= user.avatar_type %>
                   </span>
                 </div>           
               </div>

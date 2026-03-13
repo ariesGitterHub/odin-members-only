@@ -92,6 +92,7 @@ appRouter.post("/message-boards/delete-message", requireRole("guest"), deleteUse
 
 appRouter.get("/message-boards", requireRole("guest"), getMessageBoards);
 appRouter.get("/topics", requireRole("guest"), getTopicNamesForDropdown);
+// appRouter.get("/message-boards/members-only", requireRole("member"), getTopicPage);
 appRouter.get("/message-boards/:slug", requireRole("guest"), getTopicPage);
 
 appRouter.get("/your-profile", requireRole("guest"), getYourProfilePage);

@@ -21,7 +21,8 @@
           --avatar-color-bg-bottom: <%= message.avatar_color_bg_bottom || 'var(--off-gray)' %>;
         ">
         <span class="emoji emoji-size-small" role="image" aria-label="avatar image">
-          <%= message.avatarLetter %>
+          <%#= message.avatarLetter %>
+          <%= message.avatar_type %>
         </span>
       </div>          
     </div>

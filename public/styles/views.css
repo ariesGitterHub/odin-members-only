@@ -187,7 +187,7 @@
   /* 750px is good for reading... */
   max-width: var(--max-width);
   /* max-width: var(--card-width); */
-  /* min-width: var(--card-width); */
+  min-width: var(--card-width);
   display: flex;
   flex-direction: column;
   gap: var(--spacer-biggest);
@@ -196,6 +196,7 @@
 
 /* -- message-card.ejs */
 .message-card {
+
   background-color: var(--white);
   border-radius: var(--border-radius-default);
   box-shadow: var(--box-shadow-black);

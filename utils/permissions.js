@@ -35,27 +35,6 @@ function requireRole(requiredRole) {
 
 // Determines if a user can perform a given action on a resource (message, post, etc.)
 // function canPerformHasRole(user, action, resource) {
-//   if (!user) return false;
-
-//   switch (action) {
-//     case "sticky-post":
-//       // Only admins can sticky a post
-//       return hasRole(user, "admin");
-//     case "delete-post":
-//       // Admins can delete any post
-//       // Users can delete their own posts
-//       return (
-//         hasRole(user, "admin") || (resource && resource.user_id === user.id)
-//       );
-//     case "edit":
-//       // Example: users can edit their own post, admins can edit anything
-//       return (
-//         hasRole(user, "admin") || (resource && resource.user_id === user.id)
-//       );
-//     default:
-//       return false;
-//   }
-// }
 
 
 function canPerformHasRole(user, action, resource) {
@@ -86,22 +65,25 @@ function canPerformHasRole(user, action, resource) {
       );
 
     // Unused at this time...
-    case "admin-edit-profile":
-      return (
-        hasRole(user, "admin") || (resource && resource.user_id === user.id)
-      );
+    // case "admin-edit-profile":
+    //   return (
+    //     hasRole(user, "admin") || (resource && resource.user_id === user.id)
+    //   );
     // Unused at this time...
-    case "admin-delete-profile":
-      return (
-        hasRole(user, "admin") || (resource && resource.user_id === user.id)
-      );
+    // case "admin-delete-profile":
+    //   return (
+    //     hasRole(user, "admin") || (resource && resource.user_id === user.id)
+    //   );
+
+    case "members-only":
+      return hasRole(user, "admin") || hasRole(user, "member");
 
     // Admin panel profile management actions
     case "changePermissionStatus":
     case "changeVerifiedByAdmin":
     case "changeMemberRequest":
     case "changeIsActive":
-    case "noSelfDeleteByAdmin": // Unused right now until I figure out how to do it from the frontend
+    //case "noSelfDeleteByAdmin": // Unused right now until I figure out how to do it from the frontend
       return hasRole(user, "admin"); // Only admins can change others, self-target already blocked
 
     default:
