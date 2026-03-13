@@ -128,7 +128,7 @@
   line-height: 1.5; /* Control line height for readability */
   outline: none;    /* Remove the default focus outline (optional, use with caution) */  
   margin: 0;
-  padding: 0;
+  padding: 3px;
 }
 
 .topic-new-message:focus, .title-new-message:focus, .body-new-message:focus {

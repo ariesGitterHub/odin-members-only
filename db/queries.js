@@ -115,7 +115,8 @@ const getMessageById = async (targetId) => {
     u.first_name,
     u.last_name,
     u.email,
-    t.name AS topic_name
+    t.name AS topic_name,
+    t.slug
   FROM messages m
   JOIN users u ON m.user_id = u.id
   LEFT JOIN topics t ON m.topic_id = t.id

@@ -312,14 +312,27 @@ async function postNewMessage(req, res, next) {
 
 async function deleteUserMessage(req, res, next) {
   try {
-    const { targetId } = req.body;
+    console.log("Delete message body sanity check:", req.body);
+    // slug was undefined for use in redirect, I forgot to extract it from req.body!!!!
+    const { targetId, slug } = req.body;
     const rowsUpdated = await softDeleteMessageById(targetId);
     if (rowsUpdated === 0) return res.status(404).send("Message not found");
-    res.redirect("/app/message-boards"); // or wherever you want
+    // res.redirect("/app/message-boards");
+    res.redirect(`/app/message-boards/${slug}`);
   } catch (err) {
     next(err);
   }
 }
+
+// async function deleteUserMessage(req, res, next) {
+//   try {
+//     const { targetId } = req.body;
+//     await softDeleteMessageById(targetId);
+//     res.redirect("/app/message-boards");
+//   } catch (err) {
+//     next(err);
+//   }
+// }
 
 // CONTROLLER: YOUR PROFILE (your-profile.ejs)
 

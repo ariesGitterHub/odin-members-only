@@ -273,6 +273,7 @@ select {
 
 textarea {
   /* height: 200px; */
+  font-family: var(--font-text);
   resize: vertical; /* Allows vertical resizing, remove if not needed */
   white-space: pre-line
 }

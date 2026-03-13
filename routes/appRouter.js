@@ -85,8 +85,10 @@ appRouter.get("/info", requireRole("guest"), getInfo);
 appRouter.post("/new-message", requireRole("guest"), postNewMessage);
 // appRouter.post("/message-boards/:slug/delete-message", requireRole("guest"), deleteUserMessage);
 // appRouter.post("/delete-message", requireRole("guest"), deleteUserMessage);
-// appRouter.post("/message-boards/delete-message", requireRole("guest"), deleteUserMessage);
-appRouter.post("/message-boards/:slug/delete-message", requireRole("guest"), deleteUserMessage);
+appRouter.post("/message-boards/delete-message", requireRole("guest"), deleteUserMessage);
+// appRouter.post("/message-boards/delete-message", deleteUserMessage);
+
+// appRouter.post("/message-boards/:slug/delete-message", requireRole("guest"), deleteUserMessage);
 
 appRouter.get("/message-boards", requireRole("guest"), getMessageBoards);
 appRouter.get("/topics", requireRole("guest"), getTopicNamesForDropdown);
