@@ -51,7 +51,10 @@ async function getCurrentUser(req, res, next) {
         last_name: req.user.last_name,
         birthdate: req.user.birthdate,
         permission_status: req.user.permission_status,
-        avatarLetter: req.user.avatarLetter,
+        verified_by_admin: req.user.verified_by_admin,
+        guest_upgrade_invite: req.user.guest_upgrade_invite,
+        accepted_invite: req.user.accepted_invite,
+        // avatarLetter: req.user.avatarLetter,
         avatar_type: req.user.avatar_type,
         avatar_color_fg: req.user.avatar_color_fg,
         avatar_color_bg_top: req.user.avatar_color_bg_top,
@@ -674,7 +677,6 @@ async function getMemberDirectory(req, res, next) {
       title: "Admin",
       // users: usersWithAvatars,
       users,
-      users,
       errors: [],
     });
   } catch (err) {
@@ -774,7 +776,7 @@ async function postAdminCreatePage(req, res, next) {
     birthdate,
     password,
     confirm_password,
-    notes,
+    notes
   } = req.body;
   const errors = [];
 
@@ -838,7 +840,7 @@ async function postAdminCreatePage(req, res, next) {
       birthdate,
       password_hash,
       permission_status,
-      notes,
+      notes
     );
     console.log("User inserted successfully");
 
@@ -886,7 +888,9 @@ async function postAdminEditPage(req, res, next) {
       password,
       confirm_password,
       permission_status,
-      member_request,
+      verified_by_admin,
+      guest_upgrade_invite,
+      accepted_invite,
       is_active,
       avatar_type,
       avatar_color_fg,
@@ -898,8 +902,7 @@ async function postAdminEditPage(req, res, next) {
       city,
       us_state,
       zip_code,
-      notes,
-      verified_by_admin,
+      notes
     } = req.body;
 
     const errors = [];
@@ -954,9 +957,10 @@ async function postAdminEditPage(req, res, next) {
     };
 
     // Convert boolean-like form values
-    const safeMemberRequest = toBool(member_request);
+    const safeVerifiedByAdmin = toBool(verified_by_admin);    
+    const safeGuestUpgradeInvite = toBool(guest_upgrade_invite);
     const safeIsActive = toBool(is_active);
-    const safeVerifiedByAdmin = toBool(verified_by_admin);
+
 
       // Convert form "true"/"false" strings from <select> inputs into real booleans.
       // Or, more explicitly...the following happens...
@@ -983,7 +987,9 @@ async function postAdminEditPage(req, res, next) {
         sanitize(birthdate), // Keep as string 'yyyy-MM-dd' for <input type="date">
         password, // hashed inside updateAdminEditedUser if provided
         permission_status, // ENUM string, defaults handled in updateAdminEditedUser if needed
-        safeMemberRequest, // Boolean
+        safeVerifiedByAdmin, // Boolean
+        safeGuestUpgradeInvite, // Boolean
+        accepted_invite, // ENUM string, defaults handled in updateAdminEditedUser if needed
         safeIsActive, // Boolean
         sanitize(avatar_type),
         sanitize(avatar_color_fg),
@@ -995,8 +1001,7 @@ async function postAdminEditPage(req, res, next) {
         sanitize(city),
         sanitize(us_state),
         sanitize(zip_code),
-        sanitize(notes),
-        safeVerifiedByAdmin, // Boolean
+        sanitize(notes)
       );
       console.log("User inserted successfully");
 

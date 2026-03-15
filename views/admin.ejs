@@ -17,8 +17,12 @@
           admin-card
           <% } else if (user && user.permission_status === "member") { %>
           member-card user-card hidden
-          <% } else if (user && user.permission_status === "guest" && user.member_request === true) { %>
-          guest-card user-card hidden upgrade-me
+          <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.invite_decision === "declined" ) { %>
+          guest-card user-card hidden upgrade-declined
+          <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.invite_decision === "pending" ) { %>
+          guest-card user-card hidden upgrade-pending
+          <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true) { %>
+          guest-card user-card hidden upgrade-possible
           <% } else { %>
           guest-card user-card hidden
           <% } %>
@@ -45,7 +49,7 @@
           <div class="admin-quick-view-bar">
             <span>
               <% if (user && user.permission_status === "admin") { %>
-                <p class="emoji">🗝</p>
+                <p class="emoji">🔑</p>
               <% } else if (user && user.permission_status === "member") { %>
                 <p class="emoji">⭐</p>  
               <% } else { %>
@@ -76,6 +80,32 @@
               </span>
             <% } %>
           </div>
+          <div class="element-container-col-start-center ui-message ui-message-bubble">
+            <% if (user && user.permission_status === "admin") { %>
+              <h3 class="page-section-title">Site Statistics</h3>
+              <ul">
+                <!-- Total number of users -->
+                <li >All users: <%= users.length %>.</li>
+                <!-- Number of guests -->
+                <li>Guests: <%= users.filter(user => user.permission_status === "guest").length %>.</li>
+                <!-- If you also want to display members and admins, you can add those here -->
+                <li>Members: <%= users.filter(user => user.permission_status === "member").length %>.</li>
+                <li>Admins: <%= users.filter(user => user.permission_status === "admin").length %>.</li>
+                <li>Inactive: <%= users.filter(user => user.is_active === false).length %>.</li> 
+              </ul>
+            <% } %>            
+            <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "declined") { %>
+              <p>Guest user declined member status.</p>
+            <% } %>            
+            <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "pending") { %>
+              <p>Pending member status, awaiting guest user decision.</p>
+            <% } %>
+            <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.invite_decision === "not_sent") { %>
+              <p>Consider upgrading this guest to member status.</p>
+            <% } %>
+
+
+          </div>
           <div class="profile-data-container hidden">
             <dl class="profile-data-dl margin-bottom">
               <div class="neighbor-relevant-data">
@@ -88,16 +118,20 @@
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">verified</dt>
-                <dd class="<%= user.verified_by_admin ? 'font-color-green' : 'font-color-red' %>"><%= user.verified_by_admin %></dd>
+                <dd>admin verified = <span class="<%= user.verified_by_admin ? 'font-color-green' : 'font-color-red' %>"><%= user.verified_by_admin %></span></dd>
               </div>
               <!-- TODO - ??? if status === member, then show; else hidden -->
               <div class="app-relevant-data">
                 <dt class="capitalize">upgrade</dt>
-                <dd>member request (<span class="<%= user.member_request ? 'font-color-green' : 'font-color-red' %>"><%= user.member_request %></span>)</dd>
+                <dd>invite sent = <span class="<%= user.guest_upgrade_invite ? 'font-color-green' : 'font-color-red' %>"><%= user.guest_upgrade_invite %></span></dd>
+              </div>
+              <div class="app-relevant-data">
+                <dt class="capitalize">decision</dt>
+                <dd>invite = <%= user.invite_decision %></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">activity</dt>
-                <dd>active status (<span class="<%= user.is_active ? 'font-color-green' : 'font-color-red' %>"><%= user.is_active%></span>)</dd>
+                <dd>active status = <span class="<%= user.is_active ? 'font-color-green' : 'font-color-red' %>"><%= user.is_active%></span></dd>
               </div>
               <div class="neighbor-relevant-data">
                 <dt class="capitalize">email</dt>

@@ -33,8 +33,8 @@
   --lt-gray: #acb2ae;
   --lt-red: #edabab;
   --lt-orange: #e7b537;
-  --lt-yellow: #eeee7d;
-  --lt-green: #a9eda9;
+  --lt-yellow: #f6e788;
+  --lt-green: #cff19c;
   --lt-teal: #7de9e9;
   --lt-blue: #92cfe4;
   --lt-purple: #d080eb;
@@ -43,7 +43,9 @@
   --avatar-color-bg-top: var(--off-white);
   --avatar-color-bg-bottom: var(--off-gray);
 
-  --member-request-alert: var(--lt-orange);
+  --member-status-possible: var(--lt-green);
+  --member-status-pending: var(--lt-yellow);
+  --member-status-declined: var(--lt-red);
   --account-is-inactive: var(--lt-gray);
 
   /* --border-o-card: 0.125rem double var(--off-blue); */

@@ -549,8 +549,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const deleteUserTargetId = document.getElementById("delete-user-target-id");
     const deleteMessageTargetId = document.getElementById("delete-message-target-id");
     const deleteMessageTopicSlug = document.getElementById("delete-message-topic-slug");
-    const becomeMemberForm = document.getElementById("become-member-form");
-    const becomeMemberTargetId = document.getElementById("become-member-target-id");
+    // const becomeMemberForm = document.getElementById("become-member-form");
+    // const becomeMemberTargetId = document.getElementById("become-member-target-id");
 
   actionTargetButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -570,10 +570,10 @@ document.addEventListener("DOMContentLoaded", () => {
         deleteMessageTopicSlug.value = slug;
       }
 
-      if (becomeMemberForm) {
-        becomeMemberForm.action = action;
-        becomeMemberTargetId.value = targetId;
-      }
+      // if (becomeMemberForm) {
+      //   becomeMemberForm.action = action;
+      //   becomeMemberTargetId.value = targetId;
+      // }
     });
   });
 

@@ -80,6 +80,10 @@
   margin-right: var(--spacer-default);
 }
 
+.width-full {
+  width: var(--width-default-percentage)
+}
+
 
 /* Force uniform emoji pointers in change-avatar.ejs */
 input[type="button"],

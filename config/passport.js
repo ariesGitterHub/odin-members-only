@@ -104,7 +104,6 @@ passport.deserializeUser(async (id, done) => {
         user_profiles.avatar_color_fg,
         user_profiles.avatar_color_bg_top,
         user_profiles.avatar_color_bg_bottom,
-        user_profiles.verified_by_admin,
         user_profiles.phone,
         user_profiles.street_address,
         user_profiles.apt_unit,

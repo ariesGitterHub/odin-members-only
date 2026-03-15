@@ -152,6 +152,7 @@ button:hover,
   align-items: center;
   justify-content: space-evenly;
 }
+
 .element-container-row-space-between {
   width: var(--width-default-percent);
   display: flex;
@@ -163,9 +164,10 @@ button:hover,
 .element-container-profile-block {
   width: var(--width-default-percent);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  gap: var(--spacer-medium);
+  gap: var(--spacer-small);
   background-color: var(--lt-red);
   border: var(--border-default);
   border-radius: var(--border-radius-default);
@@ -306,5 +308,6 @@ li:last-child {
   background-color: var(--off-white);
   border: var(--border-default);
   border-radius: var(--border-radius-default);
+  color: var(--off-red);
   padding: var(--spacer-default);
 }

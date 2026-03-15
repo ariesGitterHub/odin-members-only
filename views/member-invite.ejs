@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %>
+    <main>
+      <div class="page-title-off-card uppercase">
+        <h1>membership invitation</h1>
+      </div>
+      <div class="card">
+        <div class="ui-message">
+          <p>
+            Congratulations, this invite is only issued to trusted neighborhood residents, who are, or were, active in the
+            <span class="red-letter">C.A.N.</span> 
+            organization.
+            By agreeing to opt in (see below), you upgrade from 
+            <span class="italic">guest</span> 
+            to
+            <span class="italic">member</span> 
+            status, which gives you access to this site's <span class="bold capitalize">member directory</span>, a handy list of other members' addresses, emails, and phone numbers. Clicking the button below acknowledges that you permit this app to add the fields' below to this app's data and to the member directory.
+          </p>
+          <br>
+          <p>Note: maintaining member status is contingent upon adherence to site policies (see <a class="text-link" href="/app/info">Site Information</a>).</p>
+        </div>
+        <!-- <form id="member-invite-form" method="POST"> -->
+        <form action="/app/member-invite/accept" method="POST">
+          <!-- <input id="member-invite-target-id" type="hidden" name="targetId" /> -->
+          <input
+            name="permission_status"
+            value="member"
+            hidden
+          />
+          <input
+            name="invite_decision"
+            value="true"
+            hidden
+          />
+          <label class="capitalize" for="phone-member-invite-page"> phone </label>
+          <input
+            id="phone-member-invite-page"
+            type="tel"
+            name="phone"
+            value="<%= formData?.phone || '' %>"
+            required
+          />
+          <label class="capitalize" for="street-address-member-invite-page">
+            street address
+          </label>
+          <input
+            id="street-address-member-invite-page"
+            type="text"
+            name="street_address"
+            value="<%= formData?.street_address || '' %>"
+            required
+          />
+          <label class="capitalize" for="apt-unit-member-invite-page">
+              apt/unit
+          </label>
+          <input
+            id="apt-unit-member-invite-page"
+            type="text"
+            name="apt_unit"
+            value="<%= formData?.apt_unit || '' %>"
+          />
+          <label class="capitalize" for="us-state-member-invite-page">
+            state
+          </label>
+          <select id="us-state-member-invite-page" name="us_state" required>
+              <option value="" disabled <%= !formData?.us_state ? "selected" : "" %>>Choose state</option>
+              <option value="AL" <%= formData?.us_state === "AL" ? "selected" : "" %>>Alabama</option>
+              <option value="AK" <%= formData?.us_state === "AK" ? "selected" : "" %>>Alaska</option>
+              <option value="AZ" <%= formData?.us_state === "AZ" ? "selected" : "" %>>Arizona</option>
+              <option value="AR" <%= formData?.us_state === "AR" ? "selected" : "" %>>Arkansas</option>
+              <option value="CA" <%= formData?.us_state === "CA" ? "selected" : "" %>>California</option>
+              <option value="CO" <%= formData?.us_state === "CO" ? "selected" : "" %>>Colorado</option>
+              <option value="CT" <%= formData?.us_state === "CT" ? "selected" : "" %>>Connecticut</option>
+              <option value="DE" <%= formData?.us_state === "DE" ? "selected" : "" %>>Delaware</option>
+              <option value="DC" <%= formData?.us_state === "DC" ? "selected" : "" %>>Washington, DC</option>
+              <option value="FL" <%= formData?.us_state === "FL" ? "selected" : "" %>>Florida</option>
+              <option value="GA" <%= formData?.us_state === "GA" ? "selected" : "" %>>Georgia</option>
+              <option value="HI" <%= formData?.us_state === "HI" ? "selected" : "" %>>Hawaii</option>
+              <option value="ID" <%= formData?.us_state === "ID" ? "selected" : "" %>>Idaho</option>
+              <option value="IL" <%= formData?.us_state === "IL" ? "selected" : "" %>>Illinois</option>
+              <option value="IN" <%= formData?.us_state === "IN" ? "selected" : "" %>>Indiana</option>
+              <option value="IA" <%= formData?.us_state === "IA" ? "selected" : "" %>>Iowa</option>
+              <option value="KS" <%= formData?.us_state === "KS" ? "selected" : "" %>>Kansas</option>
+              <option value="KY" <%= formData?.us_state === "KY" ? "selected" : "" %>>Kentucky</option>
+              <option value="LA" <%= formData?.us_state === "LA" ? "selected" : "" %>>Louisiana</option>
+              <option value="ME" <%= formData?.us_state === "ME" ? "selected" : "" %>>Maine</option>
+              <option value="MD" <%= formData?.us_state === "MD" ? "selected" : "" %>>Maryland</option>
+              <option value="MA" <%= formData?.us_state === "MA" ? "selected" : "" %>>Massachusetts</option>
+              <option value="MI" <%= formData?.us_state === "MI" ? "selected" : "" %>>Michigan</option>
+              <option value="MN" <%= formData?.us_state === "MN" ? "selected" : "" %>>Minnesota</option>
+              <option value="MS" <%= formData?.us_state === "MS" ? "selected" : "" %>>Mississippi</option>
+              <option value="MO" <%= formData?.us_state === "MO" ? "selected" : "" %>>Missouri</option>
+              <option value="MT" <%= formData?.us_state === "MT" ? "selected" : "" %>>Montana</option>
+              <option value="NE" <%= formData?.us_state === "NE" ? "selected" : "" %>>Nebraska</option>
+              <option value="NV" <%= formData?.us_state === "NV" ? "selected" : "" %>>Nevada</option>
+              <option value="NH" <%= formData?.us_state === "NH" ? "selected" : "" %>>New Hampshire</option>
+              <option value="NJ" <%= formData?.us_state === "NJ" ? "selected" : "" %>>New Jersey</option>
+              <option value="NM" <%= formData?.us_state === "NM" ? "selected" : "" %>>New Mexico</option>
+              <option value="NY" <%= formData?.us_state === "NY" ? "selected" : "" %>>New York</option>
+              <option value="NC" <%= formData?.us_state === "NC" ? "selected" : "" %>>North Carolina</option>
+              <option value="ND" <%= formData?.us_state === "ND" ? "selected" : "" %>>North Dakota</option>
+              <option value="OH" <%= formData?.us_state === "OH" ? "selected" : "" %>>Ohio</option>
+              <option value="OK" <%= formData?.us_state === "OK" ? "selected" : "" %>>Oklahoma</option>
+              <option value="OR" <%= formData?.us_state === "OR" ? "selected" : "" %>>Oregon</option>
+              <option value="PA" <%= formData?.us_state === "PA" ? "selected" : "" %>>Pennsylvania</option>
+              <option value="RI" <%= formData?.us_state === "RI" ? "selected" : "" %>>Rhode Island</option>
+              <option value="SC" <%= formData?.us_state === "SC" ? "selected" : "" %>>South Carolina</option>
+              <option value="SD" <%= formData?.us_state === "SD" ? "selected" : "" %>>South Dakota</option>
+              <option value="TN" <%= formData?.us_state === "TN" ? "selected" : "" %>>Tennessee</option>
+              <option value="TX" <%= formData?.us_state === "TX" ? "selected" : "" %>>Texas</option>
+              <option value="UT" <%= formData?.us_state === "UT" ? "selected" : "" %>>Utah</option>
+              <option value="VT" <%= formData?.us_state === "VT" ? "selected" : "" %>>Vermont</option>
+              <option value="VA" <%= formData?.us_state === "VA" ? "selected" : "" %>>Virginia</option>
+              <option value="WA" <%= formData?.us_state === "WA" ? "selected" : "" %>>Washington</option>
+              <option value="WV" <%= formData?.us_state === "WV" ? "selected" : "" %>>West Virginia</option>
+              <option value="WI" <%= formData?.us_state === "WI" ? "selected" : "" %>>Wisconsin</option>
+              <option value="WY" <%= formData?.us_state === "WY" ? "selected" : "" %>>Wyoming</option>
+          </select>
+          <label class="capitalize" for="city-member-invite-page"> city </label>
+          <input
+            id="city-member-invite-page"
+            type="text"
+            name="city"
+            value="<%= formData?.city || '' %>"
+            required
+          />
+          <label class="capitalize" for="zip-code-member-invite-page"> zip </label>
+          <input
+            id="zip-code-member-invite-page"
+            type="text"
+            name="zip_code"
+            value="<%= formData?.zip_code || '' %>"
+            required
+          />   
+          <div class="button-container-row-space-evenly">
+            <button class="button-default wide-button" type="submit">accept invite</button>
+          </div>
+        </form>
+        <form action="/app/member-invite/dceline" method="POST">
+          <input
+            name="invite_decision"
+            value="false"
+            hidden
+          />
+          <div class="button-container-row-space-evenly">
+            <button class="button-default wide-button" type="submit">decline invite</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

@@ -8,9 +8,13 @@
     <main>
       <div class="page-title-off-card uppercase">
         <h1>member directory</h1>
+        <!-- TODO - rename this below and turn it into a component or misc -->
+        <hr class="topic-hr"> 
+        <h2 class="page-subtitle-off-card uppercase">for trusted neighbors only</h2>
       </div>
       <!-- <div class="card member-card"> -->
       <% if (users.length === 0) { %> 
+        <!-- TODO -  make the message below render appropriately via css, etc...-->
       <p>There are no current members.</p>
       <% } else { users.forEach(function(user) { %> 
           <% if (user && user.permission_status === "member") { %> 

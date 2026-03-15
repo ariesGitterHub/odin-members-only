@@ -12,7 +12,9 @@ const getUsers = async () => {
       u.last_name,
       u.birthdate,
       u.permission_status,
-      u.member_request,
+      u.verified_by_admin,
+      u.guest_upgrade_invite,
+      u.invite_decision,
       u.is_active,
       u.created_at,
       u.updated_at,
@@ -28,7 +30,6 @@ const getUsers = async () => {
       up.us_state,
       up.zip_code,
       up.notes,
-      up.verified_by_admin,
       COUNT(m.id) AS message_count
     FROM users u
     LEFT JOIN user_profiles up ON u.id = up.user_id
@@ -66,7 +67,9 @@ const getUserById = async (targetId) => {
       u.last_name,
       u.birthdate,
       u.permission_status,
-      u.member_request,
+      u.verified_by_admin,
+      u.guest_upgrade_invite,
+      u.invite_decision,
       u.is_active,
       u.created_at,
       u.updated_at,
@@ -82,7 +85,6 @@ const getUserById = async (targetId) => {
       up.us_state,
       up.zip_code,
       up.notes,
-      up.verified_by_admin,
       COUNT(m.id) AS message_count
     FROM users u
     LEFT JOIN user_profiles up ON u.id = up.user_id
@@ -144,12 +146,12 @@ const getMessageById = async (targetId) => {
 //   return rows[0];
 // };
 
-async function checkIfEmailExists(email, user_id) {
+async function checkIfEmailExists(email, targetId) {
   const result = await pool.query(
     `SELECT id FROM users
      WHERE email = $1
      AND id != $2`,
-    [email, user_id],
+    [email, targetId],
   );
 
   return result.rows;
@@ -215,7 +217,7 @@ const insertAdminCreatedUser = async (
   email,
   birthdate,
   password_hash,
-  permission_status = "guest",
+  // permission_status = "guest",
   notes = "Admin created user."
 ) => {
   console.log("Starting insertAdminCreatedUser...");
@@ -230,11 +232,12 @@ const insertAdminCreatedUser = async (
       last_name,
       email,
       birthdate,
-      permission_status,
+      // permission_status,
     });
     const userRes = await client.query(
       `INSERT INTO users
-       (first_name, last_name, email, birthdate, password_hash, permission_status)
+       -- (first_name, last_name, email, birthdate, password_hash, permission_status)
+       (first_name, last_name, email, birthdate, password_hash)
        VALUES ($1,$2,$3,$4,$5,$6)
        RETURNING *`,
       [
@@ -243,7 +246,7 @@ const insertAdminCreatedUser = async (
         email,
         birthdate,
         password_hash,
-        permission_status,
+        // permission_status,
       ],
     );
 
@@ -281,141 +284,6 @@ const insertAdminCreatedUser = async (
 
 // QUERY: UPDATE OF A USER VIA ADMIN (admin-edit.ejs)
 
-// const updateAdminEditedUser = async (
-//   user_id,
-//   first_name,
-//   last_name,
-//   email,
-//   birthdate,
-//   password_hash,
-//   permission_status,
-//   member_request,
-//   is_active,
-//   avatar_type,
-//   avatar_color_fg,
-//   avatar_color_bg_top,
-//   avatar_color_bg_bottom,
-//   phone,
-//   street_address,
-//   apt_unit,
-//   city,
-//   us_state,
-//   zip_code,
-//   notes,
-//   verified_by_admin
-// ) => {
-//   console.log("Starting updateAdminEditedUser...");
-//   const client = await pool.connect();
-
-//   try {
-//     console.log("Beginning transaction...");
-//     await client.query("BEGIN");
-
-//     // Ensure sanitized values for empty strings become NULL for COALESCE
-//     const sanitize = (v) => (v === "" ? null : v);
-
-//     console.log("Updating users table:", {
-//       first_name,
-//       last_name,
-//       email,
-//       birthdate,
-//       permission_status,
-//       member_request,
-//       is_active,
-//     });
-
-//     const userRes = await client.query(
-//       `UPDATE users
-//         SET
-//           first_name = COALESCE($1, first_name),
-//           last_name = COALESCE($2, last_name),
-//           email = COALESCE($3, email),
-//           birthdate = COALESCE($4, birthdate),
-//           password_hash = COALESCE($5, password_hash),
-//           permission_status = COALESCE($6, permission_status),
-//           member_request = COALESCE($7, member_request),
-//           is_active = COALESCE($8, is_active)
-//         WHERE id = $9
-//         RETURNING *;`,
-//       [
-//         sanitize(first_name),
-//         sanitize(last_name),
-//         sanitize(email),
-//         sanitize(birthdate),
-//         password_hash, 
-//         permission_status, // ENUM (guest, member, or admin only from lowest to highest)
-//         member_request, // boolean
-//         is_active, // boolean
-//         user_id,
-//       ],
-//     );
-
-//     const user = userRes.rows[0];
-//     console.log("Updating successfully:", user);
-
-//     console.log("Updating user_profiles table:", {
-//       user_id: user.id,
-//       avatar_type,
-//       avatar_color_fg,
-//       avatar_color_bg_top,
-//       avatar_color_bg_bottom,
-//       phone,
-//       street_address,
-//       apt_unit,
-//       city,
-//       us_state,
-//       zip_code,
-//       notes,
-//       verified_by_admin,
-//     });
-//     await client.query(
-//       `UPDATE user_profiles
-//           SET
-//             avatar_type = $1,
-//             avatar_color_fg = $2,
-//             avatar_color_bg_top = $3,
-//             avatar_color_bg_bottom = $4,
-//             phone = $5,
-//             street_address = $6,
-//             apt_unit = $7,
-//             city = $8,
-//             us_state = $9,
-//             zip_code = $10,
-//             notes = $11,
-//             verified_by_admin = $12
-//           WHERE user_id = $13`,
-//       [
-//         sanitize(avatar_type),
-//         sanitize(avatar_color_fg),
-//         sanitize(avatar_color_bg_top),
-//         sanitize(avatar_color_bg_bottom),
-//         sanitize(phone),
-//         sanitize(street_address),
-//         sanitize(apt_unit),
-//         sanitize(city),
-//         sanitize(us_state),
-//         sanitize(zip_code),
-//         sanitize(notes),
-//         verified_by_admin, // boolean
-//         user.id,
-//       ],
-//     );
-
-//     console.log("Committing transaction...");
-//     await client.query("COMMIT");
-
-//     console.log("updateAdminEditedUser completed successfully.");
-//     return user;
-//   } catch (err) {
-//     console.error("Error in updateAdminEditedUser:", err);
-//     await client.query("ROLLBACK");
-//     throw err;
-//   } finally {
-//     client.release();
-//     console.log("Database client released.");
-//   }
-// };
-
 const updateAdminEditedUser = async (
   user_id,
   first_name,
@@ -424,7 +292,9 @@ const updateAdminEditedUser = async (
   birthdate,
   password, // raw password from form; may be empty
   permission_status,
-  member_request,
+  verified_by_admin,
+  guest_upgrade_invite,
+  invite_decision,
   is_active,
   avatar_type,
   avatar_color_fg,
@@ -436,8 +306,7 @@ const updateAdminEditedUser = async (
   city,
   us_state,
   zip_code,
-  notes,
-  verified_by_admin,
+  notes
 ) => {
   console.log("Starting updateAdminEditedUser...");
   const client = await pool.connect();
@@ -460,22 +329,26 @@ const updateAdminEditedUser = async (
       email,
       birthdate,
       permission_status,
-      member_request,
-      is_active,
+      verified_by_admin,
+      guest_upgrade_invite,
+      invite_decision,
+      is_active
     });
 
     const userRes = await client.query(
       `UPDATE users
         SET
-          first_name        = COALESCE($1, first_name),
-          last_name         = COALESCE($2, last_name),
-          email             = COALESCE($3, email),
-          birthdate         = COALESCE($4, birthdate),
-          password_hash     = COALESCE($5, password_hash),
-          permission_status = COALESCE($6, permission_status),
-          member_request    = COALESCE($7, member_request),
-          is_active         = COALESCE($8, is_active)
-        WHERE id = $9
+          first_name            = COALESCE($1, first_name),
+          last_name             = COALESCE($2, last_name),
+          email                 = COALESCE($3, email),
+          birthdate             = COALESCE($4, birthdate),
+          password_hash         = COALESCE($5, password_hash),
+          permission_status     = COALESCE($6, permission_status),
+          verified_by_admin     = COALESCE($7, verified_by_admin),
+          guest_upgrade_invite  = COALESCE($8, guest_upgrade_invite),
+          invite_decision       = COALESCE($9, invite_decision),
+          is_active             = COALESCE($10, is_active)
+        WHERE id = $11
         RETURNING *;`,
       [
 
@@ -484,8 +357,10 @@ const updateAdminEditedUser = async (
         email,
         birthdate,
         password_hash, // Only hashed if provided
-        permission_status, // boolean
-        member_request, // boolean
+        permission_status, 
+        verified_by_admin, // boolean
+        guest_upgrade_invite, // boolean
+        invite_decision,
         is_active, // boolean
         user_id,
       ],
@@ -508,8 +383,7 @@ const updateAdminEditedUser = async (
       city,
       us_state,
       zip_code,
-      notes,
-      verified_by_admin,
+      notes
     });
 
     // Update user_profiles table
@@ -526,9 +400,8 @@ const updateAdminEditedUser = async (
          city                   = COALESCE($8, city),
          us_state               = COALESCE($9, us_state),
          zip_code               = COALESCE($10, zip_code),
-         notes                  = COALESCE($11, notes),
-         verified_by_admin      = COALESCE($12, verified_by_admin)
-       WHERE user_id = $13;`,
+         notes                  = COALESCE($11, notes)
+       WHERE user_id = $12;`,
       [
         avatar_type,
         avatar_color_fg,
@@ -541,8 +414,7 @@ const updateAdminEditedUser = async (
         us_state,
         zip_code,
         notes,
-        verified_by_admin, // boolean
-        user.id,
+        user.id
       ],
     );
 
@@ -599,7 +471,7 @@ const updateUser = async (
       first_name,
       last_name,
       email,
-      birthdate,
+      birthdate
     });
 
     const userRes = await client.query(

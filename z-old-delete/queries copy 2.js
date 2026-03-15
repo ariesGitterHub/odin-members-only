@@ -24,8 +24,7 @@ const getUsers = async function getUsers() {
       up.city,
       up.us_state,
       up.zip_code,
-      up.notes,
-      up.verified_by_admin
+      up.notes
     FROM users u
     LEFT JOIN user_profiles up
       ON u.id = up.user_id
