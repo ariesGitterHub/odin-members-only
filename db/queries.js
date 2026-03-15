@@ -737,8 +737,8 @@ const updateUserAvatar = async (
 
 // QUERY: DELETE VIA USER (your-profile.ejs) OR DELETE VIA ADMIN (admin.ejs)
 
-const deleteUserById = async (id) => {
-  await pool.query("DELETE FROM users WHERE id = $1", [id]);
+const deleteUserById = async (targetId) => {
+  await pool.query("DELETE FROM users WHERE id = $1", [targetId]);
 };
 
 // NEW --- QUERY: CHECK PERMISSION STATUS AND GET TOPICS
@@ -1030,6 +1030,39 @@ const getMessagesByTopic = async (targetId, limit = 50) => {
   return res.rows;
 };
 
+// QUERY: BECOME A MEMBER (Note the pattern difference with RETURNING and with const { rows } etc.)
+const becomeMemberById = async (targetId) => {
+  const id = parseInt(targetId, 10);
+  if (isNaN(id)) throw new Error("Invalid user ID");
+
+  const query = `
+    UPDATE users
+    SET member_request = true
+    WHERE permission_status = 'guest'
+      AND member_request = false
+      AND id = $1
+  `;
+
+  const res = await pool.query(query, [id]);
+  return res.rowCount > 0; // true if a row was updated
+};
+
+
+// const becomeMemberById = async (targetId) => {
+//   const query = `
+//     UPDATE users AS u
+//     SET member_request = true
+//     WHERE u.permission_status = 'guest'
+//       AND u.member_request = false
+//       AND u.id = $1
+//     RETURNING id, member_request;
+//   `;
+//   const { rows } = await pool.query(query, [targetId]);
+
+//   if (!rows[0]) return false; // nothing updated
+//   return true; // updated successfully
+// };
+
 
 module.exports = {
   getUsers,
@@ -1041,7 +1074,7 @@ module.exports = {
   updateAdminEditedUser,
   updateUser,
   updateUserAvatar,
-  // getTopicBySlugWithPermission, 
+  // getTopicBySlugWithPermission,
   getTopicNames,
   // getTopicNamesForPermission,
   insertNewMessage,
@@ -1055,4 +1088,5 @@ module.exports = {
   deleteUserById,
   // deleteMessageById,
   softDeleteMessageById,
+  becomeMemberById,
 };

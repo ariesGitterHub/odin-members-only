@@ -20,6 +20,7 @@ const {
   getValidMessagesByTopic,
   deleteUserById,
   softDeleteMessageById,
+  becomeMemberById,
 } = require("../db/queries");
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
@@ -1029,6 +1030,18 @@ async function deleteYourAccount(req, res, next) {
   }
 }
 
+// CONTROLLER: BECOME A MEMBER (your-profile.ejs and become-member.ejs)
+async function postBecomeMember(req, res, next) {
+  try {
+    const { targetId } = req.body;
+    await becomeMemberById(targetId);
+    res.redirect("/app/your-profile");
+  } catch (err) {
+    next(err);
+  }
+}
+
+
 module.exports = {
   getCurrentUser,
   getUserDetails,
@@ -1061,4 +1074,6 @@ module.exports = {
   deleteUserAccount,
   deleteYourAccount,
   deleteUserMessage,
+
+  postBecomeMember,
 };

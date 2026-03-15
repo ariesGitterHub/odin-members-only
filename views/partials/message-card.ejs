@@ -56,7 +56,7 @@
         <!-- <%# if (message && (message.user_id === currentUser.id || message.permission_status === "admin")) { %> -->
         <%# if (message && currentUser && (currentUser.permission_status === "admin" || message.user_id === currentUser.id)) { %>
          <!-- <button 
-          class="button-default message-button delete-button <%#= canPerformHasRole(currentUser, 'delete-message', message) ? '' : 'hidden' %>" type="button"
+          class="button-default message-button action-target-button <%#= canPerformHasRole(currentUser, 'delete-message', message) ? '' : 'hidden' %>" type="button"
           data-section="modal-warning-message-deletion"
           data-title="modal-title-warning-message-deletion"
           data-target-id="<%#= message.id %>"
@@ -65,7 +65,7 @@
           <span class="emoji">🗑</span>
         </button> -->
          <button 
-          class="button-default message-button delete-button <%= canPerformHasRole(currentUser, 'delete-message', message) ? '' : 'hidden' %>" type="button"
+          class="button-default message-button action-target-button <%= canPerformHasRole(currentUser, 'delete-message', message) ? '' : 'hidden' %>" type="button"
           data-section="modal-warning-message-deletion"
           data-title="modal-title-warning-message-deletion"
           data-target-id="<%= message.id %>"

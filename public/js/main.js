@@ -543,30 +543,16 @@ document.addEventListener("DOMContentLoaded", () => {
   //   }
   // });
 
-  const deleteButtons = document.querySelectorAll(
-    ".delete-button",
-  );
-
-  // const deleteForm = document.getElementById("delete-target-form");
-  // const targetIdInput = document.getElementById("delete-target-id");
-
-  // deleteButtons.forEach((button) => {
-  //   button.addEventListener("click", () => {
-  //     const targetId = button.dataset.targetId;
-  //     const action = button.dataset.action;
-
-  //     targetIdInput.value = targetId;
-  //     deleteForm.action = action;
-  //   });
-  // });
-
+  const actionTargetButtons = document.querySelectorAll(".action-target-button");
     const deleteUserForm = document.getElementById("delete-user-form");
     const deleteMessageForm = document.getElementById("delete-message-form");
     const deleteUserTargetId = document.getElementById("delete-user-target-id");
     const deleteMessageTargetId = document.getElementById("delete-message-target-id");
     const deleteMessageTopicSlug = document.getElementById("delete-message-topic-slug");
+    const becomeMemberForm = document.getElementById("become-member-form");
+    const becomeMemberTargetId = document.getElementById("become-member-target-id");
 
-  deleteButtons.forEach((button) => {
+  actionTargetButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const targetId = button.dataset.targetId;
       const action = button.dataset.action;
@@ -582,6 +568,11 @@ document.addEventListener("DOMContentLoaded", () => {
         deleteMessageForm.action = action;
         deleteMessageTargetId.value = targetId;
         deleteMessageTopicSlug.value = slug;
+      }
+
+      if (becomeMemberForm) {
+        becomeMemberForm.action = action;
+        becomeMemberTargetId.value = targetId;
       }
     });
   });

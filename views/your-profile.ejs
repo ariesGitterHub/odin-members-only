@@ -87,7 +87,7 @@
               <div class="button-container-col">
                 <% if (currentUser && currentUser.permission_status !== "admin") { %>
                   <button 
-                    class="button-default wide-button delete-button"
+                    class="button-default wide-button action-target-button"
                     data-section="modal-warning-account-deletion"
                     data-title="modal-title-warning-account-deletion"
                     data-target-id="<%= currentUser.id %>"
@@ -98,11 +98,13 @@
                 <% } %>
                 <% if (currentUser && currentUser.permission_status === "guest" && currentUser.member_request === false) { %>
                   <button 
-                    class="button-default wide-button open-modal-btn" 
+                    class="button-default wide-button open-modal-btn action-target-button" 
                     data-section="modal-become-member" 
                     data-title="modal-title-become-member"
-                    data-target-id="<%= currentUser.id %>">
-                    upgrade to member
+                    data-target-id="<%= currentUser.id %>"
+                    data-action="/app/your-profile/become-member"
+                  >  
+                  upgrade to member
                   </button>
                 <% } %>
                 <button 

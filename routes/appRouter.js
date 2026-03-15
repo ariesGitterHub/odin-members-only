@@ -32,6 +32,9 @@ const {
   deleteUserAccount,
   deleteYourAccount,
   deleteUserMessage,
+
+  postBecomeMember,
+  
 } = require("../controllers/appControllers");
 
 const appRouter = Router();
@@ -105,6 +108,8 @@ appRouter.get("/member-directory", requireRole("member"), getMemberDirectory);
 // appRouter.post("/your-profile/delete-your-account", deleteYourAccount);
 appRouter.post("/admin/delete-user-account", requireRole("admin"), deleteUserAccount);
 appRouter.post("/your-profile/delete-your-account", requireRole("guest"), deleteYourAccount);
+
+appRouter.post("/your-profile/become-member", requireRole("guest"), postBecomeMember);
 
 // appRouter.post("/admin-create", requireRole("admin"), postAdminCreatePage);
 
