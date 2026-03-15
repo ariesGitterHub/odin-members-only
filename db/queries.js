@@ -741,11 +741,26 @@ const deleteUserById = async (id) => {
   await pool.query("DELETE FROM users WHERE id = $1", [id]);
 };
 
+// NEW --- QUERY: CHECK PERMISSION STATUS AND GET TOPICS
+//async function getTopicBySlugWithPermission(slug, userPermission) {
+//   const query = `
+//     SELECT *
+//     FROM topics
+//     WHERE slug = $1
+//     AND required_permission <= $2
+//     AND is_active = true
+//   `;
+
+//   const { rows } = await pool.query(query, [slug, userPermission]);
+//   return rows[0] || null;
+// }
+
+
 // QUERY: GET TOPIC LIST FOR DROPDOWN IN NEW MESSAGE (new-message.ejs)
 
 const getTopicNames = async () => {
   const { rows } = await pool.query(`
-    SELECT id, name
+    SELECT id, name, required_permission
     FROM topics
     WHERE is_active = true
     ORDER BY sort_order;
@@ -753,6 +768,19 @@ const getTopicNames = async () => {
 
   return rows;
 };
+
+// const getTopicNamesForPermission = async (userPermission) => {
+//   const { rows } = await pool.query(`
+//     SELECT id, name
+//     FROM topics
+//     WHERE required_permission <= $1
+//     AND is_active = true
+//     ORDER BY sort_order;
+//   `
+//   [userPermission] // Pass the parameter here
+// );
+//   return rows;
+// };
 
 // QUERY: INSERT NEW MESSAGE TO MESSAGE BOARD TOPIC (new-message.ejs)
 
@@ -1013,10 +1041,12 @@ module.exports = {
   updateAdminEditedUser,
   updateUser,
   updateUserAvatar,
+  // getTopicBySlugWithPermission, 
   getTopicNames,
+  // getTopicNamesForPermission,
   insertNewMessage,
   getAllTopics,
-  getTopicBySlug,
+  getTopicBySlug, // TODO - keep getTopicBySlug, did this getTopicBySlugWithPermission usurp it?
   getValidMessagesByTopic,
   getMessagesByTopic,
   softDeleteExpiredMessages,

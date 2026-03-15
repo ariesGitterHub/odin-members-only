@@ -10,14 +10,14 @@
       <div class="card">
         <ul class="topic-list">
         <% topics.forEach(topic => { %>
-          <% if (topic.slug !== "members-only" || (currentUser && currentUser.permission_status !== "guest")) { %>
+          <%# if (topic.slug !== "members-only" || (currentUser && currentUser.permission_status !== "guest")) { %>
           <li>
             <a class="button-default wide-button" href="/app/message-boards/<%= topic.slug %>">
               <h2 class="topic-title">➤ <%= topic.name %></h2>
-              <h2 class="topic-title topic-count-circle"><%= topic.message_count%></h2>
+              <h2 class="topic-title topic-count-square"><%= topic.message_count%></h2>
             </a>
           </li>
-           <% } %>
+           <%# } %>
         <% }) %>
         </ul>
       </div>

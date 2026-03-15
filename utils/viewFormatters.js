@@ -41,16 +41,17 @@ function addChineseZodiacSigns(users, getChineseZodiacFull) {
   }));
 }
 
-function addAvatarFields(items, avatarTypeDefault) {
-  return items.map((item) => ({
-    ...item,
-    avatarLetter: avatarTypeDefault(
-      item.avatar_type,
-      item.permission_status,
-      item.first_name,
-    ),
-  }));
-}
+// I'm getting the first letter of the first name now
+// function addAvatarFields(items, avatarTypeDefault) {
+//   return items.map((item) => ({
+//     ...item,
+//     avatarLetter: avatarTypeDefault(
+//       item.avatar_type,
+//       item.permission_status,
+//       item.first_name,
+//     ),
+//   }));
+// }
 
 module.exports = {
   addBirthdateFields,
@@ -60,5 +61,5 @@ module.exports = {
   addZodiacSigns,
   addRealZodiacSigns,
   addChineseZodiacSigns,
-  addAvatarFields,
+  // addAvatarFields, // No longer needed
 };

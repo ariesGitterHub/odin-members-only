@@ -161,7 +161,7 @@
   padding: 0 var(--spacer-default);
 }
 
-.topic-count-circle {
+.topic-count-square {
   background-color: var(--off-red);
   /* border: var(--border-topic-number); */
   border-radius: var(--border-radius-small);

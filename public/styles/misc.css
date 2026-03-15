@@ -11,20 +11,24 @@
   text-transform: lowercase;
 }
 
+.background-white {
+  background-color: var(--white);
+}
+
 /* Font color */
-.black {
+.font-color-black {
   color: var(--off-black);
 }
 
-.white {
+.font-color-white {
   color: var(--off-white);
 }
 
-.green {
+.font-color-green {
   color: var(--off-green);
 }
 
-.red {
+.font-color-red {
   color: var(--off-red);
 }
 

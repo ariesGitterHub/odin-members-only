@@ -54,24 +54,24 @@
             </span>
             <span>
             <% if (user && user.verified_by_admin === true) { %>
-              <p class="emoji green">✔</p> 
+              <p class="emoji font-color-green">✔</p> 
             <% } else { %>
-              <p class="emoji red">❌</p>  
+              <p class="emoji font-color-red">❌</p>  
             <% } %>
             </span>
             <% if (user.message_count) { %>
-              <span class="black">
+              <span class="font-color-black">
                 <p><%= user.message_count %></p>
               </span>
             <% } %>
             <% if (user.birthdate) { %>
-              <span class="black">
-                <p class="emoji red"><%= user.zodiacSign %></p>
-                (<p class="emoji green"><%= user.realZodiacSign %></p>)
+              <span class="font-color-black">
+                <p class="emoji font-color-red"><%= user.zodiacSign %></p>
+                (<p class="emoji font-color-green"><%= user.realZodiacSign %></p>)
               </span>
             <% } %>
             <% if (user.birthdate) { %>
-              <span class="black">
+              <span class="font-color-black">
                 <p class="emoji"><%= user.chineseZodiacSign %></p>
               </span>
             <% } %>
@@ -88,16 +88,16 @@
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">verified</dt>
-                <dd class="<%= user.verified_by_admin ? 'green' : 'red' %>"><%= user.verified_by_admin %></dd>
+                <dd class="<%= user.verified_by_admin ? 'font-color-green' : 'font-color-red' %>"><%= user.verified_by_admin %></dd>
               </div>
               <!-- TODO - ??? if status === member, then show; else hidden -->
               <div class="app-relevant-data">
                 <dt class="capitalize">upgrade</dt>
-                <dd>member request (<span class="<%= user.member_request ? 'green' : 'red' %>"><%= user.member_request %></span>)</dd>
+                <dd>member request (<span class="<%= user.member_request ? 'font-color-green' : 'font-color-red' %>"><%= user.member_request %></span>)</dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">activity</dt>
-                <dd>active status (<span class="<%= user.is_active ? 'green' : 'red' %>"><%= user.is_active%></span>)</dd>
+                <dd>active status (<span class="<%= user.is_active ? 'font-color-green' : 'font-color-red' %>"><%= user.is_active%></span>)</dd>
               </div>
               <div class="neighbor-relevant-data">
                 <dt class="capitalize">email</dt>

@@ -37,23 +37,24 @@ WHERE u.email = 'admin@can.org'
 
 -- Seed default topics (safe to re-run)
 
-INSERT INTO topics (slug, name, description, sort_order)
+INSERT INTO topics (slug, name, description, required_permission, sort_order)
 VALUES
-  ('announcements', 'Announcements', 'Important updates and notices', 0),
-  ('safety-alerts', 'Safety Alerts', 'Crime and suspicious activity', 10),
-  ('events', 'Events', 'Neighborhood meetings and activities', 20),
-  ('general', 'General Discussion', 'Neighborhood conversations', 30),
-  ('harrisburg', 'Harrisburg', 'All things city and governance', 40),
-  ('parking', 'Parking', 'Citywide and neighborhood parking', 50),
-  ('nuisances', 'Nuisances', 'Noise, vandalism, and irritations', 60),
-  ('help-requests', 'Help Requests', 'Ask neighbors for assistance', 70),
-  ('lost-found', 'Lost and Found', 'Lost and found for items or pets', 80),
-  ('buy-sell', 'Buy and Sell', 'Items for sale, or items wanted', 90),
-  ('free-stuff', 'Free Stuff', 'Get rid of your material burdens', 100),
-  ('businesses', 'Local Businesses', 'Recommendations for local services and restaurants', 110),
-  ('introductions', 'Introductions', 'Welcome new neighbors', 120),
-  ('feedback', 'Feedback', 'Suggestions to improve this site', 130),
-  ('members-only', 'Members Only', 'Messages visible only to members', 140)
+  ('announcements', 'Announcements', 'Important updates and notices', 'guest', 0),
+  ('safety-alerts', 'Safety Alerts', 'Crime and suspicious activity', 'guest', 10),
+  ('events', 'Events', 'Neighborhood meetings and activities', 'guest', 20),
+  ('general', 'General Discussion', 'Neighborhood conversations', 'guest', 30),
+  ('harrisburg', 'Harrisburg', 'All things city and governance', 'guest', 40),
+  ('parking', 'Parking', 'Citywide and neighborhood parking', 'guest', 50),
+  ('nuisances', 'Nuisances', 'Noise, vandalism, and irritations', 'guest', 60),
+  ('help-requests', 'Help Requests', 'Ask neighbors for assistance', 'guest', 70),
+  ('lost-found', 'Lost and Found', 'Lost and found for items or pets', 'guest', 80),
+  ('buy-sell', 'Buy and Sell', 'Items for sale, or items wanted', 'guest', 90),
+  ('free-stuff', 'Free Stuff', 'Get rid of your material burdens', 'guest', 100),
+  ('businesses', 'Local Businesses', 'Recommendations for local services and restaurants', 'guest', 110),
+  ('introductions', 'Introductions', 'Welcome new neighbors', 'guest', 120),
+  ('feedback', 'Feedback', 'Suggestions to improve this site', 'guest', 130),
+  ('members-only', 'Members Only', 'Messages visible only to members', 'member', 140),
+  ('admin-notes', 'Admin Notes', 'Boring admin stuff', 'admin', 150)
 ON CONFLICT (slug) DO NOTHING;
 
 

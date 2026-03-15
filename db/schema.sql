@@ -54,7 +54,10 @@ CREATE TABLE topics (
   name TEXT NOT NULL,
   description TEXT,
 
+  required_permission permission_status_enum DEFAULT 'guest',
+
   is_active BOOLEAN DEFAULT true,
+  is_locked BOOLEAN NOT NULL DEFAULT false,
   sort_order INTEGER DEFAULT 0
 );
 

@@ -10,6 +10,7 @@
         <h1>your profile</h1>
       </div>
       <div class="card your-profile-card">
+        <!-- TODO - refactor this, only logged in currentUsers should even be on this app -->
         <% if (!currentUser) { %> 
         <p>No current user is logged in.</p>
         <% } else { %>
@@ -36,7 +37,8 @@
                     --avatar-color-bg-bottom: <%= currentUser.avatar_color_bg_bottom || 'var(--off-gray)' %>;
                   ">
                   <span class="emoji emoji-size-large" role="image" aria-label="avatar image">
-                    <%= currentUser.avatarLetter %>
+                    <%#= currentUser.avatarLetter %>
+                    <%= currentUser.avatar_type %>
                   </span>
                 </div>           
               </div>

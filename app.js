@@ -14,8 +14,8 @@ const PORT = process.env.PORT || 3000;
 const appRouter = require("./routes/appRouter");
 const { log } = require("node:console");
 // const permissions = require("./utils/permissions");
-const { avatarTypeDefault } = require("./utils/avatarTypeDefault");
-const { addAvatarFields } = require("./utils/viewFormatters");
+// const { avatarTypeDefault } = require("./utils/avatarTypeDefault");
+// const { addAvatarFields } = require("./utils/viewFormatters");
 
 // 2. Create the app
 const app = express();
@@ -91,7 +91,7 @@ app.use((req, res, next) => {
     const user = { ...req.user };
 
     // Add avatar info (reusing your helper)
-    const processedUser = addAvatarFields([user], avatarTypeDefault)[0];
+    // const processedUser = addAvatarFields([user], avatarTypeDefault)[0];
 
     // Optionally format birthdate, age, or other profile fields
     // const processedUserWithBirthdate = addBirthdateFields(
@@ -101,7 +101,8 @@ app.use((req, res, next) => {
     // )[0];
 
     // res.locals.currentUser = processedUserWithBirthdate;
-    res.locals.currentUser = processedUser;
+    // res.locals.currentUser = processedUser;
+    res.locals.currentUser = user;
   } else {
     res.locals.currentUser = null;
   }

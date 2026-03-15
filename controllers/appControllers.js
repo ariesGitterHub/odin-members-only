@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
-const { canPerformHasRole } = require("../utils/permissions");
+const { hasRole } = require("../utils/permissions");
 
 const {
   getUsers,
@@ -14,6 +14,7 @@ const {
   updateUser,
   updateUserAvatar,
   getTopicNames,
+  // getTopicNamesForPermission,
   getAllTopics,
   getTopicBySlug,
   getValidMessagesByTopic,
@@ -22,7 +23,7 @@ const {
 } = require("../db/queries");
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
-const { avatarTypeDefault } = require("../utils/avatarTypeDefault");
+// const { avatarTypeDefault } = require("../utils/avatarTypeDefault");
 const {
   getZodiacSign,
   getRealZodiacSign,
@@ -35,7 +36,7 @@ const {
   addZodiacSigns,
   addRealZodiacSigns,
   addChineseZodiacSigns,
-  addAvatarFields,
+  // addAvatarFields,
 } = require("../utils/viewFormatters");
 
 async function getCurrentUser(req, res, next) {
@@ -348,15 +349,16 @@ async function getYourProfilePage(req, res, next) {
   )[0]; // get first element
 
   // Add avatar fields
-  const currentUserWithAvatar = addAvatarFields(
-    [currentUserWithBirthdate],
-    avatarTypeDefault,
-  )[0];
+  // const currentUserWithAvatar = addAvatarFields(
+  //   [currentUserWithBirthdate],
+  //   avatarTypeDefault,
+  // )[0];
 
   try {
     res.render("your-profile", {
       title: "Your Profile",
-      currentUser: currentUserWithAvatar, // send single processed user
+      // currentUser: currentUserWithAvatar, // send single processed user
+      currentUser: currentUserWithBirthdate,
       errors: [],
     });
   } catch (err) {
@@ -502,11 +504,16 @@ async function postYourProfilePageAvatar(req, res, next) {
 
 async function getMessageBoards(req, res, next) {
   try {
+    const currentUser = req.user || res.locals.currentUser || null;
+
     const topics = await getAllTopics();
+    const visibleTopics = topics.filter((topic) =>
+      hasRole(currentUser, topic.required_permission),
+    );
 
     res.render("message-boards", {
       title: "Message Boards",
-      topics,
+      topics: visibleTopics,
       errors: [],
     });
   } catch (err) {
@@ -516,14 +523,43 @@ async function getMessageBoards(req, res, next) {
 
 // getTopicNames
 
+// const getTopicNamesForDropdown = async (req, res, next) => {
+//   try {
+//     const topics = await getTopicNames(); // returns [{id, name}, ...]
+//     res.json(topics); // MUST be an array
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
+
+
 const getTopicNamesForDropdown = async (req, res, next) => {
   try {
-    const topics = await getTopicNames(); // returns [{id, name}, ...]
-    res.json(topics); // MUST be an array
+    const currentUser = req.user || res.locals.currentUser || null;
+    const topics = await getTopicNames(); // returns [{id, name, required_permission}, ...]
+    const visibleTopics = topics.filter((topic) =>
+      hasRole(currentUser, topic.required_permission),
+    );
+    res.json(visibleTopics); // MUST be an array
   } catch (err) {
     next(err);
   }
 };
+
+
+// const getTopicNamesForDropdown = async (req, res, next) => {
+//   try {
+//     const currentUser = req.user || res.locals.currentUser || null;
+//     const permission = currentUser?.permission_status || "guest";
+
+//     const topics = await getTopicNamesForPermission(permission); // returns [{id, name, required_permission}, ...]
+
+//     res.json(topics); // MUST be an array
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 // async function getTopicPage(req, res, next) {
 //   try {
@@ -556,7 +592,23 @@ const getTopicNamesForDropdown = async (req, res, next) => {
 
 // -- Log-out
 
-// REMINDER - Don't use async or try/catch — below is the correct pattern.
+// async function requireTopicPermission(req, res, next) {
+//   const { slug } = req.params;
+
+//   const topic = await getTopicBySlug(slug);
+//   if (!topic) return res.status(404).render("404");
+
+//   const user = req.user || res.locals.currentUser || null;
+
+//   if (!hasRole(user, topic.required_permission)) {
+//     const err = new Error("Forbidden");
+//     err.status = 403;
+//     return next(err);
+//   }
+
+//   req.topic = topic;
+//   next();
+// }
 
 async function getTopicPage(req, res, next) {
   try {
@@ -572,25 +624,23 @@ async function getTopicPage(req, res, next) {
     // Ensure currentUser is defined (guests may be undefined)
     const currentUser = req.user || res.locals.currentUser || null;
 
-    // Block guests from members-only topic
-    if (
-      slug === "members-only" &&
-      !canPerformHasRole(currentUser, "members-only")
-    ) {
-      const err = new Error("Forbidden: must be a member to view this topic.");
+    // Authorization check based on DB permission
+    if (!hasRole(currentUser, topic.required_permission)) {
+      const err = new Error("Forbidden: insufficient permission status.");
       err.status = 403;
       return next(err);
     }
-
+    
     // Get messages for this topic
     const messages = await getValidMessagesByTopic(topic.id);
 
-    const messagesWithAvatars = addAvatarFields(messages, avatarTypeDefault);
+    // const messagesWithAvatars = addAvatarFields(messages, avatarTypeDefault);
 
     res.render("topic", {
       title: topic.name,
       topic,
-      messages: messagesWithAvatars,
+      // messages: messagesWithAvatars,
+      messages,
       currentUser,
       errors: [],
     });
@@ -600,15 +650,30 @@ async function getTopicPage(req, res, next) {
   }
 }
 
+// async function getTopicPage(req, res) {
+//   const topic = req.topic;
+
+//   const messages = await getValidMessagesByTopic(topic.id);
+
+//   res.render("topic", {
+//     title: topic.name,
+//     topic,
+//     messages,
+//   });
+// }
+
+
 async function getMemberDirectory(req, res, next) {
   try {
     const users = await getUsers();
 
-    const usersWithAvatars = addAvatarFields(users, avatarTypeDefault);
+    // const usersWithAvatars = addAvatarFields(users, avatarTypeDefault);
 
     res.render("member-directory", {
       title: "Admin",
-      users: usersWithAvatars,
+      // users: usersWithAvatars,
+      users,
+      users,
       errors: [],
     });
   } catch (err) {
@@ -985,6 +1050,7 @@ module.exports = {
   postNewMessage,
   getMessageBoards,
   getTopicNamesForDropdown,
+  // requireTopicPermission,
   getTopicPage,
   getAdminPage,
   getAdminCreatePage,
