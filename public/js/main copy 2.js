@@ -217,10 +217,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function handleModalOpen(targetId, sectionId, titleId) {
     try {
-      console.log("handleModalOpen targetId:", targetId); // Debugging line
+      console.log("targetId:", targetId); // Debugging line
 
       // Check if targetId exists (not null or undefined)
       if (targetId != null && targetId !== "") {
+        // if (sectionId === "modal-become-member") {
+        //   const currentUser = await fetchCurrentUserData(targetId);
+        //   populateChangeAvatar(currentUser);
+        //   openModal(sectionId, titleId);
+        //   initChangeAvatarModal();
+        //   console.log("modal-become-member");
+        // }
+
+        // if (sectionId === "modal-become-member") {
+        //   openModal(sectionId, titleId);
+        //   console.log("modal-become-member");
+        // }
 
         if (sectionId === "modal-new-message") {
           const currentUser = await fetchCurrentUserData(targetId);
@@ -259,11 +271,40 @@ document.addEventListener("DOMContentLoaded", () => {
           console.log("modal-warning-message-deletion");
         }
       } 
+      // else {
+      //   if (sectionId === "modal-new-message") {
+      //     const topic = await fetchTopicNameData();
+      //     populateNewMessageWithTopics(topic);
+      //     openModal(sectionId, titleId);
+      //   }
+        
+      // }
     } catch (err) {
       console.error(err);
       alert("Failed to load user data");
     }
   }
+
+  // Create Profile Button in header.ejs ????
+  // const createProfileAdminButton = document.querySelector(
+  //   ".create-profile-admin-button",
+  // );
+  // if (createProfileAdminButton) {
+  //   createProfileAdminButton.addEventListener("click", (e) => {
+  //     const { section, title } = e.currentTarget.dataset;
+  //     handleModalOpen(null, section, title);
+  //   });
+  // }
+
+  // New Message Button in header.ejs
+  // const newMessageButton = document.querySelector(".new-message-button");
+  // // const newMessageButton = document.getElementById("new-message-button");
+  // if (newMessageButton) {
+  //   newMessageButton.addEventListener("click", (e) => {
+  //     const { section, title } = e.currentTarget.dataset;
+  //     handleModalOpen(null, section, title);
+  //   });
+  // }
 
   document.querySelectorAll("[data-target-id]").forEach((btn) => {
     btn.addEventListener("click", (e) => {

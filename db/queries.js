@@ -903,21 +903,21 @@ const getMessagesByTopic = async (targetId, limit = 50) => {
 };
 
 // QUERY: BECOME A MEMBER (Note the pattern difference with RETURNING and with const { rows } etc.)
-const becomeMemberById = async (targetId) => {
-  const id = parseInt(targetId, 10);
-  if (isNaN(id)) throw new Error("Invalid user ID");
+// const becomeMemberById = async (targetId) => {
+//   const id = parseInt(targetId, 10);
+//   if (isNaN(id)) throw new Error("Invalid user ID");
 
-  const query = `
-    UPDATE users
-    SET member_request = true
-    WHERE permission_status = 'guest'
-      AND member_request = false
-      AND id = $1
-  `;
+//   const query = `
+//     UPDATE users
+//     SET member_request = true
+//     WHERE permission_status = 'guest'
+//       AND member_request = false
+//       AND id = $1
+//   `;
 
-  const res = await pool.query(query, [id]);
-  return res.rowCount > 0; // true if a row was updated
-};
+//   const res = await pool.query(query, [id]);
+//   return res.rowCount > 0; // true if a row was updated
+// };
 
 
 // const becomeMemberById = async (targetId) => {
@@ -960,5 +960,5 @@ module.exports = {
   deleteUserById,
   // deleteMessageById,
   softDeleteMessageById,
-  becomeMemberById,
+  // becomeMemberById,
 };

@@ -34,7 +34,6 @@
                 value="<%= formData?.last_name || '' %>"
                 required
             />
-            <%# if (user && user.permission_status !== "admin") { %> 
             <div class="element-container-profile-block">
               <div class="element-container-row-space-evenly">
                 <div class="element-container-col-default">
@@ -110,7 +109,6 @@
                 </div>                                    
               </div>
             </div>
-            <%# } %>
             <label class="capitalize" for="email-admin-edit-page">
                 email address
             </label>
@@ -303,12 +301,6 @@
                 </div>
             </div>
             <label class="capitalize" for="notes-admin-edit-page">notes</label>
-            <!-- <textarea
-              id="notes-admin-edit-page"
-              name="notes"
-            ><%#= formData?.notes || '' %>
-            <%#= (formData?.notes || '').trim() %>
-            </textarea> -->
             <textarea id="notes-admin-edit-page" name="notes"><%= formData?.notes || '' %></textarea>
             <div class="button-container-col">
               <a class="button-default wide-button" href="/app/admin">cancel changes</a>

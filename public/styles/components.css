@@ -244,12 +244,12 @@ button:hover,
   width: var(--width-default-percent);
 }
 
-label, .fake-label {
+label, .pseudo-label {
   width: var(--width-default-percent);
   text-transform: capitalize;
 }
 
-input, .fake-input, textarea, select {
+input, .pseudo-input, textarea, select {
   width: var(--width-default-percent);
   border: var(--border-default);
   font-weight: var(--font-weight-medium);
@@ -269,8 +269,8 @@ input::placeholder {
   text-transform: capitalize;
 }
 
-.fake-input {
-  background-color: var(--off-white);
+.pseudo-input {
+  background-color: var(--white);
   border-radius: var(--border-radius-default);
 }
 
@@ -285,9 +285,9 @@ textarea {
   white-space: pre-line
 }
 
-#notes-edit-profile-admin, #notes-create-profile-admin {
+/* #notes-edit-profile-admin, #notes-create-profile-admin {
   height: 75px;
-}
+} */
 
 /* LIST related */
 li {

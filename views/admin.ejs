@@ -206,29 +206,7 @@
                   delete this user
                 </button>
               <% } %>
-              <%# if (user && user.permission_status === "guest" && user.verified_by_admin === false) { %>
-                <!-- <button class="button-default wide-button">admin verify user</button> -->
-              <%# } %>
-              <!-- A guest has clicked upgrade and set flag to true, admin's turn to see the button and decide whether to click and make upgrade happen -->
-              <%# if (user && user.permission_status === "guest" && user.member_request === true) { %>
-                <!-- <button class="button-default wide-button">upgrade to member</button> -->
-              <%# } %>
-                <!-- <button 
-                  class="wide-button edit-profile-admin-button"
-                  data-section="modal-edit-profile-admin"
-                  data-title="modal-title-edit-profile-admin"
-                 data-target-id="<%#= user.id %>">
-                  update this profile
-                </button> -->
                 <a class="button-default wide-button" href="/app/admin-edit/<%= user.id %>">edit this profile</a>
-                <!-- <button 
-                  class="wide-button edit-change-avatar-button" 
-                  data-section="modal-change-avatar-admin"
-                  data-title="modal-title-change-avatar-admin"
-                 data-target-id="<%#= user.id %>"
-                  >
-                  change this avatar
-                </button> -->
             </div>
           </div>
           <br>
@@ -236,7 +214,7 @@
             <% if (user && user.permission_status === "admin") { %>
               <a class="button-default wide-button" href="/app/admin-create">create new user</a>
               <button id="user-census-button" class="button-default wide-button" type="button">open user census</button>
-              <div id="user-census" class="element-container-col-default hidden">
+              <div id="user-census-div" class="element-container-col-default hidden">
                 <p >Total number of site users: <%= users.length %>.</p>
                 <div class="element-container-row-space-evenly">
                   <div class="element-container-col-start-center">

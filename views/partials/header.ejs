@@ -1,6 +1,6 @@
 <header class="sticky-header">
   <nav class="nav-bar" aria-label="user menu">
-    <% if (currentUser && (currentUser.permission_status === "admin" || currentUser.permission_status === "owner")) { %>
+    <% if (currentUser && currentUser.permission_status === "admin") { %>
     <a class="button-default nav-button" href="/app/admin">
       <span class="emoji emoji-nav-size" role="img" aria-label="admin's overview">
       ⚙
@@ -13,11 +13,11 @@
       </span>
     </a>
     <% if (currentUser) { %>
-      <% console.log("Ummmmmevr", currentUser.first_name) %>
-      <button 
+      <button
         class="button-default nav-button new-message-button"
         data-section="modal-new-message"
         data-title="modal-title-new-message"
+        data-target-id="<%= currentUser.id %>"
         >
         <span class="emoji emoji-nav-size" role="img" aria-label="create a new message">
           ✍🏼

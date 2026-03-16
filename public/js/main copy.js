@@ -1,20 +1,48 @@
-// const {
-//   handleUserCensusToggle,
-//   handleGuestCardsToggle,
-// } = require("./toggleHiddenSections.js");
-
-import {
-  handleUserCensusToggle,
-  handleGuestCardsToggle,
-  handleMemberCardsToggle,
-  handleShowProfileToggle,
-} from "./toggleHiddenSections.js";
-
 document.addEventListener("DOMContentLoaded", () => {
-  handleUserCensusToggle();
-  handleGuestCardsToggle();
-  handleMemberCardsToggle();
-  handleShowProfileToggle();
+  // TOGGLE HIDDEN ON ADMIN PANEL FOR...
+  // Toggle .hidden for all "guest cards" on admin panel
+  const userStatsButton = document.querySelector("#user-census-button");
+  userStatsButton.addEventListener("click", () => {
+    const userStats = document.querySelector("#user-census");
+      userStats.classList.toggle("hidden");
+      userStats.classList.contains("hidden")
+        ? (userStatsButton.textContent = "open user census")
+        : (userStatsButton.textContent = "close user census");
+    });
+
+  // Toggle .hidden for all "guest cards" on admin panel
+  document.querySelectorAll(".guest-card").forEach((card) => {
+    const showGuests = document.querySelector("#show-guests-button");
+    showGuests.addEventListener("click", () => {
+      card.classList.toggle("hidden");
+      card.classList.contains("hidden")
+        ? (showGuests.textContent = "open guest profiles")
+        : (showGuests.textContent = "close guest profiles");
+    });
+  });
+
+  // Toggle .hidden for all "member cards" on admin panel
+  document.querySelectorAll(".member-card").forEach((card) => {
+    const showMembers = document.querySelector("#show-members-button");
+    showMembers.addEventListener("click", () => {
+      card.classList.toggle("hidden");
+      card.classList.contains("hidden")
+        ? (showMembers.textContent = "open member profiles")
+        : (showMembers.textContent = "close member profiles");
+    });
+  });
+
+  // Toggle .hidden for that profile's details on admin panel
+  document.querySelectorAll(".show-profile-button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      // const profileData = btn.closest(".profile-data-container")
+      const profileData = btn.closest(".card").querySelector(".profile-data-container");
+      profileData.classList.toggle("hidden");
+      profileData.classList.contains("hidden")
+        ? (btn.textContent = "open this profile")
+        : (btn.textContent = "close this profile");
+    });
+  });
 
   // OPEN/CLOSE MODALS ACROSS VARIOUS PAGES...
 
@@ -60,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!response.ok) throw new Error("Failed to fetch message");
     return await response.json();
   }
-
+  
   // FETCH DATA WITH TOPIC.ID...
   async function fetchTopicNameData(targetId) {
     const response = await fetch("/app/topics");
@@ -77,6 +105,41 @@ document.addEventListener("DOMContentLoaded", () => {
     return user;
   }
 
+  // fetchCurrentUserData().then((user) => {
+  //   if (user) {
+  //     console.log("Welcome", user.first_name);
+  //   }
+  // });
+
+  // fetchCurrentUserData().then((user) => {
+  //   console.log("User from API:", user);
+  // });
+
+  // POPULATE MODAL FIELDS (UNIVERSALLY) WITH USER.ID DATA FROM DB...
+
+  // function populateEditProfileAdmin(user) {
+  //   document.getElementById("first-name-edit-profile-admin").value = user.first_name;
+  //   document.getElementById("last-name-edit-profile-admin").value = user.last_name;
+  //   document.getElementById("permission-status-edit-profile-admin").value = user.permission_status;
+  //   document.getElementById("verified-by-admin-edit-profile-admin").value = user.verified_by_admin;
+  //   document.getElementById("upgrade-request-edit-profile-admin").value = user.member_request;
+  //   document.getElementById("is-active-edit-profile-admin").value = user.is_active;
+  //   document.getElementById("email-edit-profile-admin").value = user.email;
+  //   document.getElementById("phone-edit-profile-admin").value = user.phone || "";
+  //   document.getElementById("birthdate-edit-profile-admin").value = user.birthdate;
+  //   document.getElementById("password-edit-profile-admin").value = user.password_hash;
+  //   document.getElementById("street-address-edit-profile-admin").value = user.street_address || "";
+  //   document.getElementById("apt-unit-edit-profile-admin").value = user.apt_unit || "";
+  //   document.getElementById("city-edit-profile-admin").value = user.city || "";
+  //   document.getElementById("us-state-edit-profile-admin").value = user.us_state || "";
+  //   document.getElementById("zip-code-edit-profile-admin").value = user.zip_code || "";
+  //   document.getElementById("avatar-type-edit-profile-admin").value = user.avatar_type || "";
+  //   document.getElementById("avatar-color-fg-edit-profile-admin").value = user.avatar_color_fg || "";
+  //   document.getElementById("avatar-color-bg-top-edit-profile-admin").value = user.avatar_color_bg_top || "";
+  //   document.getElementById("avatar-color-bg-bottom-edit-profile-admin").value = user.avatar_color_bg_bottom || "";
+  //   document.getElementById("notes-edit-profile-admin").value = user.notes || "";
+  // }
+
   function populateEditProfileUser(user) {
     document.getElementById("first-name-edit-profile").value = user.first_name;
     document.getElementById("last-name-edit-profile").value = user.last_name;
@@ -88,13 +151,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // Format birthdate for input/display
     let rawBirthdate = user.birthdate;
     console.log(rawBirthdate);
+    
+    // if (rawBirthdate instanceof Date) {
+    //   rawBirthdate = rawBirthdate.toISOString().split("T")[0];
+    // }
+
+    // if (rawBirthdate instanceof Date) {
+    //   rawBirthdate = rawBirthdate.toISOString();
+    // }
+
+    // if (typeof rawBirthdate === "string") {
+    //   rawBirthdate = rawBirthdate.split("T")[0];
+    // }
 
     if (rawBirthdate.includes("T")) {
       rawBirthdate = rawBirthdate.split("T")[0];
     }
 
     console.log(rawBirthdate);
-    document.getElementById("birthdate-edit-profile").value = rawBirthdate;
+    document.getElementById("birthdate-edit-profile").value = rawBirthdate
     // document.getElementById("password-edit-profile").value = user.password_hash;
     document.getElementById("street-address-edit-profile").value =
       user.street_address || "";
@@ -108,12 +183,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(user);
     console.log(user.birthdate);
-  }
+  } 
 
-  function populateNewMessage(user) {
-    document.getElementById("first-name-new-message").innerText = user.first_name;
-    document.getElementById("last-name-new-message").innerText = user.last_name;
-  }
+  // function populateNewMessage(user) {
+  //   document.getElementById("first-name-new-message").innerText = user.first_name;
+  //   document.getElementById("last-name-new-message").innerText = user.last_name;
+  // }
 
   function populateNewMessageWithTopics(topics) {
     const select = document.getElementById("topic-new-message");
@@ -132,7 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Add real topic options
     topics.forEach((topic) => {
       const option = document.createElement("option");
-      option.className = "topic-new-message-option";
+      option.className = "topic-new-message-option"
       option.value = topic.id;
       option.textContent = `➤ ${topic.name}`;
       select.appendChild(option);
@@ -142,25 +217,26 @@ document.addEventListener("DOMContentLoaded", () => {
     select.required = true;
   }
 
-  function populateWarningAccountDeletion(user) {
-    document.getElementById("first-name-warning-account-deletion").innerText =
-      user.first_name;
-    document.getElementById("last-name-warning-account-deletion").innerText =
-      user.last_name;
-    document.getElementById("email-warning-account-deletion").innerText =
-      user.email;
-  }
+    function populateWarningAccountDeletion(user) {
+      document.getElementById("first-name-warning-account-deletion").innerText = user.first_name;
+      document.getElementById("last-name-warning-account-deletion").innerText =
+        user.last_name;
+      document.getElementById("email-warning-account-deletion").innerText =
+        user.email;
+    } 
 
-  function populateWarningMessageDeletion(message) {
-    document.getElementById("first-name-warning-message-deletion").innerText =
-      message.first_name;
-    document.getElementById("last-name-warning-message-deletion").innerText =
-      message.last_name;
-    document.getElementById("email-warning-message-deletion").innerText =
-      message.email;
-    document.getElementById("topic-name-warning-message-deletion").innerText =
-      message.topic_name;
-  }
+    function populateWarningMessageDeletion(message) {
+      document.getElementById(
+        "first-name-warning-message-deletion",
+      ).innerText = message.first_name;
+      document.getElementById(
+        "last-name-warning-message-deletion",
+      ).innerText = message.last_name;
+      document.getElementById("email-warning-message-deletion").innerText =
+        message.email;
+      document.getElementById("topic-name-warning-message-deletion").innerText =
+        message.topic_name;
+    } 
 
   async function populateChangeAvatar(user) {
     //Hide fields that are not mean to be used by a "guest"
@@ -186,27 +262,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const avatarColorBgBottom = rootStyles
       .getPropertyValue("--avatar-color-bg-bottom")
       .trim();
-    document.getElementById("avatar-type-change-avatar").value =
-      user.avatar_type || "";
-    document.getElementById("avatar-color-fg-change-avatar").value =
-      user.avatar_color_fg || avatarColorFg;
-    document.getElementById("avatar-color-bg-top-change-avatar").value =
-      user.avatar_color_bg_top || avatarColorBgTop;
-    document.getElementById("avatar-color-bg-bottom-change-avatar").value =
-      user.avatar_color_bg_bottom || avatarColorBgBottom;
+    document.getElementById("avatar-type-change-avatar").value = user.avatar_type || "";
+    document.getElementById("avatar-color-fg-change-avatar").value = user.avatar_color_fg || avatarColorFg;
+    document.getElementById("avatar-color-bg-top-change-avatar").value = user.avatar_color_bg_top || avatarColorBgTop;
+    document.getElementById("avatar-color-bg-bottom-change-avatar").value = user.avatar_color_bg_bottom || avatarColorBgBottom;
 
-    const currentAvatarElement = document.getElementById(
-      "current-avatar-change-avatar",
-    );
+    const currentAvatarElement = document.getElementById("current-avatar-change-avatar");
     if (currentAvatarElement) {
       currentAvatarElement.textContent = user.avatar_type || "";
       currentAvatarElement.style.color = user.avatar_color_fg || avatarColorFg;
       currentAvatarElement.style.background = `linear-gradient(5deg, ${user.avatar_color_bg_bottom || avatarColorBgBottom}, ${user.avatar_color_bg_top || avatarColorBgTop})`;
     }
 
-    const avatarTypeText = document.getElementById(
-      "avatar-type-text-change-avatar",
-    );
+    const avatarTypeText = document.getElementById("avatar-type-text-change-avatar");
     if (avatarTypeText) {
       avatarTypeText.textContent = await findInitialEmojiText(user.avatar_type);
     }
@@ -217,18 +285,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function handleModalOpen(targetId, sectionId, titleId) {
     try {
-      console.log("handleModalOpen targetId:", targetId); // Debugging line
+      console.log("targetId:", targetId); // Debugging line
 
       // Check if targetId exists (not null or undefined)
       if (targetId != null && targetId !== "") {
 
-        if (sectionId === "modal-new-message") {
-          const currentUser = await fetchCurrentUserData(targetId);
-          const topic = await fetchTopicNameData();
-          populateNewMessage(currentUser);
-          populateNewMessageWithTopics(topic);
-          openModal(sectionId, titleId);
-        }
+        // if (sectionId === "modal-become-member") {
+        //   const currentUser = await fetchCurrentUserData(targetId);
+        //   populateChangeAvatar(currentUser);
+        //   openModal(sectionId, titleId);
+        //   initChangeAvatarModal();
+        //   console.log("modal-become-member");
+        // }
+
+        // if (sectionId === "modal-become-member") {
+        //   openModal(sectionId, titleId);
+        //   console.log("modal-become-member");
+        // }
+
+        // if (sectionId === "modal-new-message") {
+        //   // const currentUser = await fetchCurrentUserData(targetId);
+        //   const topic = await fetchTopicNameData();
+        //   populateNewMessage(currentUser);
+        //   populateNewMessageWithTopics(topic);
+        //   openModal(sectionId, titleId);
+        // }
 
         if (sectionId === "modal-edit-profile") {
           const currentUser = await fetchCurrentUserData(targetId);
@@ -247,6 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (sectionId === "modal-warning-account-deletion") {
           const user = await fetchUserData(targetId);
+          // const currentUser = await fetchCurrentUserData(targetId);
           populateWarningAccountDeletion(user);
           openModal(sectionId, titleId);
           console.log("modal-warning-account-deletion");
@@ -254,39 +336,81 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (sectionId === "modal-warning-message-deletion") {
           const message = await fetchMessageData(targetId);
+          // const currentUser = await fetchCurrentUserData(targetId);
           populateWarningMessageDeletion(message);
           openModal(sectionId, titleId);
           console.log("modal-warning-message-deletion");
         }
-      } 
+        
+      } else {
+        // if (sectionId === "modal-become-member") {
+        //   openModal(sectionId, titleId);
+        //   console.log("modal-become-member");
+        // }
+
+        if (sectionId === "modal-new-message") {
+          // const topic = await fetchTopicNameData();
+          // populateNewMessageWithTopics(topic);
+          openModal(sectionId, titleId);
+        }
+
+        // if (sectionId === "modal-warning-account-deletion") {
+        //   openModal(sectionId, titleId);
+        // }
+      }
     } catch (err) {
       console.error(err);
       alert("Failed to load user data");
     }
   }
 
+  const createProfileAdminButton = document.querySelector(
+    ".create-profile-admin-button",
+  );
+  if (createProfileAdminButton) {
+    createProfileAdminButton.addEventListener("click", (e) => {
+      const { section, title } = e.currentTarget.dataset;
+      handleModalOpen(null, section, title);
+    });
+  }
+
+  //   const newMessageButton = document.querySelector(".new-message-button");
+  // newMessageButton.addEventListener("click", (e) => {
+  //   const { section, title } = e.currentTarget.dataset;
+  //   handleModalOpen(null, section, title);
+  // });
+
+  // const newMessageButton = document.querySelector(".new-message-button");
+  // // const newMessageButton = document.getElementById("new-message-button");
+  // if (newMessageButton) {
+  //   newMessageButton.addEventListener("click", (e) => {
+  //     const { section, title } = e.currentTarget.dataset;
+  //     handleModalOpen(null, section, title);
+  //   });
+  // }
+  
+  const newMessageButtons = document.querySelectorAll(".new-message-button");
+  newMessageButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const { section, title } = e.currentTarget.dataset;
+      handleModalOpen(null, section, title);
+    });
+  });
+
   document.querySelectorAll("[data-target-id]").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const { targetId, section, title } = e.currentTarget.dataset;
-      console.log("Magic Number is:", targetId);
+      console.log("Magic Number is:", targetId)
       handleModalOpen(targetId, section, title);
     });
   });
 
   function initChangeAvatarModal() {
     const avatarInput = document.getElementById("avatar-type-change-avatar");
-    const avatarColorPickerFg = document.getElementById(
-      "avatar-color-fg-change-avatar",
-    );
-    const avatarColorPickerBgt = document.getElementById(
-      "avatar-color-bg-top-change-avatar",
-    );
-    const avatarColorPickerBgb = document.getElementById(
-      "avatar-color-bg-bottom-change-avatar",
-    );
-    const newAvatarElement = document.getElementById(
-      "new-avatar-change-avatar",
-    );
+    const avatarColorPickerFg = document.getElementById("avatar-color-fg-change-avatar");
+    const avatarColorPickerBgt = document.getElementById("avatar-color-bg-top-change-avatar");
+    const avatarColorPickerBgb = document.getElementById("avatar-color-bg-bottom-change-avatar");
+    const newAvatarElement = document.getElementById("new-avatar-change-avatar");
 
     // Exit safely if modal isn't present
     if (
@@ -412,15 +536,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedEmoji = e.target.value;
         const selectedText = e.target.dataset.text; // Access the data-text attribute
         // Perform the necessary action with selectedEmoji, e.g., updating the preview
-        const avatarTypeText = document.getElementById(
-          "avatar-type-text-change-avatar",
-        );
-        const avatarInput = document.getElementById(
-          "avatar-type-change-avatar",
-        );
-        const newAvatarElement = document.getElementById(
-          "new-avatar-change-avatar",
-        );
+        const avatarTypeText = document.getElementById("avatar-type-text-change-avatar");
+        const avatarInput = document.getElementById("avatar-type-change-avatar");
+        const newAvatarElement = document.getElementById("new-avatar-change-avatar");
 
         avatarTypeText.textContent = selectedText; // Set selected text
         avatarInput.value = selectedEmoji; // Set emoji value
@@ -455,20 +573,14 @@ document.addEventListener("DOMContentLoaded", () => {
   //   }
   // });
 
-  const actionTargetButtons = document.querySelectorAll(
-    ".action-target-button",
-  );
-  const deleteUserForm = document.getElementById("delete-user-form");
-  const deleteMessageForm = document.getElementById("delete-message-form");
-  const deleteUserTargetId = document.getElementById("delete-user-target-id");
-  const deleteMessageTargetId = document.getElementById(
-    "delete-message-target-id",
-  );
-  const deleteMessageTopicSlug = document.getElementById(
-    "delete-message-topic-slug",
-  );
-  // const becomeMemberForm = document.getElementById("become-member-form");
-  // const becomeMemberTargetId = document.getElementById("become-member-target-id");
+  const actionTargetButtons = document.querySelectorAll(".action-target-button");
+    const deleteUserForm = document.getElementById("delete-user-form");
+    const deleteMessageForm = document.getElementById("delete-message-form");
+    const deleteUserTargetId = document.getElementById("delete-user-target-id");
+    const deleteMessageTargetId = document.getElementById("delete-message-target-id");
+    const deleteMessageTopicSlug = document.getElementById("delete-message-topic-slug");
+    // const becomeMemberForm = document.getElementById("become-member-form");
+    // const becomeMemberTargetId = document.getElementById("become-member-target-id");
 
   actionTargetButtons.forEach((button) => {
     button.addEventListener("click", () => {
