@@ -79,16 +79,16 @@ INSERT INTO users (
   invite_decision
 )
 VALUES
-  ('ace@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Ace',  'Ampere', '1975-01-20', 'guest', true, true, 'pending'), 
+  ('ace@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Ace',  'Ampere', '1975-01-20', 'guest', true, true, 'none'), 
   ('bea@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Bea',  'Billings', '1976-02-20', 'guest', true, true, 'declined'), 
-  ('che@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Che',  'Chessex', '1977-03-20', 'guest', true, false, 'not_sent'), 
-  ('dee@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Dee',  'Delozier', '1978-04-20', 'guest', false, false, 'not_sent'), 
-  ('eve@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Eve',  'Everett', '1979-05-20', 'guest', false, false, 'not_sent'), 
-  ('alan@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Alan',  'Rivera', '1961-01-05', 'guest', true, false, 'not_sent'),
+  ('che@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Che',  'Chessex', '1977-03-20', 'guest', true, false, 'none'), 
+  ('dee@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Dee',  'Delozier', '1978-04-20', 'guest', false, false, 'none'), 
+  ('eve@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Eve',  'Everett', '1979-05-20', 'guest', false, false, 'none'), 
+  ('alan@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Alan',  'Rivera', '1961-01-05', 'guest', true, false, 'none'),
   ('brad@can.org', '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Brad', 'Chen', '1951-04-05', 'member', true, true, 'accepted'),
   ('chet@can.org', '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Chet', 'Thompson', '1941-08-05', 'member', true, true, 'accepted'),
   ('dave@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Dave',  'Brooks', '1951-10-05', 'member', true, true, 'accepted'),
-  ('evil@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Evil',  'Hater', '1966-06-05', 'guest', false, false, 'not_sent')
+  ('evil@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Evil',  'Hater', '1966-06-05', 'guest', false, false, 'none')
 ON CONFLICT (email) DO NOTHING;
 
 

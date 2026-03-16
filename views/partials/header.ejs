@@ -12,6 +12,8 @@
         ℹ
       </span>
     </a>
+    <% if (currentUser) { %>
+      <% console.log("Ummmmmevr", currentUser.first_name) %>
       <button 
         class="button-default nav-button new-message-button"
         data-section="modal-new-message"
@@ -21,6 +23,7 @@
           ✍🏼
         </span>
     </button>
+    <% } %>
     <a class="button-default nav-button" href="/app/message-boards">
       <span class="emoji emoji-nav-size" role="img" aria-label="message board link">
       💬

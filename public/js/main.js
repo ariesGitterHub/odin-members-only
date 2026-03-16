@@ -1,6 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
   // TOGGLE HIDDEN ON ADMIN PANEL FOR...
   // Toggle .hidden for all "guest cards" on admin panel
+  const userStatsButton = document.querySelector("#user-census-button");
+  userStatsButton.addEventListener("click", () => {
+    const userStats = document.querySelector("#user-census");
+      userStats.classList.toggle("hidden");
+      userStats.classList.contains("hidden")
+        ? (userStatsButton.textContent = "open user census")
+        : (userStatsButton.textContent = "close user census");
+    });
+
+  // Toggle .hidden for all "guest cards" on admin panel
   document.querySelectorAll(".guest-card").forEach((card) => {
     const showGuests = document.querySelector("#show-guests-button");
     showGuests.addEventListener("click", () => {
@@ -175,6 +185,11 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(user.birthdate);
   } 
 
+  function populateNewMessage(user) {
+    document.getElementById("first-name-new-message").innerText = user.first_name;
+    document.getElementById("last-name-new-message").innerText = user.last_name;
+  }
+
   function populateNewMessageWithTopics(topics) {
     const select = document.getElementById("topic-new-message");
 
@@ -275,13 +290,6 @@ document.addEventListener("DOMContentLoaded", () => {
       // Check if targetId exists (not null or undefined)
       if (targetId != null && targetId !== "") {
 
-        if (sectionId === "modal-edit-profile") {
-          const currentUser = await fetchCurrentUserData(targetId);
-          console.log(JSON.stringify(currentUser.birthdate))
-          populateEditProfileUser(currentUser);
-          openModal(sectionId, titleId);
-        }
-
         // if (sectionId === "modal-become-member") {
         //   const currentUser = await fetchCurrentUserData(targetId);
         //   populateChangeAvatar(currentUser);
@@ -290,10 +298,32 @@ document.addEventListener("DOMContentLoaded", () => {
         //   console.log("modal-become-member");
         // }
 
-        if (sectionId === "modal-become-member") {
+        // if (sectionId === "modal-become-member") {
+        //   openModal(sectionId, titleId);
+        //   console.log("modal-become-member");
+        // }
+        if (sectionId === "modal-new-message") {
+          // const currentUser = await fetchCurrentUserData(targetId);
+          const topic = await fetchTopicNameData();
+          populateNewMessage(currentUser);
+          populateNewMessageWithTopics(topic);
           openModal(sectionId, titleId);
-          console.log("modal-become-member");
         }
+
+        if (sectionId === "modal-edit-profile") {
+          const currentUser = await fetchCurrentUserData(targetId);
+          console.log(JSON.stringify(currentUser.birthdate));
+          populateEditProfileUser(currentUser);
+          openModal(sectionId, titleId);
+        }
+
+        // if (sectionId === "modal-change-avatar-user") {
+        //   const currentUser = await fetchCurrentUserData(targetId);
+        //   populateChangeAvatar(currentUser);
+        //   openModal(sectionId, titleId);
+        //   initChangeAvatarModal();
+        //   console.log("modal-change-avatar-user");
+        // }
 
         if (sectionId === "modal-warning-account-deletion") {
           const user = await fetchUserData(targetId);
@@ -309,14 +339,6 @@ document.addEventListener("DOMContentLoaded", () => {
           populateWarningMessageDeletion(message);
           openModal(sectionId, titleId);
           console.log("modal-warning-message-deletion");
-        }
-
-        if (sectionId === "modal-change-avatar-user") {
-          const currentUser = await fetchCurrentUserData(targetId);
-          populateChangeAvatar(currentUser);
-          openModal(sectionId, titleId);
-          initChangeAvatarModal();
-          console.log("modal-change-avatar-user");
         }
         
       } else {
@@ -351,20 +373,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  //   const newMessageButton = document.querySelector(".new-message-button");
-  // newMessageButton.addEventListener("click", (e) => {
-  //   const { section, title } = e.currentTarget.dataset;
-  //   handleModalOpen(null, section, title);
-  // });
+    const newMessageButton = document.querySelector(".new-message-button");
+  newMessageButton.addEventListener("click", (e) => {
+    const { section, title } = e.currentTarget.dataset;
+    handleModalOpen(null, section, title);
+  });
 
-  const newMessageButton = document.querySelector(".new-message-button");
-  // const newMessageButton = document.getElementById("new-message-button");
-  if (newMessageButton) {
-    newMessageButton.addEventListener("click", (e) => {
-      const { section, title } = e.currentTarget.dataset;
-      handleModalOpen(null, section, title);
-    });
-  }
+  // const newMessageButton = document.querySelector(".new-message-button");
+  // // const newMessageButton = document.getElementById("new-message-button");
+  // if (newMessageButton) {
+  //   newMessageButton.addEventListener("click", (e) => {
+  //     const { section, title } = e.currentTarget.dataset;
+  //     handleModalOpen(null, section, title);
+  //   });
+  // }
   
 
   document.querySelectorAll("[data-target-id]").forEach((btn) => {

@@ -53,7 +53,7 @@ async function getCurrentUser(req, res, next) {
         permission_status: req.user.permission_status,
         verified_by_admin: req.user.verified_by_admin,
         guest_upgrade_invite: req.user.guest_upgrade_invite,
-        accepted_invite: req.user.accepted_invite,
+        invite_decision: req.user.invite_decision,
         // avatarLetter: req.user.avatarLetter,
         avatar_type: req.user.avatar_type,
         avatar_color_fg: req.user.avatar_color_fg,
@@ -890,7 +890,7 @@ async function postAdminEditPage(req, res, next) {
       permission_status,
       verified_by_admin,
       guest_upgrade_invite,
-      accepted_invite,
+      invite_decision,
       is_active,
       avatar_type,
       avatar_color_fg,
@@ -989,7 +989,7 @@ async function postAdminEditPage(req, res, next) {
         permission_status, // ENUM string, defaults handled in updateAdminEditedUser if needed
         safeVerifiedByAdmin, // Boolean
         safeGuestUpgradeInvite, // Boolean
-        accepted_invite, // ENUM string, defaults handled in updateAdminEditedUser if needed
+        invite_decision, // ENUM string, defaults handled in updateAdminEditedUser if needed
         safeIsActive, // Boolean
         sanitize(avatar_type),
         sanitize(avatar_color_fg),

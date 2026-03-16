@@ -10,42 +10,42 @@
         <h1>admin panel</h1>
       </div>
       <% if (users.length === 0) { %> 
+        <!-- TODO - keep else here??? -->
         <p>No users yet. Be the first to join!</p>
         <% } else { users.forEach(function(user) { %>
         <div class="card
-        <% if (user && user.permission_status === "admin") { %>
-          admin-card
-          <% } else if (user && user.permission_status === "member") { %>
-          member-card user-card hidden
-          <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.invite_decision === "declined" ) { %>
-          guest-card user-card hidden upgrade-declined
-          <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.invite_decision === "pending" ) { %>
-          guest-card user-card hidden upgrade-pending
-          <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true) { %>
-          guest-card user-card hidden upgrade-possible
-          <% } else { %>
-          guest-card user-card hidden
+          <% if (user && user.permission_status === "admin") { %>
+            admin-card
+            <% } else if (user && user.permission_status === "member") { %>
+            member-card user-card hidden
+            <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "declined" ) { %>
+            guest-card user-card hidden upgrade-declined
+            <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "none" ) { %>
+            guest-card user-card hidden upgrade-no-decision
+            <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === false) { %>
+            guest-card user-card hidden upgrade-possible
+            <% } else { %>
+            guest-card user-card hidden
+            <% } %>
+          <% if (user && user.is_active === false) { %> 
+              dead-account
           <% } %>
-        <% if (user && user.is_active === false) { %> 
-            dead-account
-        <% } %>
           ">
           <div class="element-container-row-center-start margin-bottom">
-              <div 
-                class="avatar-container avatar-container-size-small avatar-background circle " 
-                style="
-                  --avatar-color-fg: <%= user.avatar_color_fg || 'var(--off-black)' %>;
-                  --avatar-color-bg-top: <%= user.avatar_color_bg_top || 'var(--off-white)' %>;
-                  --avatar-color-bg-bottom: <%= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
-                ">
-                <span class="emoji emoji-size-small" role="image" aria-label="avatar image">
-                  <%#= user.avatarLetter %>
-                  <%= user.avatar_type %>
-                </span>
-              </div>   
-              <h2 class="admin-panel-name italic"><%= user.first_name %> <%= user.last_name %></h2>         
+            <div 
+              class="avatar-container avatar-container-size-small avatar-background circle " 
+              style="
+                --avatar-color-fg: <%= user.avatar_color_fg || 'var(--off-black)' %>;
+                --avatar-color-bg-top: <%= user.avatar_color_bg_top || 'var(--off-white)' %>;
+                --avatar-color-bg-bottom: <%= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
+              ">
+              <span class="emoji emoji-size-small" role="image" aria-label="avatar image">
+                <%#= user.avatarLetter %>
+                <%= user.avatar_type %>
+              </span>
+            </div>   
+            <h2 class="admin-panel-name italic"><%= user.first_name %> <%= user.last_name %></h2>         
           </div>
-
           <div class="admin-quick-view-bar">
             <span>
               <% if (user && user.permission_status === "admin") { %>
@@ -80,32 +80,19 @@
               </span>
             <% } %>
           </div>
-          <div class="element-container-col-start-center ui-message ui-message-bubble">
-            <% if (user && user.permission_status === "admin") { %>
-              <h3 class="page-section-title">Site Statistics</h3>
-              <ul">
-                <!-- Total number of users -->
-                <li >All users: <%= users.length %>.</li>
-                <!-- Number of guests -->
-                <li>Guests: <%= users.filter(user => user.permission_status === "guest").length %>.</li>
-                <!-- If you also want to display members and admins, you can add those here -->
-                <li>Members: <%= users.filter(user => user.permission_status === "member").length %>.</li>
-                <li>Admins: <%= users.filter(user => user.permission_status === "admin").length %>.</li>
-                <li>Inactive: <%= users.filter(user => user.is_active === false).length %>.</li> 
-              </ul>
-            <% } %>            
-            <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "declined") { %>
+          <% if (user && user.permission_status === "guest" && user.verified_by_admin === true) { %> 
+            <div class="element-container-col-start-center ui-message ui-message-bubble">         
+              <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "declined") { %>
               <p>Guest user declined member status.</p>
-            <% } %>            
-            <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "pending") { %>
+              <% } %>            
+              <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "none") { %>
               <p>Pending member status, awaiting guest user decision.</p>
-            <% } %>
-            <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.invite_decision === "not_sent") { %>
+              <% } %>
+              <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === false && user.invite_decision === "none") { %>
               <p>Consider upgrading this guest to member status.</p>
-            <% } %>
-
-
-          </div>
+              <% } %>
+            </div>   
+          <% } %>
           <div class="profile-data-container hidden">
             <dl class="profile-data-dl margin-bottom">
               <div class="neighbor-relevant-data">
@@ -246,21 +233,25 @@
           </div>
           <br>
           <div class="button-container-col">
-          <!-- TODO - should the admin account be deletable? A: NO!-->
-          <% if (user && user.permission_status === "admin") { %>
-            <!-- <a class="button-default wide-button" href="/app/????">create new user</a> -->
-            <!-- <button 
-              class="wide-button create-profile-admin-button"
-              data-section="modal-create-profile-admin"
-              data-title="modal-title-create-profile-admin"
-              >
-              create new user
-            </button> -->
-            <a class="button-default wide-button" href="/app/admin-create">create new user</a>
-            <a class="button-default wide-button" href="/app/admin-???">open site controls</a>
-            <button id="show-guests-button" class="button-default wide-button" type="button">open guest profiles</button>
-            <button id="show-members-button" class="button-default wide-button" type="button">open member profiles</button>
-          <% } %> 
+            <% if (user && user.permission_status === "admin") { %>
+              <a class="button-default wide-button" href="/app/admin-create">create new user</a>
+              <button id="user-census-button" class="button-default wide-button" type="button">open user census</button>
+              <div id="user-census" class="element-container-col-default hidden">
+                <p >Total number of site users: <%= users.length %>.</p>
+                <div class="element-container-row-space-evenly">
+                  <div class="element-container-col-start-center">
+                  <p>Guests: <%= users.filter(user => user.permission_status === "guest").length %></p>
+                  <p>Members: <%= users.filter(user => user.permission_status === "member").length %></p>
+                  </div>
+                  <div class="element-container-col-start-center">
+                    <p>Admins: <%= users.filter(user => user.permission_status === "admin").length %></p>
+                    <p>Inactive: <%= users.filter(user => user.is_active === false).length %></p>                   
+                  </div>                  
+                </div>                 
+              </div>
+              <button id="show-guests-button" class="button-default wide-button" type="button">open guest profiles</button>
+              <button id="show-members-button" class="button-default wide-button" type="button">open member profiles</button>
+            <% } %> 
             <button class="button-default wide-button show-profile-button" type="button">open this profile</button>
           </div>
         </div>

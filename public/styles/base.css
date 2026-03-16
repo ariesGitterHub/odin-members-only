@@ -30,21 +30,21 @@
   --dk-blue: #2d2d3d;
   --dk-purple: #483548;
 
-  --lt-gray: #acb2ae;
-  --lt-red: #edabab;
-  --lt-orange: #e7b537;
-  --lt-yellow: #f6e788;
-  --lt-green: #cff19c;
-  --lt-teal: #7de9e9;
-  --lt-blue: #92cfe4;
-  --lt-purple: #d080eb;
+  --lt-gray: #838684;
+  --lt-red: #eabebe;
+  --lt-orange: #dbbf77;
+  --lt-yellow: #e1d795;
+  --lt-green: #aec6ae;
+  --lt-teal: #b3e3e3;
+  --lt-blue: #b8dde9;
+  --lt-purple: #a790af;
 
   --avatar-color-fg: var(--off-black);
   --avatar-color-bg-top: var(--off-white);
   --avatar-color-bg-bottom: var(--off-gray);
 
   --member-status-possible: var(--lt-green);
-  --member-status-pending: var(--lt-yellow);
+  --member-status-no-decision: var(--lt-yellow);
   --member-status-declined: var(--lt-red);
   --account-is-inactive: var(--lt-gray);
 
@@ -55,6 +55,7 @@
   --border-hr-top: 0.125rem solid var(--white);
   /* --border-hr-bottom: 0.125rem solid var(--off-gray); */
   --border-inactive-card: 0.125rem solid var(--off-white);
+  /* --border-off-white: 0.125rem solid var(--off-white); */
   --border-default: 0.125rem solid var(--off-gray);
   --border-message: 0.125rem solid var(--off-white);
   /* --border-topic-number: 1px solid var(--off-white); */

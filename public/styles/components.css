@@ -14,7 +14,7 @@
 .button-default {
   all: unset; /* nukes browser defaults */
   height: var(--button-default-h);
-  width: var(--button-default-w);
+  /* width: var(--button-default-w); */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,7 +28,7 @@
   font-size: var(--font-size-default);
   font-weight: var(--font-weight-heavy);
   margin: 0;
-  padding: 0 var(--spacer-medium);
+  /* padding: 0 var(--spacer-medium); */
   text-transform: uppercase;
 }
 
@@ -49,6 +49,11 @@ button:hover,
   width: var(--width-default-percent);
   /* the padding setting below keeps the button-default settings above from letting the left and right "button" ends from pushing beyond where they should be at  */
   padding: 0; 
+}
+
+.narrow-button {
+  width: 8rem;
+  padding: 0;
 }
 
 .button-default.nav-button {
@@ -304,10 +309,12 @@ li:last-child {
 }
 
 .ui-message-bubble {
-  max-width: var(--max-width);
+  /* max-width: var(--max-width); */
+  max-width: var(--width-default-percent);
   background-color: var(--off-white);
-  border: var(--border-default);
+  /* border: var(--border-default); */
+  /* border: var(--border-off-white); */
   border-radius: var(--border-radius-default);
-  color: var(--off-red);
+  color: var(--off-black);
   padding: var(--spacer-default);
 }

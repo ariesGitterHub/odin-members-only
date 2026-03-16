@@ -78,8 +78,8 @@
 .upgrade-possible {
   background-color: var(--member-status-possible);
 }
-.upgrade-pending {
-  background-color: var(--member-status-pending);
+.upgrade-no-decision {
+  background-color: var(--member-status-no-decision);
 }
 .upgrade-declined {
   background-color: var(--member-status-declined);

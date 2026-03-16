@@ -1,6 +1,6 @@
 -- Enum for user permission status
 CREATE TYPE permission_status_enum AS ENUM ('guest', 'member', 'admin');
-CREATE TYPE invite_decision_enum AS ENUM ('not_sent', 'pending', 'accepted', 'declined');
+CREATE TYPE invite_decision_enum AS ENUM ('none', 'accepted', 'declined');
 
 -- Users
 CREATE TABLE users (
@@ -17,13 +17,12 @@ CREATE TABLE users (
 
   verified_by_admin BOOLEAN DEFAULT false,
   guest_upgrade_invite BOOLEAN DEFAULT false,
-  invite_decision invite_decision_enum NOT NULL DEFAULT 'not_sent',
+  invite_decision invite_decision_enum NOT NULL DEFAULT 'none',
   is_active BOOLEAN DEFAULT true,
 
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   last_login_at TIMESTAMPTZ
-
 );
 
 -- User Profiles

@@ -103,10 +103,9 @@
                   <%= canPerformHasRole(currentUser, 'changeMemberRequest', formData) ? '' : 'disabled' %>
                   required
                 >
-                  <option value="not_sent" <%= formData?.invite_decision === "not_sent" ? "selected" : "" %>>✖️ not sent</option>
-                  <option value="pending" <%= formData?.invite_decision === "pending" ? "selected" : "" %>>⏳ pending</option>
-                  <option value="accepted" <%= formData?.invite_decision === "accepted" ? "selected" : "" %>>👍 accepted</option>
-                  <option value="declined" <%= formData?.invite_decision === "declined" ? "selected" : "" %>>👎 declined</option>
+                  <option value="none" <%= formData?.invite_decision === "not_sent" ? "selected" : "" %>>⚪ none</option>
+                  <option value="declined" <%= formData?.invite_decision === "declined" ? "selected" : "" %>>🔴 declined</option>
+                  <option value="accepted" <%= formData?.invite_decision === "accepted" ? "selected" : "" %>>🟢 accepted</option>
                 </select>
                 </div>                                    
               </div>
