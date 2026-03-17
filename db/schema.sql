@@ -74,7 +74,9 @@ CREATE TABLE messages (
   body TEXT NOT NULL,
 
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  expires_at TIMESTAMPTZ,
+  -- expires_at TIMESTAMPTZ,
+  expires_at TIMESTAMPTZ DEFAULT NOW() + INTERVAL '28 days', -- default expires_at
+
   is_sticky BOOLEAN DEFAULT false,
 
   is_deleted BOOLEAN DEFAULT false,

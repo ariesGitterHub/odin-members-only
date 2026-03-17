@@ -70,7 +70,7 @@ button:hover,
 }
 
 .message-button {
-  min-width: 2.5rem;
+  min-width: 3.5rem;
   width: fit-content;
 }
 
@@ -227,12 +227,13 @@ button:hover,
   font-size: var(--avatar-emoji-largest-size);
 }
 
-.emoji-size-small:hover {
-  transform: scale(1.125);
+.emoji-size-small:hover, .emoji-size-large:hover {
+  transform: scale(1.1);
 }
-.emoji-size-large:hover {
+
+/* .emoji-size-large:hover {
   transform: scale(0.875);
-}
+} */
 
 .emoji {
   font-family: var(--font-emoji) !important;

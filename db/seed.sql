@@ -88,7 +88,8 @@ VALUES
   ('brad@can.org', '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Brad', 'Chen', '1951-04-05', 'member', true, true, 'accepted'),
   ('chet@can.org', '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Chet', 'Thompson', '1941-08-05', 'member', true, true, 'accepted'),
   ('dave@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Dave',  'Brooks', '1951-10-05', 'member', true, true, 'accepted'),
-  ('evil@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Evil',  'Hater', '1966-06-05', 'guest', false, false, 'none')
+  ('evil@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Evil',  'Hater', '1966-06-05', 'guest', false, false, 'none'),
+  ('zee@can.org',  '$2b$12$Gl7T7yZkulLKRidN9z58sOKmw0tTdTSpa7tYd4YtZNLpstRE/MYcy', 'Zee',  'Bee', '1925-08-05', 'member', true, true, 'accepted')
 ON CONFLICT (email) DO NOTHING;
 
 
@@ -134,7 +135,8 @@ LEFT JOIN (
     ('brad@can.org', 'B', '', '#a91313', '',  '', '', '', '', '', ''),
     ('chet@can.org', '🦍', '', '#92cfe4', '#7de9e9',  '555-111-2222', '123 Maple St', 'Harrisburg', 'PA', '17102', 'Likes peanut brittle; watches squirrels in the park on hot summer days.'),
     ('dave@can.org', '🦙', '#521313', '#eeee7d', '#83741d', '555-333-4444', '456 Oak Ave',  'Harrisburg', 'PA', '17101', ''),
-    ('evil@can.org', 'E', '#2b0505', '#bfbf0c', '#1d2c83', '555-313-4444', '45 Nope Ave',  'Harrisburg', 'PA', '17101', '')
+    ('evil@can.org', 'E', '#2b0505', '#bfbf0c', '#1d2c83', '555-313-4444', '45 Nope Ave',  'Harrisburg', 'PA', '17101', ''),
+    ('zee@can.org', '🐝', '#1f1e1d', '#dddd16', '#d7d70d', '555-666-4444', '123 Yikes Lane',  'Harrisburg', 'PA', '17102', 'Owns a bee hive.')
 ) AS v(email, avatar_type, avatar_color_fg, avatar_color_bg_top, avatar_color_bg_bottom, phone, street_address, city, us_state, zip_code, notes)
 ON u.email = v.email
 
@@ -150,7 +152,8 @@ WHERE u.email IN (
   'brad@can.org',
   'chet@can.org',
   'dave@can.org',
-  'evil@can.org'
+  'evil@can.org',
+  'zee@can.org'
 )
 AND p.user_id IS NULL;
 

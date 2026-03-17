@@ -321,8 +321,8 @@
 /* -- change-avatar.ejs */
 .preview-current,
 .preview-new {
-  height: 5rem;
-  width: 5rem;
+  height: var(--avatar-preview-current-preview-new-h-w);
+  width: var(--avatar-preview-current-preview-new-h-w);
   display: flex;
   align-items: center;
   justify-content: center;
