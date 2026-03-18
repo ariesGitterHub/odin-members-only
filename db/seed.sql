@@ -167,7 +167,7 @@ AND p.user_id IS NULL;
 -- 1️⃣ Introductions
 INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id,
-  'Hello from Alan', 7, 0,
+  'Hello from Alan', 0, 0,
   'Hi everyone, just moved to the neighborhood last week. Looking forward to meeting you all!',
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
@@ -179,7 +179,7 @@ LIMIT 1;
 -- 2️⃣ Safety Alert
 INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id,
-  'Car break-ins reported on Maple St.', 9, 0,
+  'Car break-ins reported on Maple St.', 0, 0,
   'Just a heads up — two cars were broken into overnight near Maple and 3rd. Please remember to lock your vehicles.',
   NOW() + INTERVAL '14 days'
 FROM topics t, users u
@@ -191,8 +191,8 @@ LIMIT 1;
 -- 3️⃣ Buy & Sell
 INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id,
-  'Bike for sale - $75',  1, 1,
-  'Selling a lightly used mountain bike. 26-inch wheels, great condition. DM if interested.',
+  'Bike for sale - $75',  0, 0,
+  'Selling a lightly used mountain bike. 26-inch wheels, great condition. Reply if interested.',
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
@@ -202,8 +202,8 @@ LIMIT 1;
 -- 3️⃣ Buy & Sell
 INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id,
-  'MONKEY for sale, found while washing dishes in a car park vestibule, and it said hi but don''t tell anyone I speak - $5',  1, 2,
-  'Slightly bitey, great condition. Text if interested.',
+  'I''m moving and need to downsize. This was my grandmother''s old mixed box of forks, knives, spoons, and some other bits I don''t know the names of. make me an offer.',  0, 0,
+  'Old silverware.',
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
@@ -213,8 +213,8 @@ LIMIT 1;
 -- 3️⃣ Buy & Sell
 INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id,
-  'POOP!',  1, 3,
-  'Angry pooping.',
+  'Throwing out a box of old comic books left behind by a prior renter, YOURS FOR A DOLLAR!',  0, 0,
+  'Comic Books.',
   NOW() + INTERVAL '30 days'
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
@@ -225,7 +225,7 @@ LIMIT 1;
 -- 4️⃣ Free Stuff
 INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id, 
-  'Free moving boxes', 2, 0,
+  'Free moving boxes', 0, 0,
   'Just finished moving — have about 20 boxes in good shape. Free for pickup.',
   NOW() + INTERVAL '10 days'
 FROM topics t, users u
@@ -249,7 +249,7 @@ LIMIT 1;
 -- 6️⃣ Event
 INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id,
-  'Neighborhood BBQ this Saturday', 20, 0,
+  'Neighborhood BBQ this Saturday', 0, 0,
   'Planning a casual BBQ at Riverside Park at 4pm. Bring something to share!',
   NOW() + INTERVAL '7 days'
 FROM topics t, users u
@@ -261,8 +261,8 @@ LIMIT 1;
 -- 7️⃣ Lost & Found
 INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id, 
-  'Found: small brown dog', 11, 0,
-  'Friendly small brown dog found near Pine Ave. No collar. Please message if yours.',
+  'Found: small brown dog', 0, 0,
+  'Small, friendly, brown dog found near Pine Ave. No collar. Please reply if yours.',
   NOW() + INTERVAL '5 days'
 FROM topics t, users u
 WHERE t.slug = 'lost-found'
@@ -273,8 +273,8 @@ LIMIT 1;
 -- 8️⃣ General Discussion
 INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
 SELECT t.id, u.id, 
-  'Anyone else hearing construction noise?', 5, 0,
-  'There has been loud construction starting around 6:30am this week. Anyone know what project this is?',
+  'Anyone else hearing construction noise?', 0, 0,
+  'There has been loud construction starting around 5:30am this week. Anyone know what project this is?',
   NOW() + INTERVAL '20 days'
 FROM topics t, users u
 WHERE t.slug = 'nuisances'

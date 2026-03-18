@@ -65,7 +65,7 @@
             type="submit"
           >
             <span class="emoji">
-              <%= message.is_sticky ? '📌' : '❌📌' %>
+              <%= message.is_sticky ? '📌‼' : '❌📌' %>
             </span>
           </button>
         </form>
@@ -109,14 +109,15 @@
             class="button-default message-button" 
             type="submit"
           >
-            <span class="">
-              <%= message.is_liked_by_user ? '😀' : '🤍' %> 
-            </span>
+            <span class="emoji">
+              <!-- <%#= message.is_liked_by_user ? '' : '' %>  -->
+              <%= message.like_count ? '❤' : '🤍' %> 
+            </span> 
             (<%= message.like_count %>)
           </button>
         </form>
       </div>
 
-    <%# } %>
+    <%# } 👍🏼 ♥%>
   </div>
 </div>

@@ -134,6 +134,18 @@ const getMessageById = async (targetId) => {
   return res.rows[0]; // the message object
 };
 
+const getTopicById = async (topic_id) => {
+  const query = `
+    SELECT *
+    FROM topics
+    WHERE id = $1
+    AND is_active = true
+    LIMIT 1;
+  `;
+  const res = await pool.query(query, [topic_id]);
+  return res.rows[0];
+};
+
 // QUERY: CHECK IF EMAIL ALREADY EXISTS IN THE DB (SET UP TO NOT AFFECT USER EDITS TO SAME ENTRY)
 
 // Function to check if email exists
@@ -638,17 +650,15 @@ const getTopicNames = async () => {
   return rows;
 };
 
-// const getTopicNamesForPermission = async (userPermission) => {
+// const getTopicName = async (topicId) => {
 //   const { rows } = await pool.query(`
 //     SELECT id, name
 //     FROM topics
-//     WHERE required_permission <= $1
-//     AND is_active = true
-//     ORDER BY sort_order;
-//   `
-//   [userPermission] // Pass the parameter here
+//     WHERE id = $1
+//   `,
+//   [topicId] // Pass the parameter here
 // );
-//   return rows;
+//   return rows[0];
 // };
 
 // QUERY: INSERT NEW MESSAGE TO MESSAGE BOARD TOPIC (new-message.ejs)
@@ -775,7 +785,7 @@ const getValidMessagesByTopic = async (messageId, userId, limit = 50) => {
       m.expires_at,
       m.is_sticky,
       -- below is new
-      (ml.user_id IS NOT NULL) AS is_liked_by_user,
+      ml.user_id AS is_liked_by_user_id,
       u.first_name,
       u.last_name,
       u.permission_status,
@@ -788,14 +798,16 @@ const getValidMessagesByTopic = async (messageId, userId, limit = 50) => {
     LEFT JOIN user_profiles up ON up.user_id = u.id
     -- below is new
     LEFT JOIN message_likes ml 
-      ON ml.message_id = m.id 
+      ON ml.message_id = m.id
       AND ml.user_id = $2
     WHERE m.topic_id = $1
       AND m.is_deleted = false
       AND (m.expires_at IS NULL OR m.expires_at > NOW())
     ORDER BY 
       m.is_sticky DESC,
-      m.created_at DESC
+      -- m.created_at DESC
+      -- changed from above due to reordering when the like button was clicked
+      m.id
     LIMIT $3;
   `;
   const res = await pool.query(query, [messageId, userId, limit]);
@@ -968,110 +980,207 @@ const getMessagesByTopic = async (targetId, limit = 50) => {
 // const toggleLike = async (messageId, userId) => {
 //   const { rows } = await pool.query(
 //     `
-//  WITH deleted AS (
-//   DELETE FROM message_likes
-//   WHERE message_id = $1 AND user_id = $2
-//   RETURNING 1
-// ),
-// inserted AS (
-//   INSERT INTO message_likes (message_id, user_id)
-//   SELECT $1, $2
-//   WHERE NOT EXISTS (SELECT 1 FROM deleted)
-//   RETURNING 1
-// )
-// UPDATE messages
-// SET like_count = like_count + 
-//   CASE 
-//     WHEN EXISTS (SELECT 1 FROM inserted) THEN 1
-//     WHEN EXISTS (SELECT 1 FROM deleted) THEN -1
-//     ELSE 0
-//   END
-// WHERE id = $1;
-// RETURNING like_count;
+//     -- Remove the like if it exists
+//     DELETE FROM message_likes 
+//     WHERE message_id = $1 AND user_id = $2;
+
+//     -- Insert the like if it does not exist (based on the result of DELETE)
+//     INSERT INTO message_likes (message_id, user_id)
+//     SELECT $1, $2
+//     WHERE NOT EXISTS (
+//       SELECT 1 FROM message_likes WHERE message_id = $1 AND user_id = $2
+//     );
+
+//     -- Update the like_count in the messages table
+//     UPDATE messages
+//     SET like_count = (SELECT COUNT(*) FROM message_likes WHERE message_id = $1)
+//     WHERE id = $1
+//     RETURNING like_count;
 //   `,
 //     [messageId, userId],
 //   );
 
-//   return rows[0]; // Returning only the first row (one user)
+//   return rows[0]; // Return updated like count
 // };
 
 // const toggleLike = async (messageId, userId) => {
-//   const { rows } = await pool.query(
-//     `
-//     WITH deleted AS (
-//       DELETE FROM message_likes
-//       WHERE message_id = $1 AND user_id = $2
-//       RETURNING 1
-//     ),
-//     inserted AS (
-//       INSERT INTO message_likes (message_id, user_id)
-//       SELECT $1, $2
-//       WHERE NOT EXISTS (SELECT 1 FROM deleted)
-//       RETURNING 1
-//     )
-//     UPDATE messages
-//     SET like_count = GREATEST(
-//       like_count + 
-//         CASE 
-//           WHEN EXISTS (SELECT 1 FROM inserted) THEN 1
-//           WHEN EXISTS (SELECT 1 FROM deleted) THEN -1
-//           ELSE 0
-//         END,
-//       0
-//     )
-//     WHERE id = $1
-//     RETURNING like_count;
-//     `,
-//     [messageId, userId],
-//   );
+//   const client = await pool.connect(); // Get a client from the pool
+//   try {
+//     await client.query('BEGIN'); // Start a transaction
 
-//   return rows[0]; // now actually returns { like_count: ... }
+//     // Step 1: Try to delete the like if it exists
+//     const deleteResult = await client.query(`
+//       DELETE FROM message_likes 
+//       WHERE message_id = $1 AND user_id = $2
+//       RETURNING *;
+//     `, [messageId, userId]);
+
+//     // Step 2: Insert a new like if it wasn't deleted (i.e., the user hasn't liked the message before)
+//     if (deleteResult.rowCount === 0) {
+//       await client.query(`
+//         INSERT INTO message_likes (message_id, user_id)
+//         VALUES ($1, $2);
+//       `, [messageId, userId]);
+//     }
+
+//     // Step 3: Update the like_count in the messages table
+//     const likeCountResult = await client.query(`
+//       UPDATE messages
+//       SET like_count = (SELECT COUNT(*) FROM message_likes WHERE message_id = $1)
+//       WHERE id = $1
+//       RETURNING like_count;
+//     `, [messageId]);
+
+//     // Commit the transaction
+//     await client.query('COMMIT');
+
+//     // Return the updated like count
+//     return likeCountResult.rows[0];
+//   } catch (err) {
+//     // If any error happens, roll back the transaction
+//     await client.query('ROLLBACK');
+//     console.error('Error toggling like:', err);
+//     throw err; // rethrow the error to handle it in the controller
+//   } finally {
+//     client.release(); // Release the client back to the pool
+//   }
 // };
 
 const toggleLike = async (messageId, userId) => {
-  const { rows } = await pool.query(
-    `
-    WITH deleted AS (
-      DELETE FROM message_likes
-      WHERE message_id = $1 AND user_id = $2
-      RETURNING 1
-    ),
-    inserted AS (
-      INSERT INTO message_likes (message_id, user_id)
-      SELECT $1, $2
-      WHERE NOT EXISTS (SELECT 1 FROM deleted)
-      RETURNING 1
-    ),
-    updated AS (
-      UPDATE messages
-      SET like_count = GREATEST(
-        like_count + 
-          CASE 
-            WHEN EXISTS (SELECT 1 FROM inserted) THEN 1
-            WHEN EXISTS (SELECT 1 FROM deleted) THEN -1
-            ELSE 0
-          END,
-        0
-      )
-      WHERE id = $1
-      RETURNING like_count
-    )
-    SELECT 
-      like_count,
-      EXISTS (SELECT 1 FROM inserted) AS is_liked
-    FROM updated;
-    `,
-    [messageId, userId],
-  );
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN"); // Start a transaction
 
-  return rows[0];
+    // Check if the user has already liked the message
+    const { rows: likeRows } = await client.query(
+      `
+      SELECT * FROM message_likes
+      WHERE message_id = $1 AND user_id = $2;
+    `,
+      [messageId, userId],
+    );
+
+    if (likeRows.length > 0) {
+      // User has already liked the message, so remove the like (delete)
+      await client.query(
+        `
+        DELETE FROM message_likes
+        WHERE message_id = $1 AND user_id = $2;
+      `,
+        [messageId, userId],
+      );
+    } else {
+      // User hasn't liked the message, so insert a new like
+      await client.query(
+        `
+        INSERT INTO message_likes (message_id, user_id)
+        VALUES ($1, $2);
+      `,
+        [messageId, userId],
+      );
+    }
+
+    // Update the like_count in the messages table
+    await client.query(
+      `
+      UPDATE messages
+      SET like_count = (SELECT COUNT(*) FROM message_likes WHERE message_id = $1)
+      WHERE id = $1;
+    `,
+      [messageId],
+    );
+
+    await client.query("COMMIT"); // Commit the transaction
+  } catch (err) {
+    await client.query("ROLLBACK"); // Rollback on error
+    console.error("Error toggling like:", err);
+    throw err;
+  } finally {
+    client.release(); // Release the client
+  }
 };
+
+// const toggleLike = async (messageId, userId) => {
+//   const client = await pool.connect(); // Get a client from the pool
+//   try {
+//     await client.query("BEGIN"); // Start a transaction
+
+//     // Check if the user already likes the message
+//     const checkLikeResult = await client.query(
+//       `
+//       SELECT user_id
+//       FROM message_likes
+//       WHERE message_id = $1 AND user_id = $2
+//     `,
+//       [messageId, userId],
+//     );
+
+//     let likeCountResult;
+
+//     if (checkLikeResult.rowCount > 0) {
+//       // User already liked the message, so delete the like
+//       await client.query(
+//         `
+//         DELETE FROM message_likes 
+//         WHERE message_id = $1 AND user_id = $2
+//       `,
+//         [messageId, userId],
+//       );
+
+//       // Update the like count after deleting the like
+//       likeCountResult = await client.query(
+//         `
+//         UPDATE messages
+//         SET like_count = like_count - 1
+//         WHERE id = $1
+//         RETURNING like_count;
+//       `,
+//         [messageId],
+//       );
+//     } else {
+//       // User has not liked the message, so insert the like
+//       await client.query(
+//         `
+//         INSERT INTO message_likes (message_id, user_id)
+//         VALUES ($1, $2);
+//       `,
+//         [messageId, userId],
+//       );
+
+//       // Update the like count after inserting the like
+//       likeCountResult = await client.query(
+//         `
+//         UPDATE messages
+//         SET like_count = like_count + 1
+//         WHERE id = $1
+//         RETURNING like_count;
+//       `,
+//         [messageId],
+//       );
+//     }
+
+//     // Commit the transaction
+//     await client.query("COMMIT");
+
+//     // Return the updated like count
+//     return likeCountResult.rows[0].like_count;
+//   } catch (err) {
+//     // If any error happens, roll back the transaction
+//     await client.query("ROLLBACK");
+//     console.error("Error toggling like:", err);
+//     throw err; // Rethrow the error to be handled in the controller
+//   } finally {
+//     client.release(); // Release the client back to the pool
+//   }
+// };
 
 // TODO - rename all of thes eby type, get, update, post, insert, find out the major types of queries!
 module.exports = {
   getUsers,
   getUserById,
   getMessageById,
+  getTopicById, 
+  
   checkIfEmailExists,
   insertNewUser,
   insertAdminCreatedUser,
@@ -1081,6 +1190,7 @@ module.exports = {
   // getTopicBySlugWithPermission,
   getTopicNames,
   // getTopicNamesForPermission,
+  // getTopicName,
   insertNewMessage,
   stickyMessageById,
   toggleLike,

@@ -113,7 +113,7 @@
   --avatar-emoji-option-size: 2rem;
 
   /* All avatar-emojis are a percentage of their outer circle container's size, below is teh magic number for that */
-  --avatar-emoji-ratio-number: 0.6;
+  --avatar-emoji-ratio-number: 0.575;
 
   /* Corresponds to --avatar-circle-small-h-w above */  
   /* --avatar-emoji-small-size: 2.5rem; */

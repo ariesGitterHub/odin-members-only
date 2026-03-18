@@ -6,6 +6,8 @@ const {
   getUsers,
   getUserById,
   getMessageById,
+  getTopicById,
+
   checkIfEmailExists,
   insertNewUser,
   insertAdminCreatedUser,
@@ -17,6 +19,7 @@ const {
   updateUserAvatar,
   getTopicNames,
   // getTopicNamesForPermission,
+  // getTopicName,
   getAllTopics,
   getTopicBySlug,
   getValidMessagesByTopic,
@@ -299,8 +302,15 @@ async function postNewMessage(req, res, next) {
   }
 
   try {
+    // Get topic info
+   const topic = await getTopicById(topic_id);
+
+    if (!topic) {
+      return res.status(404).send("Topic not found.");
+    }
+
     await insertNewMessage(currentUser_id, topic_id, title, body); // Pass user_id from session
-    res.redirect("/app/message-boards");
+    res.redirect(`/app/message-boards/${topic.slug}`);
   } catch (err) {
     next(err);
   }
@@ -340,6 +350,9 @@ async function postLikeMessageToggle(req, res, next) {
   const user_id = req.user.id; // <-- TODO - MORE OF THIS!
   try {
     await toggleLike(message_id, user_id);
+    // console.log("User ID:", user_id); // Check the value
+    // console.log("Message ID:", message_id); // Check the value
+
     res.redirect(`/app/message-boards/${slug}`);
   } catch (err) {
     console.error(err);
@@ -642,6 +655,8 @@ const getTopicNamesForDropdown = async (req, res, next) => {
 //   next();
 // }
 
+
+
 async function getTopicPage(req, res, next) {
   try {
     const { slug } = req.params;
@@ -662,9 +677,11 @@ async function getTopicPage(req, res, next) {
       err.status = 403;
       return next(err);
     }
-    
+
     // Get messages for this topic
     const messages = await getValidMessagesByTopic(topic.id, 50);
+
+    // const messageLikes = makeAnotherConrtoller()
 
     // const messagesWithAvatars = addAvatarFields(messages, avatarTypeDefault);
 
