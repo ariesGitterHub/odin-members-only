@@ -218,7 +218,7 @@ const insertAdminCreatedUser = async (
   birthdate,
   password_hash,
   // permission_status = "guest",
-  notes = "Admin created user."
+  notes = "Admin created user.",
 ) => {
   console.log("Starting insertAdminCreatedUser...");
   const client = await pool.connect();
@@ -306,7 +306,7 @@ const updateAdminEditedUser = async (
   city,
   us_state,
   zip_code,
-  notes
+  notes,
 ) => {
   console.log("Starting updateAdminEditedUser...");
   const client = await pool.connect();
@@ -332,7 +332,7 @@ const updateAdminEditedUser = async (
       verified_by_admin,
       guest_upgrade_invite,
       invite_decision,
-      is_active
+      is_active,
     });
 
     const userRes = await client.query(
@@ -351,13 +351,12 @@ const updateAdminEditedUser = async (
         WHERE id = $11
         RETURNING *;`,
       [
-
         first_name,
         last_name,
         email,
         birthdate,
         password_hash, // Only hashed if provided
-        permission_status, 
+        permission_status,
         verified_by_admin, // boolean
         guest_upgrade_invite, // boolean
         invite_decision,
@@ -383,7 +382,7 @@ const updateAdminEditedUser = async (
       city,
       us_state,
       zip_code,
-      notes
+      notes,
     });
 
     // Update user_profiles table
@@ -414,7 +413,7 @@ const updateAdminEditedUser = async (
         us_state,
         zip_code,
         notes,
-        user.id
+        user.id,
       ],
     );
 
@@ -435,7 +434,6 @@ const updateAdminEditedUser = async (
   }
 };
 
-
 // QUERY: UPDATE OF A USER BY A USER (your-profile.ejs/edit-profile.ejs modal)
 
 const updateUser = async (
@@ -450,7 +448,7 @@ const updateUser = async (
   apt_unit,
   city,
   us_state,
-  zip_code
+  zip_code,
 ) => {
   console.log("Starting updateUser...");
   const client = await pool.connect();
@@ -471,7 +469,7 @@ const updateUser = async (
       first_name,
       last_name,
       email,
-      birthdate
+      birthdate,
     });
 
     const userRes = await client.query(
@@ -490,7 +488,7 @@ const updateUser = async (
         email,
         birthdate,
         password_hash, // Only hashed if provided
-        user_id
+        user_id,
       ],
     );
 
@@ -627,7 +625,6 @@ const deleteUserById = async (targetId) => {
 //   return rows[0] || null;
 // }
 
-
 // QUERY: GET TOPIC LIST FOR DROPDOWN IN NEW MESSAGE (new-message.ejs)
 
 const getTopicNames = async () => {
@@ -658,11 +655,11 @@ const getTopicNames = async () => {
 
 // const insertNewMessage = async (
 //   user_id,
-//   topic_id, 
+//   topic_id,
 //   title,
 //   body
 // ) => {
-  
+
 //   const client = await pool.connect();
 
 //   try {
@@ -703,6 +700,32 @@ const insertNewMessage = async (user_id, topic_id, title, body) => {
     return userRes.rows[0]; // Return the inserted message with all necessary fields
   } catch (err) {
     console.error("Error inserting new message:", err);
+    throw err;
+  } finally {
+    client.release();
+  }
+};
+
+// NOTE - NOT is_sticky (below) ---> this flips true and false
+// NOTE - CASE updates expires_at depending on the previous value
+const stickyMessageById = async (message_id) => {
+  const client = await pool.connect();
+  try {
+    await client.query(
+      `
+      UPDATE messages
+      SET 
+        is_sticky = NOT is_sticky,
+        expires_at = CASE 
+          WHEN is_sticky = FALSE THEN NULL
+          ELSE NOW() + INTERVAL '28 days'
+        END
+      WHERE id = $1;
+      `,
+      [message_id],
+    );
+  } catch (err) {
+    console.error("Error toggling sticky message:", err);
     throw err;
   } finally {
     client.release();
@@ -764,7 +787,9 @@ const getValidMessagesByTopic = async (targetId, limit = 50) => {
     WHERE m.topic_id = $1
       AND m.is_deleted = false
       AND (m.expires_at IS NULL OR m.expires_at > NOW())
-    ORDER BY m.created_at DESC
+    ORDER BY 
+      m.is_sticky DESC,
+      m.created_at DESC
     LIMIT $2;
   `;
   const res = await pool.query(query, [targetId, limit]);
@@ -919,7 +944,6 @@ const getMessagesByTopic = async (targetId, limit = 50) => {
 //   return res.rowCount > 0; // true if a row was updated
 // };
 
-
 // const becomeMemberById = async (targetId) => {
 //   const query = `
 //     UPDATE users AS u
@@ -935,7 +959,6 @@ const getMessagesByTopic = async (targetId, limit = 50) => {
 //   return true; // updated successfully
 // };
 
-
 module.exports = {
   getUsers,
   getUserById,
@@ -950,6 +973,7 @@ module.exports = {
   getTopicNames,
   // getTopicNamesForPermission,
   insertNewMessage,
+  stickyMessageById,
   getAllTopics,
   getTopicBySlug, // TODO - keep getTopicBySlug, did this getTopicBySlugWithPermission usurp it?
   getValidMessagesByTopic,
@@ -962,3 +986,4 @@ module.exports = {
   softDeleteMessageById,
   // becomeMemberById,
 };
+

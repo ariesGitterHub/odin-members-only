@@ -256,10 +256,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--off-white);
   border-radius: var(--border-radius-default);
   padding: var(--spacer-medium);
   text-align: center;
+}
+
+.regular-message {
+  background-color: var(--off-white);  
+}
+
+/* Use on message that were made sticky */
+.important-message {
+  background-color: var(--off-red);
+  color: var(--lt-yellow);
 }
 
 .message-body {

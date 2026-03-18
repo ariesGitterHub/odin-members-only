@@ -32,10 +32,14 @@
     </div>
   </div>
   <div class="message-details uppercase">
-    <span>created: <%= new Date(message.created_at).toLocaleDateString() %></span>
+    <span class="regular-message">created: <%= new Date(message.created_at).toLocaleDateString() %></span>
     <!-- <span>chars: <%#= message.body.length %>/700</span>     -->
-    <span>expires: <%= new Date(message.expires_at).toLocaleDateString() %></span>   
-    <!-- <span>likes: <%= message.like_count %></span>  -->
+     <% if (message.is_sticky) { %> 
+    <span class="important-message">important message</span> 
+    <% } else { %>
+    <span class="regular-message">expires: <%= new Date(message.expires_at).toLocaleDateString() %></span> 
+    <% } %>
+    <!-- <span>likes: <%#= message.like_count %></span>  -->
   </div>
   <div class="message-body">
     <p>
@@ -51,7 +55,21 @@
         <!-- BELOW NEEDS DELETE ACCESS TO THE PERSON WHO WROTE IT -->
         <!-- <%# if (message && message.permission_status === "admin") { %> -->
         <%# if (message && currentUser && currentUser.permission_status === "admin") { %>
-         <button class="button-default message-button <%= canPerformHasRole(currentUser, 'sticky-message', message) ? '' : 'hidden' %>" type="button"><span class="emoji">📌</span></button>
+
+        <form action="/app/message-boards/sticky-message" method="POST">
+          <input type="hidden" name="message_id" value="<%= message.id %>" />
+          <input type="hidden" name="slug" value="<%= topic.slug %>" />
+          <!-- <input type="hidden" name="is_sticky" value="<%#= message.is_sticky %>" /> -->
+          <button 
+            class="button-default message-button <%= canPerformHasRole(currentUser, 'sticky-message', message) ? '' : 'hidden' %>" 
+            type="submit"
+          >
+            <span class="emoji">
+              <%= message.is_sticky ? '📌' : '❌📌' %>
+            </span>
+          </button>
+        </form>
+
         <%# } %>
         <!-- <%# if (message && (message.user_id === currentUser.id || message.permission_status === "admin")) { %> -->
         <%# if (message && currentUser && (currentUser.permission_status === "admin" || message.user_id === currentUser.id)) { %>

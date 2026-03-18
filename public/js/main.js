@@ -6,7 +6,7 @@ import {
 
 import { handleEmojiOpen } from "./emojiFunctions.js"
 
-import { formActions } from "./formActions.js";
+import { formActionsFromModals } from "./formActions.js";
 
 import {
   handleUserCensusToggle,
@@ -15,7 +15,7 @@ import {
   handleShowProfileToggle,
 } from "./toggleHiddenSections.js";
 
-import { messageBodyCharCounter } from "./newMessageFunctions.js";
+import { messageBodyCharCounter } from "./miscFunctions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   attachCloseModalListener();
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   handleEmojiOpen();
 
-  formActions();
+  formActionsFromModals();
 
   handleUserCensusToggle();
   handleGuestCardsToggle();
@@ -32,4 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
   handleShowProfileToggle();
 
   messageBodyCharCounter();
+
+  // end
 });

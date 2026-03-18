@@ -11,6 +11,7 @@ const {
   insertAdminCreatedUser,
   updateAdminEditedUser,
   insertNewMessage,
+  stickyMessageById,
   updateUser,
   updateUserAvatar,
   getTopicNames,
@@ -304,6 +305,19 @@ async function postNewMessage(req, res, next) {
   }
 }
 
+// CONTROLLER: STICKY MESSAGE TOGGLE 
+async function postStickyMessageToggle(req, res, next) {
+ 
+  try {
+    const { message_id, slug } = req.body;
+     console.log("sticky:", message_id, slug);
+    await stickyMessageById(message_id);
+    res.redirect(`/app/message-boards/${slug}`);
+  } catch (err) {
+    next(err);
+  }
+}
+
 // CONTROLLER: DELETE MESSAGE (message-boards/topic slug)
 
 async function deleteUserMessage(req, res, next) {
@@ -329,6 +343,7 @@ async function deleteUserMessage(req, res, next) {
 //     next(err);
 //   }
 // }
+
 
 // CONTROLLER: YOUR PROFILE (your-profile.ejs)
 
@@ -1051,7 +1066,7 @@ module.exports = {
   getCurrentUser,
   getUserDetails,
   getMessageDetails,
-
+postStickyMessageToggle,
   getHome,
   getSignUp,
   postSignUp,

@@ -2,7 +2,7 @@ import { fetchCurrentUserData, fetchEmojiData } from "./dataFetchers.js";
 import { openModal } from "./modalFunctions.js"
 
 
-// TODO - Refactor this file
+// TODO - MAJOR TODO! Refactor this file
  export async function handleEmojiOpen(targetId, sectionId, titleId) {
    try {
      console.log("handleModalOpen targetId:", targetId); // Debugging line
