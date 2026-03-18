@@ -9,6 +9,7 @@ const {
   getUserDetails,
   getMessageDetails,
 postStickyMessageToggle,
+postLikeMessageToggle,
   getHome,
   getSignUp,
   postSignUp,
@@ -95,17 +96,23 @@ appRouter.post("/new-message", requireRole("guest"), postNewMessage);
 // ROUTES: TOPICS API USED NEW MESSAGE DROPDOWN 
 appRouter.get("/topics", requireRole("guest"), getTopicNamesForDropdown);
 
-//ROUTEs: STICKY MESSAGE TOGGLE (new-message.ejs)
+// ROUTES: LIKE MESSAGE (message-boards.ejs by topic slug)
+appRouter.post("/like-message", postLikeMessageToggle);
+
+// ROUTES: MESSAGE BOARDS PAGE 
+appRouter.get("/message-boards", requireRole("guest"), getMessageBoards);
+
+// ROUTES: MESSAGE BOARDS BY TOPIC SLUG PAGE (message-boards.ejs by topic slug)
+appRouter.get("/message-boards/:slug", requireRole("guest"), getTopicPage);
+
+// ROUTEs: STICKY MESSAGE TOGGLE (new-message.ejs)
 appRouter.post("/message-boards/sticky-message", requireRole("guest"), postStickyMessageToggle);
 
 // ROUTES: DELETE MESSAGE MODAL (warning-message-deletion.ejs)
 appRouter.post("/message-boards/delete-message", requireRole("guest"), deleteUserMessage);
 
-// ROUTES: MESSAGE BOARDS PAGE(message-boards.ejs)
-appRouter.get("/message-boards", requireRole("guest"), getMessageBoards);
-
-// ROUTES: MESSAGE BOARDS BY TOPIC SLUG PAGE (message-boards.ejs by topic slug, i.e., message-boards/:slug)
-appRouter.get("/message-boards/:slug", requireRole("guest"), getTopicPage);
+// ROUTES: LIKE MESSAGE (message-boards.ejs by topic slug)
+appRouter.post("/message-boards/like-message", postLikeMessageToggle);
 
 // ROUTES: YOUR PROFILE PAGE (your-profile.ejs)
 appRouter.get("/your-profile", requireRole("guest"), getYourProfilePage);

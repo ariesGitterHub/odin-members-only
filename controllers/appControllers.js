@@ -12,6 +12,7 @@ const {
   updateAdminEditedUser,
   insertNewMessage,
   stickyMessageById,
+  toggleLike,
   updateUser,
   updateUserAvatar,
   getTopicNames,
@@ -310,7 +311,7 @@ async function postStickyMessageToggle(req, res, next) {
  
   try {
     const { message_id, slug } = req.body;
-     console.log("sticky:", message_id, slug);
+    //  console.log("sticky:", message_id, slug);
     await stickyMessageById(message_id);
     res.redirect(`/app/message-boards/${slug}`);
   } catch (err) {
@@ -331,6 +332,18 @@ async function deleteUserMessage(req, res, next) {
     res.redirect(`/app/message-boards/${slug}`);
   } catch (err) {
     next(err);
+  }
+}
+
+async function postLikeMessageToggle(req, res, next) {
+  const { message_id, slug } = req.body;
+  const user_id = req.user.id; // <-- TODO - MORE OF THIS!
+  try {
+    await toggleLike(message_id, user_id);
+    res.redirect(`/app/message-boards/${slug}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error liking message");
   }
 }
 
@@ -651,7 +664,7 @@ async function getTopicPage(req, res, next) {
     }
     
     // Get messages for this topic
-    const messages = await getValidMessagesByTopic(topic.id);
+    const messages = await getValidMessagesByTopic(topic.id, 50);
 
     // const messagesWithAvatars = addAvatarFields(messages, avatarTypeDefault);
 
@@ -1067,6 +1080,7 @@ module.exports = {
   getUserDetails,
   getMessageDetails,
 postStickyMessageToggle,
+postLikeMessageToggle,
   getHome,
   getSignUp,
   postSignUp,
@@ -1095,5 +1109,5 @@ postStickyMessageToggle,
   deleteYourAccount,
   deleteUserMessage,
 
-  postBecomeMember,
+  // postBecomeMember,
 };

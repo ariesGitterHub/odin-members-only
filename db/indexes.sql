@@ -34,6 +34,12 @@ CREATE INDEX idx_message_likes_message_id
 CREATE INDEX idx_message_likes_user_id
   ON message_likes(user_id);
 
+--This prevents duplicate likes and makes your toggle logic safe.
+-- CREATE UNIQUE INDEX unique_message_like 
+-- ON message_likes (message_id, user_id);
+CREATE UNIQUE INDEX IF NOT EXISTS unique_message_like 
+ON message_likes (message_id, user_id);
+
 -- SESSIONS
 -- Used on every authenticated request
 CREATE INDEX idx_sessions_token

@@ -761,7 +761,7 @@ const getTopicBySlug = async (slug) => {
   return res.rows[0];
 };
 
-const getValidMessagesByTopic = async (targetId, limit = 50) => {
+const getValidMessagesByTopic = async (messageId, userId, limit = 50) => {
   const query = `
     SELECT 
       m.id,
@@ -774,6 +774,8 @@ const getValidMessagesByTopic = async (targetId, limit = 50) => {
       m.created_at,
       m.expires_at,
       m.is_sticky,
+      -- below is new
+      (ml.user_id IS NOT NULL) AS is_liked_by_user,
       u.first_name,
       u.last_name,
       u.permission_status,
@@ -784,15 +786,19 @@ const getValidMessagesByTopic = async (targetId, limit = 50) => {
     FROM messages m
     JOIN users u ON m.user_id = u.id
     LEFT JOIN user_profiles up ON up.user_id = u.id
+    -- below is new
+    LEFT JOIN message_likes ml 
+      ON ml.message_id = m.id 
+      AND ml.user_id = $2
     WHERE m.topic_id = $1
       AND m.is_deleted = false
       AND (m.expires_at IS NULL OR m.expires_at > NOW())
     ORDER BY 
       m.is_sticky DESC,
       m.created_at DESC
-    LIMIT $2;
+    LIMIT $3;
   `;
-  const res = await pool.query(query, [targetId, limit]);
+  const res = await pool.query(query, [messageId, userId, limit]);
   return res.rows;
 };
 
@@ -959,6 +965,109 @@ const getMessagesByTopic = async (targetId, limit = 50) => {
 //   return true; // updated successfully
 // };
 
+// const toggleLike = async (messageId, userId) => {
+//   const { rows } = await pool.query(
+//     `
+//  WITH deleted AS (
+//   DELETE FROM message_likes
+//   WHERE message_id = $1 AND user_id = $2
+//   RETURNING 1
+// ),
+// inserted AS (
+//   INSERT INTO message_likes (message_id, user_id)
+//   SELECT $1, $2
+//   WHERE NOT EXISTS (SELECT 1 FROM deleted)
+//   RETURNING 1
+// )
+// UPDATE messages
+// SET like_count = like_count + 
+//   CASE 
+//     WHEN EXISTS (SELECT 1 FROM inserted) THEN 1
+//     WHEN EXISTS (SELECT 1 FROM deleted) THEN -1
+//     ELSE 0
+//   END
+// WHERE id = $1;
+// RETURNING like_count;
+//   `,
+//     [messageId, userId],
+//   );
+
+//   return rows[0]; // Returning only the first row (one user)
+// };
+
+// const toggleLike = async (messageId, userId) => {
+//   const { rows } = await pool.query(
+//     `
+//     WITH deleted AS (
+//       DELETE FROM message_likes
+//       WHERE message_id = $1 AND user_id = $2
+//       RETURNING 1
+//     ),
+//     inserted AS (
+//       INSERT INTO message_likes (message_id, user_id)
+//       SELECT $1, $2
+//       WHERE NOT EXISTS (SELECT 1 FROM deleted)
+//       RETURNING 1
+//     )
+//     UPDATE messages
+//     SET like_count = GREATEST(
+//       like_count + 
+//         CASE 
+//           WHEN EXISTS (SELECT 1 FROM inserted) THEN 1
+//           WHEN EXISTS (SELECT 1 FROM deleted) THEN -1
+//           ELSE 0
+//         END,
+//       0
+//     )
+//     WHERE id = $1
+//     RETURNING like_count;
+//     `,
+//     [messageId, userId],
+//   );
+
+//   return rows[0]; // now actually returns { like_count: ... }
+// };
+
+const toggleLike = async (messageId, userId) => {
+  const { rows } = await pool.query(
+    `
+    WITH deleted AS (
+      DELETE FROM message_likes
+      WHERE message_id = $1 AND user_id = $2
+      RETURNING 1
+    ),
+    inserted AS (
+      INSERT INTO message_likes (message_id, user_id)
+      SELECT $1, $2
+      WHERE NOT EXISTS (SELECT 1 FROM deleted)
+      RETURNING 1
+    ),
+    updated AS (
+      UPDATE messages
+      SET like_count = GREATEST(
+        like_count + 
+          CASE 
+            WHEN EXISTS (SELECT 1 FROM inserted) THEN 1
+            WHEN EXISTS (SELECT 1 FROM deleted) THEN -1
+            ELSE 0
+          END,
+        0
+      )
+      WHERE id = $1
+      RETURNING like_count
+    )
+    SELECT 
+      like_count,
+      EXISTS (SELECT 1 FROM inserted) AS is_liked
+    FROM updated;
+    `,
+    [messageId, userId],
+  );
+
+  return rows[0];
+};
+
+// TODO - rename all of thes eby type, get, update, post, insert, find out the major types of queries!
 module.exports = {
   getUsers,
   getUserById,
@@ -974,6 +1083,7 @@ module.exports = {
   // getTopicNamesForPermission,
   insertNewMessage,
   stickyMessageById,
+  toggleLike,
   getAllTopics,
   getTopicBySlug, // TODO - keep getTopicBySlug, did this getTopicBySlugWithPermission usurp it?
   getValidMessagesByTopic,
