@@ -1,0 +1,31 @@
+<form id="reply-message-form" method="POST">
+  <input id="reply-message-title" type="hidden" name="messageTitle" />
+  <input id="reply-message-target-id" type="hidden" name="targetId" />
+  <input id="reply-message-topic-name" type="hidden" name="topicName" />
+  <input id="reply-message-topic-slug" type="hidden" name="topicSlug" />
+  <!-- TODO - and reminder that js is no longer needed in the modal since the front end is populating it, is this safeguarded? -->
+  <%# if (currentUser) { %> 
+  <h2 class="author-draft-message">By <span id="first-name-reply-message"><%#= currentUser.first_name %></span> <span id="last-name-reply-message"><%#= currentUser.last_name %></span></h2>
+  <%# } %>
+  <p class="reply-name-draft-message">a reply to
+    <span id="reply-to-first-name-draft-message"></span> <span id="reply-to-last-name-draft-message"></span>
+  
+  </p>
+  <label class="bold capitalize" for="topic-reply-message">Message Topic</label>
+  <input
+    id="topic-reply-message"
+    class="topic-draft-message uppercase"
+    name="topic_name"
+    required
+  >
+  </input>
+  <label class="bold capitalize" for="title-reply-message">Message Title</label>
+  <input id="title-reply-message" class="title-draft-message word-breaker" type="text" name="title" required />
+  <div class="element-container-col-start-center">
+    <label class="bold capitalize" for="body-reply-message">Message Body <span id="max-char-count-reply-message" class="max-char-count-draft-message"></span></label>
+    <textarea id="body-reply-message" class="body-draft-message" type="text" name="body" maxlength="700" required></textarea>
+    <div class="button-container-row-space-evenly">
+      <button class="button-default wide-button" type="submit">submit reply message</button>
+    </div>
+  </div>
+</form>

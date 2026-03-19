@@ -117,7 +117,8 @@ const getMessageById = async (targetId) => {
     u.first_name,
     u.last_name,
     u.email,
-    t.name AS topic_name
+    t.name AS topic_name,
+    t.slug AS topic_slug
   FROM messages m
   JOIN users u ON m.user_id = u.id
   LEFT JOIN topics t ON m.topic_id = t.id
@@ -784,8 +785,8 @@ const getValidMessagesByTopic = async (messageId, userId, limit = 50) => {
       m.created_at,
       m.expires_at,
       m.is_sticky,
-      -- below is new
-      ml.user_id AS is_liked_by_user_id,
+      -- below is new TODO - get rid of ml-user and that table code
+        ml.user_id AS is_liked_by_user_id,
       u.first_name,
       u.last_name,
       u.permission_status,
@@ -797,7 +798,7 @@ const getValidMessagesByTopic = async (messageId, userId, limit = 50) => {
     JOIN users u ON m.user_id = u.id
     LEFT JOIN user_profiles up ON up.user_id = u.id
     -- below is new
-    LEFT JOIN message_likes ml 
+      LEFT JOIN message_likes ml 
       ON ml.message_id = m.id
       AND ml.user_id = $2
     WHERE m.topic_id = $1
@@ -1180,7 +1181,7 @@ module.exports = {
   getUserById,
   getMessageById,
   getTopicById, 
-  
+
   checkIfEmailExists,
   insertNewUser,
   insertAdminCreatedUser,

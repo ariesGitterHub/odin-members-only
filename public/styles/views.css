@@ -113,33 +113,48 @@
   padding: var(--spacer-medium);
 }
 
-/* -- new-message.ejs */
-.author-new-message {
+/* -- new-message.ejs AND reply-message.ejs; TODO -**maybe** move to components*/
+.author-draft-message {
   color: var(--off-black);
   font-size: var(--font-size-large);
-  margin-bottom: var(--spacer-default);
+  /* margin-bottom: var(--spacer-default); */
 }
 
-.topic-new-message, .title-new-message, .body-new-message {
+.reply-name-draft-message {
+  width: fit-content;
+  background-color: var(--off-red);
+  color: var(--off-white);
+  border-radius: var(--border-radius-default);
+  font-size: var(--font-size-small);
+  margin: var(--spacer-default) 0;
+  padding: var(--spacer-default);
+  text-transform: uppercase;
+}
+
+.topic-draft-message,
+.title-draft-message,
+.body-draft-message {
   /* font-family: var(--font-text); */
   font-size: var(--font-size-default);
 }
 
-.title-new-message {
-  outline: none;    /* Remove the default focus outline (optional, use with caution) */  
+.title-draft-message {
+  outline: none; /* Remove the default focus outline (optional, use with caution) */
 }
- 
-.body-new-message {
-  width: 100%;      /* Make the textarea span full width */
-  height: 180px;    /* Set a fixed height, adjust as needed */
+
+.body-draft-message {
+  width: 100%; /* Make the textarea span full width */
+  height: 180px; /* Set a fixed height, adjust as needed */
   line-height: 1.5; /* Control line height for readability */
-  outline: none;    /* Remove the default focus outline (optional, use with caution) */  
+  outline: none; /* Remove the default focus outline (optional, use with caution) */
   margin: 0;
   padding: 3px;
 }
 
-.topic-new-message:focus, .title-new-message:focus, .body-new-message:focus {
- border: var(--border-highlight);
+.topic-draft-message:focus,
+.title-draft-message:focus,
+.body-draft-message:focus {
+  border: var(--border-highlight);
 }
 
 /* -- message-boards.ejs */
@@ -177,15 +192,14 @@
   padding: var(--spacer-small) var(--spacer-medium);
 }
 
-
 .topic-title {
   font-size: var(--font-size-default);
 }
 
 .topic-hr {
   width: var(--width-default-percent);
-  border: 0;   
-  border-top: var(--border-hr-top); 
+  border: 0;
+  border-top: var(--border-hr-top);
   /* border-bottom: var(--border-hr-bottom);  */
 }
 
@@ -203,7 +217,6 @@
 
 /* -- message-card.ejs */
 .message-card {
-
   background-color: var(--white);
   border-radius: var(--border-radius-default);
   box-shadow: var(--box-shadow-black);
@@ -262,7 +275,7 @@
 }
 
 .regular-message {
-  background-color: var(--off-white);  
+  background-color: var(--off-white);
 }
 
 /* Use on message that were made sticky */
@@ -395,7 +408,7 @@
   color: var(--off-black);
   cursor: pointer;
   font-size: var(--font-size-large);
-  margin: 0; 
+  margin: 0;
 }
 
 .emoji-option:hover {
@@ -404,25 +417,23 @@
 }
 
 .emoji-option:hover .emoji {
-  transform: scale(1.25); 
+  transform: scale(1.25);
 }
 
 .emoji-option:hover label {
-  color: var(--off-red); 
+  color: var(--off-red);
 }
 
 /* ---- Checked state - when the radio button is selected */
 .emoji-option input[type="radio"]:checked + label .emoji {
   transform: scale(1.25);
-  color: var(--dk-red); 
+  color: var(--dk-red);
 }
 
- /* ---- Makes the text bold when the radio button is selected */
+/* ---- Makes the text bold when the radio button is selected */
 .emoji-option input[type="radio"]:checked + label p {
   color: var(--black);
-  font-weight: var(
-    --font-weight-heavy
-  );
+  font-weight: var(--font-weight-heavy);
 }
 
 /* error-page.ejs */

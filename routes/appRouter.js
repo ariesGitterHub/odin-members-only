@@ -1,42 +1,50 @@
 const { Router } = require("express");
-// const express = require("express");
 const { requireRole } = require("../utils/permissions");
-// const bcrypt = require("bcryptjs");
 
 // TODO - arrange by order of ROUTES far below
 const {
+  // Basic fetch
   getCurrentUser,
   getUserDetails,
   getMessageDetails,
-postStickyMessageToggle,
-postLikeMessageToggle,
+
+  // No permission status needed
   getHome,
   getSignUp,
   postSignUp,
   getLogIn,
   postLogIn,
-  postLogOut,
-  getYourProfilePage,
-  postYourProfilePageEdit,
-  postYourProfilePageAvatar,
-  getMemberDirectory,
-  getInfo,
-  postNewMessage,
-  getMessageBoards,
-  getTopicNamesForDropdown,
-  getTopicPage,
+
+  // Admin permission status
   getAdminPage,
   getAdminCreatePage,
   postAdminCreatePage,
+  deleteUserAccount,
   getAdminEditPage,
   postAdminEditPage,
 
-  deleteUserAccount,
-  deleteYourAccount,
+  // Any user status
+  getInfo,
+
+  postNewMessage,
+  getTopicNamesForDropdown,
+
+  getMessageBoards,
+  getTopicPage,
+
+  postStickyMessageToggle,
+  // postReplyMessage,
   deleteUserMessage,
+  postLikeMessageToggle,
+  
+  getYourProfilePage,
+  deleteYourAccount,
+  postYourProfilePageEdit,
+  postYourProfilePageAvatar,
+  getMemberDirectory, // Member status or higher
+  postLogOut,
 
   // postBecomeMember,
-  
 } = require("../controllers/appControllers");
 
 const appRouter = Router();
@@ -96,9 +104,6 @@ appRouter.post("/new-message", requireRole("guest"), postNewMessage);
 // ROUTES: TOPICS API USED NEW MESSAGE DROPDOWN 
 appRouter.get("/topics", requireRole("guest"), getTopicNamesForDropdown);
 
-// ROUTES: LIKE MESSAGE (message-boards.ejs by topic slug)
-appRouter.post("/like-message", postLikeMessageToggle);
-
 // ROUTES: MESSAGE BOARDS PAGE 
 appRouter.get("/message-boards", requireRole("guest"), getMessageBoards);
 
@@ -110,6 +115,9 @@ appRouter.post("/message-boards/sticky-message", requireRole("guest"), postStick
 
 // ROUTES: DELETE MESSAGE MODAL (warning-message-deletion.ejs)
 appRouter.post("/message-boards/delete-message", requireRole("guest"), deleteUserMessage);
+
+// ROUTES: REPLY MESSAGE MODAL (reply-message.ejs)
+// appRouter.post("/message-boards/reply-message", requireRole("guest"), postReplyMessage);
 
 // ROUTES: LIKE MESSAGE (message-boards.ejs by topic slug)
 appRouter.post("/message-boards/like-message", postLikeMessageToggle);

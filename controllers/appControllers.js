@@ -13,6 +13,7 @@ const {
   insertAdminCreatedUser,
   updateAdminEditedUser,
   insertNewMessage,
+
   stickyMessageById,
   toggleLike,
   updateUser,
@@ -290,7 +291,7 @@ async function getInfo(req, res, next) {
 }
 
 // CONTROLLER: NEW MESSAGE (new-message.ejs)
-
+// Use below to model postReplyMessage
 async function postNewMessage(req, res, next) {
   const { topic_id, title, body } = req.body;
 
@@ -329,17 +330,56 @@ async function postStickyMessageToggle(req, res, next) {
   }
 }
 
+// Use below to model postReplyMessage
+async function postReplyMessage(req, res, next) {
+  // const { topicName, topicSlug, messageTitle, body } = req.body;
+  // targetId = messageId
+  const { targetId, messageTitle, topicSlug, topicName, body } =
+    req.body;
+
+  // TODO - Maybe do this for clarity
+  const messageId = targetId;
+
+  // Assuming you're using session-based authentication
+  const currentUser_id = req.user.id; // or whatever key stores user_id in the session
+
+  if (!currentUser_id) {
+    return res.status(401).send("User is not logged in.");
+  }
+
+  try {
+    // Get topic info
+    const messages = await getValidMessagesByTopic(messageId);
+
+    if (!topic) {
+      return res.status(404).send("Topic not found.");
+    }
+
+    await insertNewMessage(
+      currentUser_id,
+      topic_id,
+      topic_name,
+      topic_slug,
+      title,
+      body,
+    ); // Pass user_id from session
+    res.redirect(`/app/message-boards/${topic.slug}`);
+  } catch (err) {
+    next(err);
+  }
+}
+
 // CONTROLLER: DELETE MESSAGE (message-boards/topic slug)
 
 async function deleteUserMessage(req, res, next) {
   try {
-    console.log("Delete message body sanity:", req.body);
+    console.log("Delete user message body sanity:", req.body);
     // slug was undefined for use in redirect, I forgot to extract it from req.body!!!!
-    const { targetId, slug } = req.body;
+    const { targetId, topicSlug } = req.body;
     const rowsUpdated = await softDeleteMessageById(targetId);
     if (rowsUpdated === 0) return res.status(404).send("Message not found");
     // res.redirect("/app/message-boards");
-    res.redirect(`/app/message-boards/${slug}`);
+    res.redirect(`/app/message-boards/${topicSlug}`);
   } catch (err) {
     next(err);
   }
@@ -1070,10 +1110,28 @@ async function deleteUserAccount(req, res, next) {
   }
 }
 
+// async function deleteYourAccount(req, res, next) {
+//   // TODO - should I use req.user here or targetId???????????
+
+//   try {
+//     const { targetId } = req.body;
+//     await deleteUserById(targetId);
+//     res.redirect("/app");
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
 async function deleteYourAccount(req, res, next) {
   try {
-    const { targetId } = req.body;
+    // TODO - use below as the model!!!!!
+
+    // Use req.user to ensure the logged-in user is deleting their own account
+    const targetId = req.user.id;
+
+    // Perform the deletion for the authenticated user (not a user provided in the body)
     await deleteUserById(targetId);
+
     res.redirect("/app");
   } catch (err) {
     next(err);
@@ -1093,38 +1151,79 @@ async function postBecomeMember(req, res, next) {
 
 
 module.exports = {
+  // Basic fetch
   getCurrentUser,
   getUserDetails,
   getMessageDetails,
-postStickyMessageToggle,
-postLikeMessageToggle,
+
+  // No permission status needed
   getHome,
   getSignUp,
   postSignUp,
   getLogIn,
   postLogIn,
-  postLogOut,
-  getYourProfilePage,
-  postYourProfilePageEdit,
-  postYourProfilePageAvatar,
-  getMemberDirectory,
-  // getUpdateProfile,
-  // getChangeAvatar,
-  getInfo,
-  postNewMessage,
-  getMessageBoards,
-  getTopicNamesForDropdown,
-  // requireTopicPermission,
-  getTopicPage,
+
+  // Admin permission status
   getAdminPage,
   getAdminCreatePage,
   postAdminCreatePage,
+  deleteUserAccount,
   getAdminEditPage,
   postAdminEditPage,
 
-  deleteUserAccount,
-  deleteYourAccount,
-  deleteUserMessage,
+  // Any user status
+  getInfo,
 
-  // postBecomeMember,
+  postNewMessage,
+  getTopicNamesForDropdown,
+
+  getMessageBoards,
+  getTopicPage,
+
+  postStickyMessageToggle,
+  postReplyMessage,
+  deleteUserMessage,
+  postLikeMessageToggle,
+
+  getYourProfilePage,
+  deleteYourAccount,
+  postYourProfilePageEdit,
+  postYourProfilePageAvatar,
+  getMemberDirectory, // Member status or higher
+  postLogOut,
+
+  //   getCurrentUser,
+  //   getUserDetails,
+  //   getMessageDetails,
+  // postStickyMessageToggle,
+  // postLikeMessageToggle,
+  //   getHome,
+  //   getSignUp,
+  //   postSignUp,
+  //   getLogIn,
+  //   postLogIn,
+  //   postLogOut,
+  //   getYourProfilePage,
+  //   postYourProfilePageEdit,
+  //   postYourProfilePageAvatar,
+  //   getMemberDirectory,
+  //   // getUpdateProfile,
+  //   // getChangeAvatar,
+  //   getInfo,
+  //   postNewMessage,
+  //   getMessageBoards,
+  //   getTopicNamesForDropdown,
+  //   // requireTopicPermission,
+  //   getTopicPage,
+  //   getAdminPage,
+  //   getAdminCreatePage,
+  //   postAdminCreatePage,
+  //   getAdminEditPage,
+  //   postAdminEditPage,
+
+  //   deleteUserAccount,
+  //   deleteYourAccount,
+  //   deleteUserMessage,
+
+  //   // postBecomeMember,
 };

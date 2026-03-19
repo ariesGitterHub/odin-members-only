@@ -319,3 +319,14 @@ li:last-child {
   color: var(--off-black);
   padding: var(--spacer-default);
 }
+
+.ui-reply-message-bubble {
+  /* max-width: var(--max-width); */
+  max-width: var(--width-default-percent);
+  background-color: var(--white);
+  /* border: var(--border-default); */
+  /* border: var(--border-off-white); */
+  border-radius: var(--border-radius-default);
+  color: var(--off-red);
+  padding: var(--spacer-default);
+}

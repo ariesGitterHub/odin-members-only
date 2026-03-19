@@ -1,17 +1,5 @@
 <div class="message-card">
   <div class="message-header">
-    <!-- <div 
-      class="avatar-image-container circle avatar-circle-small" 
-      style="
-        --avatar-color-fg: <%#= message.avatar_color_fg || 'var(--off-black)' %>;
-        --avatar-color-bg-top: <%#= message.avatar_color_bg_top || 'var(--off-white)' %>;
-        --avatar-color-bg-bottom: <%#= message.avatar_color_bg_bottom || 'var(--off-gray)' %>;
-      ">
-      <span class="emoji avatar-emoji-small-size" role="img" aria-label="avatar image">
-        <%#= message.avatarLetter %>
-      </span>
-    </div> -->
-
     <div class="margin-right">
       <div 
         class="avatar-container avatar-container-size-small avatar-background circle " 
@@ -21,7 +9,6 @@
           --avatar-color-bg-bottom: <%= message.avatar_color_bg_bottom || 'var(--off-gray)' %>;
         ">
         <span class="emoji emoji-size-small" role="image" aria-label="avatar image">
-          <%#= message.avatarLetter %>
           <%= message.avatar_type %>
         </span>
       </div>          
@@ -33,91 +20,75 @@
   </div>
   <div class="message-details uppercase">
     <span class="regular-message">created: <%= new Date(message.created_at).toLocaleDateString() %></span>
-    <!-- <span>chars: <%#= message.body.length %>/700</span>     -->
      <% if (message.is_sticky) { %> 
     <span class="important-message">important message</span> 
     <% } else { %>
     <span class="regular-message">expires: <%= new Date(message.expires_at).toLocaleDateString() %></span> 
     <% } %>
-    <!-- <span>likes: <%#= message.like_count %></span>  -->
   </div>
   <div class="message-body">
     <p>
-      <!-- <span class="emoji">🗨️</span>  -->
       <%= message.body %>
     </p>
   </div>
   <div class="message-footer">
-  <%# if (currentUser) { %>
-    
-      <div class="message-button-container">
-        <!-- <button class="message-button" type="button">Edit</button> -->
-        <!-- BELOW NEEDS DELETE ACCESS TO THE PERSON WHO WROTE IT -->
-        <!-- <%# if (message && message.permission_status === "admin") { %> -->
-        <%# if (message && currentUser && currentUser.permission_status === "admin") { %>
-
-        <form action="/app/message-boards/sticky-message" method="POST">
-          <input type="hidden" name="message_id" value="<%= message.id %>" />
-          <input type="hidden" name="slug" value="<%= topic.slug %>" />
-          <!-- <input type="hidden" name="is_sticky" value="<%#= message.is_sticky %>" /> -->
-          <button 
-            class="button-default message-button <%= canPerformHasRole(currentUser, 'sticky-message', message) ? '' : 'hidden' %>" 
-            type="submit"
-          >
-            <span class="emoji">
-              <%= message.is_sticky ? '📌‼' : '❌📌' %>
-            </span>
-          </button>
-        </form>
-
-        <%# } %>
-        <!-- <%# if (message && (message.user_id === currentUser.id || message.permission_status === "admin")) { %> -->
-        <%# if (message && currentUser && (currentUser.permission_status === "admin" || message.user_id === currentUser.id)) { %>
-         <!-- <button 
-          class="button-default message-button action-target-button <%#= canPerformHasRole(currentUser, 'delete-message', message) ? '' : 'hidden' %>" type="button"
-          data-section="modal-warning-message-deletion"
-          data-title="modal-title-warning-message-deletion"
-          data-target-id="<%#= message.id %>"
-          data-action="/app/delete-message"
+    <div class="message-button-container">
+      <form action="/app/message-boards/sticky-message" method="POST">
+        <input type="hidden" name="message_id" value="<%= message.id %>" />
+        <input type="hidden" name="slug" value="<%= topic.slug %>" />
+        <button 
+          class="button-default message-button <%= canPerformHasRole(currentUser, 'sticky-message', message) ? '' : 'hidden' %>" 
+          type="submit"
         >
-          <span class="emoji">🗑</span>
-        </button> -->
-         <button 
-          class="button-default message-button action-target-button <%= canPerformHasRole(currentUser, 'delete-message', message) ? '' : 'hidden' %>" type="button"
-          data-section="modal-warning-message-deletion"
-          data-title="modal-title-warning-message-deletion"
-          data-target-id="<%= message.id %>"
-          data-slug="<%= topic.slug %>"
-          data-action="/app/message-boards/delete-message"
-        >
-          <span class="emoji">🗑</span>
+          <span class="emoji">
+            <%= message.is_sticky ? '📌‼' : '❌📌' %>
+          </span>
         </button>
-        <%# } %>
-        <!-- TODO - BELOW NEEDS TO BE HIDDEN TO THE PERSON WHO WROTE IT **OR** DOES IT??????-->
-        <button class="button-default message-button" type="button"><span class="emoji">↩</span>(<%= message.reply_count %>)</button>
+      </form>
+      <!-- MODAL (warning message deletion) -->
+      <button 
+        class="button-default message-button action-target-button <%= canPerformHasRole(currentUser, 'delete-message', message) ? '' : 'hidden' %>" 
+        type="button"
+        data-section="modal-warning-message-deletion"
+        data-title="modal-title-warning-message-deletion"
+        data-action="/app/message-boards/delete-message"
+        data-topic-slug="<%= message.topic_slug %>"
+        data-target-id="<%= message.id %>"
         
-        <!-- <form action="/messages/<%#= message.id %>/like" method="POST">
-        
-        <button class="button-default message-button" type="submit"><span class="emoji">❤</span>(<%= message.like_count %>)</button>
-      </form>           -->
-        <form action="/app/message-boards/like-message" method="POST">
-          <input type="hidden" name="message_id" value="<%= message.id %>" />
-          <!-- <input type="hidden" name="user_id" value="<%#= currentUser.id %>" /> -->
-          <input type="hidden" name="slug" value="<%= topic.slug %>" />
+      >
+        <span class="emoji">🗑</span>
+      </button>
 
-          <button 
-            class="button-default message-button" 
-            type="submit"
-          >
-            <span class="emoji">
-              <!-- <%#= message.is_liked_by_user ? '' : '' %>  -->
-              <%= message.like_count ? '❤' : '🤍' %> 
-            </span> 
-            (<%= message.like_count %>)
-          </button>
-        </form>
-      </div>
+      <!-- TODO - BELOW NEEDS TO BE HIDDEN TO THE PERSON WHO WROTE IT **OR** DOES IT??????-->
 
-    <%# } 👍🏼 ♥%>
+      <!-- MODAL (reply message) -->
+      <button 
+        class="button-default message-button action-target-button"
+        type="button"
+        data-section="modal-reply-message"
+        data-title="modal-title-reply-message"
+        data-action="/app/message-boards/reply-message"
+        data-message-title="<%= message.title %>"
+        data-topic-slug="<%= message.topic_slug %>"
+        data-topic-name="<%= message.topic_name %>"
+        data-target-id="<%= message.id %>"
+        >
+        <span class="emoji">↪</span>(<%= message.reply_count %>)
+      </button>
+      
+      <form action="/app/message-boards/like-message" method="POST">
+        <input type="hidden" name="message_id" value="<%= message.id %>" />
+        <input type="hidden" name="slug" value="<%= topic.slug %>" />
+        <button 
+          class="button-default message-button" 
+          type="submit"
+        >
+          <span class="emoji">
+            <%= message.like_count ? '❤' : '🤍' %> 
+          </span> 
+          (<%= message.like_count %>)
+        </button>
+      </form>
+    </div>
   </div>
 </div>
