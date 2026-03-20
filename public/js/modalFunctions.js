@@ -162,11 +162,29 @@ export function attachOpenModalListener() {
   }
 
   // Populates the new-message.ejs partial modal with currentUser data
-  function populateNewMessage(user) {
-    document.getElementById("first-name-new-message").innerText =
-      user.first_name;
-    document.getElementById("last-name-new-message").innerText = user.last_name;
-  }
+  // function populateNewMessage(user) {
+
+  //   document.getElementById("first-name-new-message").innerText =
+  //     user.first_name;
+  //   document.getElementById("last-name-new-message").innerText = user.last_name;
+  // }
+
+    function populateNewMessage(user) {
+      const firstName =  document.getElementById("first-name-new-message");
+      const lastName = document.getElementById("last-name-new-message");
+      const title = document.getElementById("title-new-message");
+      const body = document.getElementById("body-new-message");
+
+      // TODO - Does this actually clear the fields?
+      firstName.innerHTML = "";
+      lastName.innerHTML = "";
+      title.innerHTML = "";
+      body.innerHTML = "";
+
+      firstName.innerText = user.first_name;
+      lastName.innerText = user.last_name;
+    }
+
 
   // Populates the new-message.ejs partial modal with topic data
   function populateNewMessageWithTopics(topics) {
@@ -202,12 +220,25 @@ export function attachOpenModalListener() {
       message,
       // topic
     ) {
-    document.getElementById("first-name-reply-message").innerText = user.first_name;
-    document.getElementById("last-name-reply-message").innerText = user.last_name;
-    document.getElementById("reply-to-first-name-draft-message").innerText = message.first_name;
-    document.getElementById("reply-to-last-name-draft-message").innerText = message.last_name;
-    document.getElementById("topic-reply-message").value = `➤ ${message.topic_name}`;
-    document.getElementById("title-reply-message").value = `↪ ${message.title}`;
+    const firstName = document.getElementById("first-name-reply-message");
+    const lastName = document.getElementById("last-name-reply-message");
+    // const replyFirstName = document.getElementById("reply-to-first-name-draft-message");
+    // const replyLastName = document.getElementById("reply-to-last-name-draft-message");
+    const topic = document.getElementById("topic-reply-message");
+    const title = document.getElementById("title-reply-message");
+    const body = document.getElementById("body-reply-message");
+
+    firstName.innerText = user.first_name;
+    lastName.innerText = user.last_name;
+    // replyFirstName.innerText = message.first_name;
+    // replyLastName.innerText = message.last_name;
+    topic.value = `➤ ${message.topic_name}`;
+    topic.readOnly = true;
+    title.value = message.title;  
+    title.readOnly = true;
+    
+    body.value = `💬 A reply to ${message.first_name} ${message.last_name}... `;
+
   }
 
   // Populates the warning-account-deletion.ejs partial modal with user data

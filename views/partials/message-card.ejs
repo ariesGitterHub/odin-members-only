@@ -15,7 +15,7 @@
     </div>
     <div class="message-name-and-title">
       <p class="message-name bold"><%= message.first_name %> <%= message.last_name %></p>
-      <p class="message-title bold"><%= message.title %></p>
+      <p class="message-title bold"><span class="emoji"><%= message.parent_message_id ? '↪' : '' %></span> <%= message.title %></p>
     </div>
   </div>
   <div class="message-details uppercase">
@@ -46,15 +46,15 @@
         </button>
       </form>
       <!-- MODAL (warning message deletion) -->
+      <!-- NOTE - data-topic-slug="<%#= topic.slug %>" must use topic.slug, as using message.topic_slug, which is available, will be deleted along with the whole message and lose its reference that is used to redirect back to the same /app/message-boards/${topicSlug}, in other words, not using topic.slug messes up teh redirect.-->
       <button 
         class="button-default message-button action-target-button <%= canPerformHasRole(currentUser, 'delete-message', message) ? '' : 'hidden' %>" 
         type="button"
         data-section="modal-warning-message-deletion"
         data-title="modal-title-warning-message-deletion"
         data-action="/app/message-boards/delete-message"
-        data-topic-slug="<%= message.topic_slug %>"
+        data-topic-slug="<%= topic.slug %>"
         data-target-id="<%= message.id %>"
-        
       >
         <span class="emoji">🗑</span>
       </button>

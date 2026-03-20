@@ -8,9 +8,9 @@ export function messageBodyCharCounter() {
     "max-char-count-new-message",
   );
 
-  const bodyRequestMessage = document.getElementById("body-request-message");
+  const bodyRequestMessage = document.getElementById("body-reply-message");
   const maxCharCountRequestMessage = document.getElementById(
-    "max-char-count-request-message",
+    "max-char-count-reply-message",
   );
 
   const maxChars = 700;
@@ -19,7 +19,7 @@ export function messageBodyCharCounter() {
     const currentNewMessageLength = bodyNewMessage.value.length;
     maxCharCountNewMessage.textContent = `(${currentNewMessageLength}/${maxChars})`;
 
-    if (currentLength > maxChars) {
+    if (currentNewMessageLength > maxChars) {
       bodyNewMessage.value = bodyNewMessage.value.substring(0, maxChars); // Truncates input if too long
     }
   });
@@ -28,7 +28,7 @@ export function messageBodyCharCounter() {
     const currentRequestMessageLength = bodyRequestMessage.value.length;
     maxCharCountRequestMessage.textContent = `(${currentRequestMessageLength}/${maxChars})`;
 
-    if (currentLength > maxChars) {
+    if (currentRequestMessageLength > maxChars) {
       bodyRequestMessage.value = bodyRequestMessage.value.substring(0, maxChars); // Truncates input if too long
     }
   });

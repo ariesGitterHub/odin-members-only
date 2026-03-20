@@ -7,20 +7,20 @@
   <%# if (currentUser) { %> 
   <h2 class="author-draft-message">By <span id="first-name-reply-message"><%#= currentUser.first_name %></span> <span id="last-name-reply-message"><%#= currentUser.last_name %></span></h2>
   <%# } %>
-  <p class="reply-name-draft-message">a reply to
+  <!-- <p class="reply-name-draft-message">reply to
     <span id="reply-to-first-name-draft-message"></span> <span id="reply-to-last-name-draft-message"></span>
-  
-  </p>
+  </p> -->
   <label class="bold capitalize" for="topic-reply-message">Message Topic</label>
   <input
     id="topic-reply-message"
     class="topic-draft-message uppercase"
     name="topic_name"
     required
+    
   >
   </input>
   <label class="bold capitalize" for="title-reply-message">Message Title</label>
-  <input id="title-reply-message" class="title-draft-message word-breaker" type="text" name="title" required />
+  <input id="title-reply-message" class="title-draft-message word-breaker" type="text" name="title" required  />
   <div class="element-container-col-start-center">
     <label class="bold capitalize" for="body-reply-message">Message Body <span id="max-char-count-reply-message" class="max-char-count-draft-message"></span></label>
     <textarea id="body-reply-message" class="body-draft-message" type="text" name="body" maxlength="700" required></textarea>

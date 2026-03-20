@@ -3,15 +3,15 @@ export function formActionsFromModals() {
     ".action-target-button",
   );
   const deleteUserForm = document.getElementById("delete-user-form");
-  const deleteUserTargetId = document.getElementById("delete-user-target-id");
+  const deleteUserTargetId = document.getElementById("delete-user-target-id"); // user_id
 
   const deleteMessageForm = document.getElementById("delete-message-form");
   const deleteMessageTopicSlug = document.getElementById("delete-message-topic-slug");  
-  const deleteMessageTargetId = document.getElementById("delete-message-target-id");
+  const deleteMessageTargetId = document.getElementById("delete-message-target-id"); // message_id
 
   const replyMessageForm = document.getElementById("reply-message-form");
   const replyMessageTitle = document.getElementById("reply-message-title");
-  const replyMessageTargetId = document.getElementById("reply-message-target-id");
+  const replyMessageTargetId = document.getElementById("reply-message-target-id"); // message_id
   const replyMessageTopicSlug = document.getElementById("reply-message-topic-slug");
   const replyMessageTopicName = document.getElementById("reply-message-topic-name");
   

@@ -117,15 +117,17 @@
 .author-draft-message {
   color: var(--off-black);
   font-size: var(--font-size-large);
-  /* margin-bottom: var(--spacer-default); */
+  margin-bottom: var(--spacer-default);
 }
 
 .reply-name-draft-message {
   width: fit-content;
-  background-color: var(--off-red);
-  color: var(--off-white);
+  background-color: var(--off-white);
+  color: var(--off-red);
+  border: var(--border-highlight);
   border-radius: var(--border-radius-default);
   font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
   margin: var(--spacer-default) 0;
   padding: var(--spacer-default);
   text-transform: uppercase;
@@ -204,6 +206,18 @@
 }
 
 /* -- topic.ejs */
+.button-card {
+  background-color: var(--white);
+  border-radius: var(--border-radius-default);
+  box-shadow: var(--box-shadow-black);
+  color: var(--off-black);
+  line-height: 1.5;
+
+  max-width: var(--max-width);
+  min-width: var(--card-width);
+  margin: var(--spacer-default);
+}
+
 .topic-card {
   /* 750px is good for reading... */
   max-width: var(--max-width);
@@ -216,6 +230,7 @@
 }
 
 /* -- message-card.ejs */
+
 .message-card {
   background-color: var(--white);
   border-radius: var(--border-radius-default);

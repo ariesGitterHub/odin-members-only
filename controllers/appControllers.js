@@ -12,8 +12,9 @@ const {
   insertNewUser,
   insertAdminCreatedUser,
   updateAdminEditedUser,
-  insertNewMessage,
-
+  // insertNewMessage,
+  // insertReplyMessage,
+  insertMessage,
   stickyMessageById,
   toggleLike,
   updateUser,
@@ -26,7 +27,8 @@ const {
   getValidMessagesByTopic,
   deleteUserById,
   softDeleteMessageById,
-  becomeMemberById,
+  // becomeMemberById,
+  incrementReplyCount,
 } = require("../db/queries");
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
@@ -310,7 +312,9 @@ async function postNewMessage(req, res, next) {
       return res.status(404).send("Topic not found.");
     }
 
-    await insertNewMessage(currentUser_id, topic_id, title, body); // Pass user_id from session
+    // await insertNewMessage(currentUser_id, topic_id, title, body); // Pass user_id from session
+    // await insertMessage(currentUser_id, topic_id, title, body); // Pass user_id from session
+    const newMessage = await insertMessage(currentUser_id, topic_id, title, body);
     res.redirect(`/app/message-boards/${topic.slug}`);
   } catch (err) {
     next(err);
@@ -330,44 +334,100 @@ async function postStickyMessageToggle(req, res, next) {
   }
 }
 
-// Use below to model postReplyMessage
+// async function postReplyMessage(req, res, next) {
+//   // const { topicName, topicSlug, messageTitle, body } = req.body;
+//   // targetId = messageId
+//   const { targetId, messageTitle, topicSlug, topicName, body } =
+//     req.body;
+
+//   // TODO - Maybe do this for clarity
+//   const messageId = targetId;
+
+//   // Assuming you're using session-based authentication
+//   const currentUser_id = req.user.id; // or whatever key stores user_id in the session
+
+//   if (!currentUser_id) {
+//     return res.status(401).send("User is not logged in.");
+//   }
+
+//   try {
+//     // Get topic info
+//     // const messages = await getValidMessagesByTopic(messageId); //needed???
+
+//     if (!topic) {
+//       return res.status(404).send("Topic not found.");
+//     }
+
+//     await insertReplyMessage(
+//       currentUser_id,
+//       messageId,
+//       messageTitle,
+//       topicSlug,
+//       topicName,
+//       body,
+//     ); // Pass user_id from session
+//     res.redirect(`/app/message-boards/${topic.slug}`);
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
 async function postReplyMessage(req, res, next) {
-  // const { topicName, topicSlug, messageTitle, body } = req.body;
-  // targetId = messageId
-  const { targetId, messageTitle, topicSlug, topicName, body } =
-    req.body;
-
-  // TODO - Maybe do this for clarity
-  const messageId = targetId;
-
-  // Assuming you're using session-based authentication
-  const currentUser_id = req.user.id; // or whatever key stores user_id in the session
-
-  if (!currentUser_id) {
-    return res.status(401).send("User is not logged in.");
-  }
-
   try {
-    // Get topic info
-    const messages = await getValidMessagesByTopic(messageId);
+    // Extract form data
+    const { targetId, messageTitle, body } = req.body;
 
-    if (!topic) {
-      return res.status(404).send("Topic not found.");
+    const prefixedTitle = `↪ ${messageTitle}`; 
+
+    // console.log("Received messageTitle:", messageTitle);
+    console.log("Received adjusted messageTitle:", prefixedTitle);
+
+    // Validate form data
+    if (!targetId || !body) {
+      return res.status(400).send("Missing required data.");
     }
 
-    await insertNewMessage(
-      currentUser_id,
-      topic_id,
-      topic_name,
-      topic_slug,
-      title,
-      body,
-    ); // Pass user_id from session
-    res.redirect(`/app/message-boards/${topic.slug}`);
+    // Get the currently logged-in user ID
+    const currentUserId = req.user?.id;
+    if (!currentUserId) {
+      return res.status(401).send("User is not logged in.");
+    }
+
+    // Fetch the parent message from the database
+    const parentMessage = await getMessageById(targetId); // assume a DB query helper
+    if (!parentMessage) {
+      return res.status(404).send("Parent message not found.");
+    }
+
+    // Insert the new reply message
+    // const replyMessage = await insertMessage({
+    //   title: messageTitle,
+    //   body: body,
+    //   user_id: currentUserId,
+    //   parent_message_id: parentMessage.id,
+    //   topic_id: parentMessage.topic_id,
+    //   // created_at: new Date(),
+    // });
+
+    const replyMessage = await insertMessage(
+      currentUserId, // user_id
+      parentMessage.topic_id, // topic_id
+      // messageTitle, // title
+      prefixedTitle,
+      body, // body
+      parentMessage.message_id, // parent_message_id
+    );
+
+    // Increment the reply count on the parent message
+    await incrementReplyCount(parentMessage.message_id);
+
+    // Redirect back to the topic page
+    res.redirect(`/app/message-boards/${parentMessage.topic_slug}`);
   } catch (err) {
     next(err);
   }
 }
+
 
 // CONTROLLER: DELETE MESSAGE (message-boards/topic slug)
 

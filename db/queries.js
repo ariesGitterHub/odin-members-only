@@ -103,11 +103,14 @@ const getUserById = async (targetId) => {
 const getMessageById = async (targetId) => {
   const query = `
   SELECT 
-    m.id AS message_id,
+    m.id AS message_id, 
+    m.parent_message_id,
+    m.topic_id,
+    m.user_id AS message_user_id,
+    m.like_count,
+    m.reply_count,    
     m.title,
     m.body,
-    m.like_count,
-    m.reply_count,
     m.created_at,
     m.expires_at,
     m.is_sticky,
@@ -120,8 +123,8 @@ const getMessageById = async (targetId) => {
     t.name AS topic_name,
     t.slug AS topic_slug
   FROM messages m
-  JOIN users u ON m.user_id = u.id
-  LEFT JOIN topics t ON m.topic_id = t.id
+  JOIN users u ON m.user_id = u.id 
+  LEFT JOIN topics t ON m.topic_id = t.id 
   WHERE m.is_deleted = false
   AND m.id = $1;
   `;
@@ -697,20 +700,50 @@ const getTopicNames = async () => {
 //   }
 // };
 
-const insertNewMessage = async (user_id, topic_id, title, body) => {
+// const insertNewMessage = async (user_id, topic_id, title, body) => {
+//   const client = await pool.connect();
+
+//   try {
+//     const userRes = await client.query(
+//       `INSERT INTO messages (user_id, topic_id, title, body)
+//        VALUES ($1, $2, $3, $4)
+//        RETURNING id, user_id, topic_id, title, body, like_count, reply_count`,
+//       [user_id, topic_id, title, body],
+//     );
+
+//     return userRes.rows[0]; // Return the inserted message with all necessary fields
+//   } catch (err) {
+//     console.error("Error inserting new message:", err);
+//     throw err;
+//   } finally {
+//     client.release();
+//   }
+// };
+
+const insertMessage = async (
+  user_id,
+  topic_id,
+  title,
+  body,
+  parent_message_id = null,
+) => {
   const client = await pool.connect();
-
   try {
-    const userRes = await client.query(
-      `INSERT INTO messages (user_id, topic_id, title, body)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id, user_id, topic_id, title, body, like_count, reply_count`,
-      [user_id, topic_id, title, body],
-    );
-
-    return userRes.rows[0]; // Return the inserted message with all necessary fields
+    const queryText = `
+      INSERT INTO messages (user_id, topic_id, title, body, parent_message_id)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING id, user_id, topic_id, title, body, like_count, reply_count, parent_message_id
+    `;
+    const res = await client.query(queryText, [
+      user_id,
+      topic_id,
+      title,
+      body,
+      parent_message_id,
+    ]);
+    return res.rows[0];
   } catch (err) {
-    console.error("Error inserting new message:", err);
+    console.error("Error inserting message:", err);
     throw err;
   } finally {
     client.release();
@@ -1175,8 +1208,29 @@ const toggleLike = async (messageId, userId) => {
 //   }
 // };
 
+// queries.js
+const incrementReplyCount = async (parent_message_id) => {
+  const client = await pool.connect();
+  try {
+    const res = await client.query(
+      `UPDATE messages
+       SET reply_count = reply_count + 1
+       WHERE id = $1
+       RETURNING reply_count`,
+      [parent_message_id]
+    );
+    return res.rows[0].reply_count; // return the new count if you want
+  } catch (err) {
+    console.error("Error incrementing reply count:", err);
+    throw err;
+  } finally {
+    client.release();
+  }
+};
+
 // TODO - rename all of thes eby type, get, update, post, insert, find out the major types of queries!
 module.exports = {
+  incrementReplyCount,
   getUsers,
   getUserById,
   getMessageById,
@@ -1192,7 +1246,8 @@ module.exports = {
   getTopicNames,
   // getTopicNamesForPermission,
   // getTopicName,
-  insertNewMessage,
+  // insertNewMessage,
+  insertMessage,
   stickyMessageById,
   toggleLike,
   getAllTopics,

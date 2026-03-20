@@ -33,7 +33,7 @@ const {
   getTopicPage,
 
   postStickyMessageToggle,
-  // postReplyMessage,
+  postReplyMessage,
   deleteUserMessage,
   postLikeMessageToggle,
   
@@ -117,7 +117,7 @@ appRouter.post("/message-boards/sticky-message", requireRole("guest"), postStick
 appRouter.post("/message-boards/delete-message", requireRole("guest"), deleteUserMessage);
 
 // ROUTES: REPLY MESSAGE MODAL (reply-message.ejs)
-// appRouter.post("/message-boards/reply-message", requireRole("guest"), postReplyMessage);
+appRouter.post("/message-boards/reply-message", requireRole("guest"), postReplyMessage);
 
 // ROUTES: LIKE MESSAGE (message-boards.ejs by topic slug)
 appRouter.post("/message-boards/like-message", postLikeMessageToggle);
