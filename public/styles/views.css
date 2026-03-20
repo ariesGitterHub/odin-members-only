@@ -232,9 +232,9 @@
 /* -- message-card.ejs */
 
 .message-card {
-  background-color: var(--white);
+  /* background-color: var(--white); */
   /* border: var(--border-default); */
-  border: var(--border-message-card-parent);
+  /* border: var(--border-message-card-parent); */
   border-radius: var(--border-radius-default);
   box-shadow: var(--box-shadow-black);
   color: var(--off-black);
@@ -244,29 +244,35 @@
 
 .message-header {
   display: flex;
-  align-items: start;
+  align-items: center;
   justify-content: start;
   border-top-left-radius: var(--border-radius-default);
   border-top-right-radius: var(--border-radius-default);
+  margin-bottom: var(--spacer-default);
   /* padding: var(--spacer-medium); */
-  padding-bottom: var(--spacer-medium);
+  /* padding-bottom: var(--spacer-medium); */
 }
 
 .message-name-and-title {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .message-name {
-  /* border-bottom: var(--border-message); */
+  border-bottom: transparent;
+  /* border-bottom: var(--border-default); */
   border-bottom: transparent;
   color: var(--off-red);
   font-size: var(--message-name-size);
 }
 
+
+
 .message-title {
-  border-top: var(--border-message);
-  color: var(--dk-green);
+  /* border-top: var(--border-message); */
+  border-top: var(--border-default);
+  color: var(--off-black);
   font-size: var(--message-title-size);
 }
 
@@ -276,11 +282,28 @@
   justify-content: start;
   gap: var(--spacer-medium);
   /* background-color: var(--lt-green); */
-  border-top: 0.125rem solid var(--off-gray);
-  border-bottom: 0.125rem solid var(--off-gray);
   font-size: var(--message-details-size);
   /* padding: var(--spacer-medium); */
   /* padding-bottom: var(--spacer-medium); */
+}
+
+.regular-details {
+  border-top: 0.125rem solid var(--off-gray);
+  border-bottom: 0.125rem solid var(--off-gray);
+  color: var(--off-red);
+}
+
+.regular-details span {
+    /* border-top: 0.125rem solid var(--off-gray);
+  border-bottom: 0.125rem solid var(--off-gray); */
+}
+
+/* Use on message that were made sticky */
+.important-details {
+  background-color: var(--off-red);
+  border: var(--border-default);
+  border-radius: var(--border-radius-default);
+  color: var(--lt-yellow);
 }
 
 .message-details span {
@@ -290,18 +313,19 @@
   justify-content: center;
   /* border: var(--border-default); */
   /* border-radius: var(--border-radius-default); */
+    font-weight: var(--font-weight-heavy);
   padding: var(--spacer-medium);
   text-align: center;
 }
 
-.regular-message {
-  /* background-color: var(--off-white); */
-}
-
-/* Use on message that were made sticky */
-.important-message {
-  background-color: var(--off-red);
-  color: var(--lt-yellow);
+.message-badge {
+  /* max-height: 1.7rem; */
+  max-width: 1rem;
+  /* background-color: transparent;
+  border: var(--border-message-badge);
+  border-radius: var(--border-radius-circle); */
+  /* font-size: var(--font-size-default); */
+  /* padding: 0.125rem; */
 }
 
 .message-body {

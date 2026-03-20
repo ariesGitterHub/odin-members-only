@@ -1,8 +1,8 @@
-<div class="message-card">
+<div class="message-card <%= message.parent_message_id ? 'child-message' : 'parent-message' %>">
   <div class="message-header">
     <div class="margin-right">
       <div 
-        class="avatar-container avatar-container-size-small avatar-background circle " 
+        class="avatar-container avatar-container-size-small avatar-background border-default circle" 
         style="
           --avatar-color-fg: <%= message.avatar_color_fg || 'var(--off-black)' %>;
           --avatar-color-bg-top: <%= message.avatar_color_bg_top || 'var(--off-white)' %>;
@@ -19,14 +19,33 @@
       <p class="message-title bold"><%= message.title %></p>
     </div>
   </div>
-  <div class="message-details uppercase">
-    <span class="regular-message">created: <%= new Date(message.created_at).toLocaleDateString() %></span>
-     <% if (message.is_sticky) { %> 
+  <!-- <div class="message-details uppercase">
+    <span class="regular-message">created: <%#= new Date(message.created_at).toLocaleDateString() %></span>
+     <%# if (message.is_sticky) { %> 
     <span class="important-message">important message</span> 
-    <% } else { %>
-    <span class="regular-message">expires: <%= new Date(message.expires_at).toLocaleDateString() %></span> 
-    <% } %>
+    <%# } else { %>
+    <span class="regular-message">expires: <%#= new Date(message.expires_at).toLocaleDateString() %></span> 
+    <%# } %>
+  </div> -->
+  <% if (message.is_sticky) { %>   
+  <div class="message-details uppercase important-details"> 
+    <span>pinned message - important!</span> 
+  </div>  
+  <% } else { %>
+  <div class="message-details uppercase regular-details">
+    <span>created: <%= new Date(message.created_at).toLocaleDateString() %></span>
+    <span class="emoji message-badge">
+      <% if (message.permission_status === "admin") { %> 
+        🔑
+      <% } else if (message.permission_status === "member") { %> 
+        ⭐
+      <% } else { %> 
+        👤
+      <% } %>
+    </span> 
+    <span>expires: <%= new Date(message.expires_at).toLocaleDateString() %></span> 
   </div>
+   <% } %>
   <div class="message-body">
     <p>
       <%= message.body %>

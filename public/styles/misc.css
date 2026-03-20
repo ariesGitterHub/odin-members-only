@@ -65,10 +65,26 @@
   word-break: break-all; /* Forces breaking of very long words */
 }
 
-/* Special border radius */
+/* Special border options */
+
+.border-default {
+  border: var(--border-default);
+}
 
 .circle {
   border-radius: var(--border-radius-circle);
+}
+
+.parent-message {
+  background-color: var(--white);
+  /* border: var(--border-default); */
+  border: var(--border-message-card-parent);
+}
+
+.child-message {
+  background-color: var(--off-white);
+    border: var(--border-message-card-child);
+
 }
 
 /* Special spacing */

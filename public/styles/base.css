@@ -14,7 +14,8 @@
   --off-black: #1a1b1c;
   --off-black-trans: #1a1b1c80;
 
-  --off-red: #994e4e;
+  /* --off-red: #994e4e; */
+  --off-red: #9d6161;
   --off-orange: #a18553;
   --off-yellow: #a0a054;
   --off-green: #519d64;
@@ -59,6 +60,8 @@
   --border-default: 0.125rem solid var(--off-gray);
   --border-message: 0.125rem solid var(--off-white);
   --border-message-card-parent: 0.25rem solid var(--off-red);
+  --border-message-card-child: 0.25rem dashed var(--off-red);
+  --border-message-badge: 0.125rem solid var(--off-gray);
   /* --border-topic-number: 1px solid var(--off-white); */
   --border-highlight: 0.125rem solid var(--off-red);
 
