@@ -59,9 +59,15 @@ function canPerformHasRole(user, action, resource) {
     case "sticky-message":
       return hasRole(user, "admin");
 
-    case "delete-message":
+    // Only the admin or the user who wrote the message may edit or delete their own message.
+    case "admin-or-author":
       return (
         hasRole(user, "admin") || (resource && resource.user_id === user.id)
+      );
+
+    case "author-only":
+      return (
+        (resource && resource.user_id === user.id)
       );
 
     // Unused at this time...
@@ -83,7 +89,7 @@ function canPerformHasRole(user, action, resource) {
     case "changeVerifiedByAdmin":
     case "changeMemberRequest":
     case "changeIsActive":
-    //case "noSelfDeleteByAdmin": // Unused right now until I figure out how to do it from the frontend
+      //case "noSelfDeleteByAdmin": // Unused right now until I figure out how to do it from the frontend
       return hasRole(user, "admin"); // Only admins can change others, self-target already blocked
 
     default:

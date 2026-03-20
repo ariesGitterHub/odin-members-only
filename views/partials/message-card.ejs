@@ -65,10 +65,10 @@
           </span>
         </button>
       </form>
-      <!-- MODAL (warning message deletion) -->
+      <!-- MODAL (warning message deletion by message author or admin only) -->
       <!-- NOTE - data-topic-slug="<%#= topic.slug %>" must use topic.slug, as using message.topic_slug, which is available, will be deleted along with the whole message and lose its reference that is used to redirect back to the same /app/message-boards/${topicSlug}, in other words, not using topic.slug messes up teh redirect.-->
       <button 
-        class="button-default message-button action-target-button <%= canPerformHasRole(currentUser, 'delete-message', message) ? '' : 'hidden' %>" 
+        class="button-default message-button action-target-button <%= canPerformHasRole(currentUser, 'admin-or-author', message) ? '' : 'hidden' %>" 
         type="button"
         data-section="modal-warning-message-deletion"
         data-title="modal-title-warning-message-deletion"
@@ -77,6 +77,19 @@
         data-target-id="<%= message.id %>"
       >
         <span class="emoji">🗑</span>
+      </button>
+
+      <!-- MODAL (warning message deletion by message author or admin only) -->
+      <button 
+        class="button-default message-button action-target-button <%= canPerformHasRole(currentUser, 'author-only', message) ? '' : 'hidden' %>" 
+        type="button"
+        data-section="modal-edit-message"
+        data-title="modal-title-edit-message"
+        data-action="/app/message-boards/edit-message"
+        data-topic-slug="<%= topic.slug %>"
+        data-target-id="<%= message.id %>"
+      >
+        <span class="emoji">✏</span>
       </button>
 
       <!-- TODO - BELOW NEEDS TO BE HIDDEN TO THE PERSON WHO WROTE IT **OR** DOES IT??????-->
