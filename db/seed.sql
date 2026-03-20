@@ -165,11 +165,10 @@ AND p.user_id IS NULL;
 
 
 -- 1️⃣ Introductions
-INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, body)
 SELECT t.id, u.id,
-  'Hello from Alan', 0, 0,
-  'Hi everyone, just moved to the neighborhood last week. Looking forward to meeting you all!',
-  NOW() + INTERVAL '30 days'
+  'Hello from Alan',
+  'Hi everyone, just moved to the neighborhood last week. Looking forward to meeting you all!'
 FROM topics t, users u
 WHERE t.slug = 'introductions'
   AND u.email = 'alan@can.org'
@@ -177,11 +176,10 @@ LIMIT 1;
 
 
 -- 2️⃣ Safety Alert
-INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, body)
 SELECT t.id, u.id,
-  'Car break-ins reported on Maple St.', 0, 0,
-  'Just a heads up — two cars were broken into overnight near Maple and 3rd. Please remember to lock your vehicles.',
-  NOW() + INTERVAL '14 days'
+  'Car break-ins reported on Maple St.',
+  'Just a heads up — two cars were broken into overnight near Maple and 3rd. Please remember to lock your vehicles.'
 FROM topics t, users u
 WHERE t.slug = 'safety-alerts'
   AND u.email = 'bruce@can.org'
@@ -189,33 +187,30 @@ LIMIT 1;
 
 
 -- 3️⃣ Buy & Sell
-INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, body)
 SELECT t.id, u.id,
-  'Bike for sale - $75',  0, 0,
-  'Selling a lightly used mountain bike. 26-inch wheels, great condition. Reply if interested.',
-  NOW() + INTERVAL '30 days'
+  'Bike for sale - $75', 
+  'Selling a lightly used mountain bike. 26-inch wheels, great condition. Reply if interested.'
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
   AND u.email = 'chet@can.org'
 LIMIT 1;
 
 -- 3️⃣ Buy & Sell
-INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, body)
 SELECT t.id, u.id,
-  'I''m moving and need to downsize. This was my grandmother''s old mixed box of forks, knives, spoons, and some other bits I don''t know the names of. make me an offer.',  0, 0,
-  'Old silverware.',
-  NOW() + INTERVAL '30 days'
+  'I''m moving and need to downsize. This was my grandmother''s old mixed box of forks, knives, spoons, and some other bits I don''t know the names of. make me an offer.', 
+  'Old silverware.'
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
   AND u.email = 'evil@can.org'
 LIMIT 1;
 
 -- 3️⃣ Buy & Sell
-INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, body)
 SELECT t.id, u.id,
-  'Throwing out a box of old comic books left behind by a prior renter, YOURS FOR A DOLLAR!',  0, 0,
-  'Comic Books.',
-  NOW() + INTERVAL '30 days'
+  'Throwing out a box of old comic books left behind by a prior renter, YOURS FOR A DOLLAR!', 
+  'Comic Books.'
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
   AND u.email = 'chet@can.org'
@@ -223,11 +218,10 @@ LIMIT 1;
 
 
 -- 4️⃣ Free Stuff
-INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, body)
 SELECT t.id, u.id, 
-  'Free moving boxes', 0, 0,
-  'Just finished moving — have about 20 boxes in good shape. Free for pickup.',
-  NOW() + INTERVAL '10 days'
+  'Free moving boxes',
+  'Just finished moving — have about 20 boxes in good shape. Free for pickup.'
 FROM topics t, users u
 WHERE t.slug = 'free-stuff'
   AND u.email = 'dave@can.org'
@@ -235,11 +229,10 @@ LIMIT 1;
 
 
 -- 5️⃣ Help Request
-INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, body)
 SELECT t.id, u.id, 
-  'Need recommendation for plumber', 0, 0,
-  'Can anyone recommend a reliable plumber for a small kitchen leak?',
-  NOW() + INTERVAL '15 days'
+  'Need recommendation for plumber',
+  'Can anyone recommend a reliable plumber for a small kitchen leak?'
 FROM topics t, users u
 WHERE t.slug = 'help-requests'
   AND u.email = 'alan@can.org'
@@ -247,11 +240,10 @@ LIMIT 1;
 
 
 -- 6️⃣ Event
-INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, body)
 SELECT t.id, u.id,
-  'Neighborhood BBQ this Saturday', 0, 0,
-  'Planning a casual BBQ at Riverside Park at 4pm. Bring something to share!',
-  NOW() + INTERVAL '7 days'
+  'Neighborhood BBQ this Saturday',
+  'Planning a casual BBQ at Riverside Park at 4pm. Bring something to share!'
 FROM topics t, users u
 WHERE t.slug = 'events'
   AND u.email = 'bruce@can.org'
@@ -259,11 +251,10 @@ LIMIT 1;
 
 
 -- 7️⃣ Lost & Found
-INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, body)
 SELECT t.id, u.id, 
-  'Found: small brown dog', 0, 0,
-  'Small, friendly, brown dog found near Pine Ave. No collar. Please reply if yours.',
-  NOW() + INTERVAL '5 days'
+  'Found: small brown dog',
+  'Small, friendly, brown dog found near Pine Ave. No collar. Please reply if yours.'
 FROM topics t, users u
 WHERE t.slug = 'lost-found'
   AND u.email = 'chet@can.org'
@@ -271,11 +262,10 @@ LIMIT 1;
 
 
 -- 8️⃣ General Discussion
-INSERT INTO messages (topic_id, user_id, title, like_count, reply_count, body, expires_at)
+INSERT INTO messages (topic_id, user_id, title, body)
 SELECT t.id, u.id, 
-  'Anyone else hearing construction noise?', 0, 0,
-  'There has been loud construction starting around 5:30am this week. Anyone know what project this is?',
-  NOW() + INTERVAL '20 days'
+  'Anyone else hearing construction noise?',
+  'There has been loud construction starting around 5:30am this week. Anyone know what project this is?'
 FROM topics t, users u
 WHERE t.slug = 'nuisances'
   AND u.email = 'dave@can.org'
