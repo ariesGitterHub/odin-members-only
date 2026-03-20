@@ -237,7 +237,7 @@ export function attachOpenModalListener() {
     title.value = message.title;  
     title.readOnly = true;
     
-    body.value = `💬 A reply to ${message.first_name} ${message.last_name}... `;
+    body.value = `💬 ${message.first_name} ${message.last_name} ➤ `;
 
   }
 

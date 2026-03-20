@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const { hasRole } = require("../utils/permissions");
+const { buildThreadedMessages } = require("../utils/threadUtils");
 
 const {
   getUsers,
@@ -1209,8 +1210,19 @@ async function postBecomeMember(req, res, next) {
   }
 }
 
+const getMessagesForTopic = async (req, res) => {
+  const messages = await getValidMessagesByTopic(
+    req.params.topicId,
+    req.user.id,
+  );
+  const threaded = buildThreadedMessages(messages);
+  res.json(threaded);
+};
 
 module.exports = {
+  getMessagesForTopic,
+
+  
   // Basic fetch
   getCurrentUser,
   getUserDetails,

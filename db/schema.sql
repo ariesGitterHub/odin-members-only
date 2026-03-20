@@ -66,6 +66,8 @@ CREATE TABLE topics (
 CREATE TABLE messages (
   id SERIAL PRIMARY KEY,
   parent_message_id INTEGER,
+  -- BELOW IS NEW, TODO - delete if I return to flat reply threads
+  thread_path TEXT,
   topic_id INTEGER NOT NULL REFERENCES topics(id) ON DELETE CASCADE,
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   like_count INTEGER DEFAULT 0,

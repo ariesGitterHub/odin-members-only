@@ -3,6 +3,10 @@ const { requireRole } = require("../utils/permissions");
 
 // TODO - arrange by order of ROUTES far below
 const {
+
+  getMessagesForTopic ,
+
+
   // Basic fetch
   getCurrentUser,
   getUserDetails,
@@ -140,5 +144,9 @@ appRouter.get("/member-directory", requireRole("member"), getMemberDirectory);
 // appRouter.post("/your-profile/become-member", requireRole("guest"), postBecomeMember);
 // appRouter.post("/admin-create", requireRole("admin"), postAdminCreatePage);
 
+
+// ???
+// GET /app/topics/:topicId/messages
+appRouter.get('/topics/:topicId/messages', getMessagesForTopic);
 
 module.exports = appRouter;

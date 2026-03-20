@@ -720,6 +720,38 @@ const getTopicNames = async () => {
 //   }
 // };
 
+ // TODO - keep below if returning to flat reply threads...
+// const insertMessage = async (
+//   user_id,
+//   topic_id,
+//   title,
+//   body,
+//   parent_message_id = null,
+// ) => {
+//   const client = await pool.connect();
+//   try {
+//     const query = `
+//       INSERT INTO messages (user_id, topic_id, title, body, parent_message_id)
+//       VALUES ($1, $2, $3, $4, $5)
+//       RETURNING id, user_id, topic_id, title, body, like_count, reply_count, parent_message_id
+//     `;
+
+//     const res = await client.query(query, [
+//       user_id,
+//       topic_id,
+//       title,
+//       body,
+//       parent_message_id,
+//     ]);
+//     return res.rows[0];
+//   } catch (err) {
+//     console.error("Error inserting message:", err);
+//     throw err;
+//   } finally {
+//     client.release();
+//   }
+// };
+
 const insertMessage = async (
   user_id,
   topic_id,
@@ -729,19 +761,60 @@ const insertMessage = async (
 ) => {
   const client = await pool.connect();
   try {
-    const queryText = `
-      INSERT INTO messages (user_id, topic_id, title, body, parent_message_id)
-      VALUES ($1, $2, $3, $4, $5)
-      RETURNING id, user_id, topic_id, title, body, like_count, reply_count, parent_message_id
-    `;
-    const res = await client.query(queryText, [
-      user_id,
-      topic_id,
-      title,
-      body,
-      parent_message_id,
-    ]);
-    return res.rows[0];
+    let res;
+
+    if (!parent_message_id) {
+      // Top-level message
+      res = await client.query(
+        `
+        INSERT INTO messages (topic_id, user_id, title, body, thread_path)
+        VALUES ($1, $2, $3, $4, DEFAULT)
+        RETURNING id;
+        `,
+        [topic_id, user_id, title, body],
+      );
+
+      const messageId = res.rows[0].id;
+
+      // Update thread_path to its own id
+      await client.query(`UPDATE messages SET thread_path = $1 WHERE id = $2`, [
+        messageId.toString(),
+        messageId,
+      ]);
+
+      return { id: messageId };
+    } else {
+      // Reply to existing message
+      // Get parent's thread_path
+      const parentRes = await client.query(
+        `SELECT thread_path FROM messages WHERE id = $1`,
+        [parent_message_id],
+      );
+      if (!parentRes.rows[0]) throw new Error("Parent message not found");
+
+      const parentPath = parentRes.rows[0].thread_path;
+
+      // Insert reply
+      res = await client.query(
+        `
+        INSERT INTO messages (topic_id, user_id, title, body, parent_message_id, thread_path)
+        VALUES ($1, $2, $3, $4, $5, DEFAULT)
+        RETURNING id;
+        `,
+        [topic_id, user_id, title, body, parent_message_id],
+      );
+
+      const messageId = res.rows[0].id;
+
+      // Set proper thread_path
+      const threadPath = `${parentPath}/${messageId}`;
+      await client.query(`UPDATE messages SET thread_path = $1 WHERE id = $2`, [
+        threadPath,
+        messageId,
+      ]);
+
+      return { id: messageId };
+    }
   } catch (err) {
     console.error("Error inserting message:", err);
     throw err;
@@ -805,10 +878,60 @@ const getTopicBySlug = async (slug) => {
   return res.rows[0];
 };
 
-const getValidMessagesByTopic = async (messageId, userId, limit = 50) => {
+// const getValidMessagesByTopic = async (messageId, userId, limit = 50) => {
+//   const query = `
+//     SELECT 
+//       m.id,
+//       m.parent_message_id,
+//       m.topic_id,
+//       m.user_id,
+//       m.title,
+//       m.like_count,
+//       m.reply_count,
+//       m.body,
+//       m.created_at,
+//       m.expires_at,
+//       m.is_sticky,
+//       -- below is new TODO - get rid of ml-user and that table code
+//         ml.user_id AS is_liked_by_user_id,
+//       u.first_name,
+//       u.last_name,
+//       u.permission_status,
+//       up.avatar_type,
+//       up.avatar_color_fg,
+//       up.avatar_color_bg_top,
+//       up.avatar_color_bg_bottom
+//     FROM messages m
+//     JOIN users u ON m.user_id = u.id
+//     LEFT JOIN user_profiles up ON up.user_id = u.id
+//     -- below is new
+//       LEFT JOIN message_likes ml 
+//       ON ml.message_id = m.id
+//       AND ml.user_id = $2
+//     WHERE m.topic_id = $1
+//       AND m.is_deleted = false
+//       AND (m.expires_at IS NULL OR m.expires_at > NOW())
+//     ORDER BY 
+//       m.is_sticky DESC,
+//       -- m.created_at DESC
+//       -- changed from above due to reordering when the like button was clicked
+//       --m.id
+//       -- Below groups parent + replies together.
+//       COALESCE(m.parent_message_id, m.id),
+//       m.created_at
+//     LIMIT $3;
+//   `;
+//   const res = await pool.query(query, [messageId, userId, limit]);
+//   return res.rows;
+// };
+
+// NESTED THREADS, above code is for flat threads
+
+const getValidMessagesByTopic = async (topicId, userId, limit = 50) => {
   const query = `
     SELECT 
       m.id,
+      m.parent_message_id,
       m.topic_id,
       m.user_id,
       m.title,
@@ -818,8 +941,7 @@ const getValidMessagesByTopic = async (messageId, userId, limit = 50) => {
       m.created_at,
       m.expires_at,
       m.is_sticky,
-      -- below is new TODO - get rid of ml-user and that table code
-        ml.user_id AS is_liked_by_user_id,
+      ml.user_id AS is_liked_by_user_id,
       u.first_name,
       u.last_name,
       u.permission_status,
@@ -830,8 +952,7 @@ const getValidMessagesByTopic = async (messageId, userId, limit = 50) => {
     FROM messages m
     JOIN users u ON m.user_id = u.id
     LEFT JOIN user_profiles up ON up.user_id = u.id
-    -- below is new
-      LEFT JOIN message_likes ml 
+    LEFT JOIN message_likes ml 
       ON ml.message_id = m.id
       AND ml.user_id = $2
     WHERE m.topic_id = $1
@@ -839,12 +960,10 @@ const getValidMessagesByTopic = async (messageId, userId, limit = 50) => {
       AND (m.expires_at IS NULL OR m.expires_at > NOW())
     ORDER BY 
       m.is_sticky DESC,
-      -- m.created_at DESC
-      -- changed from above due to reordering when the like button was clicked
-      m.id
+      m.thread_path
     LIMIT $3;
   `;
-  const res = await pool.query(query, [messageId, userId, limit]);
+  const res = await pool.query(query, [topicId, userId, limit]);
   return res.rows;
 };
 

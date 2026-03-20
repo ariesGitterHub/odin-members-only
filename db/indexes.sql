@@ -40,6 +40,9 @@ CREATE INDEX idx_message_likes_user_id
 CREATE UNIQUE INDEX IF NOT EXISTS unique_message_like 
 ON message_likes (message_id, user_id);
 
+-- TODO delete if I go back to flat reply threads
+CREATE INDEX idx_messages_thread_path ON messages(thread_path);
+
 -- SESSIONS
 -- Used on every authenticated request
 CREATE INDEX idx_sessions_token
