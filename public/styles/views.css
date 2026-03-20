@@ -233,6 +233,8 @@
 
 .message-card {
   background-color: var(--white);
+  /* border: var(--border-default); */
+  border: var(--border-message-card-parent);
   border-radius: var(--border-radius-default);
   box-shadow: var(--box-shadow-black);
   color: var(--off-black);
@@ -274,9 +276,11 @@
   justify-content: start;
   gap: var(--spacer-medium);
   /* background-color: var(--lt-green); */
+  border-top: 0.125rem solid var(--off-gray);
+  border-bottom: 0.125rem solid var(--off-gray);
   font-size: var(--message-details-size);
   /* padding: var(--spacer-medium); */
-  padding-bottom: var(--spacer-medium);
+  /* padding-bottom: var(--spacer-medium); */
 }
 
 .message-details span {
@@ -284,13 +288,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--border-radius-default);
+  /* border: var(--border-default); */
+  /* border-radius: var(--border-radius-default); */
   padding: var(--spacer-medium);
   text-align: center;
 }
 
 .regular-message {
-  background-color: var(--off-white);
+  /* background-color: var(--off-white); */
 }
 
 /* Use on message that were made sticky */
@@ -300,7 +305,9 @@
 }
 
 .message-body {
-  border: var(--border-message);
+  /* border: var(--border-message); */
+  /* border: var(--border-default); */
+  border: transparent;
   border-radius: var(--border-radius-default);
   font-size: var(--message-body-size);
   padding: var(--spacer-big);
