@@ -83,7 +83,7 @@
 
 .child-message {
   background-color: var(--off-white);
-    border: var(--border-message-card-child);
+  border: var(--border-message-card-child);
 
 }
 

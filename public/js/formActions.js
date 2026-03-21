@@ -15,6 +15,12 @@ export function formActionsFromModals() {
   const replyMessageTopicSlug = document.getElementById("reply-message-topic-slug");
   const replyMessageTopicName = document.getElementById("reply-message-topic-name");
   
+  const editMessageForm = document.getElementById("edit-message-form");
+  const editMessageTitle = document.getElementById("edit-message-title");
+  const editMessageTargetId = document.getElementById("edit-message-target-id"); // message_id
+  const editMessageTopicSlug = document.getElementById("edit-message-topic-slug");
+  const editMessageTopicName = document.getElementById("edit-message-topic-name");
+
   // TODO - get Member Stuff working...
   // const becomeMemberForm = document.getElementById("become-member-form");
   // const becomeMemberTargetId = document.getElementById("become-member-target-id");
@@ -46,6 +52,14 @@ export function formActionsFromModals() {
         replyMessageTopicSlug.value = topicSlug;
         replyMessageTopicName.value = topicName;
         replyMessageTargetId.value = targetId;
+      }
+
+      if (editMessageForm) {
+        editMessageForm.action = action;
+        editMessageTitle.value = messageTitle;
+        editMessageTopicSlug.value = topicSlug;
+        editMessageTopicName.value = topicName;
+        editMessageTargetId.value = targetId;
       }
 
       // if (becomeMemberForm) {

@@ -80,11 +80,19 @@ export function attachOpenModalListener() {
       if (sectionId === "modal-reply-message") {
         const currentUser = await fetchCurrentUserData(targetId);
         const message = await fetchMessageData(targetId);
-        // const topic = await fetchTopicNameData();
         populateReplyMessage(
           currentUser,
-          //  topic,
-           message);
+          message);
+        openModal(sectionId, titleId);
+      }
+
+      if (sectionId === "modal-edit-message") {
+        const currentUser = await fetchCurrentUserData(targetId);
+        const message = await fetchMessageData(targetId);
+        populateEditMessage(
+          currentUser,
+          message,
+        );
         openModal(sectionId, titleId);
       }
 
@@ -238,7 +246,31 @@ export function attachOpenModalListener() {
     title.readOnly = true;
     
     body.value = `💬 ${message.first_name} ${message.last_name} ➤ `;
+  }
 
+  // Populates the edit-message.ejs partial modal with currentUser data
+  function populateEditMessage(
+      user,
+      message,
+      // topic
+    ) {
+    const firstName = document.getElementById("first-name-edit-message");
+    const lastName = document.getElementById("last-name-edit-message");
+    // const replyFirstName = document.getElementById("reply-to-first-name-draft-message");
+    // const replyLastName = document.getElementById("reply-to-last-name-draft-message");
+    const topic = document.getElementById("topic-edit-message");
+    const title = document.getElementById("title-edit-message");
+    const body = document.getElementById("body-edit-message");
+
+    firstName.innerText = user.first_name;
+    lastName.innerText = user.last_name;
+    // replyFirstName.innerText = message.first_name;
+    // replyLastName.innerText = message.last_name;
+    topic.value = `➤ ${message.topic_name}`;
+    topic.readOnly = true;
+    title.value = message.title;  
+    // title.readOnly = true;
+    body.value = message.body;
   }
 
   // Populates the warning-account-deletion.ejs partial modal with user data

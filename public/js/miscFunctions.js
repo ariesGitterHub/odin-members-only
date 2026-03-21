@@ -8,9 +8,14 @@ export function messageBodyCharCounter() {
     "max-char-count-new-message",
   );
 
-  const bodyRequestMessage = document.getElementById("body-reply-message");
-  const maxCharCountRequestMessage = document.getElementById(
+  const bodyReplyMessage = document.getElementById("body-reply-message");
+  const maxCharCountReplyMessage = document.getElementById(
     "max-char-count-reply-message",
+  );
+
+  const bodyEditMessage = document.getElementById("body-edit-message");
+  const maxCharCountEditMessage = document.getElementById(
+    "max-char-count-edit-message",
   );
 
   const maxChars = 700;
@@ -24,12 +29,21 @@ export function messageBodyCharCounter() {
     }
   });
 
-  bodyRequestMessage.addEventListener("input", () => {
-    const currentRequestMessageLength = bodyRequestMessage.value.length;
-    maxCharCountRequestMessage.textContent = `(${currentRequestMessageLength}/${maxChars})`;
+  bodyReplyMessage.addEventListener("input", () => {
+    const currentReplyMessageLength = bodyReplyMessage.value.length;
+    maxCharCountReplyMessage.textContent = `(${currentReplyMessageLength}/${maxChars})`;
 
-    if (currentRequestMessageLength > maxChars) {
-      bodyRequestMessage.value = bodyRequestMessage.value.substring(0, maxChars); // Truncates input if too long
+    if (currentReplyMessageLength > maxChars) {
+      bodyReplyMessage.value = bodyReplyMessage.value.substring(0, maxChars); // Truncates input if too long
+    }
+  });
+
+  bodyEditMessage.addEventListener("input", () => {
+    const currentEditMessageLength = bodyEditMessage.value.length;
+    maxCharCountEditMessage.textContent = `(${currentEditMessageLength}/${maxChars})`;
+
+    if (currentEditMessageLength > maxChars) {
+      bodyEditMessage.value = bodyEditMessage.value.substring(0, maxChars); // Truncates input if too long
     }
   });
 }
