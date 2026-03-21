@@ -823,6 +823,87 @@ const insertMessage = async (
   }
 };
 
+// const updateMessage = async (
+//  targetId,
+//   title,
+//   body,
+// ) => {
+//   const message = await getMessageById(targetId);
+//   console.log("this....", message);
+  
+//   const client = await pool.connect();
+//   try {
+//     if (!message) {
+//       await client.query(
+//         `
+//         -- UPDATE messages SET (title, body)
+//         -- VALUES ($1, $2)
+//         -- WHERE id = $3
+//         -- RETURNING id;
+//         UPDATE messages SET title = $1, body = $2 WHERE id = $3 RETURNING id;
+//         `,
+//         [targetId, title, body],
+//       );
+//     }
+    
+//   } catch (err) {
+//     console.error("Error inserting message:", err);
+//     throw err;
+//   } 
+// };
+
+// const updateMessage = async (targetId, title, body) => {
+//   const message = await getMessageById(targetId);
+//   console.log("Message ID check", message);
+  
+//   const client = await pool.connect();
+//   try {
+//     if (!message) {
+//       await client.query(
+//         `
+//         UPDATE messages 
+//         SET title = $1, body = $2
+//         WHERE id = $3
+//         RETURNING id;
+//         `,
+//         [targetId, title, body],
+//       );
+//     }
+//   } catch (err) {
+//     console.error("Error inserting message:", err);
+//     throw err;
+//   }
+// };
+
+const updateMessage = async (targetId, title, body) => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(
+      `
+      UPDATE messages 
+      SET title = $1, body = $2
+      WHERE id = $3
+      RETURNING id;
+      `,
+      [title, body, targetId], // Pass the correct parameters
+    );
+
+    if (result.rowCount === 0) {
+      throw new Error("No message found with that ID.");
+    }
+
+    console.log("Updated message with ID:", result.rows[0].id); // Log the updated message ID
+    return result.rows[0]; // Return the updated message (optional)
+  } catch (err) {
+    console.error("Error updating message:", err);
+    throw err;
+  } finally {
+    client.release(); // Always release the client back to the pool
+  }
+};
+
+
+
 // NOTE - NOT is_sticky (below) ---> this flips true and false
 // NOTE - CASE updates expires_at depending on the previous value
 const stickyMessageById = async (message_id) => {
@@ -1367,6 +1448,7 @@ module.exports = {
   // getTopicName,
   // insertNewMessage,
   insertMessage,
+  updateMessage, 
   stickyMessageById,
   toggleLike,
   getAllTopics,

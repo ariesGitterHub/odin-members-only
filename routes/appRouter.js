@@ -37,6 +37,7 @@ const {
   getTopicPage,
 
   postStickyMessageToggle,
+  postEditMessage,
   postReplyMessage,
   deleteUserMessage,
   postLikeMessageToggle,
@@ -119,6 +120,9 @@ appRouter.post("/message-boards/sticky-message", requireRole("guest"), postStick
 
 // ROUTES: DELETE MESSAGE MODAL (warning-message-deletion.ejs)
 appRouter.post("/message-boards/delete-message", requireRole("guest"), deleteUserMessage);
+
+// ROUTES: EDIT MESSAGE MODAL (edit-message.ejs)
+appRouter.post("/message-boards/edit-message", requireRole("guest"), postEditMessage);
 
 // ROUTES: REPLY MESSAGE MODAL (reply-message.ejs)
 appRouter.post("/message-boards/reply-message", requireRole("guest"), postReplyMessage);

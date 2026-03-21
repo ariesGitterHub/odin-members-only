@@ -16,7 +16,7 @@ export function formActionsFromModals() {
   const replyMessageTopicName = document.getElementById("reply-message-topic-name");
   
   const editMessageForm = document.getElementById("edit-message-form");
-  const editMessageTitle = document.getElementById("edit-message-title");
+  // const editMessageTitle = document.getElementById("edit-message-title");
   const editMessageTargetId = document.getElementById("edit-message-target-id"); // message_id
   const editMessageTopicSlug = document.getElementById("edit-message-topic-slug");
   const editMessageTopicName = document.getElementById("edit-message-topic-name");
@@ -56,7 +56,7 @@ export function formActionsFromModals() {
 
       if (editMessageForm) {
         editMessageForm.action = action;
-        editMessageTitle.value = messageTitle;
+        // editMessageTitle.value = messageTitle;
         editMessageTopicSlug.value = topicSlug;
         editMessageTopicName.value = topicName;
         editMessageTargetId.value = targetId;

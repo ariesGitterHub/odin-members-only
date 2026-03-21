@@ -16,6 +16,7 @@ const {
   // insertNewMessage,
   // insertReplyMessage,
   insertMessage,
+  updateMessage,
   stickyMessageById,
   toggleLike,
   updateUser,
@@ -372,6 +373,104 @@ async function postStickyMessageToggle(req, res, next) {
 //     next(err);
 //   }
 // }
+
+// async function postEditMessage(req, res, next) {
+//   try {
+//     // Extract form data
+//     const { targetId, body } = req.body;
+
+//     // const prefixedTitle = `↪ ${messageTitle}`;
+
+//     // console.log("Received messageTitle:", messageTitle);
+//     // console.log("Received adjusted messageTitle:", prefixedTitle);
+
+//     // Validate form data
+//     if (!targetId || !body) {
+//       return res.status(400).send("Missing required data.");
+//     }
+
+//     // Get the currently logged-in user ID
+//     const currentUserId = req.user?.id;
+//     if (!currentUserId) {
+//       return res.status(401).send("User is not logged in.");
+//     }
+
+//     // Fetch the parent message from the database
+//     const message = await getMessageById(targetId); // assume a DB query helper
+//     if (!message) {
+//       return res.status(404).send("Message not found.");
+//     }
+
+//     // Insert the new reply message
+//     // const replyMessage = await insertMessage({
+//     //   title: messageTitle,
+//     //   body: body,
+//     //   user_id: currentUserId,
+//     //   parent_message_id: parentMessage.id,
+//     //   topic_id: parentMessage.topic_id,
+//     //   // created_at: new Date(),
+//     // });
+
+//     const editMessage = await updateMessage(
+//       currentUserId, // user_id
+//       message,
+//       //parentMessage.topic_id, // topic_id
+//       //messageTitle, // title
+//       // prefixedTitle,
+//       body, // body
+//       // parentMessage.message_id,
+//     );
+
+//     // Increment the reply count on the parent message
+//     // await incrementReplyCount(parentMessage.message_id);
+
+//     // Redirect back to the topic page
+//     res.redirect(`/app/message-boards/${message.topic_slug}`);
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
+async function postEditMessage(req, res, next) {
+  try {
+    // Extract form data
+    const { targetId, title, body } = req.body;
+
+    // Validate form data
+    if (!targetId || !body) {
+      return res.status(400).send("Missing required data.");
+    }
+
+    // Get the currently logged-in user ID
+    const currentUserId = req.user?.id;
+    if (!currentUserId) {
+      return res.status(401).send("User is not logged in.");
+    }
+
+    // Fetch the message from the database
+    const message = await getMessageById(targetId); // assume a DB query helper
+    if (!message) {
+      return res.status(404).send("Message not found.");
+    }
+
+    // Check if the logged-in user is the author of the message
+    if (message.user_id !== currentUserId) {
+      return res.status(403).send("You are not the author of this message.");
+    }
+
+    // Update the message in the database
+    const updatedMessage = await updateMessage(
+      targetId, // message_id
+      title, // title
+      body, // body
+    );
+
+    // Redirect to the topic page
+    res.redirect(`/app/message-boards/${message.topic_slug}`);
+  } catch (err) {
+    next(err);
+  }
+}
 
 async function postReplyMessage(req, res, next) {
   try {
@@ -1253,6 +1352,7 @@ module.exports = {
   getTopicPage,
 
   postStickyMessageToggle,
+  postEditMessage,
   postReplyMessage,
   deleteUserMessage,
   postLikeMessageToggle,
