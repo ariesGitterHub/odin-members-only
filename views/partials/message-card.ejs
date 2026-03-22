@@ -1,4 +1,17 @@
 <div class="message-card <%= message.parent_message_id ? 'child-message' : 'parent-message' %>">
+      <p>    
+      <!-- Check if the message is less than 24 hours old -->
+      <% 
+      const messageDate = new Date(message.created_at);
+      const now = new Date();
+      const timeDifference = now - messageDate;  // Difference in milliseconds
+      const oneDay = 24 * 60 * 60 * 1000;  // Milliseconds in one day
+      
+      if (timeDifference < oneDay) { 
+      %>
+        <span class="new-message uppercase">new message (<%= new Date(message.created_at).toLocaleString() %>)</span>
+      <% } %>
+    </p>
   <div class="message-header">
     <div class="margin-right">
       <div 
@@ -32,7 +45,6 @@
       <p>
         <span class="emoji">✏</span> <span>edited</span>     
       </p>
-    
     <% } %>
       <% if (message.permission_status === "admin") { %> 
         <p>

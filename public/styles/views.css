@@ -206,17 +206,15 @@
 }
 
 /* -- topic.ejs */
-.button-card {
-  /* max-width: var(--max-width); */
+/* .button-card {
   width: 350px;
-  /* min-width: var(--card-width);  */
   background-color: var(--white);
   border-radius: var(--border-radius-default);
   box-shadow: var(--box-shadow-black);
   color: var(--off-black);
   line-height: 1.5;
   margin: var(--spacer-default) 0;
-}
+} */
 
 .topic-card {
   /* 750px is good for reading... */
@@ -374,10 +372,7 @@
   gap: var(--spacer-default);
 }
 
-.message-button {
-  width: fit-content;
-  color: var(--off-black);
-}
+/* .message-button - see components.css */
 
 /* -- your-profile.ejs */
 .your-profile-card {

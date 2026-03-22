@@ -245,7 +245,7 @@ export function attachOpenModalListener() {
     title.value = message.title;  
     title.readOnly = true;
     
-    body.value = `💬 ${message.first_name} ${message.last_name} ➤ `;
+    body.value = `💬 To "${message.first_name} ${message.last_name}" ➤ `;
   }
 
   // Populates the edit-message.ejs partial modal with currentUser data

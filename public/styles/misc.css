@@ -84,7 +84,19 @@
 .child-message {
   background-color: var(--off-white);
   border: var(--border-message-card-child);
+}
 
+.new-message {
+  width: var(--width-default-percentage);
+  display: flex;
+  justify-content: center;
+  background-color: var(--lt-orange);
+  border-radius: var(--border-radius-small);
+  color: var(--off-black);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-heavy);
+  margin-bottom: var(--spacer-default);
+  padding: var(--spacer-small);
 }
 
 /* Special spacing */
