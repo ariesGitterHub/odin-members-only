@@ -27,6 +27,31 @@
     <span class="regular-message">expires: <%#= new Date(message.expires_at).toLocaleDateString() %></span> 
     <%# } %>
   </div> --> 
+    <div class="message-badge-container uppercase <%= canPerformHasRole(currentUser, 'members-only', message) ? '' : 'hidden' %>">
+    <% if (message.is_edited) { %> 
+      <p>
+        <span class="emoji">✏</span> <span>edited</span>     
+      </p>
+    
+    <% } %>
+      <% if (message.permission_status === "admin") { %> 
+        <p>
+          <span class="emoji">🔑</span> <span>admin</span>  
+        </p>
+      <% } else if (message.permission_status === "member") { %> 
+        <p>
+          <span class="emoji">⭐</span> <span>member</span>          
+        </p>
+      <% } else { %> 
+        <p>
+          <span class="emoji">👤</span> <span>guest</span>          
+        </p>
+      <% } %>
+      <p>
+        <span class="emoji"><%= message.verified_by_admin ? '✔' : '❌' %></span> 
+        <span><%= message.verified_by_admin ? 'verified' : 'not verified' %></span>     
+      </p>
+  </div>
   <% if (message.is_sticky) { %>   
   <% console.log(message.is_edited) %>   
   <div class="message-details uppercase important-details"> 
@@ -34,21 +59,12 @@
   </div>  
   <% } else { %>
   <div class="message-details uppercase regular-details">
-    <span>created: <%= new Date(message.created_at).toLocaleDateString() %></span>
-    <% if (message.is_edited) { %> 
-    <span class="emoji message-badge">✏</span> 
-    <% } %>
-    <span class="emoji message-badge">
-      <% if (message.permission_status === "admin") { %> 
-        🔑
-      <% } else if (message.permission_status === "member") { %> 
-        ⭐
-      <% } else { %> 
-        👤
-      <% } %>
-    </span>
-    <span class="emoji message-badge"><%= message.verified_by_admin ? '✔' : '❌' %></span> 
-    <span>expires: <%= new Date(message.expires_at).toLocaleDateString() %></span> 
+    <p>
+      <span>created:</span> <span><%= new Date(message.created_at).toLocaleDateString() %></span>   
+    </p>
+    <p>
+      <span>expires:</span> <span><%= new Date(message.expires_at).toLocaleDateString() %></span> 
+    </p>
   </div>
    <% } %>
   <div class="message-body">

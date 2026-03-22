@@ -276,13 +276,39 @@
   font-size: var(--message-title-size);
 }
 
+/* For message badges to quickly identify who edited, their permission level, and if they are admin verified */
+.message-badge-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: var(--spacer-small);
+  border-top: 0.125rem solid var(--off-gray);
+  color: var(--off-red);
+  /* font-size: var(--font-size-small); */
+  /* font-size: var(--font-size-small); */
+}
+.message-badge-container span {
+  /* width: var(--width-default-percent); */
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  /* border: var(--border-default); */
+  /* border-radius: var(--border-radius-default); */
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-heavy);
+  padding: var(--spacer-medium) 0;
+  text-align: center;
+}
+
 .message-details {
   display: flex;
   align-items: center;
-  justify-content: start;
-  gap: var(--spacer-medium);
+  /* justify-content: start; */
+  justify-content: space-evenly;
+  gap: var(--spacer-small);
   /* background-color: var(--lt-green); */
-  font-size: var(--message-details-size);
+  /* font-size: var(--message-details-size); */
+  /* font-size: var(--font-size-small); */
   /* padding: var(--spacer-medium); */
   /* padding-bottom: var(--spacer-medium); */
 }
@@ -294,6 +320,7 @@
 }
 
 .regular-details span {
+
     /* border-top: 0.125rem solid var(--off-gray);
   border-bottom: 0.125rem solid var(--off-gray); */
 }
@@ -307,26 +334,21 @@
 }
 
 .message-details span {
-  width: var(--width-default-percent);
+  /* width: var(--width-default-percent);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   /* border: var(--border-default); */
   /* border-radius: var(--border-radius-default); */
+      font-size: var(--font-size-small);
     font-weight: var(--font-weight-heavy);
-  padding: var(--spacer-medium);
+  padding: var(--spacer-medium) 0;
   text-align: center;
 }
 
-.message-badge {
-  /* max-height: 1.7rem; */
+/* .message-badge {
   max-width: 1rem;
-  /* background-color: transparent;
-  border: var(--border-message-badge);
-  border-radius: var(--border-radius-circle); */
-  /* font-size: var(--font-size-default); */
-  /* padding: 0.125rem; */
-}
+} */
 
 .message-body {
   /* border: var(--border-message); */
