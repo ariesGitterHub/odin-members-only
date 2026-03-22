@@ -111,7 +111,9 @@ const getMessageById = async (targetId) => {
     m.reply_count,    
     m.title,
     m.body,
+    m.is_edited,    
     m.created_at,
+    m.updated_at,
     m.expires_at,
     m.is_sticky,
     m.is_deleted,
@@ -130,7 +132,7 @@ const getMessageById = async (targetId) => {
   `;
 
   const res = await pool.query(query, [targetId]);
-
+  
   if (res.rowCount === 0) {
     return null; // not found
   }
@@ -875,34 +877,64 @@ const insertMessage = async (
 //   }
 // };
 
+// const updateMessage = async (targetId, title, body) => {
+//   const client = await pool.connect();
+//   try {
+//     const result = await client.query(
+//       `
+//       UPDATE messages 
+//       SET title = $1, body = $2, updated_at = CURRENT_TIMESTAMP
+//       -- SET title = $1, body = $2, 
+//       WHERE id = $3
+//       RETURNING id;
+//       `,
+//       [title, body, targetId], // Pass the correct parameters
+//     );
+
+//     if (result.rowCount === 0) {
+//       throw new Error("No message found with that ID.");
+//     }
+
+//     console.log("Updated message with ID:", result.rows[0].id); // Log the updated message ID
+//     return result.rows[0]; // Return the updated message (optional)
+//   } catch (err) {
+//     console.error("Error updating message:", err);
+//     throw err;
+//   } finally {
+//     client.release(); // Always release the client back to the pool
+//   }
+// };
+
 const updateMessage = async (targetId, title, body) => {
   const client = await pool.connect();
+  const queryText = `
+    UPDATE messages
+    SET title = $1, body = $2, updated_at = CURRENT_TIMESTAMP, is_edited = TRUE
+    WHERE id = $3
+    RETURNING id;
+  `;
+  const queryValues = [title, body, targetId];
+
   try {
-    const result = await client.query(
-      `
-      UPDATE messages 
-      SET title = $1, body = $2
-      WHERE id = $3
-      RETURNING id;
-      `,
-      [title, body, targetId], // Pass the correct parameters
-    );
+    await client.query("BEGIN"); // Start the transaction
+    const result = await client.query(queryText, queryValues);
 
     if (result.rowCount === 0) {
       throw new Error("No message found with that ID.");
     }
 
     console.log("Updated message with ID:", result.rows[0].id); // Log the updated message ID
+
+    await client.query("COMMIT"); // Commit the transaction
     return result.rows[0]; // Return the updated message (optional)
   } catch (err) {
+    await client.query("ROLLBACK"); // Rollback if any error occurs
     console.error("Error updating message:", err);
     throw err;
   } finally {
     client.release(); // Always release the client back to the pool
   }
 };
-
-
 
 // NOTE - NOT is_sticky (below) ---> this flips true and false
 // NOTE - CASE updates expires_at depending on the previous value
@@ -1019,13 +1051,16 @@ const getValidMessagesByTopic = async (topicId, userId, limit = 50) => {
       m.like_count,
       m.reply_count,
       m.body,
+      m.is_edited, 
       m.created_at,
+      m.updated_at,
       m.expires_at,
       m.is_sticky,
       ml.user_id AS is_liked_by_user_id,
       u.first_name,
       u.last_name,
       u.permission_status,
+      u.verified_by_admin,
       up.avatar_type,
       up.avatar_color_fg,
       up.avatar_color_bg_top,

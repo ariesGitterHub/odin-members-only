@@ -431,6 +431,49 @@ async function postStickyMessageToggle(req, res, next) {
 //   }
 // }
 
+// async function postEditMessage(req, res, next) {
+//   try {
+//     // Extract form data
+//     const { targetId, title, body } = req.body;
+
+//     // Validate form data
+//     if (!targetId || !body) {
+//       return res.status(400).send("Missing required data.");
+//     }
+
+//     // Get the currently logged-in user ID
+//     const currentUserId = req.user?.id;
+//     if (!currentUserId) {
+//       return res.status(401).send("User is not logged in.");
+//     }
+
+//     // Fetch the message from the database
+//     const message = await getMessageById(targetId); // assume a DB query helper
+//     if (!message) {
+//       return res.status(404).send("Message not found.");
+//     }
+
+//     // Check if the logged-in user is the author of the message
+//     if (message.user_id !== currentUserId) {
+//       return res.status(403).send("You are not the author of this message.");
+//     }
+
+//     // Update the message in the database
+//     const updatedMessage = await updateMessage(
+//       targetId, // message_id
+//       title, // title
+//       body, // body
+//     );
+
+// console.log("Message object being passed to template:", message);
+
+//     // Redirect to the topic page
+//     res.redirect(`/app/message-boards/${message.topic_slug}`);
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
 async function postEditMessage(req, res, next) {
   try {
     // Extract form data
@@ -452,7 +495,7 @@ async function postEditMessage(req, res, next) {
     if (!message) {
       return res.status(404).send("Message not found.");
     }
-
+console.log("Updated message with is_edited1:", message.is_edited);
     // Check if the logged-in user is the author of the message
     if (message.user_id !== currentUserId) {
       return res.status(403).send("You are not the author of this message.");
@@ -465,7 +508,10 @@ async function postEditMessage(req, res, next) {
       body, // body
     );
 
-    // Redirect to the topic page
+    // Log updated message data to ensure it's correctly updated
+console.log("Updated message with is_edited2:", message.is_edited);
+
+    // Pass the updated message with 'is_edited' to the template
     res.redirect(`/app/message-boards/${message.topic_slug}`);
   } catch (err) {
     next(err);

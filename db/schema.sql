@@ -74,8 +74,10 @@ CREATE TABLE messages (
   reply_count INTEGER DEFAULT 0,
   title TEXT NOT NULL,
   body TEXT NOT NULL,
-
+  is_edited BOOLEAN DEFAULT FALSE,
+  
   created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW(),  -- NEW!
   -- expires_at TIMESTAMPTZ,
   expires_at TIMESTAMPTZ DEFAULT NOW() + INTERVAL '28 days', -- default expires_at
 
@@ -83,6 +85,21 @@ CREATE TABLE messages (
 
   is_deleted BOOLEAN DEFAULT false,
   deleted_at TIMESTAMPTZ
+
+  -- Optional Trigger for automatically updating `updated_at` on any update
+  -- CREATE OR REPLACE FUNCTION update_message_timestamp()
+  -- RETURNS TRIGGER AS $$
+  -- BEGIN
+  --   NEW.updated_at = CURRENT_TIMESTAMP;  -- Set updated_at to the current timestamp
+  --   RETURN NEW;
+  -- END;
+  -- $$ LANGUAGE plpgsql;
+
+  -- -- Trigger that fires before every update
+  -- CREATE TRIGGER update_message_timestamp
+  -- BEFORE UPDATE ON messages
+  -- FOR EACH ROW
+  -- EXECUTE FUNCTION update_message_timestamp();
 );
 
 -- Message Likes

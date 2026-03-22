@@ -26,14 +26,18 @@
     <%# } else { %>
     <span class="regular-message">expires: <%#= new Date(message.expires_at).toLocaleDateString() %></span> 
     <%# } %>
-  </div> -->
+  </div> --> 
   <% if (message.is_sticky) { %>   
+  <% console.log(message.is_edited) %>   
   <div class="message-details uppercase important-details"> 
     <span>pinned message - important!</span> 
   </div>  
   <% } else { %>
   <div class="message-details uppercase regular-details">
     <span>created: <%= new Date(message.created_at).toLocaleDateString() %></span>
+    <% if (message.is_edited) { %> 
+    <span class="emoji message-badge">✏</span> 
+    <% } %>
     <span class="emoji message-badge">
       <% if (message.permission_status === "admin") { %> 
         🔑
@@ -42,12 +46,13 @@
       <% } else { %> 
         👤
       <% } %>
-    </span> 
+    </span>
+    <span class="emoji message-badge"><%= message.verified_by_admin ? '✔' : '❌' %></span> 
     <span>expires: <%= new Date(message.expires_at).toLocaleDateString() %></span> 
   </div>
    <% } %>
   <div class="message-body">
-    <p>
+    <!-- <p class="<%#= message.is_edited ? 'font-color-green' : 'font-color-red' %>"> -->
       <%= message.body %>
     </p>
   </div>

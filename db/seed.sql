@@ -199,8 +199,8 @@ LIMIT 1;
 -- 3️⃣ Buy & Sell
 INSERT INTO messages (topic_id, user_id, title, body)
 SELECT t.id, u.id,
-  'I''m moving and need to downsize. This was my grandmother''s old mixed box of forks, knives, spoons, and some other bits I don''t know the names of. make me an offer.', 
-  'Old silverware.'
+  'Old silverware.',
+  'I''m moving and need to downsize. This was my grandmother''s old mixed box of forks, knives, spoons, and some other bits I don''t know the names of. make me an offer.' 
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
   AND u.email = 'evil@can.org'
@@ -209,8 +209,8 @@ LIMIT 1;
 -- 3️⃣ Buy & Sell
 INSERT INTO messages (topic_id, user_id, title, body)
 SELECT t.id, u.id,
-  'Throwing out a box of old comic books left behind by a prior renter, YOURS FOR A DOLLAR!', 
-  'Comic Books.'
+  'Comic Books.',
+  'Throwing out a box of old comic books left behind by a prior renter, YOURS FOR A DOLLAR!' 
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
   AND u.email = 'chet@can.org'
