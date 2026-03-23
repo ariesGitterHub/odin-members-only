@@ -96,17 +96,6 @@
                   delete your account
                   </button> 
                 <% } %>
-                <!-- <%# if (currentUser && currentUser.permission_status === "guest" && currentUser.member_request === false) { %>
-                  <button 
-                    class="button-default wide-button open-modal-btn action-target-button" 
-                    data-section="modal-become-member" 
-                    data-title="modal-title-become-member"
-                    data-target-id="<%#= currentUser.id %>"
-                    data-action="/app/your-profile/become-member"
-                  >  
-                  upgrade to member
-                  </button>
-                <%# } %> -->
                 <button 
                   class="button-default wide-button open-modal-btn" 
                   data-section="modal-edit-profile"
@@ -125,6 +114,7 @@
                 <% if (currentUser && currentUser.permission_status !== "guest") { %>
                   <a class="button-default wide-button" href="/app/member-directory">member directory</a>
                 <% } %>
+                <a class="button-default wide-button <%= canPerformHasRole(currentUser, 'guest-members-upgrade') ? '' : 'hidden' %>" href="/app/member-invite">member invitation</a>
               </div>
             </div>
           <% } %>

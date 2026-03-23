@@ -10,22 +10,23 @@
         <h1>membership invitation</h1>
       </div>
       <div class="card">
-        <div class="ui-message">
+        <div class="ui-message element-container-col-start-center flex-gap">
           <p>
-            Congratulations, this invite is only issued to trusted neighborhood residents, who are, or were, active in the
+            Congratulations, <span class="bold"><%= formData.first_name %> <%= formData.last_name %></span> this invite is only issued to trusted neighborhood residents, who are, or were, active in the
             <span class="red-letter">C.A.N.</span> 
             organization.
-            By agreeing to opt in (see below), you upgrade from 
-            <span class="italic">guest</span> 
-            to
-            <span class="italic">member</span> 
-            status, which gives you access to this site's <span class="bold capitalize">member directory</span>, a handy list of other members' addresses, emails, and phone numbers. Clicking the button below acknowledges that you permit this app to add the fields' below to this app's data and to the member directory.
           </p>
-          <br>
+          <p>
+            By agreeing to opt in (see below), you upgrade from <span class="italic">guest</span> to <span class="italic">member</span> status, which gives you access to many site features, such as the <span class="bold capitalize">member directory</span>, a handy list of other members' addresses, emails, and phone numbers. 
+          </p>
+          <p>
+            Clicking the accept button acknowledges that you permit this site to add the following requested fields to the member directory.
+          </p>
           <p>Note: maintaining member status is contingent upon adherence to site policies (see <a class="text-link" href="/app/info">Site Information</a>).</p>
         </div>
+        <br>
         <!-- <form id="member-invite-form" method="POST"> -->
-        <form action="/app/member-invite/accept" method="POST">
+        <form action="/app/member-invite/accepted" method="POST">
           <!-- <input id="member-invite-target-id" type="hidden" name="targetId" /> -->
           <input
             name="permission_status"
@@ -34,7 +35,7 @@
           />
           <input
             name="invite_decision"
-            value="true"
+            value="accepted"
             hidden
           />
           <label class="capitalize" for="phone-member-invite-page"> phone </label>
@@ -141,10 +142,15 @@
             <button class="button-default wide-button" type="submit">accept invite</button>
           </div>
         </form>
-        <form action="/app/member-invite/dceline" method="POST">
+        <form action="/app/member-invite/declined" method="POST">
+          <!-- <input
+            name="permission_status"
+            value="guest"
+            hidden
+          /> -->
           <input
             name="invite_decision"
-            value="false"
+            value="declined"
             hidden
           />
           <div class="button-container-row-space-evenly">
@@ -153,5 +159,7 @@
         </form>
       </div>
     </main>
+    <%- include('./partials/modal-root.ejs') %>
+    <%- include('./partials/footer.ejs') %>
   </body>
 </html>

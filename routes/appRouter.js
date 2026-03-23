@@ -47,6 +47,9 @@ const {
   postYourProfilePageEdit,
   postYourProfilePageAvatar,
   getMemberDirectory, // Member status or higher
+  getMemberInvite, // Guest status, verified by admin, and guest member invite must all be true, while invite decision must equal none.
+  postMemberInviteAccepted,
+  postMemberInviteDeclined,
   postLogOut,
 
   // postBecomeMember,
@@ -144,6 +147,11 @@ appRouter.post("/your-profile/change-avatar", requireRole("guest"), postYourProf
 
 // ROUTE: MEMBER DIRECTOR PAGE (member-directory.ejs) 
 appRouter.get("/member-directory", requireRole("member"), getMemberDirectory);
+
+// ROUTE: MEMBER INVITATION PAGE (member-invite.ejs) 
+appRouter.get("/member-invite", requireRole("guest"), getMemberInvite);
+appRouter.post("/member-invite/accepted", requireRole("guest"), postMemberInviteAccepted);
+appRouter.post("/member-invite/declined", requireRole("guest"), postMemberInviteDeclined);
 
 // appRouter.post("/your-profile/become-member", requireRole("guest"), postBecomeMember);
 // appRouter.post("/admin-create", requireRole("admin"), postAdminCreatePage);

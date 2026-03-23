@@ -100,6 +100,10 @@
 }
 
 /* Special spacing */
+.flex-gap {
+gap: var(--spacer-default);
+}
+
 .margin-bottom {
   margin-bottom: var(--spacer-default);
 }

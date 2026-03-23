@@ -564,6 +564,95 @@ const updateUser = async (
   }
 };
 
+const updateUserToMember = async (
+  user_id,
+  permission_status,
+  invite_decision,
+  phone,
+  street_address,
+  apt_unit,
+  city,
+  us_state,
+  zip_code,
+) => {
+  console.log("Starting updateUser...");
+  const client = await pool.connect();
+
+  try {
+    console.log("Beginning transaction...");
+    await client.query("BEGIN");
+
+
+    // Update users table
+    console.log("Updating users table with sanitized values...", {
+      permission_status,
+      invite_decision,
+    });
+
+    const userRes = await client.query(
+      `UPDATE users
+        SET
+        permission_status     = COALESCE($1, permission_status),
+        invite_decision       = COALESCE($2, invite_decision)
+      WHERE id = $3
+      RETURNING *;`,
+      [permission_status, invite_decision, user_id],
+    );
+
+    const currentUser = userRes.rows[0];
+
+    console.log("Users table updated successfully:", currentUser);
+
+    // Update user_profiles table
+    console.log("Updating user_profiles table with sanitized values...", {
+      user_id: currentUser.id,
+      phone,
+      street_address,
+      apt_unit,
+      city,
+      us_state,
+      zip_code,
+    });
+
+    // Update user_profiles table
+    await client.query(
+      `UPDATE user_profiles
+       SET
+         phone                  = COALESCE($1, phone),
+         street_address         = COALESCE($2, street_address),
+         apt_unit               = COALESCE($3, apt_unit),
+         city                   = COALESCE($4, city),
+         us_state               = COALESCE($5, us_state),
+         zip_code               = COALESCE($6, zip_code)
+       WHERE user_id = $7;`,
+      [
+        phone,
+        street_address,
+        apt_unit,
+        city,
+        us_state,
+        zip_code,
+        currentUser.id,
+      ],
+    );
+
+    console.log("Committing transaction...");
+
+    await client.query("COMMIT");
+
+    console.log("updateUser completed successfully.");
+
+    return currentUser;
+  } catch (err) {
+    console.error("Error in updateUser:", err);
+    await client.query("ROLLBACK");
+    throw err;
+  } finally {
+    client.release();
+    console.log("Database client released.");
+  }
+};
+
 // QUERY: UPDATE OF A USER'S AVATAR BY A USER (your-profile.ejs/change-avatar.ejs modal)
 
 // Only updating one table. Only use transactions when updating multiple tables.
@@ -1477,6 +1566,7 @@ module.exports = {
   updateAdminEditedUser,
   updateUser,
   updateUserAvatar,
+  updateUserToMember,
   // getTopicBySlugWithPermission,
   getTopicNames,
   // getTopicNamesForPermission,
