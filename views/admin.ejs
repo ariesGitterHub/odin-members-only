@@ -212,23 +212,44 @@
           <br>
           <div class="button-container-col">
             <% if (user && user.permission_status === "admin") { %>
+              
               <a class="button-default wide-button" href="/app/admin-create">create new user</a>
+              
               <button id="user-census-button" class="button-default wide-button" type="button">open user census</button>
-              <div id="user-census-div" class="element-container-col-default hidden">
-                <p >Total number of site users: <%= users.length %>.</p>
+              <div id="user-census-div" class="element-container-col-default hidden ">
+                <p>Total number of site users: <%= users.length %>.</p>
                 <div class="element-container-row-space-evenly">
-                  <div class="element-container-col-start-center">
-                  <p>Guests: <%= users.filter(user => user.permission_status === "guest").length %></p>
-                  <p>Members: <%= users.filter(user => user.permission_status === "member").length %></p>
+                  <div class="element-container-col-start-center capitalize">
+                  <p>guests: <%= users.filter(user => user.permission_status === "guest").length %></p>
+                  <p>members: <%= users.filter(user => user.permission_status === "member").length %></p>
                   </div>
-                  <div class="element-container-col-start-center">
-                    <p>Admins: <%= users.filter(user => user.permission_status === "admin").length %></p>
-                    <p>Inactive: <%= users.filter(user => user.is_active === false).length %></p>                   
+                  <div class="element-container-col-start-center capitalize">
+                    <p>admins: <%= users.filter(user => user.permission_status === "admin").length %></p>
+                    <p>inactive: <%= users.filter(user => user.is_active === false).length %></p>                   
                   </div>                  
                 </div>                 
               </div>
+
+              <button id="messages-overview-button" class="button-default wide-button" type="button">open messages overview</button>
+              <div id="messages-overview-div" class="element-container-col-default hidden">
+                <p>Total number of messages: <%= messages.length %></p>
+                <div class="element-container-row-space-evenly">
+                  <div class="element-container-col-start-center capitalize">
+                  <p>pinned <%= messages.filter(message => message.is_sticky).length %></p>
+                  <p>deleted: <%= messages.filter(message => message.is_deleted).length %></p>
+                  </div>
+                  <div class="element-container-col-start-center capitalize">
+                  <p>replies <%= messages.filter(message => message.parent_message_id).length %></p>
+                  <p>edited: <%= messages.filter(message => message.is_edited).length %></p>                 
+                  </div>                  
+                </div>                 
+              </div>
+
+
               <button id="show-guests-button" class="button-default wide-button" type="button">open guest profiles</button>
+
               <button id="show-members-button" class="button-default wide-button" type="button">open member profiles</button>
+
             <% } %> 
             <button class="button-default wide-button show-profile-button" type="button">open this profile</button>
           </div>

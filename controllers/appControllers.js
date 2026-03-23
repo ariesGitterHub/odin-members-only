@@ -7,6 +7,7 @@ const { usStates } = require("../utils/usStates");
 const {
   getUsers,
   getUserById,
+  getMessages,
   getMessageById,
   getTopicById,
 
@@ -1146,6 +1147,7 @@ async function postMemberInviteDeclined(req, res, next) {
 async function getAdminPage(req, res, next) {
   try {
     const users = await getUsers();
+    const messages = await getMessages();
 
     // const usersWithDates = users.map((user) => ({
     //   ...user,
@@ -1199,6 +1201,7 @@ async function getAdminPage(req, res, next) {
       // "!!!-HERE-!!!" (see comments above in this controller)
       // users: usersWithAvatars,
       users: usersWithChineseZodiacSigns,
+      messages,
       // usersWithDates,
       // usersWithAvatars,
       errors: [],

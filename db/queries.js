@@ -98,6 +98,23 @@ const getUserById = async (targetId) => {
   return rows[0]; // Returning only the first row (one user)
 };
 
+// QUERY: GET ALL MESSAGES
+
+const getMessages = async () => {
+  const query = `
+    SELECT *
+    FROM messages m
+  `;
+
+  try {
+    const { rows } = await pool.query(query);
+    return rows; // Returns all messages
+  } catch (err) {
+    console.error("Error retrieving messages:", err);
+    throw err; // Optionally, rethrow the error or handle it as needed
+  }
+};
+
 // QUERY: GET MESSAGES BY ID
 
 const getMessageById = async (targetId) => {
@@ -1557,6 +1574,7 @@ module.exports = {
   incrementReplyCount,
   getUsers,
   getUserById,
+  getMessages,
   getMessageById,
   getTopicById, 
 

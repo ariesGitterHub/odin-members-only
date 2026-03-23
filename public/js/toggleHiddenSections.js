@@ -19,6 +19,20 @@ export function handleUserCensusToggle() {
   }
 }
 
+// Toggle .hidden message overview in admin.ejs
+export function handleMessageOverviewToggle() {
+  const messagesOverviewButton = document.querySelector("#messages-overview-button");
+  const messagesOverviewDiv = document.querySelector("#messages-overview-div");
+  const messagesOverviewButtonText = "messages overview"
+
+  if (messagesOverviewButton && messagesOverviewDiv) {
+    messagesOverviewButton.addEventListener("click", () => {
+      toggleVisibility(messagesOverviewDiv);
+      updateButtonText(messagesOverviewButton, messagesOverviewDiv, messagesOverviewButtonText);
+    });
+  }
+}
+
 // Toggle .hidden for all "guest cards" on admin.ejs
 export function handleGuestCardsToggle() {
   const showGuestsButton = document.querySelector("#show-guests-button");

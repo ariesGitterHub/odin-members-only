@@ -10,6 +10,7 @@ import { formActionsFromModals } from "./formActions.js";
 
 import {
   handleUserCensusToggle,
+  handleMessageOverviewToggle,
   handleGuestCardsToggle,
   handleMemberCardsToggle,
   handleShowProfileToggle,
@@ -30,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
   formActionsFromModals();
 
   handleUserCensusToggle();
+  handleMessageOverviewToggle();
   handleGuestCardsToggle();
   handleMemberCardsToggle();
   handleShowProfileToggle();
