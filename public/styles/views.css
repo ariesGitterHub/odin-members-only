@@ -186,10 +186,10 @@
 }
 
 .topic-count-square {
-  background-color: var(--off-red);
+  /* background-color: var(--off-black); */
   /* border: var(--border-topic-number); */
   border-radius: var(--border-radius-small);
-  color: var(--off-white);
+  /* color: var(--off-black); */
   font-weight: var(--font-weight-heavy);
   padding: var(--spacer-small) var(--spacer-medium);
 }

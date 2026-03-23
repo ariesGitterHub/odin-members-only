@@ -179,62 +179,17 @@
                 />
                 </div>
                 <div class="element-container-col-start-center">
-                <label class="capitalize" for="us-state-admin-edit-page">
-                    state
-                </label>
-                <select id="us-state-admin-edit-page" name="us_state">
+                  <label class="capitalize" for="us-state-admin-edit-page">
+                      state
+                  </label>
+
+                  <select id="us-state-admin-edit-page" name="us_state">
                     <option value="" disabled <%= !formData?.us_state ? "selected" : "" %>>Choose state</option>
-                    <option value="AL" <%= formData?.us_state === "AL" ? "selected" : "" %>>Alabama</option>
-                    <option value="AK" <%= formData?.us_state === "AK" ? "selected" : "" %>>Alaska</option>
-                    <option value="AZ" <%= formData?.us_state === "AZ" ? "selected" : "" %>>Arizona</option>
-                    <option value="AR" <%= formData?.us_state === "AR" ? "selected" : "" %>>Arkansas</option>
-                    <option value="CA" <%= formData?.us_state === "CA" ? "selected" : "" %>>California</option>
-                    <option value="CO" <%= formData?.us_state === "CO" ? "selected" : "" %>>Colorado</option>
-                    <option value="CT" <%= formData?.us_state === "CT" ? "selected" : "" %>>Connecticut</option>
-                    <option value="DE" <%= formData?.us_state === "DE" ? "selected" : "" %>>Delaware</option>
-                    <option value="DC" <%= formData?.us_state === "DC" ? "selected" : "" %>>Washington, DC</option>
-                    <option value="FL" <%= formData?.us_state === "FL" ? "selected" : "" %>>Florida</option>
-                    <option value="GA" <%= formData?.us_state === "GA" ? "selected" : "" %>>Georgia</option>
-                    <option value="HI" <%= formData?.us_state === "HI" ? "selected" : "" %>>Hawaii</option>
-                    <option value="ID" <%= formData?.us_state === "ID" ? "selected" : "" %>>Idaho</option>
-                    <option value="IL" <%= formData?.us_state === "IL" ? "selected" : "" %>>Illinois</option>
-                    <option value="IN" <%= formData?.us_state === "IN" ? "selected" : "" %>>Indiana</option>
-                    <option value="IA" <%= formData?.us_state === "IA" ? "selected" : "" %>>Iowa</option>
-                    <option value="KS" <%= formData?.us_state === "KS" ? "selected" : "" %>>Kansas</option>
-                    <option value="KY" <%= formData?.us_state === "KY" ? "selected" : "" %>>Kentucky</option>
-                    <option value="LA" <%= formData?.us_state === "LA" ? "selected" : "" %>>Louisiana</option>
-                    <option value="ME" <%= formData?.us_state === "ME" ? "selected" : "" %>>Maine</option>
-                    <option value="MD" <%= formData?.us_state === "MD" ? "selected" : "" %>>Maryland</option>
-                    <option value="MA" <%= formData?.us_state === "MA" ? "selected" : "" %>>Massachusetts</option>
-                    <option value="MI" <%= formData?.us_state === "MI" ? "selected" : "" %>>Michigan</option>
-                    <option value="MN" <%= formData?.us_state === "MN" ? "selected" : "" %>>Minnesota</option>
-                    <option value="MS" <%= formData?.us_state === "MS" ? "selected" : "" %>>Mississippi</option>
-                    <option value="MO" <%= formData?.us_state === "MO" ? "selected" : "" %>>Missouri</option>
-                    <option value="MT" <%= formData?.us_state === "MT" ? "selected" : "" %>>Montana</option>
-                    <option value="NE" <%= formData?.us_state === "NE" ? "selected" : "" %>>Nebraska</option>
-                    <option value="NV" <%= formData?.us_state === "NV" ? "selected" : "" %>>Nevada</option>
-                    <option value="NH" <%= formData?.us_state === "NH" ? "selected" : "" %>>New Hampshire</option>
-                    <option value="NJ" <%= formData?.us_state === "NJ" ? "selected" : "" %>>New Jersey</option>
-                    <option value="NM" <%= formData?.us_state === "NM" ? "selected" : "" %>>New Mexico</option>
-                    <option value="NY" <%= formData?.us_state === "NY" ? "selected" : "" %>>New York</option>
-                    <option value="NC" <%= formData?.us_state === "NC" ? "selected" : "" %>>North Carolina</option>
-                    <option value="ND" <%= formData?.us_state === "ND" ? "selected" : "" %>>North Dakota</option>
-                    <option value="OH" <%= formData?.us_state === "OH" ? "selected" : "" %>>Ohio</option>
-                    <option value="OK" <%= formData?.us_state === "OK" ? "selected" : "" %>>Oklahoma</option>
-                    <option value="OR" <%= formData?.us_state === "OR" ? "selected" : "" %>>Oregon</option>
-                    <option value="PA" <%= formData?.us_state === "PA" ? "selected" : "" %>>Pennsylvania</option>
-                    <option value="RI" <%= formData?.us_state === "RI" ? "selected" : "" %>>Rhode Island</option>
-                    <option value="SC" <%= formData?.us_state === "SC" ? "selected" : "" %>>South Carolina</option>
-                    <option value="SD" <%= formData?.us_state === "SD" ? "selected" : "" %>>South Dakota</option>
-                    <option value="TN" <%= formData?.us_state === "TN" ? "selected" : "" %>>Tennessee</option>
-                    <option value="TX" <%= formData?.us_state === "TX" ? "selected" : "" %>>Texas</option>
-                    <option value="UT" <%= formData?.us_state === "UT" ? "selected" : "" %>>Utah</option>
-                    <option value="VT" <%= formData?.us_state === "VT" ? "selected" : "" %>>Vermont</option>
-                    <option value="VA" <%= formData?.us_state === "VA" ? "selected" : "" %>>Virginia</option>
-                    <option value="WA" <%= formData?.us_state === "WA" ? "selected" : "" %>>Washington</option>
-                    <option value="WV" <%= formData?.us_state === "WV" ? "selected" : "" %>>West Virginia</option>
-                    <option value="WI" <%= formData?.us_state === "WI" ? "selected" : "" %>>Wisconsin</option>
-                    <option value="WY" <%= formData?.us_state === "WY" ? "selected" : "" %>>Wyoming</option>
+                    <% usStates.forEach((state) => { %>
+                      <option value="<%= state.code %>" <%= formData?.us_state === state.code ? "selected" : "" %>>
+                        <%= state.name %>
+                      </option>
+                    <% }) %>
                   </select>
                 </div>
             </div>

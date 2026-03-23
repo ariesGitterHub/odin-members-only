@@ -1,4 +1,4 @@
-<form id="reply-message-form" method="POST">
+<form id="reply-message-form" class="draft-message-form" method="POST">
   <input id="reply-message-title" type="hidden" name="messageTitle" />
   <input id="reply-message-target-id" type="hidden" name="targetId" />
   <input id="reply-message-topic-name" type="hidden" name="topicName" />
@@ -21,7 +21,7 @@
   <label class="bold capitalize" for="title-reply-message">Message Title</label>
   <input id="title-reply-message" class="title-draft-message word-breaker" type="text" name="title" required  />
   <div class="element-container-col-start-center">
-    <label class="bold capitalize" for="body-reply-message">Message Body <span id="max-char-count-reply-message" class="max-char-count-draft-message"></span></label>
+    <label class="bold capitalize" for="body-reply-message">Message Body <span id="max-char-count-reply-message" class="max-char-count-draft-message" aria-live="polite"></span></label>
     <textarea id="body-reply-message" class="body-draft-message" type="text" name="body" maxlength="700" required></textarea>
     <div class="button-container-row-space-evenly">
       <button class="button-default wide-button" type="submit">submit reply message</button>

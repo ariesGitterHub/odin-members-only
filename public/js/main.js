@@ -15,7 +15,10 @@ import {
   handleShowProfileToggle,
 } from "./toggleHiddenSections.js";
 
-import { messageBodyCharCounter } from "./miscFunctions.js";
+import {
+  messageBodyCharCounter,
+  // generateStateSelect,
+} from "./miscFunctions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   attachCloseModalListener();
@@ -32,6 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
   handleShowProfileToggle();
 
   messageBodyCharCounter();
+  // generateStateSelect();
+  // usStates
 
   // end
 });

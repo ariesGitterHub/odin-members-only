@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const { hasRole } = require("../utils/permissions");
 const { buildThreadedMessages } = require("../utils/threadUtils");
+const { usStates } = require("../utils/usStates");
 
 const {
   getUsers,
@@ -992,6 +993,7 @@ async function getMemberInvite(req, res, next) {
       // errors: [],
       user: req.user,
       // errors,
+      usStates: usStates, // Pass the array to the EJS template
       formData: req.body || {},
     });
   } catch (err) {
@@ -1324,6 +1326,7 @@ async function getAdminEditPage(req, res, next) {
       title: "Admin Edit",
       user,
       errors: [],
+      usStates: usStates, // Pass the array to the EJS template
       formData: user,
     }); // Pass user to EJS view
   } catch (err) {

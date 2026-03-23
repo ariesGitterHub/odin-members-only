@@ -14,7 +14,9 @@
           <li>
             <a class="button-default wide-button" href="/app/message-boards/<%= topic.slug %>">
               <h2 class="topic-title">➤ <%= topic.name %></h2>
-              <h2 class="topic-title topic-count-square"><%= topic.message_count%></h2>
+              <% if (topic.message_count > 0) { %>
+              <h2 class="topic-title topic-count-square"><span class="emoji">💬</span><%= topic.message_count%></h2>
+              <% } %>
             </a>
           </li>
            <%# } %>
