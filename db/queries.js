@@ -278,7 +278,7 @@ const insertAdminCreatedUser = async (
       `INSERT INTO users
        -- (first_name, last_name, email, birthdate, password_hash, permission_status)
        (first_name, last_name, email, birthdate, password_hash)
-       VALUES ($1,$2,$3,$4,$5,$6)
+       VALUES ($1,$2,$3,$4,$5)
        RETURNING *`,
       [
         first_name,

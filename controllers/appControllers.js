@@ -1320,7 +1320,7 @@ async function postAdminCreatePage(req, res, next) {
     const notes = req.body.notes || "Admin created user.";
     console.log("Notes created");
 
-    const permission_status = req.body.permission_status || "guest";
+    // const permission_status = req.body.permission_status || "guest";
 
     // Insert the new admin-created user (avatar_type generated inside the function)
     await insertAdminCreatedUser(
@@ -1329,7 +1329,7 @@ async function postAdminCreatePage(req, res, next) {
       email,
       birthdate,
       password_hash,
-      permission_status,
+      // permission_status,
       notes
     );
     console.log("User inserted successfully");
