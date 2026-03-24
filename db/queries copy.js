@@ -1,7 +1,6 @@
 const pool = require("./pool");
 const bcrypt = require("bcryptjs");
 
-
 // QUERY: GET ALL USERS
 
 const getUsers = async () => {
@@ -55,7 +54,6 @@ const getUsers = async () => {
   return rows;
 };
 
-
 // QUERY: GET USERS BY ID
 
 // BELOW exposes data, see in appRouter.js and on localhost:XXXX/app/user/1
@@ -100,15 +98,6 @@ const getUserById = async (targetId) => {
   return rows[0]; // Returning only the first row (one user)
 };
 
-
-//QUERY: 
-const updateLastLogin = async (userId) => {
-  await pool.query("UPDATE users SET last_login_at = NOW() WHERE id = $1", [
-    userId,
-  ]);
-};
-
-
 // QUERY: GET ALL MESSAGES
 
 const getMessages = async () => {
@@ -125,7 +114,6 @@ const getMessages = async () => {
     throw err; // Optionally, rethrow the error or handle it as needed
   }
 };
-
 
 // QUERY: GET MESSAGES BY ID
 
@@ -169,9 +157,6 @@ const getMessageById = async (targetId) => {
   return res.rows[0]; // the message object
 };
 
-
-// QUERY: GET TOPICS BY ID
-
 const getTopicById = async (topic_id) => {
   const query = `
     SELECT *
@@ -184,8 +169,17 @@ const getTopicById = async (topic_id) => {
   return res.rows[0];
 };
 
-
 // QUERY: CHECK IF EMAIL ALREADY EXISTS IN THE DB (SET UP TO NOT AFFECT USER EDITS TO SAME ENTRY)
+
+// Function to check if email exists
+// async function checkIfEmailExists(email) {
+// const checkIfEmailExists = async (email) => {
+//   const { rows } = await pool.query("SELECT * FROM users WHERE email = $1", [
+//     email,
+//   ]);
+//   // return rows; //changed to below..........................................................
+//   return rows[0];
+// };
 
 async function checkIfEmailExists(email, targetId) {
   const result = await pool.query(
@@ -197,7 +191,6 @@ async function checkIfEmailExists(email, targetId) {
 
   return result.rows;
 }
-
 
 // QUERY: INSERT A NEW USER FROM SIGN UP (sign-up.ejs)
 
@@ -250,15 +243,16 @@ const insertNewUser = async (
   }
 };
 
-
 // QUERY: INSERT A NEW USER VIA ADMIN (admin-create.ejs)
 
+// admin-create.ejs form query for admin created users. Mirrors sign-up form requirements, with the added fields of avatar_type, like insertNewUser, and notes for admin purposes.
 const insertAdminCreatedUser = async (
   first_name,
   last_name,
   email,
   birthdate,
   password_hash,
+  // permission_status = "guest",
   notes = "Admin created user.",
 ) => {
   console.log("Starting insertAdminCreatedUser...");
@@ -273,6 +267,7 @@ const insertAdminCreatedUser = async (
       last_name,
       email,
       birthdate,
+      // permission_status,
     });
     const userRes = await client.query(
       `INSERT INTO users
@@ -286,6 +281,7 @@ const insertAdminCreatedUser = async (
         email,
         birthdate,
         password_hash,
+        // permission_status,
       ],
     );
 
@@ -320,7 +316,6 @@ const insertAdminCreatedUser = async (
     console.log("Database client released.");
   }
 };
-
 
 // QUERY: UPDATE OF A USER VIA ADMIN (admin-edit.ejs)
 
@@ -387,12 +382,7 @@ const updateAdminEditedUser = async (
           verified_by_admin     = COALESCE($7, verified_by_admin),
           guest_upgrade_invite  = COALESCE($8, guest_upgrade_invite),
           invite_decision       = COALESCE($9, invite_decision),
-          is_active             = COALESCE($10, is_active),
-          updated_at = CASE
-            WHEN $1 IS NOT NULL OR $2 IS NOT NULL OR $3 IS NOT NULL OR $4 IS NOT NULL OR $5 IS NOT NULL OR $6 IS NOT NULL OR $7 IS NOT NULL OR $8 IS NOT NULL OR $9 IS NOT NULL OR $10 IS NOT NULL
-            THEN CURRENT_TIMESTAMP
-            ELSE updated_at
-          END
+          is_active             = COALESCE($10, is_active)
         WHERE id = $11
         RETURNING *;`,
       [
@@ -479,8 +469,7 @@ const updateAdminEditedUser = async (
   }
 };
 
-
-// QUERY: UPDATE OF USER PROFILE INFO (NOT ADMIN RELATED DATA) BY A USER (your-profile.ejs/edit-profile.ejs modal)
+// QUERY: UPDATE OF A USER BY A USER (your-profile.ejs/edit-profile.ejs modal)
 
 const updateUser = async (
   user_id,
@@ -525,12 +514,7 @@ const updateUser = async (
           last_name         = COALESCE($2, last_name),
           email             = COALESCE($3, email),
           birthdate         = COALESCE($4, birthdate),
-          password_hash     = COALESCE($5, password_hash),
-          updated_at = CASE
-            WHEN $1 IS NOT NULL OR $2 IS NOT NULL OR $3 IS NOT NULL OR $4 IS NOT NULL OR $5 IS NOT NULL
-            THEN CURRENT_TIMESTAMP
-            ELSE updated_at
-          END
+          password_hash     = COALESCE($5, password_hash)
         WHERE id = $6
         RETURNING *;`,
       [
@@ -597,9 +581,6 @@ const updateUser = async (
   }
 };
 
-
-// QUERY: UPDATE OF A USER FROM A GUEST TO A MEMBER (member-invite.ejs)
-
 const updateUserToMember = async (
   user_id,
   permission_status,
@@ -618,6 +599,7 @@ const updateUserToMember = async (
     console.log("Beginning transaction...");
     await client.query("BEGIN");
 
+
     // Update users table
     console.log("Updating users table with sanitized values...", {
       permission_status,
@@ -628,11 +610,7 @@ const updateUserToMember = async (
       `UPDATE users
         SET
         permission_status     = COALESCE($1, permission_status),
-        invite_decision       = COALESCE($2, invite_decision),
-        updated_at = CASE
-          WHEN $1 IS NOT NULL OR $2 IS NOT NULL THEN CURRENT_TIMESTAMP
-          ELSE updated_at
-        END
+        invite_decision       = COALESCE($2, invite_decision)
       WHERE id = $3
       RETURNING *;`,
       [permission_status, invite_decision, user_id],
@@ -691,7 +669,6 @@ const updateUserToMember = async (
     console.log("Database client released.");
   }
 };
-
 
 // QUERY: UPDATE OF A USER'S AVATAR BY A USER (your-profile.ejs/change-avatar.ejs modal)
 
@@ -752,13 +729,25 @@ const updateUserAvatar = async (
   }
 };
 
-
-// QUERY: DELETE USER ACCOUNT BY A USER (your-profile.ejs) OR DELETE USER ACCOUNT VIA ADMIN (admin.ejs)
+// QUERY: DELETE VIA USER (your-profile.ejs) OR DELETE VIA ADMIN (admin.ejs)
 
 const deleteUserById = async (targetId) => {
   await pool.query("DELETE FROM users WHERE id = $1", [targetId]);
 };
 
+// NEW --- QUERY: CHECK PERMISSION STATUS AND GET TOPICS
+//async function getTopicBySlugWithPermission(slug, userPermission) {
+//   const query = `
+//     SELECT *
+//     FROM topics
+//     WHERE slug = $1
+//     AND required_permission <= $2
+//     AND is_active = true
+//   `;
+
+//   const { rows } = await pool.query(query, [slug, userPermission]);
+//   return rows[0] || null;
+// }
 
 // QUERY: GET TOPIC LIST FOR DROPDOWN IN NEW MESSAGE (new-message.ejs)
 
@@ -773,8 +762,103 @@ const getTopicNames = async () => {
   return rows;
 };
 
+// const getTopicName = async (topicId) => {
+//   const { rows } = await pool.query(`
+//     SELECT id, name
+//     FROM topics
+//     WHERE id = $1
+//   `,
+//   [topicId] // Pass the parameter here
+// );
+//   return rows[0];
+// };
 
-// QUERY: INSERT INTO NEW MESSAGE (new-message.ejs) OR REPLY MESSAGE (reply-message.ejs)
+// QUERY: INSERT NEW MESSAGE TO MESSAGE BOARD TOPIC (new-message.ejs)
+
+// const insertNewMessage = async (
+//   user_id,
+//   topic_id,
+//   title,
+//   body
+// ) => {
+
+//   const client = await pool.connect();
+
+//   try {
+//     await client.query("BEGIN");
+
+//     const userRes = await client.query(
+//       `INSERT INTO messages
+//       (user_id, topic_id, title, body)
+//       VALUES ($1,$2,$3,$4)
+//       RETURNING *`,
+//       [user_id, topic_id, title, body],
+//     );
+
+//     const currentUser = userRes.rows[0];
+
+//     await client.query("COMMIT");
+
+//     return currentUser;
+//   } catch (err) {
+//     await client.query("ROLLBACK");
+//     throw err;
+//   } finally {
+//     client.release();
+//   }
+// };
+
+// const insertNewMessage = async (user_id, topic_id, title, body) => {
+//   const client = await pool.connect();
+
+//   try {
+//     const userRes = await client.query(
+//       `INSERT INTO messages (user_id, topic_id, title, body)
+//        VALUES ($1, $2, $3, $4)
+//        RETURNING id, user_id, topic_id, title, body, like_count, reply_count`,
+//       [user_id, topic_id, title, body],
+//     );
+
+//     return userRes.rows[0]; // Return the inserted message with all necessary fields
+//   } catch (err) {
+//     console.error("Error inserting new message:", err);
+//     throw err;
+//   } finally {
+//     client.release();
+//   }
+// };
+
+ // TODO - keep below if returning to flat reply threads...
+// const insertMessage = async (
+//   user_id,
+//   topic_id,
+//   title,
+//   body,
+//   parent_message_id = null,
+// ) => {
+//   const client = await pool.connect();
+//   try {
+//     const query = `
+//       INSERT INTO messages (user_id, topic_id, title, body, parent_message_id)
+//       VALUES ($1, $2, $3, $4, $5)
+//       RETURNING id, user_id, topic_id, title, body, like_count, reply_count, parent_message_id
+//     `;
+
+//     const res = await client.query(query, [
+//       user_id,
+//       topic_id,
+//       title,
+//       body,
+//       parent_message_id,
+//     ]);
+//     return res.rows[0];
+//   } catch (err) {
+//     console.error("Error inserting message:", err);
+//     throw err;
+//   } finally {
+//     client.release();
+//   }
+// };
 
 const insertMessage = async (
   user_id,
@@ -847,9 +931,142 @@ const insertMessage = async (
   }
 };
 
+// const updateMessage = async (
+//  targetId,
+//   title,
+//   body,
+// ) => {
+//   const message = await getMessageById(targetId);
+//   console.log("this....", message);
+  
+//   const client = await pool.connect();
+//   try {
+//     if (!message) {
+//       await client.query(
+//         `
+//         -- UPDATE messages SET (title, body)
+//         -- VALUES ($1, $2)
+//         -- WHERE id = $3
+//         -- RETURNING id;
+//         UPDATE messages SET title = $1, body = $2 WHERE id = $3 RETURNING id;
+//         `,
+//         [targetId, title, body],
+//       );
+//     }
+    
+//   } catch (err) {
+//     console.error("Error inserting message:", err);
+//     throw err;
+//   } 
+// };
 
+// const updateMessage = async (targetId, title, body) => {
+//   const message = await getMessageById(targetId);
+//   console.log("Message ID check", message);
+  
+//   const client = await pool.connect();
+//   try {
+//     if (!message) {
+//       await client.query(
+//         `
+//         UPDATE messages 
+//         SET title = $1, body = $2
+//         WHERE id = $3
+//         RETURNING id;
+//         `,
+//         [targetId, title, body],
+//       );
+//     }
+//   } catch (err) {
+//     console.error("Error inserting message:", err);
+//     throw err;
+//   }
+// };
 
-// QUERY: TOPICS FOR MESSAGE BOARD (message-boards.ejs)
+// const updateMessage = async (targetId, title, body) => {
+//   const client = await pool.connect();
+//   try {
+//     const result = await client.query(
+//       `
+//       UPDATE messages 
+//       SET title = $1, body = $2, updated_at = CURRENT_TIMESTAMP
+//       -- SET title = $1, body = $2, 
+//       WHERE id = $3
+//       RETURNING id;
+//       `,
+//       [title, body, targetId], // Pass the correct parameters
+//     );
+
+//     if (result.rowCount === 0) {
+//       throw new Error("No message found with that ID.");
+//     }
+
+//     console.log("Updated message with ID:", result.rows[0].id); // Log the updated message ID
+//     return result.rows[0]; // Return the updated message (optional)
+//   } catch (err) {
+//     console.error("Error updating message:", err);
+//     throw err;
+//   } finally {
+//     client.release(); // Always release the client back to the pool
+//   }
+// };
+
+const updateMessage = async (targetId, title, body) => {
+  const client = await pool.connect();
+  const queryText = `
+    UPDATE messages
+    SET title = $1, body = $2, updated_at = CURRENT_TIMESTAMP, is_edited = TRUE
+    WHERE id = $3
+    RETURNING id;
+  `;
+  const queryValues = [title, body, targetId];
+
+  try {
+    await client.query("BEGIN"); // Start the transaction
+    const result = await client.query(queryText, queryValues);
+
+    if (result.rowCount === 0) {
+      throw new Error("No message found with that ID.");
+    }
+
+    console.log("Updated message with ID:", result.rows[0].id); // Log the updated message ID
+
+    await client.query("COMMIT"); // Commit the transaction
+    return result.rows[0]; // Return the updated message (optional)
+  } catch (err) {
+    await client.query("ROLLBACK"); // Rollback if any error occurs
+    console.error("Error updating message:", err);
+    throw err;
+  } finally {
+    client.release(); // Always release the client back to the pool
+  }
+};
+
+// NOTE - NOT is_sticky (below) ---> this flips true and false
+// NOTE - CASE updates expires_at depending on the previous value
+const stickyMessageById = async (message_id) => {
+  const client = await pool.connect();
+  try {
+    await client.query(
+      `
+      UPDATE messages
+      SET 
+        is_sticky = NOT is_sticky,
+        expires_at = CASE 
+          WHEN is_sticky = FALSE THEN NULL
+          ELSE NOW() + INTERVAL '28 days'
+        END
+      WHERE id = $1;
+      `,
+      [message_id],
+    );
+  } catch (err) {
+    console.error("Error toggling sticky message:", err);
+    throw err;
+  } finally {
+    client.release();
+  }
+};
 
 const getAllTopics = async () => {
   const { rows } = await pool.query(`
@@ -868,9 +1085,6 @@ const getAllTopics = async () => {
   return rows;
 };
 
-
-// QUERY TOPIC SLUGS FOR MESSAGE BOARD TOPIC ROUTES (topic.ejs and message-card.ejs)
-
 const getTopicBySlug = async (slug) => {
   const query = `
     SELECT *
@@ -882,11 +1096,6 @@ const getTopicBySlug = async (slug) => {
   const res = await pool.query(query, [slug]);
   return res.rows[0];
 };
-
-
-// QUERY: MESSAGES BY TOPIC (topic.ejs and message-card.ejs)
-
-// This uses simple, flat threads; contrast with the thread path approach below
 
 // const getValidMessagesByTopic = async (messageId, userId, limit = 50) => {
 //   const query = `
@@ -935,10 +1144,7 @@ const getTopicBySlug = async (slug) => {
 //   return res.rows;
 // };
 
-
-// QUERY: MESSAGES BY TOPIC (topic.ejs and message-card.ejs)
-
-// This uses the thread path approach; contrast with simple, flat threads above
+// NESTED THREADS, above code is for flat threads
 
 const getValidMessagesByTopic = async (topicId, userId, limit = 50) => {
   const query = `
@@ -983,72 +1189,7 @@ const getValidMessagesByTopic = async (topicId, userId, limit = 50) => {
   return res.rows;
 };
 
-
-// QUERY: UPDATE MESSAGE (edit-message.ejs)
-
-const updateMessage = async (targetId, title, body) => {
-  const client = await pool.connect();
-  const queryText = `
-    UPDATE messages
-    SET title = $1, body = $2, updated_at = CURRENT_TIMESTAMP, is_edited = TRUE
-    WHERE id = $3
-    RETURNING id;
-  `;
-  const queryValues = [title, body, targetId];
-
-  try {
-    await client.query("BEGIN"); // Start the transaction
-    const result = await client.query(queryText, queryValues);
-
-    if (result.rowCount === 0) {
-      throw new Error("No message found with that ID.");
-    }
-
-    console.log("Updated message with ID:", result.rows[0].id); // Log the updated message ID
-
-    await client.query("COMMIT"); // Commit the transaction
-    return result.rows[0]; // Return the updated message (optional)
-  } catch (err) {
-    await client.query("ROLLBACK"); // Rollback if any error occurs
-    console.error("Error updating message:", err);
-    throw err;
-  } finally {
-    client.release(); // Always release the client back to the pool
-  }
-};
-
-
-// QUERY: STICKY BUTTON FOR MESSAGES (message-card.ejs)
-
-// NOTE - NOT is_sticky (below) ---> this flips true and false
-// NOTE - CASE updates expires_at depending on the previous value
-const stickyMessageById = async (message_id) => {
-  const client = await pool.connect();
-  try {
-    await client.query(
-      `
-      UPDATE messages
-      SET 
-        is_sticky = NOT is_sticky,
-        expires_at = CASE 
-          WHEN is_sticky = FALSE THEN NULL
-          ELSE NOW() + INTERVAL '28 days'
-        END
-      WHERE id = $1;
-      `,
-      [message_id],
-    );
-  } catch (err) {
-    console.error("Error toggling sticky message:", err);
-    throw err;
-  } finally {
-    client.release();
-  }
-};
-
-
-
-// QUERY: DELETE MESSAGE BUTTON BY USER OR ADMIN (message-card.ejs)
+// QUERY: DELETE MESSAGE BY USER OR ADMIN VIA BUTTON (message-boards.ejs/by topic slug)
 
 const softDeleteMessageById = async (targetId) => {
   const query = `
@@ -1061,85 +1202,6 @@ const softDeleteMessageById = async (targetId) => {
   const res = await pool.query(query, [targetId]);
   return res.rowCount; // number of rows updated
 };
-
-
-// QUERY: REPLY MESSAGE BUTTON INCREMENTOR (message-card.ejs)
-
-const incrementReplyCount = async (parent_message_id) => {
-  const client = await pool.connect();
-  try {
-    const res = await client.query(
-      `UPDATE messages
-       SET reply_count = reply_count + 1
-       WHERE id = $1
-       RETURNING reply_count`,
-      [parent_message_id],
-    );
-    return res.rows[0].reply_count; // return the new count if you want
-  } catch (err) {
-    console.error("Error incrementing reply count:", err);
-    throw err;
-  } finally {
-    client.release();
-  }
-};
-
-// QUERY: LIKE MESSAGE BUTTON (message-card.ejs)
-
-const toggleLike = async (messageId, userId) => {
-  const client = await pool.connect();
-  try {
-    await client.query("BEGIN"); // Start a transaction
-
-    // Check if the user has already liked the message
-    const { rows: likeRows } = await client.query(
-      `
-      SELECT * FROM message_likes
-      WHERE message_id = $1 AND user_id = $2;
-    `,
-      [messageId, userId],
-    );
-
-    if (likeRows.length > 0) {
-      // User has already liked the message, so remove the like (delete)
-      await client.query(
-        `
-        DELETE FROM message_likes
-        WHERE message_id = $1 AND user_id = $2;
-      `,
-        [messageId, userId],
-      );
-    } else {
-      // User hasn't liked the message, so insert a new like
-      await client.query(
-        `
-        INSERT INTO message_likes (message_id, user_id)
-        VALUES ($1, $2);
-      `,
-        [messageId, userId],
-      );
-    }
-
-    // Update the like_count in the messages table
-    await client.query(
-      `
-      UPDATE messages
-      SET like_count = (SELECT COUNT(*) FROM message_likes WHERE message_id = $1)
-      WHERE id = $1;
-    `,
-      [messageId],
-    );
-
-    await client.query("COMMIT"); // Commit the transaction
-  } catch (err) {
-    await client.query("ROLLBACK"); // Rollback on error
-    console.error("Error toggling like:", err);
-    throw err;
-  } finally {
-    client.release(); // Release the client
-  }
-};
-
 
 /**
  * Soft-delete messages that have expired but are not yet marked as deleted.
@@ -1244,32 +1306,246 @@ const cleanupMessages = async (olderThanDays = 30) => {
  * @param topicId: ID of the topic
  * @param limit: number of messages to return
  */
+const getMessagesByTopic = async (targetId, limit = 50) => {
+  const query = `
+    SELECT id, user_id, title, body, created_at, expires_at
+    FROM messages
+    WHERE topic_id = $1
+      AND is_deleted = false
+      AND (expires_at IS NULL OR expires_at > NOW())
+    ORDER BY created_at DESC
+    LIMIT $2;
+  `;
+  const res = await pool.query(query, [targetId, limit]);
+  return res.rows;
+};
 
-// TODO - what is this? Old, not needed?
-// const getMessagesByTopic = async (targetId, limit = 50) => {
-//   const query = `
-//     SELECT id, user_id, title, body, created_at, expires_at
-//     FROM messages
-//     WHERE topic_id = $1
-//       AND is_deleted = false
-//       AND (expires_at IS NULL OR expires_at > NOW())
-//     ORDER BY created_at DESC
-//     LIMIT $2;
-//   `;
-//   const res = await pool.query(query, [targetId, limit]);
-//   return res.rows;
+// const toggleLike = async (messageId, userId) => {
+//   const { rows } = await pool.query(
+//     `
+//     -- Remove the like if it exists
+//     DELETE FROM message_likes 
+//     WHERE message_id = $1 AND user_id = $2;
+
+//     -- Insert the like if it does not exist (based on the result of DELETE)
+//     INSERT INTO message_likes (message_id, user_id)
+//     SELECT $1, $2
+//     WHERE NOT EXISTS (
+//       SELECT 1 FROM message_likes WHERE message_id = $1 AND user_id = $2
+//     );
+
+//     -- Update the like_count in the messages table
+//     UPDATE messages
+//     SET like_count = (SELECT COUNT(*) FROM message_likes WHERE message_id = $1)
+//     WHERE id = $1
+//     RETURNING like_count;
+//   `,
+//     [messageId, userId],
+//   );
+
+//   return rows[0]; // Return updated like count
 // };
 
+// const toggleLike = async (messageId, userId) => {
+//   const client = await pool.connect(); // Get a client from the pool
+//   try {
+//     await client.query('BEGIN'); // Start a transaction
 
-// TODO - rename all of these eby type, get, update, post, insert, find out the major types of queries!
+//     // Step 1: Try to delete the like if it exists
+//     const deleteResult = await client.query(`
+//       DELETE FROM message_likes 
+//       WHERE message_id = $1 AND user_id = $2
+//       RETURNING *;
+//     `, [messageId, userId]);
+
+//     // Step 2: Insert a new like if it wasn't deleted (i.e., the user hasn't liked the message before)
+//     if (deleteResult.rowCount === 0) {
+//       await client.query(`
+//         INSERT INTO message_likes (message_id, user_id)
+//         VALUES ($1, $2);
+//       `, [messageId, userId]);
+//     }
+
+//     // Step 3: Update the like_count in the messages table
+//     const likeCountResult = await client.query(`
+//       UPDATE messages
+//       SET like_count = (SELECT COUNT(*) FROM message_likes WHERE message_id = $1)
+//       WHERE id = $1
+//       RETURNING like_count;
+//     `, [messageId]);
+
+//     // Commit the transaction
+//     await client.query('COMMIT');
+
+//     // Return the updated like count
+//     return likeCountResult.rows[0];
+//   } catch (err) {
+//     // If any error happens, roll back the transaction
+//     await client.query('ROLLBACK');
+//     console.error('Error toggling like:', err);
+//     throw err; // rethrow the error to handle it in the controller
+//   } finally {
+//     client.release(); // Release the client back to the pool
+//   }
+// };
+
+const toggleLike = async (messageId, userId) => {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN"); // Start a transaction
+
+    // Check if the user has already liked the message
+    const { rows: likeRows } = await client.query(
+      `
+      SELECT * FROM message_likes
+      WHERE message_id = $1 AND user_id = $2;
+    `,
+      [messageId, userId],
+    );
+
+    if (likeRows.length > 0) {
+      // User has already liked the message, so remove the like (delete)
+      await client.query(
+        `
+        DELETE FROM message_likes
+        WHERE message_id = $1 AND user_id = $2;
+      `,
+        [messageId, userId],
+      );
+    } else {
+      // User hasn't liked the message, so insert a new like
+      await client.query(
+        `
+        INSERT INTO message_likes (message_id, user_id)
+        VALUES ($1, $2);
+      `,
+        [messageId, userId],
+      );
+    }
+
+    // Update the like_count in the messages table
+    await client.query(
+      `
+      UPDATE messages
+      SET like_count = (SELECT COUNT(*) FROM message_likes WHERE message_id = $1)
+      WHERE id = $1;
+    `,
+      [messageId],
+    );
+
+    await client.query("COMMIT"); // Commit the transaction
+  } catch (err) {
+    await client.query("ROLLBACK"); // Rollback on error
+    console.error("Error toggling like:", err);
+    throw err;
+  } finally {
+    client.release(); // Release the client
+  }
+};
+
+// const toggleLike = async (messageId, userId) => {
+//   const client = await pool.connect(); // Get a client from the pool
+//   try {
+//     await client.query("BEGIN"); // Start a transaction
+
+//     // Check if the user already likes the message
+//     const checkLikeResult = await client.query(
+//       `
+//       SELECT user_id
+//       FROM message_likes
+//       WHERE message_id = $1 AND user_id = $2
+//     `,
+//       [messageId, userId],
+//     );
+
+//     let likeCountResult;
+
+//     if (checkLikeResult.rowCount > 0) {
+//       // User already liked the message, so delete the like
+//       await client.query(
+//         `
+//         DELETE FROM message_likes 
+//         WHERE message_id = $1 AND user_id = $2
+//       `,
+//         [messageId, userId],
+//       );
+
+//       // Update the like count after deleting the like
+//       likeCountResult = await client.query(
+//         `
+//         UPDATE messages
+//         SET like_count = like_count - 1
+//         WHERE id = $1
+//         RETURNING like_count;
+//       `,
+//         [messageId],
+//       );
+//     } else {
+//       // User has not liked the message, so insert the like
+//       await client.query(
+//         `
+//         INSERT INTO message_likes (message_id, user_id)
+//         VALUES ($1, $2);
+//       `,
+//         [messageId, userId],
+//       );
+
+//       // Update the like count after inserting the like
+//       likeCountResult = await client.query(
+//         `
+//         UPDATE messages
+//         SET like_count = like_count + 1
+//         WHERE id = $1
+//         RETURNING like_count;
+//       `,
+//         [messageId],
+//       );
+//     }
+
+//     // Commit the transaction
+//     await client.query("COMMIT");
+
+//     // Return the updated like count
+//     return likeCountResult.rows[0].like_count;
+//   } catch (err) {
+//     // If any error happens, roll back the transaction
+//     await client.query("ROLLBACK");
+//     console.error("Error toggling like:", err);
+//     throw err; // Rethrow the error to be handled in the controller
+//   } finally {
+//     client.release(); // Release the client back to the pool
+//   }
+// };
+
+// queries.js
+const incrementReplyCount = async (parent_message_id) => {
+  const client = await pool.connect();
+  try {
+    const res = await client.query(
+      `UPDATE messages
+       SET reply_count = reply_count + 1
+       WHERE id = $1
+       RETURNING reply_count`,
+      [parent_message_id]
+    );
+    return res.rows[0].reply_count; // return the new count if you want
+  } catch (err) {
+    console.error("Error incrementing reply count:", err);
+    throw err;
+  } finally {
+    client.release();
+  }
+};
+
+// TODO - rename all of thes eby type, get, update, post, insert, find out the major types of queries!
 module.exports = {
   incrementReplyCount,
   getUsers,
   getUserById,
-  updateLastLogin,
   getMessages,
   getMessageById,
   getTopicById, 
+
   checkIfEmailExists,
   insertNewUser,
   insertAdminCreatedUser,
@@ -1277,7 +1553,11 @@ module.exports = {
   updateUser,
   updateUserAvatar,
   updateUserToMember,
+  // getTopicBySlugWithPermission,
   getTopicNames,
+  // getTopicNamesForPermission,
+  // getTopicName,
+  // insertNewMessage,
   insertMessage,
   updateMessage, 
   stickyMessageById,
@@ -1285,10 +1565,13 @@ module.exports = {
   getAllTopics,
   getTopicBySlug, // TODO - keep getTopicBySlug, did this getTopicBySlugWithPermission usurp it?
   getValidMessagesByTopic,
+  getMessagesByTopic,
   softDeleteExpiredMessages,
   hardDeleteMessages,
   cleanupMessages,
   deleteUserById,
-  softDeleteMessageById
+  // deleteMessageById,
+  softDeleteMessageById,
+
 };
 

@@ -4,13 +4,12 @@ require("./config/passport"); // This initializes the Passport strategies
 // 1. Imports at the top
 const express = require("express");
 const cookieParser = require("cookie-parser");
-// const { validateSession } = require("./middleware/sessionMiddleware"); // Import the session validation middleware
 const path = require("node:path");
 // const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const passport = require("passport");
 const setCurrentUser = require('./middleware/setCurrentUser'); // Import the middleware
-
+const { validateSession } = require("./middleware/sessionMiddleware"); // Import the session validation middleware
 
 // const { body, validationResult } = require("express-validator");
 // const { canPerformHasRole } = require("./utils/permissions");
@@ -42,7 +41,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); 
 
 // Apply session validation globally, before any routes
-// app.use(validateSession);  // This checks if the user has a valid session
+app.use(validateSession);  // This checks if the user has a valid session
 const errorMiddleware = require("./middleware/errorMiddleware");
 app.use(express.json());
 

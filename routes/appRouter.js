@@ -4,7 +4,7 @@ const { requireRole } = require("../utils/permissions");
 // TODO - arrange by order of ROUTES far below
 const {
 
-  getMessagesForTopic ,
+  getMessagesForTopic, //TODO - needed?
 
 
   // Basic fetch
@@ -83,7 +83,7 @@ appRouter.post("/log-in", postLogIn);
 // TODO - make uniform like other routes?
 // ROUTES: LOG OUT BUTTON
 appRouter.post("/log-out", (req, res, next) => {
-    console.log("Logout form submitted");
+    console.log("Logout form submitted, good bye!");
     next();
   },
   postLogOut,
@@ -153,12 +153,8 @@ appRouter.get("/member-invite", requireRole("guest"), getMemberInvite);
 appRouter.post("/member-invite/accepted", requireRole("guest"), postMemberInviteAccepted);
 appRouter.post("/member-invite/declined", requireRole("guest"), postMemberInviteDeclined);
 
-// appRouter.post("/your-profile/become-member", requireRole("guest"), postBecomeMember);
-// appRouter.post("/admin-create", requireRole("admin"), postAdminCreatePage);
-
-
 // ???
-// GET /app/topics/:topicId/messages
+// GET /app/topics/:topicId/messages TODO - is below needed?
 appRouter.get('/topics/:topicId/messages', getMessagesForTopic);
 
 module.exports = appRouter;

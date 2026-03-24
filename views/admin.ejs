@@ -183,15 +183,18 @@
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">created</dt>
-                <dd><%= user.formattedCreateDate %></dd>
+                <!-- <dd><%#= user.formattedCreateDate %></dd> -->
+                <dd><%= new Date(user.created_at).toLocaleString() %></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">updated</dt>
-                <dd><%= user.formattedUpdateDate %></dd>
+                <!-- <dd><%#= user.formattedUpdateDate %></dd> -->
+                <dd><%= new Date(user.updated_at).toLocaleString() %></dd>
               </div>
               <div class="app-relevant-data">
-                <dt class="capitalize">last log</dt>
-                <dd><%#= user.formattedUpdateDate %> keep?</dd>
+                <dt class="capitalize">last login</dt>
+                <!-- <dd><%#= user.formattedLastLoginDate %></dd> -->
+                <dd><%= new Date(user.last_login_at).toLocaleString() %></dd>
               </div>
             </dl>
             <div class="button-container-col">
@@ -218,7 +221,7 @@
               <button id="user-census-button" class="button-default wide-button" type="button">open user census</button>
               <div id="user-census-div" class="element-container-col-default hidden ">
                 <p>Total number of site users: <%= users.length %>.</p>
-                <div class="element-container-row-space-evenly">
+                <div class="element-container-row-space-between">
                   <div class="element-container-col-start-center capitalize">
                   <p>guests: <%= users.filter(user => user.permission_status === "guest").length %></p>
                   <p>members: <%= users.filter(user => user.permission_status === "member").length %></p>
@@ -233,7 +236,7 @@
               <button id="messages-overview-button" class="button-default wide-button" type="button">open messages overview</button>
               <div id="messages-overview-div" class="element-container-col-default hidden">
                 <p>Total number of messages: <%= messages.length %></p>
-                <div class="element-container-row-space-evenly">
+                <div class="element-container-row-space-between">
                   <div class="element-container-col-start-center capitalize">
                   <p>pinned <%= messages.filter(message => message.is_sticky).length %></p>
                   <p>deleted: <%= messages.filter(message => message.is_deleted).length %></p>

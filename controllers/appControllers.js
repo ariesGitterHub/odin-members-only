@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
+// const { v4: uuidv4 } = require('uuid'); // To generate a session token
 const { hasRole } = require("../utils/permissions");
 const { buildThreadedMessages } = require("../utils/threadUtils");
 const { usStates } = require("../utils/usStates");
@@ -7,6 +8,7 @@ const { usStates } = require("../utils/usStates");
 const {
   getUsers,
   getUserById,
+  updateLastLogin,
   getMessages,
   getMessageById,
   getTopicById,
@@ -32,7 +34,6 @@ const {
   getValidMessagesByTopic,
   deleteUserById,
   softDeleteMessageById,
-  // becomeMemberById,
   incrementReplyCount,
 } = require("../db/queries");
 
@@ -47,6 +48,7 @@ const {
   addBirthdateFields,
   addSessionCreateDateFields,
   addSessionUpdateDateFields,
+  addSessionLastLoginDateFields,
   addZodiacSigns,
   addRealZodiacSigns,
   addChineseZodiacSigns,
@@ -235,7 +237,7 @@ async function getLogIn(req, res, next) {
 
 async function postLogIn(req, res, next) {
   console.log("Form data:", req.body); // Log the request body to see the submitted data
-  passport.authenticate("local", (err, user, info) => {
+  passport.authenticate("local", async (err, user, info) => {
     if (err) {
       console.error("Error during authentication:", err);
       return next(err); // handle unexpected error
@@ -253,21 +255,44 @@ async function postLogIn(req, res, next) {
       });
     }
 
+//     console.log("User authenticated:", user);
+
+//     // Log the user in
+//     req.login(user, (err) => {
+//       if (err) {
+//         console.error("Error during login:", err);
+
+//         return next(err); // handle login error
+//       }
+
+//       console.log("Login successful! Redirecting to message boards...");
+//       res.redirect("/app/message-boards");
+//     });
+//   })(req, res, next);
+// }
+
     console.log("User authenticated:", user);
 
-    // Log the user in
-    req.login(user, (err) => {
-      if (err) {
-        console.error("Error during login:", err);
+    try {
+      // Update the user's last login timestamp
+      await updateLastLogin(user.id);
 
-        return next(err); // handle login error
-      }
+      // Log the user in (via Passport session)
+      req.login(user, (err) => {
+        if (err) {
+          console.error("Error during login:", err);
+          return next(err); // Handle login errors
+        }
 
-      console.log("Login successful! Redirecting to message boards...");
-      res.redirect("/app/message-boards");
-    });
-  })(req, res, next);
-}
+        console.log("Login successful! Redirecting to message boards...");
+        res.redirect("/app/message-boards");  // Redirect to message boards after login
+      });
+    } catch (err) {
+      console.error("Error updating last login:", err);
+      return next(err);  // Handle any error with updating the last login
+    }
+  })(req, res, next);  // Execute the Passport authentication logic
+};
 
 // CONTROLLER: LOG-OUT
 
@@ -1177,8 +1202,12 @@ async function getAdminPage(req, res, next) {
       usersWithCreationDates,
       formatShortDate,
     );
-    const usersWithZodiacSigns = addZodiacSigns(
+    const usersWithLastLoginDates = addSessionLastLoginDateFields(
       usersWithUpdateDates,
+      formatShortDate,
+    );
+    const usersWithZodiacSigns = addZodiacSigns(
+      usersWithLastLoginDates,
       getZodiacSign,
     );
     const usersWithRealZodiacSigns = addRealZodiacSigns(
@@ -1515,17 +1544,6 @@ async function deleteYourAccount(req, res, next) {
   }
 }
 
-// CONTROLLER: BECOME A MEMBER (your-profile.ejs and become-member.ejs)
-async function postBecomeMember(req, res, next) {
-  try {
-    const { targetId } = req.body;
-    await becomeMemberById(targetId);
-    res.redirect("/app/your-profile");
-  } catch (err) {
-    next(err);
-  }
-}
-
 const getMessagesForTopic = async (req, res) => {
   const messages = await getValidMessagesByTopic(
     req.params.topicId,
@@ -1582,39 +1600,4 @@ module.exports = {
   postMemberInviteAccepted,
   postMemberInviteDeclined,
   postLogOut,
-
-  //   getCurrentUser,
-  //   getUserDetails,
-  //   getMessageDetails,
-  // postStickyMessageToggle,
-  // postLikeMessageToggle,
-  //   getHome,
-  //   getSignUp,
-  //   postSignUp,
-  //   getLogIn,
-  //   postLogIn,
-  //   postLogOut,
-  //   getYourProfilePage,
-  //   postYourProfilePageEdit,
-  //   postYourProfilePageAvatar,
-  //   getMemberDirectory,
-  //   // getUpdateProfile,
-  //   // getChangeAvatar,
-  //   getInfo,
-  //   postNewMessage,
-  //   getMessageBoards,
-  //   getTopicNamesForDropdown,
-  //   // requireTopicPermission,
-  //   getTopicPage,
-  //   getAdminPage,
-  //   getAdminCreatePage,
-  //   postAdminCreatePage,
-  //   getAdminEditPage,
-  //   postAdminEditPage,
-
-  //   deleteUserAccount,
-  //   deleteYourAccount,
-  //   deleteUserMessage,
-
-  //   // postBecomeMember,
 };

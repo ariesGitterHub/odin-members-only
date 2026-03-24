@@ -20,6 +20,13 @@ function addSessionUpdateDateFields(users, formatShortDate) {
   }));
 }
 
+function addSessionLastLoginDateFields(users, formatShortDate) {
+  return users.map((user) => ({
+    ...user,
+    formattedLastLoginDate: formatShortDate(user.last_login_at),
+  }));
+}
+
 function addZodiacSigns(users, getZodiacSign) {
   return users.map((user) => ({
     ...user,
@@ -58,6 +65,7 @@ module.exports = {
   // addDateFields,
   addSessionCreateDateFields,
   addSessionUpdateDateFields,
+  addSessionLastLoginDateFields,
   addZodiacSigns,
   addRealZodiacSigns,
   addChineseZodiacSigns,

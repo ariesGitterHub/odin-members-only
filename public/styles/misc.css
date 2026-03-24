@@ -104,6 +104,10 @@
 gap: var(--spacer-default);
 }
 
+.flex-space-between {
+  justify-content: space-between;
+}
+
 .margin-bottom {
   margin-bottom: var(--spacer-default);
 }
