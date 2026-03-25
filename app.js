@@ -1,6 +1,7 @@
 // 0. FIRST!
 require("dotenv").config(); // Load environment variables
 require("./config/passport"); // This initializes the Passport strategies
+
 // 1. Imports at the top
 const express = require("express");
 const cookieParser = require("cookie-parser");
@@ -10,18 +11,12 @@ const path = require("node:path");
 const session = require("express-session");
 const passport = require("passport");
 const setCurrentUser = require('./middleware/setCurrentUser'); // Import the middleware
-
-
 // const { body, validationResult } = require("express-validator");
-// const { canPerformHasRole } = require("./utils/permissions");
 const setPermissions = require("./middleware/setPermissions");
 
 const PORT = process.env.PORT || 3000;
 const appRouter = require("./routes/appRouter");
-const { log } = require("node:console");
-// const permissions = require("./utils/permissions");
-// const { avatarTypeDefault } = require("./utils/avatarTypeDefault");
-// const { addAvatarFields } = require("./utils/viewFormatters");
+// const { log } = require("node:console"); // TODO - what is this???
 
 // 2. Create the app
 const app = express();
@@ -37,13 +32,12 @@ app.set("view engine", "ejs");
 // 4. Global middleware
 app.use(express.urlencoded({ extended: true }));
 
-
 // Add cookie-parser middleware before your session validation
 app.use(cookieParser()); 
 
 // Apply session validation globally, before any routes
 // app.use(validateSession);  // This checks if the user has a valid session
-const errorMiddleware = require("./middleware/errorMiddleware");
+// const errorMiddleware = require("./middleware/errorMiddleware");
 app.use(express.json());
 
 app.use(
@@ -62,72 +56,15 @@ app.use(
   }),
 );
 
-// app.use(async (req, res, next) => {
-//   try {
-//     if (req.session.targetId) {
-//       const user = await getUserById(req.session.targetId);
-//       res.locals.currentUser = user;
-//     } else {
-//       res.locals.currentUser = null;
-//     }
-//     next();
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
-// app.use((req, res, next) => {
-//   res.locals.currentUser = req.session.user || null;
-//   next();
-// });
-
 // Passport Middleware setup (after session)
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Passport LocalStrategy + serialize/deserialize
-// -- Serialize / Deserialize
-// TODO - HANDLED BY config/passport.js - link to...
-
-// NOTE - BELOW IS WRONG USING PASSPORT...
-// app.use((req, res, next) => {
-//   res.locals.currentUser = req.session.user || null;
-//   res.locals.permissions = permissions;
-//   next();
-// });
-// The fix:
-
 app.use(setCurrentUser);  // Use it globally
-// MOVED TO middleware/setCurrentUser.js
-// app.use((req, res, next) => {
-//   if (req.user) {
-//     // Make a shallow copy
-//     const user = { ...req.user };
-//     res.locals.currentUser = user;
-//   } else {
-//     res.locals.currentUser = null;
-//   }
-//   next();
-// });
-
-// canPerformHasPermissionStatus permissions for certain buttons
 app.use(setPermissions);  // Use it globally
-// MOVED TO middleware/setPermissions.js
-// app.use((req, res, next) => {
-//   res.locals.canPerformHasRole = canPerformHasRole;
-//   next();
-// });
 
-// app.use((req, res, next) => {
-//   res.locals.currentUser = req.user || null;
-//   res.locals.permissions = permissions;
-//   next();
-// });
-
-// Routes
+// 5. Routes
 // -- "Home"
-// -- Login Form
 app.get("/", (req, res) => {
   res.redirect("/app");
 });
@@ -135,80 +72,24 @@ app.get("/", (req, res) => {
 // -- Mount app routes
 app.use("/app", appRouter);
 
-// // -- Log-out
-// app.get("/log-out", (req, res, next) => {
-//   req.logout((err) => {
-//     if (err) return next(err);
-//     res.redirect("/"); // Redirect to home after log-out
-//   });
-// });
-
-// Error Handling
-
-// // -- 404 - Route not found (This should be placed before the general error handler)
+// NEW
+// 6. Catch-all 404 handler (important)
 // app.use((req, res, next) => {
-//   res.status(404).render("404-500", {
-//     title: "404 - Not Found",
-//     error: "Sorry, we couldn't find the page you were looking for.",
-//   });
+//   const err = new Error("Not Found");
+//   err.status = 404;
+//   next(err);  // Forward the error to the error-handling middleware
 // });
 
-// // -- General error handler for 500 errors (or uncaught errors)
-// app.use((err, req, res, next) => {
-//   console.error(err);
+// 7. Centralized Error Handling Middleware (Generic Error and 404)
+app.use(require("./middleware/errorMiddleware"));  // Handle both 404 and other errors here
 
-//   res.status(err.status || 500).render("404-500", {
-//     title: "Internal Server Error",
-//     error:
-//       process.env.NODE_ENV === "production"
-//         ? "Something went wrong."
-//         : err.message,
-//   });
-// });
-
-// MOVED TO middleware/errorMiddleware.js
-app.use(errorMiddleware);  // Use it at the end for centralized error handling
-// app.use((err, req, res, next) => {
-//   console.error(err);
-
-//   const status = err.status || 500;
-
-//   let title;
-//   let message;
-
-//   if (status === 403) {
-//     title = "403 - Forbidden";
-//     message = "You do not have permission to access this resource.";
-//   } else if (status === 404) {
-//     title = "404 - Not Found";
-//     message = "Sorry, we couldn't find the page you were looking for.";
-//   } else {
-//     title = "500 - Internal Server Error";
-//     message =
-//       process.env.NODE_ENV === "production"
-//         ? "Something went wrong."
-//         : err.message;
-//   }
-
-//   res.status(status).render("error-page", {
-//     title,
-//     error: message,
-//   });
-// });
-
-// Start cron jobs
+// 8. Start cron jobs
 require("./cron/cleanup"); // starts the daily cleanup job
 
-// Start Server
+// 9. Start Server
 app.listen(PORT, (error) => {
   if (error) {
     throw error;
   }
   console.log(`Listening on port ${PORT}!`);
 });
-
-// async function getHash () {
-// const hashThatPassword = await bcrypt.hash(process.env.ADMIN_FAST_PASSWORD, 12);
-// console.log(hashThatPassword);
-// }
-// getHash();

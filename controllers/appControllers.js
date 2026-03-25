@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 // const { v4: uuidv4 } = require('uuid'); // To generate a session token
+const { check, validationResult } = require("express-validator");
 const { hasRole } = require("../utils/permissions");
 const { buildThreadedMessages } = require("../utils/threadUtils");
 const { usStates } = require("../utils/usStates");
@@ -12,7 +13,7 @@ const {
   getMessages,
   getMessageById,
   getTopicById,
-
+  checkIfEmailExistsForSignUp,
   checkIfEmailExists,
   insertNewUser,
   insertAdminCreatedUser,
@@ -130,7 +131,6 @@ async function getMessageDetails(req, res, next) {
   }
 }
 
-
 // CONTROLLER: INDEX (index.ejs)
 
 async function getHome(req, res, next) {
@@ -160,6 +160,422 @@ async function getSignUp(req, res, next) {
   }
 }
 
+// async function postSignUp(req, res, next) {
+//   const {
+//     first_name,
+//     last_name,
+//     email,
+//     birthdate,
+//     password,
+//     confirm_password,
+//   } = req.body;
+
+//   const errors = [];
+
+//   // Validate required fields
+//   if (
+//     !first_name ||
+//     !last_name ||
+//     !email ||
+//     !birthdate ||
+//     !password ||
+//     !confirm_password
+//   ) {
+//     errors.push({ field: "general", message: "All fields are required." });
+//   }
+
+//   // Use express-validator for the password checks
+//   await check("password")
+//     .isLength({ min: 16 })
+//     .withMessage("Password must be at least 16 characters long.")
+//     .matches(/[a-z]/)
+//     .withMessage("Password must contain at least one lowercase letter.")
+//     .matches(/[A-Z]/)
+//     .withMessage("Password must contain at least one uppercase letter.")
+//     .matches(/\d/)
+//     .withMessage("Password must contain at least one number.")
+//     .matches(/[@$!%*?&]/)
+//     .withMessage("Password must contain at least one special character.")
+//     .run(req); // Run the validation
+
+//   // Check for the confirm password match
+//   await check("confirm_password")
+//     .custom((value, { req }) => {
+//       if (value !== req.body.password) {
+//         throw new Error("Passwords do not match.");
+//       }
+//       return true;
+//     })
+//     .run(req);
+
+//   // Collect the validation errors
+//   const result = validationResult(req);
+
+//   if (!result.isEmpty()) {
+//     // If there are errors, render the sign-up page with the errors
+//     return res.render("sign-up", {
+//       title: "Sign Up",
+//       errors: result.array(),
+//       formData: req.body || {},
+//     });
+//   }
+
+//   // Using express-validator for confirm-password now, comment out below.
+//   // // Password mismatch check
+//   // if (password !== confirm_password) {
+//   //   errors.push({
+//   //     field: "confirm_password",
+//   //     message: "Passwords do not match.",
+//   //   });
+//   // }
+
+//   // If there are errors, render the page with the error messages
+//   if (errors.length > 0) {
+//     return res.render("sign-up", {
+//       title: "Sign Up",
+//       user: req.user,
+//       // errors,
+//       errors,
+//       formData: req.body || {},
+//     });
+//   }
+
+//   try {
+//     // Below - no id needed at sign-up, only use id for edits/updates
+//     // const existingUser = await checkIfEmailExistsForSignUp(email, user_id);
+//     const existingUser = await checkIfEmailExistsForSignUp(email);
+//     console.log("Existing User Check:", existingUser); // Debug log
+
+//     if (existingUser.length > 0) {
+//       // Email is already taken
+//       errors.push({ field: "email", message: "Email is already taken." });
+//       return res.render("sign-up", {
+//         title: "Sign Up",
+//         user: req.user,
+//         errors,
+//         formData: req.body || {},
+//       });
+//     }
+
+//     const password_hash = await bcrypt.hash(password, 12);
+//     // Try to hash the password and handle any potential errors
+//     // let password_hash;
+//     // try {
+//     //   password_hash = await bcrypt.hash(password, 12); // Hash the password with a salt of 12 rounds
+//     // } catch (err) {
+//     //   console.error("Error hashing the password:", err);
+//     //   errors.push(
+//     //     "An error occurred while processing your password. Please try again.",
+//     //   );
+//     //   return res.render("sign-up", {
+//     //     title: "Sign Up",
+//     //     user: req.user,
+//     //     errors,
+//     //     formData: req.body || {},
+//     //   });
+//     // }
+
+//     await insertNewUser(first_name, last_name, email, birthdate, password_hash);
+
+//     res.redirect("/app/log-in");
+//   } catch (err) {
+//     console.error("Error during sign-up:", err); // More detailed error logging
+//     next(err);
+//   }
+// }
+
+const fggf = 0;
+
+// async function postSignUp(req, res, next) {
+//   const {
+//     first_name,
+//     last_name,
+//     email,
+//     birthdate,
+//     password,
+//     confirm_password,
+//   } = req.body;
+
+//   // Apply express-validator rules
+//   await check("password")
+//     .isLength({ min: 16 })
+//     .withMessage("Password must be at least 16 characters long.")
+//     .matches(/[a-z]/)
+//     .withMessage("Password must contain at least one lowercase letter.")
+//     .matches(/[A-Z]/)
+//     .withMessage("Password must contain at least one uppercase letter.")
+//     .matches(/\d/)
+//     .withMessage("Password must contain at least one number.")
+//     .matches(/[@$!%*?&]/)
+//     .withMessage("Password must contain at least one special character.")
+//     .run(req); // Run the validation
+
+//   // Check for confirm password match
+//   await check("confirm_password")
+//     .custom((value, { req }) => {
+//       if (value !== req.body.password) {
+//         console.log("PASSWORDS DO NOT MATCH");
+//         throw new Error("Passwords do not match.");
+//       }
+//       return true;
+//     })
+//     .run(req);
+
+//   // Collect the validation errors from express-validator
+//   const result = validationResult(req);
+//   console.log("Validation Errors:", result.array()); // Check if there are any errors
+
+
+//   if (!result.isEmpty()) {
+//     // If there are errors, render the sign-up page with the errors
+//     return res.render("sign-up", {
+//       title: "Sign Up",
+//       errors: result.array(),
+//       formData: req.body || {},
+//     });
+//   }
+
+//   try {
+//     const existingUser = await checkIfEmailExistsForSignUp(email);
+//     console.log("Existing User Check:", existingUser); // Debug log
+
+//     if (existingUser.length > 0) {
+//       // Email is already taken
+//       console.log("EMAIL TAKEN");
+//       return res.render("sign-up", {
+//         title: "Sign Up",
+//         errors: [{ param: "email", msg: "Email is already taken." }],
+//         formData: req.body || {},
+//       });
+//     }
+
+//     const password_hash = await bcrypt.hash(password, 12);
+//     await insertNewUser(first_name, last_name, email, birthdate, password_hash);
+
+//     res.redirect("/app/log-in");
+//   } catch (err) {
+//     console.error("Error during sign-up:", err); // More detailed error logging
+//     next(err);
+//   }
+// }
+
+const fgf = 0;
+
+// async function postSignUp(req, res, next) {
+//   const {
+//     first_name,
+//     last_name,
+//     email,
+//     birthdate,
+//     password,
+//     confirm_password,
+//   } = req.body;
+
+//     try {
+//       const existingUser = await checkIfEmailExistsForSignUp(email);
+//       console.log("Existing User Check:", existingUser); // Debug log
+
+//       if (existingUser.length > 0) {
+//         // Email is already taken
+//         console.log("EMAIL TAKEN");
+//         return res.render("sign-up", {
+//           title: "Sign Up",
+//           errors: [{ param: "email", msg: "Email is already taken." }],
+//           formData: req.body || {},
+//         });
+//       }
+
+//       // Apply express-validator rules
+//       const passwordValidator = await check("password", "Incorrect password setup, see rules below.")
+//         .isLength({ min: 16 })
+//         // .withMessage("Password must be at least 16 characters long.")
+//         .matches(/[a-z]/)
+//         // .withMessage("Password must contain at least one lowercase letter.")
+//         .matches(/[A-Z]/)
+//         // .withMessage("Password must contain at least one uppercase letter.")
+//         .matches(/\d/)
+//         // .withMessage("Password must contain at least one number.")
+//         .matches(/[@$!%*?&]/)
+//         // .withMessage("Password must contain at least one special character.")
+//         .run(req); // Run the validation
+
+//       if (passwordValidator) {
+//         // Email is already taken
+//         return res.render("sign-up", {
+//           title: "Sign Up",
+//           errors: [{ param: "password", msg: "Incorrect password setup, see rules below." }],
+//           formData: req.body || {},
+//         });
+//       }
+
+
+//       // Check for confirm password match
+//       const confirmPassword = await check("confirm_password")
+//         .custom((value, { req }) => {
+//           if (value !== req.body.password) {
+//             console.log("PASSWORDS DO NOT MATCH");
+//             throw new Error("Passwords do not match.");
+//           }
+//           return true;
+//         })
+//         .run(req);
+
+//       if (confirmPassword) {
+//         // Email is already taken
+//         return res.render("sign-up", {
+//           title: "Sign Up",
+//           errors: [
+//             {
+//               param: "confirm_password",
+//               msg: "Passwords do not match.",
+//             },
+//           ],
+//           formData: req.body || {},
+//         });
+//       }
+
+//       // Collect the validation errors from express-validator
+//       const result = validationResult(req);
+//       console.log("Validation Errors:", result.array()); // Check if there are any errors
+
+//       if (!result.isEmpty()) {
+//         // If there are errors, render the sign-up page with the errors
+//         return res.render("sign-up", {
+//           title: "Sign Up",
+//           errors: result.array(),
+//           formData: req.body || {},
+//         });
+//       }
+
+//       const password_hash = await bcrypt.hash(password, 12);
+//       await insertNewUser(
+//         first_name,
+//         last_name,
+//         email,
+//         birthdate,
+//         password_hash,
+//       );
+
+//       res.redirect("/app/log-in");
+//     } catch (err) {
+//       console.error("Error during sign-up:", err); // More detailed error logging
+//       next(err);
+//     }
+// }
+
+
+
+// async function postSignUp(req, res, next) {
+//   const {
+//     first_name,
+//     last_name,
+//     email,
+//     birthdate,
+//     password,
+//     confirm_password,
+//   } = req.body;
+
+//   try { // WORKS!
+//     // Check if email already exists
+//     const existingUser = await checkIfEmailExistsForSignUp(email);
+//     if (existingUser.length > 0) {
+//       return res.render("sign-up", {
+//         title: "Sign Up",
+//         errors: [{ param: "email", msg: "Email is already taken." }],
+//         formData: req.body || {},
+//       });
+//     }
+
+//     // Run express-validator checks
+//     await check("password", "Incorrect password pattern, see below.")
+//       .isLength({ min: 16 })
+//       // .withMessage("Password must be at least 16 characters long.")
+//       .matches(/[a-z]/)
+//       // .withMessage("Password must contain at least one lowercase letter.")
+//       .matches(/[A-Z]/)
+//       // .withMessage("Password must contain at least one uppercase letter.")
+//       .matches(/\d/)
+//       // .withMessage("Password must contain at least one number.")
+//       .matches(/[@$!%*?&]/)
+//       // .withMessage("Password must contain at least one special character.")
+//       .run(req);
+
+//       const passwordErrors = validationResult(req);
+//       if (!passwordErrors.isEmpty()) {
+//         return res.render("sign-up", {
+//           title: "Sign Up",
+//           // errors: passwordErrors.array(),
+//           errors: [{ param: "password", msg: "Incorrect password pattern, see below." }],
+//           formData: req.body || {},
+//         });
+//       }
+
+//     // await check("confirm_password")
+//     //   .custom((value, { req }) => {
+//     //     if (value !== req.body.password) {
+//     //       // throw new Error("Passwords do not match.");
+//     //       throw new Error("Passwords do not match.");
+//     //     }
+//     //     return true;
+//     //   })
+//     //   .run(req);
+
+//     let confirmPasswordErrors;
+
+//     await check("confirm_password")
+//       .custom((value, { req }) => {
+//         if (value !== req.body.password) {
+//           confirmPasswordErrors = [
+//             { param: "confirm_password", msg: "Passwords do not match." },
+//           ];
+//         }
+//         return res.render("sign-up", {
+//         title: "Sign Up",
+//         // errors: [{ param: "confirm_password", msg: "Passwords do not match." }],
+//         errors: confirmPasswordErrors,
+//         formData: req.body || {},
+//       });
+//     });
+  
+
+//       // const confirmPasswordErrors = validationResult(req);
+//       // if (!confirmPasswordErrors.isEmpty()) {
+//       //   return res.render("sign-up", {
+//       //     title: "Sign Up",
+//       //     // errors: confirmPasswordErrors.array(),
+//       //     errors: confirmPasswordErrors.array(),
+//       //     formData: req.body || {},
+//       //   });
+//       // }
+
+//     // Check all validation errors
+//     // const errors = validationResult(req);
+//     // if (!errors.isEmpty()) {
+//     //   return res.render("sign-up", {
+//     //     title: "Sign Up",
+//     //     errors: errors.array(),
+//     //     formData: req.body || {},
+//     //   });
+//     // }
+
+//     // 4️⃣ Hash password and insert new user
+//     const password_hash = await bcrypt.hash(password, 12);
+//     await insertNewUser(first_name, last_name, email, birthdate, password_hash);
+
+//     // 5️⃣ Redirect after success
+//     res.redirect("/app/log-in");
+//   } catch (err) {
+//     console.error("Error during sign-up:", err);
+//     next(err);
+//   }
+// }
+
+const t = 6;
+
+// Assume these functions exist
+// checkIfEmailExistsForSignUp(email) → returns array of users
+// insertNewUser(first_name, last_name, email, birthdate, password_hash)
+
 async function postSignUp(req, res, next) {
   const {
     first_name,
@@ -170,55 +586,90 @@ async function postSignUp(req, res, next) {
     confirm_password,
   } = req.body;
 
-  const errors = [];
-
-  if (
-    !first_name ||
-    !last_name ||
-    !email ||
-    !birthdate ||
-    !password ||
-    !confirm_password
-  ) {
-    errors.push("All fields are required.");
-  }
-
-  if (password !== confirm_password) {
-    errors.push("Passwords do not match.");
-  }
-
-  if (errors.length > 0) {
-    return res.render("sign-up", {
-      title: "Sign Up",
-      user: req.user,
-      errors,
-      formData: req.body || {},
-    });
-  }
-
   try {
-    // Below - no id needed at sign-up, only use id for edits/updates
-    // const existingUser = await checkIfEmailExists(email, user_id);
-    const existingUser = await checkIfEmailExists(email);
-
+    // 1️⃣ Check if email already exists
+    const existingUser = await checkIfEmailExistsForSignUp(email);
     if (existingUser.length > 0) {
-      errors.push("Email is already taken.");
       return res.render("sign-up", {
         title: "Sign Up",
-        user: req.user,
-        errors,
+        errors: [{ param: "email", msg: "Email is already taken." }],
+        formData: req.body || {},
       });
     }
 
-    const password_hash = await bcrypt.hash(password, 12);
+    // 2️⃣ Password validation (single error message for all rules)
+    await check("password")
+      .custom((value) => {
+        const hasMinLength = value.length >= 16;
+        const hasLower = /[a-z]/.test(value);
+        const hasUpper = /[A-Z]/.test(value);
+        const hasNumber = /\d/.test(value);
+        const hasSpecial = /[@$!%*?&]/.test(value);
 
+        if (
+          !(hasMinLength && hasLower && hasUpper && hasNumber && hasSpecial)
+        ) {
+          throw new Error("Incorrect pattern, see below.");
+        }
+        return true;
+      })
+      .run(req);
+
+    // 3️⃣ Confirm password placeholder (optional for now)
+    // You can uncomment this later when ready
+    await check("confirm_password")
+      .custom((value, { req }) => {
+        if (value !== req.body.password) {
+          throw new Error("Passwords do not match.");
+        }
+        return true;
+      })
+      .run(req);
+
+    // // 4️⃣ Collect all validation errors
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //   return res.render("sign-up", {
+    //     title: "Sign Up",
+    //     errors: errors.array(),
+    //     formData: req.body || {},
+    //   });
+    // }
+
+    // 3️⃣ Collect and format errors
+    const errors = validationResult(req);
+    console.log(errors);
+    
+    if (!errors.isEmpty()) {
+      // Only keep first error per field and rename path → param
+      const formattedErrors = [];
+      const seen = new Set();
+      errors.array().forEach((err) => {
+        if (!seen.has(err.path)) {
+          formattedErrors.push({ param: err.path, msg: err.msg });
+          seen.add(err.path);
+        }
+      });
+
+      return res.render("sign-up", {
+        title: "Sign Up",
+        errors: formattedErrors,
+        formData: req.body || {},
+      });
+    }
+
+    // 5️⃣ Hash password and insert new user
+    const password_hash = await bcrypt.hash(password, 12);
     await insertNewUser(first_name, last_name, email, birthdate, password_hash);
 
+    // 6️⃣ Redirect after success
     res.redirect("/app/log-in");
   } catch (err) {
+    console.error("Error during sign-up:", err);
     next(err);
   }
 }
+
 
 // CONTROLLER: LOG-IN (log-in.ejs)
 
@@ -255,21 +706,21 @@ async function postLogIn(req, res, next) {
       });
     }
 
-//     console.log("User authenticated:", user);
+    //     console.log("User authenticated:", user);
 
-//     // Log the user in
-//     req.login(user, (err) => {
-//       if (err) {
-//         console.error("Error during login:", err);
+    //     // Log the user in
+    //     req.login(user, (err) => {
+    //       if (err) {
+    //         console.error("Error during login:", err);
 
-//         return next(err); // handle login error
-//       }
+    //         return next(err); // handle login error
+    //       }
 
-//       console.log("Login successful! Redirecting to message boards...");
-//       res.redirect("/app/message-boards");
-//     });
-//   })(req, res, next);
-// }
+    //       console.log("Login successful! Redirecting to message boards...");
+    //       res.redirect("/app/message-boards");
+    //     });
+    //   })(req, res, next);
+    // }
 
     console.log("User authenticated:", user);
 
@@ -285,14 +736,14 @@ async function postLogIn(req, res, next) {
         }
 
         console.log("Login successful! Redirecting to message boards...");
-        res.redirect("/app/message-boards");  // Redirect to message boards after login
+        res.redirect("/app/message-boards"); // Redirect to message boards after login
       });
     } catch (err) {
       console.error("Error updating last login:", err);
-      return next(err);  // Handle any error with updating the last login
+      return next(err); // Handle any error with updating the last login
     }
-  })(req, res, next);  // Execute the Passport authentication logic
-};
+  })(req, res, next); // Execute the Passport authentication logic
+}
 
 // CONTROLLER: LOG-OUT
 
@@ -336,7 +787,7 @@ async function postNewMessage(req, res, next) {
 
   try {
     // Get topic info
-   const topic = await getTopicById(topic_id);
+    const topic = await getTopicById(topic_id);
 
     if (!topic) {
       return res.status(404).send("Topic not found.");
@@ -344,16 +795,20 @@ async function postNewMessage(req, res, next) {
 
     // await insertNewMessage(currentUser_id, topic_id, title, body); // Pass user_id from session
     // await insertMessage(currentUser_id, topic_id, title, body); // Pass user_id from session
-    const newMessage = await insertMessage(currentUser_id, topic_id, title, body);
+    const newMessage = await insertMessage(
+      currentUser_id,
+      topic_id,
+      title,
+      body,
+    );
     res.redirect(`/app/message-boards/${topic.slug}`);
   } catch (err) {
     next(err);
   }
 }
 
-// CONTROLLER: STICKY MESSAGE TOGGLE 
+// CONTROLLER: STICKY MESSAGE TOGGLE
 async function postStickyMessageToggle(req, res, next) {
- 
   try {
     const { message_id, slug } = req.body;
     //  console.log("sticky:", message_id, slug);
@@ -523,7 +978,7 @@ async function postEditMessage(req, res, next) {
     if (!message) {
       return res.status(404).send("Message not found.");
     }
-console.log("Updated message with is_edited1:", message.is_edited);
+    console.log("Updated message with is_edited1:", message.is_edited);
     // Check if the logged-in user is the author of the message
     if (message.user_id !== currentUserId) {
       return res.status(403).send("You are not the author of this message.");
@@ -537,7 +992,7 @@ console.log("Updated message with is_edited1:", message.is_edited);
     );
 
     // Log updated message data to ensure it's correctly updated
-console.log("Updated message with is_edited2:", message.is_edited);
+    console.log("Updated message with is_edited2:", message.is_edited);
 
     // Pass the updated message with 'is_edited' to the template
     res.redirect(`/app/message-boards/${message.topic_slug}`);
@@ -551,7 +1006,7 @@ async function postReplyMessage(req, res, next) {
     // Extract form data
     const { targetId, messageTitle, body } = req.body;
 
-    const prefixedTitle = `↪ ${messageTitle}`; 
+    const prefixedTitle = `↪ ${messageTitle}`;
 
     // console.log("Received messageTitle:", messageTitle);
     console.log("Received adjusted messageTitle:", prefixedTitle);
@@ -602,7 +1057,6 @@ async function postReplyMessage(req, res, next) {
   }
 }
 
-
 // CONTROLLER: DELETE MESSAGE (message-boards/topic slug)
 
 async function deleteUserMessage(req, res, next) {
@@ -643,7 +1097,6 @@ async function postLikeMessageToggle(req, res, next) {
 //     next(err);
 //   }
 // }
-
 
 // CONTROLLER: YOUR PROFILE (your-profile.ejs)
 
@@ -785,7 +1238,7 @@ async function postYourProfilePageAvatar(req, res, next) {
     avatar_type,
     avatar_color_fg,
     avatar_color_bg_top,
-    avatar_color_bg_bottom
+    avatar_color_bg_bottom,
   } = req.body;
 
   try {
@@ -797,7 +1250,7 @@ async function postYourProfilePageAvatar(req, res, next) {
       sanitize(avatar_type),
       sanitize(avatar_color_fg),
       sanitize(avatar_color_bg_top),
-      sanitize(avatar_color_bg_bottom)
+      sanitize(avatar_color_bg_bottom),
     );
     console.log("User avatar changes inserted successfully");
 
@@ -851,8 +1304,6 @@ async function getMessageBoards(req, res, next) {
 //   }
 // };
 
-
-
 const getTopicNamesForDropdown = async (req, res, next) => {
   try {
     const currentUser = req.user || res.locals.currentUser || null;
@@ -865,7 +1316,6 @@ const getTopicNamesForDropdown = async (req, res, next) => {
     next(err);
   }
 };
-
 
 // const getTopicNamesForDropdown = async (req, res, next) => {
 //   try {
@@ -929,8 +1379,6 @@ const getTopicNamesForDropdown = async (req, res, next) => {
 //   next();
 // }
 
-
-
 async function getTopicPage(req, res, next) {
   try {
     const { slug } = req.params;
@@ -985,7 +1433,6 @@ async function getTopicPage(req, res, next) {
 //   });
 // }
 
-
 async function getMemberDirectory(req, res, next) {
   try {
     const users = await getUsers();
@@ -1003,10 +1450,9 @@ async function getMemberDirectory(req, res, next) {
   }
 }
 
-
 async function getMemberInvite(req, res, next) {
   try {
-    const currentUserId = req.user.id
+    const currentUserId = req.user.id;
     const user = await getUserById(currentUserId);
 
     // const usersWithAvatars = addAvatarFields(users, avatarTypeDefault);
@@ -1027,8 +1473,7 @@ async function getMemberInvite(req, res, next) {
   }
 }
 
- async function postMemberInviteAccepted(req, res, next) {
-
+async function postMemberInviteAccepted(req, res, next) {
   console.log("Controller hit!");
 
   const currentUser_id = req.user.id; // Always use logged-in user ID
@@ -1085,8 +1530,7 @@ async function getMemberInvite(req, res, next) {
   }
 }
 
-
-  // postMemberInviteDeclined,
+// postMemberInviteDeclined,
 //  async function postMemberInviteDeclined(req, res, next) {
 //    console.log("Controller hit!");
 
@@ -1168,7 +1612,7 @@ async function postMemberInviteDeclined(req, res, next) {
   }
 }
 
-// CONTROLLER: ADMIN PAGE (admin.ejs) 
+// CONTROLLER: ADMIN PAGE (admin.ejs)
 async function getAdminPage(req, res, next) {
   try {
     const users = await getUsers();
@@ -1254,7 +1698,6 @@ function getAdminCreatePage(req, res, next) {
 }
 
 async function postAdminCreatePage(req, res, next) {
-
   console.log("Controller hit!");
   console.log("req.user:", req.user);
   console.log("req.body:", req.body);
@@ -1266,7 +1709,7 @@ async function postAdminCreatePage(req, res, next) {
     birthdate,
     password,
     confirm_password,
-    notes
+    notes,
   } = req.body;
   const errors = [];
 
@@ -1278,7 +1721,6 @@ async function postAdminCreatePage(req, res, next) {
     !birthdate ||
     !password ||
     !confirm_password
-    
   ) {
     errors.push("All fields are required.");
   }
@@ -1330,7 +1772,7 @@ async function postAdminCreatePage(req, res, next) {
       birthdate,
       password_hash,
       // permission_status,
-      notes
+      notes,
     );
     console.log("User inserted successfully");
 
@@ -1348,7 +1790,7 @@ async function getAdminEditPage(req, res, next) {
   try {
     const targetId = req.params.id;
     const user = await getUserById(targetId);
-    
+
     //Format birthdate for input/display
     if (user.birthdate instanceof Date) {
       user.birthdate = user.birthdate.toISOString().split("T")[0];
@@ -1367,78 +1809,77 @@ async function getAdminEditPage(req, res, next) {
 }
 
 async function postAdminEditPage(req, res, next) {
-    console.log("Controller hit!");
+  console.log("Controller hit!");
 
-    const user_id = req.params.id;
+  const user_id = req.params.id;
 
-    const {
-      first_name,
-      last_name,
-      email,
-      birthdate,
-      password,
-      confirm_password,
-      permission_status,
-      verified_by_admin,
-      guest_upgrade_invite,
-      invite_decision,
-      is_active,
-      avatar_type,
-      avatar_color_fg,
-      avatar_color_bg_top,
-      avatar_color_bg_bottom,
-      phone,
-      street_address,
-      apt_unit,
-      city,
-      us_state,
-      zip_code,
-      notes
-    } = req.body;
+  const {
+    first_name,
+    last_name,
+    email,
+    birthdate,
+    password,
+    confirm_password,
+    permission_status,
+    verified_by_admin,
+    guest_upgrade_invite,
+    invite_decision,
+    is_active,
+    avatar_type,
+    avatar_color_fg,
+    avatar_color_bg_top,
+    avatar_color_bg_bottom,
+    phone,
+    street_address,
+    apt_unit,
+    city,
+    us_state,
+    zip_code,
+    notes,
+  } = req.body;
 
-    const errors = [];
+  const errors = [];
 
-    // Simple validation checks
-    // if (
-    //   !first_name ||
-    //   !last_name ||
-    //   !email ||
-    //   !birthdate ||
-    //   !permission_status ||
-    //   !member_request ||
-    //   !active_status ||
-    //   !verified_by_admin
-    // ) {
-    //   errors.push("All fields are required.");
-    // }
+  // Simple validation checks
+  // if (
+  //   !first_name ||
+  //   !last_name ||
+  //   !email ||
+  //   !birthdate ||
+  //   !permission_status ||
+  //   !member_request ||
+  //   !active_status ||
+  //   !verified_by_admin
+  // ) {
+  //   errors.push("All fields are required.");
+  // }
 
-      if (password && password !== confirm_password) {
-        errors.push("Passwords do not match.");
-      }
+  if (password && password !== confirm_password) {
+    errors.push("Passwords do not match.");
+  }
 
-      const existingUser = await checkIfEmailExists(email, user_id);
+  const existingUser = await checkIfEmailExists(email, user_id);
 
-      if (existingUser.length > 0) {
-        errors.push("Email is already taken.");
-        return res.render("admin-edit", {
-          title: "Admin Edit",
-          user: req.user,
-          errors,
-          formData: req.body || {},
-        });
-      }
-      
-      if (errors.length > 0) {
-        return res.render("admin-edit", {
-          title: "Admin Edit",
-          user: req.user,
-          errors,
-          formData: req.body || {},
-        });
-      }
+  if (existingUser.length > 0) {
+    errors.push("Email is already taken.");
+    return res.render("admin-edit", {
+      title: "Admin Edit",
+      user: req.user,
+      errors,
+      formData: req.body || {},
+    });
+  }
 
-    try {
+  if (errors.length > 0) {
+    return res.render("admin-edit", {
+      title: "Admin Edit",
+      user: req.user,
+      errors,
+      formData: req.body || {},
+    });
+  }
 
+  try {
     const sanitize = (v) => (v === "" ? null : v); // Empty strings -> null
 
     const toBool = (v) => {
@@ -1448,61 +1889,60 @@ async function postAdminEditPage(req, res, next) {
     };
 
     // Convert boolean-like form values
-    const safeVerifiedByAdmin = toBool(verified_by_admin);    
+    const safeVerifiedByAdmin = toBool(verified_by_admin);
     const safeGuestUpgradeInvite = toBool(guest_upgrade_invite);
     const safeIsActive = toBool(is_active);
 
+    // Convert form "true"/"false" strings from <select> inputs into real booleans.
+    // Or, more explicitly...the following happens...
+    // Form select elements send strings, not booleans ("true" / "false"), as HTML <select> fields always submit values as strings ("true" or "false").
+    // Below converts them to real booleans by comparing to the string "true".
+    // In comparing to "true" converts the value into a proper boolean:
+    // "true" === "true" → true
+    // "false" === "true" → false
+    // This safely converts form values to booleans for the database.
+    // const safeMemberRequest =
+    //   member_request === "true" || member_request === true;
+    // const safeIsActive = is_active === "true" || is_active === true;
+    // const safeVerifiedByAdmin =
+    //   verified_by_admin === "true" || verified_by_admin === true;
+    // // Insert the new admin-created user (avatar_type generated inside the function)
+    // const sanitize = (v) => (v === "" ? null : v);
 
-      // Convert form "true"/"false" strings from <select> inputs into real booleans.
-      // Or, more explicitly...the following happens...
-      // Form select elements send strings, not booleans ("true" / "false"), as HTML <select> fields always submit values as strings ("true" or "false").
-      // Below converts them to real booleans by comparing to the string "true".
-      // In comparing to "true" converts the value into a proper boolean:
-      // "true" === "true" → true
-      // "false" === "true" → false
-      // This safely converts form values to booleans for the database.
-      // const safeMemberRequest =
-      //   member_request === "true" || member_request === true;
-      // const safeIsActive = is_active === "true" || is_active === true;
-      // const safeVerifiedByAdmin =
-      //   verified_by_admin === "true" || verified_by_admin === true;
-      // // Insert the new admin-created user (avatar_type generated inside the function)
-      // const sanitize = (v) => (v === "" ? null : v);
+    // --- Update the user ---
+    await updateAdminEditedUser(
+      user_id,
+      sanitize(first_name),
+      sanitize(last_name),
+      sanitize(email),
+      sanitize(birthdate), // Keep as string 'yyyy-MM-dd' for <input type="date">
+      password, // hashed inside updateAdminEditedUser if provided
+      permission_status, // ENUM string, defaults handled in updateAdminEditedUser if needed
+      safeVerifiedByAdmin, // Boolean
+      safeGuestUpgradeInvite, // Boolean
+      invite_decision, // ENUM string, defaults handled in updateAdminEditedUser if needed
+      safeIsActive, // Boolean
+      sanitize(avatar_type),
+      sanitize(avatar_color_fg),
+      sanitize(avatar_color_bg_top),
+      sanitize(avatar_color_bg_bottom),
+      sanitize(phone),
+      sanitize(street_address),
+      sanitize(apt_unit),
+      sanitize(city),
+      sanitize(us_state),
+      sanitize(zip_code),
+      sanitize(notes),
+    );
+    console.log("User inserted successfully");
 
-      // --- Update the user ---
-      await updateAdminEditedUser(
-        user_id,
-        sanitize(first_name),
-        sanitize(last_name),
-        sanitize(email),
-        sanitize(birthdate), // Keep as string 'yyyy-MM-dd' for <input type="date">
-        password, // hashed inside updateAdminEditedUser if provided
-        permission_status, // ENUM string, defaults handled in updateAdminEditedUser if needed
-        safeVerifiedByAdmin, // Boolean
-        safeGuestUpgradeInvite, // Boolean
-        invite_decision, // ENUM string, defaults handled in updateAdminEditedUser if needed
-        safeIsActive, // Boolean
-        sanitize(avatar_type),
-        sanitize(avatar_color_fg),
-        sanitize(avatar_color_bg_top),
-        sanitize(avatar_color_bg_bottom),
-        sanitize(phone),
-        sanitize(street_address),
-        sanitize(apt_unit),
-        sanitize(city),
-        sanitize(us_state),
-        sanitize(zip_code),
-        sanitize(notes)
-      );
-      console.log("User inserted successfully");
-
-      // Redirect after successful creation
-      res.redirect("/app/admin");
-      console.log("Redirected to /app/admin");
-    } catch (err) {
-      next(err);
-    }
+    // Redirect after successful creation
+    res.redirect("/app/admin");
+    console.log("Redirected to /app/admin");
+  } catch (err) {
+    next(err);
   }
+}
 
 // CONTROLLER: DELETE VIA USER (your-profile.ejs) OR DELETE VIA ADMIN (admin.ejs)
 

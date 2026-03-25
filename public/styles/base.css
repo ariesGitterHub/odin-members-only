@@ -40,6 +40,8 @@
   --lt-blue: #b8dde9;
   --lt-purple: #a790af;
 
+  --error-color: rgb(220, 37, 24);
+
   --avatar-color-fg: var(--off-black);
   --avatar-color-bg-top: var(--off-white);
   --avatar-color-bg-bottom: var(--off-gray);
@@ -70,6 +72,7 @@
 
   --font-text: "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   --font-emoji: "NotoEmoji", sans-serif !important;
+  --font-error: monospace;
 
   /* Root sizing for Media Queries */
   --max-width: 700px;

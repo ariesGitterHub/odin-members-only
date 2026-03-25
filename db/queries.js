@@ -184,6 +184,14 @@ const getTopicById = async (topic_id) => {
   return res.rows[0];
 };
 
+//QUERY: CHECK IF EMAIL ALREADY EXISTS IN THE DB AT SIGN UP (PREVENTS USING CODE BELOW THAT DOES NOT WORK WELL WITH NEW USER SITUATIONS)
+async function checkIfEmailExistsForSignUp(email) {
+  const result = await pool.query(`SELECT id FROM users WHERE email = $1`, [
+    email,
+  ]);
+
+  return result.rows;
+}
 
 // QUERY: CHECK IF EMAIL ALREADY EXISTS IN THE DB (SET UP TO NOT AFFECT USER EDITS TO SAME ENTRY)
 
@@ -198,6 +206,24 @@ async function checkIfEmailExists(email, targetId) {
   return result.rows;
 }
 
+// Fix to render error messages in sign-up.ejs
+// async function checkIfEmailExists(email, targetId = null) {
+//   try {
+//     // If targetId is not provided, use null to check for a new user
+//     const result = await pool.query(
+//       `SELECT id FROM users
+//        WHERE email = $1
+//        AND ($2 IS NULL OR id != $2)`, // Check if targetId is NULL (for new users)
+//       [email, targetId],
+//     );
+
+//     // Return the result rows
+//     return result.rows; // This will be an empty array if no match is found
+//   } catch (err) {
+//     console.error("Error checking email existence:", err);
+//     throw new Error("Database error: Unable to check email existence.");
+//   }
+// }
 
 // QUERY: INSERT A NEW USER FROM SIGN UP (sign-up.ejs)
 
@@ -1269,7 +1295,8 @@ module.exports = {
   updateLastLogin,
   getMessages,
   getMessageById,
-  getTopicById, 
+  getTopicById,
+  checkIfEmailExistsForSignUp,
   checkIfEmailExists,
   insertNewUser,
   insertAdminCreatedUser,

@@ -1,6 +1,6 @@
 /* UNIQUE TO ONE VIEW (GLOBAL GLASSES GO IN LAYOUT-BASICS.CSS) */
 
-/* --index.ejs */
+/* -- index.ejs */
 .index-image {
   height: var(--index-image-size);
   width: auto;
@@ -509,7 +509,7 @@
   font-size: var(--font-size-largest);
 }
 
-.error-messages {
+.error-message {
   height: fit-content;
   width: var(--width-default-percent);
   display: flex;
@@ -524,10 +524,14 @@
   padding: var(--spacer-default);
 }
 
-.errors {
-  color: var(--off-red);
-  font-family: var(--font-text);
-  font-size: var(--font-size-default);
+.error {
+  /* background-color: var(--off-red); */
+  /* border-radius: var(--border-radius-small); */
+  /* color: var(--lt-orange); */
+  color: var(--error-color);
+  font-family: var(--font-error);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-heavy);
   margin: 0;
   padding: 0;
   text-transform: uppercase;

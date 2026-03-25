@@ -15,6 +15,10 @@
   background-color: var(--white);
 }
 
+.background-red {
+  background-color: var(--lt-red);
+}
+
 /* Font color */
 .font-color-black {
   color: var(--off-black);
@@ -24,12 +28,20 @@
   color: var(--off-white);
 }
 
+.font-color-gray {
+  color: var(--off-gray);
+}
+
 .font-color-green {
   color: var(--off-green);
 }
 
 .font-color-red {
   color: var(--off-red);
+}
+
+.font-color-yellow {
+  color: var(--off-yellow);
 }
 
 

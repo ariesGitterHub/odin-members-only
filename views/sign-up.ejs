@@ -11,14 +11,14 @@
         </div>
         <div class="ui-message">
           <p>
-            Signing up is required if you wish to peruse or post on the
+            Signing up is required if you wish to view or post on the
             <span class="red-letter">C</span>apital
             <span class="red-letter">A</span>rea
             <span class="red-letter">N</span>eigborhood Message Board.
           </p>
         </div>
         <form class="black" action="/app/sign-up" method="POST">
-          <label for="first-name-sign-up"> first name </label>
+          <label for="first-name-sign-up">first name</label>
           <input
             id="first-name-sign-up"
             type="text"          
@@ -27,7 +27,7 @@
             placeholder="enter first name"
             required
           />
-          <label for="last-name-sign-up"> last name </label>
+          <label for="last-name-sign-up">last name</label>
           <input
             id="last-name-sign-up"
             type="text"          
@@ -36,7 +36,22 @@
             placeholder="enter last name"
             required
           />
-          <label for="email-sign-up"> email </label>
+          <div class="element-container-row-start-center">
+            <label for="email-sign-up">email</label>
+            <!-- This should be the error message for inputting an email already in the db -->
+            <%# if (errors && errors.some(e => e.field === 'email')) { %>
+            <!-- <span class="error">[<%#= errors.find(e => e.field === 'email').message %>]</span> -->
+            <%# } %>           
+            <!-- <%# if (errors && errors.some(e => e.param === 'email')) { %>
+            <span class="error"><%#= errors.find(e => e.param === 'email').message %></span>
+            <%# } %>            -->
+            <% if (errors && errors.some(e => e.param === 'email')) { %>
+              <% errors.filter(e => e.param === 'email').forEach(e => { %>
+                <span class="error">[<%= e.msg %>]</span>
+              <% }) %>
+            <% } %>
+          </div>
+          
           <input
             id="email-sign-up"
             type="email"            
@@ -45,7 +60,7 @@
             placeholder="enter email address"
             required
           />
-          <label for="birthdate-sign-up"> birthdate </label>
+          <label for="birthdate-sign-up">birthdate</label>
           <input
             id="birthdate-sign-up"
             type="date"            
@@ -54,7 +69,19 @@
             placeholder="enter birthdate"
             required
           />
-          <label for="password-sign-up"> password </label>
+          <div class="element-container-row-start-center">
+            <label for="password-sign-up">password</label>
+            <!-- TODO - make error message for backend password via express-validator -->
+
+            <!-- <%# if (errors && errors.some(e => e.param === 'password')) { %>
+            <span class="error"><%#= errors.find(e => e.param === 'password').msg %></span>
+            <%# } %>  -->
+            <% if (errors && errors.some(e => e.param === 'password')) { %>
+              <% errors.filter(e => e.param === 'password').forEach(e => { %>
+                <span class="error">[<%= e.msg %>]</span>
+              <% }) %>
+            <% } %>
+          </div>
           <input
             id="password-sign-up"
             type="password"
@@ -62,7 +89,22 @@
             placeholder="select a password"
             required
           />
-          <label for="confirm-password-sign-up"> confirm password </label>
+          <div class="element-container-row-start-center">
+            <label for="confirm-password-sign-up">confirm</label> 
+            <!-- This should be the error message for not matching the password above -->
+            <!-- <%# if (errors && errors.some(e => e.field === 'confirm_password')) { %>
+            <span class="error">[<%#= errors.find(e => e.field === 'confirm_password').message %>]</span>
+            <%# } %>           -->
+
+            <!-- <%# if (errors && errors.some(e => e.param === 'confirm_password')) { %>
+              <span class="error"><%#= errors.find(e => e.param === 'confirm_password').msg %></span>
+            <%# } %> -->
+            <% if (errors && errors.some(e => e.param === 'confirm_password')) { %>
+              <% errors.filter(e => e.param === 'confirm_password').forEach(e => { %>
+                <span class="error">[<%= e.msg %>]</span>
+              <% }) %>
+            <% } %>
+          </div>
           <input
             id="confirm-password-sign-up"
             type="password"
@@ -70,6 +112,9 @@
             placeholder="re-enter chosen password"
             required
           />
+          <div class="background-red border-default">
+            <%- include('./partials/password-rules.ejs') %>
+          </div>
           <div class="button-container-row-space-evenly">
             <a class="button-default narrow-button " href="/app/">home</a>
             <button class="button-default narrow-button " type="submit">submit</button>

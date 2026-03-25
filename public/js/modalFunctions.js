@@ -289,7 +289,7 @@ export function attachOpenModalListener() {
     });
 
     // Ensure the <select> is required
-    select.required = true;
+    // select.required = true;
   }
 
   // Populates the new-message.ejs partial modal with currentUser data
