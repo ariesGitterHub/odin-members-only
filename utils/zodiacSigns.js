@@ -313,7 +313,7 @@ function getChineseZodiacFull(birthdate) {
   const element = elements[Math.floor(mod(cycleIndex, 10) / 2)];
 
   // return `${element} ${animal}`;
-  return `${element}/${animal}`;
+  return `${element}+${animal}`;
 }
 
 // Example usages:

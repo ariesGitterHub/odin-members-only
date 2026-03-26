@@ -12,7 +12,7 @@
       <div class="card">
         <form action="/app/admin-create" method="POST">
           <label class="capitalize" for="first-name-admin-create-page">
-            first name (fname)
+            first name
           </label>
           <input
             id="first-name-admin-create-page"
@@ -22,7 +22,7 @@
             required
           />
           <label class="capitalize" for="last-name-admin-create-page">
-            last name (lname)
+            last name
           </label>
           <input
             id="last-name-admin-create-page"
@@ -31,10 +31,16 @@
             value="<%= formData?.last_name || '' %>"
             required
           />
-
-          <label class="capitalize" for="email-admin-create-page">
-            email address
-          </label>
+          <div class="element-container-row-start-center">
+            <label class="capitalize" for="email-admin-create-page">
+              email
+            </label>
+            <% if (errors && errors.some(e => e.param === 'email')) { %>
+              <% errors.filter(e => e.param === 'email').forEach(e => { %>
+                <span class="error">[<%= e.msg %>]</span>
+              <% }) %>
+            <% } %>
+          </div>            
           <input
             id="email-admin-create-page"
             class="lowercase"
@@ -42,7 +48,7 @@
             name="email"
             value="<%= formData?.email || '' %>"
             required
-          />
+          /> 
           <label class="capitalize" for="birthdate-admin-create-page">
             birthdate
           </label>
@@ -53,28 +59,45 @@
             value="<%= formData?.birthdate || '' %>"
             required
           />
-          <label for="password-admin-create-page"> password </label>
+          <div class="element-container-row-start-center">
+            <label for="password-admin-create-page">password</label>
+            <% if (errors && errors.some(e => e.param === 'password')) { %>
+              <% errors.filter(e => e.param === 'password').forEach(e => { %>
+                <span class="error">[<%= e.msg %>]</span>
+              <% }) %>
+            <% } %>
+          </div>            
           <input
-            id="password-admin-create-page"
-            type="password"
-            name="password"
-            placeholder="select a password"
-            required
-          />
-          <label for="confirm-password-admin-create-page">
-            confirm password
-          </label>
+          id="password-admin-create-page"
+          type="password"
+          name="password"
+          placeholder="select a password"
+          required
+          />            
+          <div class="element-container-row-start-center">
+            <label for="confirm-password-admin-create-page">
+              confirm
+            </label>
+            <% if (errors && errors.some(e => e.param === 'confirm_password')) { %>
+              <% errors.filter(e => e.param === 'confirm_password').forEach(e => { %>
+                <span class="error">[<%= e.msg %>]</span>
+              <% }) %>
+            <% } %>
+          </div>            
           <input
             id="confirm-password-admin-create-page"
             type="password"
             name="confirm_password"
             placeholder="re-enter chosen password"
             required
-          />
+          />            
           <label class="capitalize" for="notes-admin-create-page">
             notes
           </label>
           <textarea id="notes-admin-create-page" name="notes"></textarea>
+          <div class="background-yellow border-default margin-bottom">
+            <%- include('./partials/password-rules.ejs') %>
+          </div>
           <div class="button-container-col">
             <a class="button-default wide-button" href="/app/admin">cancel changes</a>
             <button class="button-default wide-button" type="submit">

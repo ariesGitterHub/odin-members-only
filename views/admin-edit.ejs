@@ -15,7 +15,7 @@
         </div>
         <form action="/app/admin-edit/<%= user.id %>" method="POST">
             <label class="capitalize" for="first-name-admin-edit-page">
-                first name (fname)
+                first name
             </label>
             <input
                 id="first-name-admin-edit-page"
@@ -25,7 +25,7 @@
                 required
             />
             <label class="capitalize" for="last-name-admin-edit-page">
-                last name (lname)
+                last name
             </label>
             <input
                 id="last-name-admin-edit-page"
@@ -53,7 +53,7 @@
                   </select>
                 </div>  
                 <div class="element-container-col-default">
-                <label for="is-active-admin-edit-page"> active status </label>
+                <label for="is-active-admin-edit-page">active status</label>
                 <select
                     id="is-active-admin-edit-page"
                     class="profile-block-select lowercase"
@@ -68,7 +68,7 @@
               </div>
               <div class="element-container-row-space-evenly">
                 <div class="element-container-col-default">
-                  <label for="verified-by-admin-admin-edit-page"> admin verified </label>
+                  <label for="verified-by-admin-admin-edit-page">admin verified</label>
                   <select
                     id="verified-by-admin-admin-edit-page"
                     class="profile-block-select lowercase"
@@ -81,7 +81,7 @@
                   </select>
                 </div>
                 <div class="element-container-col-default">
-                <label for="invite-sent-admin-edit-page"> invite sent </label>
+                <label for="invite-sent-admin-edit-page">invite sent</label>
                 <select
                   id="invite-sent-admin-edit-page"
                   class="profile-block-select lowercase"
@@ -94,7 +94,7 @@
                 </select>
                 </div>
                 <div class="element-container-col-default">
-                <label for="invite-decision-admin-edit-page"> invite decision </label>
+                <label for="invite-decision-admin-edit-page">invite decision</label>
                 <select
                   id="invite-decision-admin-edit-page"
                   class="profile-block-select lowercase"
@@ -109,9 +109,14 @@
                 </div>                                    
               </div>
             </div>
-            <label class="capitalize" for="email-admin-edit-page">
-                email address
-            </label>
+          <div class="element-container-row-start-center">
+            <label class="capitalize" for="email-admin-edit-page">email</label>
+            <% if (errors && errors.some(e => e.param === 'email')) { %>
+              <% errors.filter(e => e.param === 'email').forEach(e => { %>
+                <span class="error">[<%= e.msg %>]</span>
+              <% }) %>
+            <% } %>
+          </div>
             <input
                 id="email-admin-edit-page"
                 class="lowercase"
@@ -122,7 +127,7 @@
             />
             <div class="element-container-row-space-between">
                 <div class="element-container-col-start-center">
-                <label class="capitalize" for="phone-admin-edit-page"> phone </label>
+                <label class="capitalize" for="phone-admin-edit-page">phone</label>
                 <input
                     id="phone-admin-edit-page"
                     type="tel"
@@ -143,14 +148,28 @@
                 />
                 </div>
             </div>
-            <label for="password-admin-edit-page"> password </label>
+          <div class="element-container-row-start-center">
+            <label for="password-admin-edit-page">password</label>
+            <% if (errors && errors.some(e => e.param === 'password')) { %>
+              <% errors.filter(e => e.param === 'password').forEach(e => { %>
+                <span class="error">[<%= e.msg %>]</span>
+              <% }) %>
+            <% } %>
+          </div>
             <input
                 id="password-admin-edit-page"
                 type="password"
                 name="password"
                 placeholder="select new password"
             />
-            <label for="confirm-password-admin-edit-page"> confirm password </label>
+          <div class="element-container-row-start-center">
+            <label for="confirm-password-admin-edit-page">confirm password</label>
+            <% if (errors && errors.some(e => e.param === 'confirm_password')) { %>
+              <% errors.filter(e => e.param === 'confirm_password').forEach(e => { %>
+                <span class="error">[<%= e.msg %>]</span>
+              <% }) %>
+            <% } %>
+          </div>
             <input
                 id="confirm-password-admin-edit-page"
                 type="password"
@@ -182,7 +201,6 @@
                   <label class="capitalize" for="us-state-admin-edit-page">
                       state
                   </label>
-
                   <select id="us-state-admin-edit-page" name="us_state">
                     <option value="" disabled <%= !formData?.us_state ? "selected" : "" %>>Choose state</option>
                     <% usStates.forEach((state) => { %>
@@ -257,6 +275,9 @@
             </div>
             <label class="capitalize" for="notes-admin-edit-page">notes</label>
             <textarea id="notes-admin-edit-page" name="notes"><%= formData?.notes || '' %></textarea>
+            <div class="background-yellow border-default margin-bottom">
+              <%- include('./partials/password-rules.ejs') %>
+            </div>
             <div class="button-container-col">
               <a class="button-default wide-button" href="/app/admin">cancel changes</a>
               <button class="button-default wide-button" type="submit">submit profile changes</button>

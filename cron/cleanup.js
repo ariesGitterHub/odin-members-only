@@ -6,7 +6,7 @@
  */
 
 const cron = require("node-cron");
-const { cleanupMessages } = require("../db/queries");
+const { cleanupMessages } = require("../db/queries/messageQueries");
 
 /**
  * Helper function to run the cleanup

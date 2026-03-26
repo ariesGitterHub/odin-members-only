@@ -1,59 +1,55 @@
 const { Router } = require("express");
 const { requireRole } = require("../utils/permissions");
+// const { passwordValidationRules } = require("../middleware/passwordValidationRules");
+const { createUserValidator,  } = require("../middleware/validationCreateUser");
+// const { editUserValidator } = require("../middleware/validationEditUser");
 
 // TODO - arrange by order of ROUTES far below
 const {
-
-  getMessagesForTopic, //TODO - needed?
-
-
-  // Basic fetch
-  getCurrentUser,
-  getUserDetails,
-  getMessageDetails,
-
-  // No permission status needed
-  getHome,
-  getSignUp,
-  postSignUp,
-  getLogIn,
-  postLogIn,
-
-  // Admin permission status
   getAdminPage,
   getAdminCreatePage,
   postAdminCreatePage,
-  deleteUserAccount,
   getAdminEditPage,
   postAdminEditPage,
+  deleteUserAccount,
+} = require("../controllers/adminControllers");
 
-  // Any user status
-  getInfo,
+const { getSignUp, postSignUp, getLogIn, postLogIn, postLogOut } = require("../controllers/authControllers");
 
-  postNewMessage,
-  getTopicNamesForDropdown,
-
+const {
   getMessageBoards,
   getTopicPage,
-
+  getMessageDetails,
+  postNewMessage,
   postStickyMessageToggle,
   postEditMessage,
   postReplyMessage,
   deleteUserMessage,
   postLikeMessageToggle,
-  
+  getTopicNamesForDropdown,
+  getMessagesForTopic,
+} = require("../controllers/messageControllers");
+
+const {
+  getMemberDirectory,
+  getMemberInvite,
+  postMemberInviteAccepted,
+  postMemberInviteDeclined,
+} = require("../controllers/memberControllers");
+
+const {
+  getHome,
+  getInfo,
+} = require("../controllers/pageControllers");
+
+const {
+  getCurrentUser,
+  getUserDetails,
   getYourProfilePage,
   deleteYourAccount,
   postYourProfilePageEdit,
   postYourProfilePageAvatar,
-  getMemberDirectory, // Member status or higher
-  getMemberInvite, // Guest status, verified by admin, and guest member invite must all be true, while invite decision must equal none.
-  postMemberInviteAccepted,
-  postMemberInviteDeclined,
-  postLogOut,
-
-  // postBecomeMember,
-} = require("../controllers/appControllers");
+} = require("../controllers/userControllers");
 
 const appRouter = Router();
 
@@ -74,7 +70,8 @@ appRouter.get("/", getHome);
 
 // ROUTES: SIGN UP PAGE (sign-up.ejs)
 appRouter.get("/sign-up", getSignUp);
-appRouter.post("/sign-up", postSignUp);
+// appRouter.post("/sign-up", passwordValidationRules, postSignUp);
+appRouter.post("/sign-up", createUserValidator, postSignUp);
 
 // ROUTES: LOG IN PAGE (log-in.ejs)
 appRouter.get("/log-in", getLogIn);
@@ -97,11 +94,12 @@ appRouter.post("/admin/delete-user-account", requireRole("admin"), deleteUserAcc
 
 // ROUTES: ADMIN CREATE PAGE (admin-create.ejs) 
 appRouter.get("/admin-create", requireRole("admin"), getAdminCreatePage);
-appRouter.post("/admin-create", requireRole("admin"), postAdminCreatePage);
+appRouter.post("/admin-create", requireRole("admin"), createUserValidator, postAdminCreatePage);
 
 // ROUTES: ADMIN EDIT PAGE (admin-edit.ejs) 
 appRouter.get("/admin-edit/:id", requireRole("admin"), getAdminEditPage);
 appRouter.post("/admin-edit/:id", requireRole("admin"), postAdminEditPage);
+// appRouter.post("/admin-edit/:id", requireRole("admin"), editUserValidator, postAdminEditPage);
 
 // ROUTES: SITE INFO PAGE (info.ejs)
 appRouter.get("/info", requireRole("guest"), getInfo);

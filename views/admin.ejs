@@ -71,7 +71,8 @@
             <% if (user.birthdate) { %>
               <span class="font-color-black">
                 <p class="emoji font-color-gray"><%= user.zodiacSign %></p>
-                (<p class="emoji font-color-yellow"><%= user.realZodiacSign %></p>)
+                /
+                <p class="emoji <%= user.permission_status === 'admin' ? 'font-color-black' : 'font-color-white'%> "><%= user.realZodiacSign %></p>
               </span>
             <% } %>
             <% if (user.birthdate) { %>

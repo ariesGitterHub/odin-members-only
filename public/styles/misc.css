@@ -15,8 +15,12 @@
   background-color: var(--white);
 }
 
-.background-red {
+/* .background-red {
   background-color: var(--lt-red);
+} */
+
+.background-yellow {
+  background-color: var(--lt-yellow);
 }
 
 /* Font color */

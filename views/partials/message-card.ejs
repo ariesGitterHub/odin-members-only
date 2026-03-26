@@ -13,7 +13,7 @@
       <% } %>
     </p>
   <div class="message-header">
-    <div class="margin-right">
+    <div class="message-avatar-container margin-right">
       <div 
         class="avatar-container avatar-container-size-small avatar-background border-default circle" 
         style="
@@ -27,7 +27,12 @@
       </div>          
     </div>
     <div class="message-name-and-title">
-      <p class="message-name bold"><%= message.first_name %> <%= message.last_name %></p>
+      <p class="message-name bold">
+        <%= message.first_name %>
+        <span class="<%= canPerformHasRole(currentUser, 'members-only', message) ? '' : 'hidden' %>">
+          <%= message.last_name %>
+        </span>
+      </p>
       <!-- <p class="message-title bold"><span class="emoji"><%#= message.parent_message_id ? '↪' : '' %></span> <%#= message.title %></p> -->
       <p class="message-title bold"><%= message.title %></p>
     </div>
