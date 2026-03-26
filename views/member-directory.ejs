@@ -17,7 +17,7 @@
         <!-- TODO -  make the message below render appropriately via css, etc...-->
       <p>There are no current members.</p>
       <% } else { users.forEach(function(user) { %> 
-          <% if (user && user.permission_status === "member") { %> 
+          <% if (user && (user.permission_status === "member" || user.permission_status === "admin")) { %> 
           <div class="card member-card">
             <div class="profile-data-container">
               <!-- <div class="avatar-image-container-wide">

@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { requireRole } = require("../utils/permissions");
 // const { passwordValidationRules } = require("../middleware/passwordValidationRules");
 const { createUserValidator,  } = require("../middleware/validationCreateUser");
-// const { editUserValidator } = require("../middleware/validationEditUser");
+const { editUserValidator } = require("../middleware/validationEditUser");
 
 // TODO - arrange by order of ROUTES far below
 const {
@@ -98,8 +98,8 @@ appRouter.post("/admin-create", requireRole("admin"), createUserValidator, postA
 
 // ROUTES: ADMIN EDIT PAGE (admin-edit.ejs) 
 appRouter.get("/admin-edit/:id", requireRole("admin"), getAdminEditPage);
-appRouter.post("/admin-edit/:id", requireRole("admin"), postAdminEditPage);
-// appRouter.post("/admin-edit/:id", requireRole("admin"), editUserValidator, postAdminEditPage);
+// appRouter.post("/admin-edit/:id", requireRole("admin"), postAdminEditPage);
+appRouter.post("/admin-edit/:id", requireRole("admin"), editUserValidator(), postAdminEditPage);
 
 // ROUTES: SITE INFO PAGE (info.ejs)
 appRouter.get("/info", requireRole("guest"), getInfo);

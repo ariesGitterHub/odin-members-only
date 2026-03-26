@@ -57,7 +57,6 @@ const confirmPasswordValidator = check("confirm_password").custom(
 // Export them individually or as groups
 module.exports = {
   emailValidator,
-  // emailUpdateValidator,
   passwordValidator,
   confirmPasswordValidator,
   createUserValidator: [
@@ -65,9 +64,4 @@ module.exports = {
     passwordValidator,
     confirmPasswordValidator,
   ],
-  // editUserValidator: [
-  //   emailUpdateValidator,
-  //   passwordValidator,
-  //   confirmPasswordValidator,
-  // ],
 };

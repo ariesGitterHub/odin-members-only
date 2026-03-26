@@ -1,12 +1,12 @@
 const { check } = require("express-validator");
 const { checkIfEmailExists } = require("../db/queries/userQueries");
 
-// ----------------- UPDATE/EDIT VALIDATORS -----------------
-const emailUpdateValidator = (userId) =>
+const emailUpdateValidator = () =>
   check("email")
     .isEmail()
     .withMessage("Invalid email format")
-    .custom(async (email) => {
+    .custom(async (email, { req }) => {
+      const userId = req.params.id; 
       const existingUser = await checkIfEmailExists(email, userId);
       if (existingUser.length > 0) throw new Error("Email is already taken.");
       return true;
@@ -42,7 +42,6 @@ const editUserValidator = (userId) => [
   confirmPasswordUpdateValidator,
 ];
 
-// ----------------- EXPORT -----------------
 module.exports = {
   editUserValidator,
 };

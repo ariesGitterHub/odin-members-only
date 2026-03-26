@@ -21,9 +21,9 @@ const {
 //   updateLastLogin,
 } = require("../db/queries/userQueries");
 
-const { calculateAge, formatShortDate } = require("../utils/calculateAge");
+// const { calculateAge, formatShortDate } = require("../utils/calculateAge");
 
-const { addBirthdateFields } = require("../utils/viewFormatters");
+// const { addBirthdateFields } = require("../utils/viewFormatters");
 
 // CONTROLLER: GET MEMBER DIRECTORY PAGE
 
