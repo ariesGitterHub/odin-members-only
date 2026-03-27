@@ -71,10 +71,9 @@ button:hover,
 
 .info-button {
   width: var(--width-default-percent);
-  /* width: var(--card-width); */
-  /* width: 10rem; */
-  /* justify-content: start; */
-  /* padding: 0 var(--spacer-default); */
+  justify-content: start;
+  gap: var(--spacer-default);
+  padding-left: var(--spacer-default);
 }
 
 .message-button {
