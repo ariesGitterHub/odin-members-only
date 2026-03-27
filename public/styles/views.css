@@ -105,8 +105,30 @@
 }
 
 /* -- info.ejs */
+.card .info-list {
+  /* width: var(--width-default-percent); */
+  /* align-items: center; */
+  /* gap: var(--spacer-default); */
+  /* padding: 0 var(--spacer-default); */
+}
+
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-default);
+}
+
+.info-list-card {
+  width: var(--width-default-percent);
+
+  /* width: var(--card-width); */
+    /* margin: 0 var(--spacer-default); */
+}
+
 .info-ul {
-  background-color: var(--white);
+  /* width: var(--width-default-percent); */
+  /* background-color: var(--white); */
+  background-color: var(--lt-yellow);
   border: var(--border-default);
   border-radius: var(--border-radius-default);
   margin: var(--spacer-small) 0;

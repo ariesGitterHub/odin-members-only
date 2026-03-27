@@ -124,6 +124,10 @@ gap: var(--spacer-default);
   justify-content: space-between;
 }
 
+/* .margin-top-bottom {
+  margin: var(--spacer-default) 0;
+} */
+
 .margin-bottom {
   margin-bottom: var(--spacer-default);
 }

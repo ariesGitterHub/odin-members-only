@@ -14,6 +14,7 @@ import {
   handleGuestCardsToggle,
   handleMemberCardsToggle,
   handleShowProfileToggle,
+  handleShowInfoSectionToggle,
 } from "./toggleHiddenSections.js";
 
 import {
@@ -35,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   handleGuestCardsToggle();
   handleMemberCardsToggle();
   handleShowProfileToggle();
+  handleShowInfoSectionToggle();
 
   messageBodyCharCounter();
   // generateStateSelect();

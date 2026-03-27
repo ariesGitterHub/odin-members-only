@@ -15,7 +15,7 @@ const emailUpdateValidator = () =>
 const passwordUpdateValidator = check("password")
   .optional({ checkFalsy: true })
   .custom((value) => {
-    const hasMinLength = value.length >= 16; // TODO - use env?
+    const hasMinLength = value.length >= 12; // TODO - use env?
     const hasLower = /[a-z]/.test(value);
     const hasUpper = /[A-Z]/.test(value);
     const hasNumber = /\d/.test(value);

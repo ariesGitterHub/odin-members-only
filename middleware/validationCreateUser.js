@@ -28,7 +28,7 @@ const emailValidator = check("email")
 
 const passwordValidator = [
   check("password").custom((value) => {
-    const hasMinLength = value.length >= 16;
+    const hasMinLength = value.length >= 12;
     const hasLower = /[a-z]/.test(value);
     const hasUpper = /[A-Z]/.test(value);
     const hasNumber = /\d/.test(value);

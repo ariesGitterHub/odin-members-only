@@ -84,10 +84,10 @@ main {
   text-align: center;
 }
 
-.page-section-title {
+/* .page-section-title {
   font-size: var(--font-size-large);
   text-transform: uppercase;
-}
+} */
 
 /* -- Card */
 .card {

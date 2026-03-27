@@ -69,6 +69,14 @@ button:hover,
   color: var(--off-white);
 }
 
+.info-button {
+  width: var(--width-default-percent);
+  /* width: var(--card-width); */
+  /* width: 10rem; */
+  /* justify-content: start; */
+  /* padding: 0 var(--spacer-default); */
+}
+
 .message-button {
   min-width: 3.5rem;
   width: fit-content;

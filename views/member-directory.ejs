@@ -35,14 +35,12 @@
               </div> -->
               <div class="member-directory-extra-avatar-container avatar-background" 
               style="
+                --avatar-color-fg: <%= user.avatar_color_fg || 'var(--off-black)' %>;
                 --avatar-color-bg-top: <%= user.avatar_color_bg_top || 'var(--off-white)' %>;
                 --avatar-color-bg-bottom: <%= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
               ">
                 <div 
-                  class="avatar-container avatar-container-size-large" 
-                  style="
-                    --avatar-color-fg: <%= user.avatar_color_fg || 'var(--off-black)' %>;
-                  ">
+                  class="avatar-container avatar-container-size-large">
                   <span class="emoji emoji-size-largest" role="image" aria-label="avatar image">
                     <%#= user.avatarLetter %>
                     <%= user.avatar_type %>
