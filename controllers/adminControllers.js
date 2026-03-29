@@ -180,8 +180,8 @@ async function postAdminCreatePage(req, res, next) {
 
 async function getAdminEditPage(req, res, next) {
   try {
-    const targetId = req.params.id;
-    const user = await getUserById(targetId);
+    const userId = req.params.id;
+    const user = await getUserById(userId);
 
     //Format birthdate for input/display
     if (user.birthdate instanceof Date) {
@@ -203,10 +203,10 @@ async function getAdminEditPage(req, res, next) {
 async function postAdminEditPage(req, res, next) {
   console.log("Controller hit!");
 
-  const targetId = parseInt(req.params.id, 10); // the user being edited
-  const targetUser = await getUserById(targetId); // fetch target user
+  const userId = parseInt(req.params.id, 10); // the user being edited
+  const user = await getUserById(userId); // fetch target user
 
-  if (!targetUser) return res.status(404).send("User not found");
+  if (!user) return res.status(404).send("User not found");
 
   const {
     first_name,
@@ -272,7 +272,7 @@ async function postAdminEditPage(req, res, next) {
 
     // Update user in DB
     await updateAdminEditedUser(
-      targetId, // ID of the user being edited
+      userId, // ID of the user being edited
       sanitize(first_name),
       sanitize(last_name),
       sanitize(email),
@@ -309,8 +309,8 @@ async function postAdminEditPage(req, res, next) {
 
 async function deleteUserAccount(req, res, next) {
   try {
-    const { targetId } = req.body;
-    await deleteUserById(targetId);
+    const { userId } = req.body;
+    await deleteUserById(userId);
     res.redirect("/app/admin");
   } catch (err) {
     next(err);

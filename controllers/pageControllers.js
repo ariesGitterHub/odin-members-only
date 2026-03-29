@@ -4,8 +4,8 @@ async function getHome(req, res, next) {
   try {
     res.render("index", {
       title: "Home",
-      user: req.user,
-      errors: [],
+      // user: req.user,
+      // errors: [],
     });
   } catch (err) {
     next(err);
@@ -19,8 +19,8 @@ async function getInfo(req, res, next) {
   try {
     res.render("info", {
       title: "Site Information",
-      user: req.user,
-      errors: [],
+      // user: req.user,
+      // errors: [],
     });
   } catch (err) {
     next(err);

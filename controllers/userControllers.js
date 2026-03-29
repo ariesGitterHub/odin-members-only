@@ -1,26 +1,13 @@
-// const bcrypt = require("bcryptjs");
-// const passport = require("passport");
 // const { v4: uuidv4 } = require('uuid'); // To generate a session token
-// const { check, validationResult } = require("express-validator");
 const { validationResult } = require("express-validator");
-// const { hasRole } = require("../utils/permissions");
-// const { buildThreadedMessages } = require("../utils/threadUtils");
-// const { usStates } = require("../utils/usStates");
 const { usStates } = require("../utils/usStates");
 
 const {
-  // getUsers,
   getUserById,
-  // insertNewUser,
-  // insertAdminCreatedUser,
-  // updateAdminEditedUser,
   updateUser,
   updateUserAvatar,
-  // updateUserToMember,
   deleteUserById,
-  // checkIfEmailExistsForSignUp,
-  checkIfEmailExists,
-  // updateLastLogin,
+  // checkIfEmailExists,
 } = require("../db/queries/userQueries");
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
@@ -29,33 +16,72 @@ const {
   addBirthdateFields,
 } = require("../utils/viewFormatters");
 
+
 // CONTROLLER: GET CURRENT USER
+
+// Frontend fetch - function to fetch current user data for modal
+
+// async function getCurrentUser(req, res, next) {
+//   try {
+//     if (req.user) {
+//       // Only send safe fields
+//       const safeUser = {
+//         id: req.user.id,
+//         email: req.user.email,
+//         first_name: req.user.first_name,
+//         last_name: req.user.last_name,
+//         birthdate: req.user.birthdate,
+//         permission_status: req.user.permission_status,
+//         verified_by_admin: req.user.verified_by_admin,
+//         guest_upgrade_invite: req.user.guest_upgrade_invite,
+//         invite_decision: req.user.invite_decision,
+//         // avatarLetter: req.user.avatarLetter,
+//         avatar_type: req.user.avatar_type,
+//         avatar_color_fg: req.user.avatar_color_fg,
+//         avatar_color_bg_top: req.user.avatar_color_bg_top,
+//         avatar_color_bg_bottom: req.user.avatar_color_bg_bottom,
+//         phone: req.user.phone,
+//         street_address: req.user.street_address,
+//         apt_unit: req.user.apt_unit,
+//         city: req.user.city,
+//         us_state: req.user.us_state,
+//         zip_code: req.user.zip_code,
+//       };
+
+//       res.json(safeUser);
+//     } else {
+//       res.json(null); // or res.status(401).json({ user: null })
+//     }
+//   } catch (err) {
+//     next(err);
+//   }
+// }
 
 async function getCurrentUser(req, res, next) {
   try {
-    if (req.user) {
+    if (req.currentUser) {
       // Only send safe fields
       const safeUser = {
-        id: req.user.id,
-        email: req.user.email,
-        first_name: req.user.first_name,
-        last_name: req.user.last_name,
-        birthdate: req.user.birthdate,
-        permission_status: req.user.permission_status,
-        verified_by_admin: req.user.verified_by_admin,
-        guest_upgrade_invite: req.user.guest_upgrade_invite,
-        invite_decision: req.user.invite_decision,
-        // avatarLetter: req.user.avatarLetter,
-        avatar_type: req.user.avatar_type,
-        avatar_color_fg: req.user.avatar_color_fg,
-        avatar_color_bg_top: req.user.avatar_color_bg_top,
-        avatar_color_bg_bottom: req.user.avatar_color_bg_bottom,
-        phone: req.user.phone,
-        street_address: req.user.street_address,
-        apt_unit: req.user.apt_unit,
-        city: req.user.city,
-        us_state: req.user.us_state,
-        zip_code: req.user.zip_code,
+        id: req.currentUser.id,
+        email: req.currentUser.email,
+        first_name: req.currentUser.first_name,
+        last_name: req.currentUser.last_name,
+        birthdate: req.currentUser.birthdate,
+        permission_status: req.currentUser.permission_status,
+        verified_by_admin: req.currentUser.verified_by_admin,
+        guest_upgrade_invite: req.currentUser.guest_upgrade_invite,
+        invite_decision: req.currentUser.invite_decision,
+        // avatarLetter: req.currentUser.avatarLetter,
+        avatar_type: req.currentUser.avatar_type,
+        avatar_color_fg: req.currentUser.avatar_color_fg,
+        avatar_color_bg_top: req.currentUser.avatar_color_bg_top,
+        avatar_color_bg_bottom: req.currentUser.avatar_color_bg_bottom,
+        phone: req.currentUser.phone,
+        street_address: req.currentUser.street_address,
+        apt_unit: req.currentUser.apt_unit,
+        city: req.currentUser.city,
+        us_state: req.currentUser.us_state,
+        zip_code: req.currentUser.zip_code,
       };
 
       res.json(safeUser);
@@ -67,9 +93,10 @@ async function getCurrentUser(req, res, next) {
   }
 }
 
+
 // CONTROLLER: GET USERS BY ID
 
-// Function to fetch individual user data for modal
+// Frontend fetch - function to fetch individual user data for modal
 async function getUserDetails(req, res, next) {
   const targetId = req.params.id; // Get user ID from URL parameter
   try {
@@ -96,7 +123,8 @@ async function getYourProfilePage(req, res, next) {
   }
 
   // Clone the user so we can add computed fields
-  const currentUser = { ...req.user };
+  // const currentUser = { ...req.user };
+  const currentUser = req.currentUser;
 
   // Format birthdate for input/display
   // if (currentUser.birthdate instanceof Date) {
@@ -137,10 +165,11 @@ async function deleteYourAccount(req, res, next) {
     // TODO - use below as the model!!!!!
 
     // Use req.user to ensure the logged-in user is deleting their own account
-    const targetId = req.user.id;
+    // const targetId = req.user.id;
+    const currentUserId = req.currentUser.id;
 
     // Perform the deletion for the authenticated user (not a user provided in the body)
-    await deleteUserById(targetId);
+    await deleteUserById(currentUserId);
 
     res.redirect("/app");
   } catch (err) {
@@ -352,8 +381,11 @@ async function deleteYourAccount(req, res, next) {
 // CONTROLLER: EDIT PROFILE PAGE (edit-profile.ejs)
 async function getEditProfile(req, res, next) {
   try {
-    const targetId = req.user.id;
-    const currentUser = await getUserById(targetId);
+    // const targetId = req.user.id;
+    // const currentUser = await getUserById(targetId);
+
+    // const targetId = req.currentUser.id;
+    const currentUser = req.currentUser;
 
     //Format birthdate for input/display
     if (currentUser.birthdate instanceof Date) {
@@ -375,8 +407,11 @@ async function getEditProfile(req, res, next) {
 async function postEditProfile(req, res, next) {
   console.log("Controller hit!");
 
-  const targetId = req.user.id;
-  const currentUser = await getUserById(targetId); // fetch target user
+  // const targetId = req.user.id;
+  // const currentUser = await getUserById(targetId); // fetch target user
+
+  const currentUserId = req.currentUser.id;
+  const currentUser = req.currentUser;
 
   if (!currentUser) return res.status(404).send("User not found");
 
@@ -425,7 +460,7 @@ async function postEditProfile(req, res, next) {
 
     // --- Update user in DB ---
     await updateUser(
-      targetId, // ID of the currentUser being edited
+      currentUserId, // ID of the currentUser being edited
       sanitize(first_name),
       sanitize(last_name),
       sanitize(email),
@@ -449,14 +484,14 @@ async function postEditProfile(req, res, next) {
 }
 
 
-
-
 // CONTROLLER: CHANGE AVATAR MODAL (change-avatar.ejs)
 
 async function postYourProfilePageAvatar(req, res, next) {
   console.log("Controller hit!");
 
-  const currentUser_id = req.user.id; // Always use logged-in user ID
+  // const currentUser_id = req.user.id; // Always use logged-in user ID
+  // const targetId = req.currentUser.id;
+  const currentUserId = req.currentUser.id;
 
   const {
     avatar_type,
@@ -470,7 +505,8 @@ async function postYourProfilePageAvatar(req, res, next) {
 
     // --- Update the user ---
     await updateUserAvatar(
-      currentUser_id,
+      // currentUser_id,
+      currentUserId,
       sanitize(avatar_type),
       sanitize(avatar_color_fg),
       sanitize(avatar_color_bg_top),

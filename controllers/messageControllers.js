@@ -1,14 +1,6 @@
-// const bcrypt = require("bcryptjs");
-// const passport = require("passport");
-// const { v4: uuidv4 } = require('uuid'); // To generate a session token
-// const { check, validationResult } = require("express-validator");
-// const { validationResult } = require("express-validator");
 const { hasRole } = require("../utils/permissions");
-// const { usStates } = require("../utils/usStates");
-
 
 const {
-//   getMessages,
   getMessageById,
   getTopicById,
   getTopicNames,
@@ -27,11 +19,13 @@ const {
 //   cleanupMessages,
 } = require("../db/queries/messageQueries");
 
+
 // CONTROLLER: GET MESSAGE BOARD PAGE
 
 async function getMessageBoards(req, res, next) {
   try {
-    const currentUser = req.user || res.locals.currentUser || null;
+    // const currentUser = req.user || res.locals.currentUser || null;
+    const currentUser = req.currentUser;
 
     const topics = await getAllTopics();
     const visibleTopics = topics.filter((topic) =>
@@ -48,6 +42,7 @@ async function getMessageBoards(req, res, next) {
   }
 }
 
+
 // CONTROLLER: GET MESSAGE BOARD TOPIC PAGE
 
 async function getTopicPage(req, res, next) {
@@ -62,7 +57,8 @@ async function getTopicPage(req, res, next) {
     }
 
     // Ensure currentUser is defined (guests may be undefined)
-    const currentUser = req.user || res.locals.currentUser || null;
+    // const currentUser = req.user || res.locals.currentUser || null;
+    const currentUser = req.currentUser;
 
     // Authorization check based on DB permission
     if (!hasRole(currentUser, topic.required_permission)) {
@@ -92,6 +88,7 @@ async function getTopicPage(req, res, next) {
   }
 }
 
+
 // CONTROLLER: GET MESSAGES BY ID
 
 // Function to fetch individual user data for modal
@@ -110,6 +107,7 @@ async function getMessageDetails(req, res, next) {
   }
 }
 
+
 // CONTROLLER: NEW MESSAGE (new-message.ejs)
 
 // Use below to model postReplyMessage
@@ -117,9 +115,11 @@ async function postNewMessage(req, res, next) {
   const { topic_id, title, body } = req.body;
 
   // Assuming you're using session-based authentication
-  const currentUser_id = req.user.id; // or whatever key stores user_id in the session
+  // const currentUser_id = req.user.id; // or whatever key stores user_id in the session
+    const currentUserId = req.currentUser.id;
+    // const currentUser = req.currentUser;
 
-  if (!currentUser_id) {
+  if (!currentUserId) {
     return res.status(401).send("User is not logged in.");
   }
 
@@ -134,7 +134,7 @@ async function postNewMessage(req, res, next) {
     // await insertNewMessage(currentUser_id, topic_id, title, body); // Pass user_id from session
     // await insertMessage(currentUser_id, topic_id, title, body); // Pass user_id from session
     const newMessage = await insertMessage(
-      currentUser_id,
+      currentUserId,
       topic_id,
       title,
       body,
@@ -144,6 +144,7 @@ async function postNewMessage(req, res, next) {
     next(err);
   }
 }
+
 
 // CONTROLLER: STICKY MESSAGE TOGGLE (message-boards/topic slug)
 
@@ -158,6 +159,7 @@ async function postStickyMessageToggle(req, res, next) {
   }
 }
 
+
 // CONTROLLER: POST EDITED MESSAGE (edit-message.ejs)
 
 async function postEditMessage(req, res, next) {
@@ -171,7 +173,8 @@ async function postEditMessage(req, res, next) {
     }
 
     // Get the currently logged-in user ID
-    const currentUserId = req.user?.id;
+    // const currentUserId = req.user?.id;
+    const currentUserId = req.currentUser.id;
     if (!currentUserId) {
       return res.status(401).send("User is not logged in.");
     }
@@ -222,7 +225,8 @@ async function postReplyMessage(req, res, next) {
     }
 
     // Get the currently logged-in user ID
-    const currentUserId = req.user?.id;
+    // const currentUserId = req.user?.id;
+    const currentUserId = req.currentUser.id;
     if (!currentUserId) {
       return res.status(401).send("User is not logged in.");
     }
@@ -282,9 +286,9 @@ async function deleteUserMessage(req, res, next) {
 
 async function postLikeMessageToggle(req, res, next) {
   const { message_id, slug } = req.body;
-  const user_id = req.user.id; // <-- TODO - MORE OF THIS!
+  const currentUserId = req.currentUser.id; // <-- TODO - MORE OF THIS!
   try {
-    await toggleLike(message_id, user_id);
+    await toggleLike(message_id, currentUserId);
     // console.log("User ID:", user_id); // Check the value
     // console.log("Message ID:", message_id); // Check the value
 
@@ -299,7 +303,8 @@ async function postLikeMessageToggle(req, res, next) {
 
 const getTopicNamesForDropdown = async (req, res, next) => {
   try {
-    const currentUser = req.user || res.locals.currentUser || null;
+    // const currentUser = req.user || res.locals.currentUser || null;
+    const currentUser = req.currentUser;
     const topics = await getTopicNames(); // returns [{id, name, required_permission}, ...]
     const visibleTopics = topics.filter((topic) =>
       hasRole(currentUser, topic.required_permission),
@@ -315,7 +320,8 @@ const getTopicNamesForDropdown = async (req, res, next) => {
 const getMessagesForTopic = async (req, res) => {
   const messages = await getValidMessagesByTopic(
     req.params.topicId,
-    req.user.id,
+    // req.user.id,
+    req.currentUser.id
   );
   const threaded = buildThreadedMessages(messages);
   res.json(threaded);

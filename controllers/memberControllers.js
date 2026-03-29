@@ -1,29 +1,11 @@
-// const bcrypt = require("bcryptjs");
-// const passport = require("passport");
-// const { v4: uuidv4 } = require('uuid'); // To generate a session token
-// const { check, validationResult } = require("express-validator");
-// const { validationResult } = require("express-validator");
-// const { hasRole } = require("../utils/permissions");
 const { usStates } = require("../utils/usStates");
 
 const {
   getUsers,
-  getUserById,
-//   insertNewUser,
-//   insertAdminCreatedUser,
-//   updateAdminEditedUser,
-//   updateUser,
-//   updateUserAvatar,
+  // getUserById,
   updateUserToMember,
-//   deleteUserById,
-//   checkIfEmailExistsForSignUp,
-//   checkIfEmailExists,
-//   updateLastLogin,
 } = require("../db/queries/userQueries");
 
-// const { calculateAge, formatShortDate } = require("../utils/calculateAge");
-
-// const { addBirthdateFields } = require("../utils/viewFormatters");
 
 // CONTROLLER: GET MEMBER DIRECTORY PAGE
 
@@ -31,11 +13,8 @@ async function getMemberDirectory(req, res, next) {
   try {
     const users = await getUsers();
 
-    // const usersWithAvatars = addAvatarFields(users, avatarTypeDefault);
-
     res.render("member-directory", {
       title: "Member Directory",
-      // users: usersWithAvatars,
       users,
       errors: [],
     });
@@ -44,25 +23,23 @@ async function getMemberDirectory(req, res, next) {
   }
 }
 
+
 // CONTROLLER: GET MEMBER INVITE PAGE
 
 async function getMemberInvite(req, res, next) {
   try {
-    const currentUserId = req.user.id;
-    const user = await getUserById(currentUserId);
+    // const targetId = req.user.id;
+    // const currentUser = await getUserById(targetId);
 
-    // const usersWithAvatars = addAvatarFields(users, avatarTypeDefault);
+    // const targetId = req.currentUser.id;
+    const currentUser = req.currentUser;
 
     res.render("member-invite", {
       title: "Member Invite",
-      // users: usersWithAvatars,
-      // user,
-      // formData: user,
-      // errors: [],
-      user: req.user,
-      // errors,
-      usStates: usStates, // Pass the array to the EJS template
+      // user: req.user,
+      currentUser,
       formData: req.body || {},
+      usStates: usStates, // Pass the array to the EJS template
     });
   } catch (err) {
     next(err);
@@ -70,9 +47,11 @@ async function getMemberInvite(req, res, next) {
 }
 
 async function postMemberInviteAccepted(req, res, next) {
-  console.log("Controller hit!");
+  // const targetId = req.user.id; // Always use logged-in user ID
+  // const currentUser = await getUserById(targetId);
 
-  const currentUser_id = req.user.id; // Always use logged-in user ID
+  const currentUserId = req.currentUser.id;
+  const currentUser = req.currentUser;
 
   const {
     permission_status,
@@ -95,10 +74,11 @@ async function postMemberInviteAccepted(req, res, next) {
   if (errors.length > 0) {
     return res.render("member-invite", {
       title: "Member Invite",
-      user: req.user,
-      // usStates: usStates, // Pass the array to the EJS template ?????
+      // user: req.user,
+      currentUser,
       errors,
       formData: req.body || {},
+      usStates: usStates, // Pass the array to the EJS template
     });
   }
 
@@ -107,7 +87,7 @@ async function postMemberInviteAccepted(req, res, next) {
 
     // --- Update the user ---
     await updateUserToMember(
-      currentUser_id,
+      currentUserId,
       sanitize(permission_status),
       sanitize(invite_decision),
       sanitize(phone),
@@ -130,7 +110,12 @@ async function postMemberInviteAccepted(req, res, next) {
 async function postMemberInviteDeclined(req, res, next) {
   console.log("Controller hit!");
 
-  const currentUser_id = req.user.id; // Always use logged-in user ID
+  // const currentUser_id = req.user.id; // Always use logged-in user ID
+    // const targetId = req.user.id; // Always use logged-in user ID
+    // const currentUser = await getUserById(targetId);
+
+    const currentUserId = req.currentUser.id;
+    const currentUser = req.currentUser;
 
   const {
     invite_decision, // "declined"
@@ -141,9 +126,11 @@ async function postMemberInviteDeclined(req, res, next) {
   if (errors.length > 0) {
     return res.render("member-invite", {
       title: "Member Invite",
-      user: req.user,
+      // user: req.user,
+      currentUser,
       errors,
       formData: req.body || {},
+      usStates: usStates, // Pass the array to the EJS template
     });
   }
 
@@ -153,7 +140,7 @@ async function postMemberInviteDeclined(req, res, next) {
     // --- Update the user ---
     // Call the updated version of the function for only the fields you need to update.
     await updateUserToMember(
-      currentUser_id, // User ID
+      currentUserId, // User ID
       null, // No change to permission_status
       sanitize(invite_decision), // "declined"
       null, // No change to phone

@@ -47,7 +47,8 @@ const getUsers = async () => {
     ORDER BY
     (u.permission_status = 'admin') DESC,
     u.last_name,
-    u.first_name; 
+    u.first_name;
+      
   `);
 
   return rows;

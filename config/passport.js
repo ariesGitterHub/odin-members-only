@@ -11,22 +11,18 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        console.log("Trying to authenticate:", email); // Debug log
-
         const { rows } = await pool.query(
           "SELECT * FROM users WHERE email = $1",
           [email],
         );
 
         if (rows.length === 0) {
-          console.log("No user found for email:", email); // Debug log
           return done(null, false, { message: "Incorrect email." });
         }
 
         const user = rows[0];
 
         const isMatch = await bcrypt.compare(password, user.password_hash);
-        console.log("Password match:", isMatch); // Debug log
 
         if (!isMatch) {
           return done(null, false, { message: "Incorrect password." });
@@ -34,7 +30,6 @@ passport.use(
 
         return done(null, user);
       } catch (err) {
-        console.error("Error during authentication:", err);
         return done(err);
       }
     },

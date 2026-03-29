@@ -1,23 +1,10 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 // const { v4: uuidv4 } = require('uuid'); // To generate a session token
-// const { check, validationResult } = require("express-validator");
 const { validationResult } = require("express-validator");
-// const { hasRole } = require("../utils/permissions");
-// const { usStates } = require("../utils/usStates");
 
 const {
-//   getUsers,
-//   getUserById,
   insertNewUser,
-//   insertAdminCreatedUser,
-//   updateAdminEditedUser,
-//   updateUser,
-//   updateUserAvatar,
-//   updateUserToMember,
-//   deleteUserById,
-//   checkIfEmailExistsForSignUp,
-//   checkIfEmailExists,
   updateLastLogin,
 } = require("../db/queries/userQueries");
 
@@ -28,7 +15,7 @@ async function getSignUp(req, res, next) {
   try {
     res.render("sign-up", {
       title: "Sign Up",
-      user: req.user,
+      // user: req.user,
       errors: [],
       formData: req.body || {},
     });
@@ -87,7 +74,7 @@ async function getLogIn(req, res, next) {
   try {
     res.render("log-in", {
       title: "Log In",
-      user: req.user,
+      // user: req.user,
       errors: [],
       formData: req.body || {},
     });
@@ -129,7 +116,7 @@ async function postLogIn(req, res, next) {
           return next(err); // Handle login errors
         }
 
-        console.log("Login successful! Redirecting to message boards...");
+        // console.log("Login successful! Redirecting to message boards...");
         res.redirect("/app/message-boards"); // Redirect to message boards after login
       });
     } catch (err) {
@@ -161,5 +148,4 @@ module.exports = {
   getLogIn,
   postLogIn,
   postLogOut,
-
 };
