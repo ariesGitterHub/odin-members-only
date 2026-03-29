@@ -22,7 +22,7 @@
   padding: var(--spacer-default);
 }
 
-/* .o-card .admin-quick-view-bar {
+/* .infinity-card .admin-quick-view-bar {
   background-color: var(--off-blue);
 } */
 
@@ -48,6 +48,11 @@
   color: var(--off-black);
 } */
 
+/* .infinity-card .admin-quick-view-bar span, .admin-card .admin-quick-view-bar span {
+  background-color: var(--off-white);
+  color: var(--off-black);
+} */
+
 .admin-card .admin-quick-view-bar span {
   background-color: var(--off-white);
   color: var(--off-black);
@@ -63,7 +68,7 @@
   margin-left: var(--spacer-default);
 }
 
-/* .o-card .neighbor-relevant-data {
+/* .infinity-card .neighbor-relevant-data {
   background-color: var(--off-blue);
 } */
 

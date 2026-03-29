@@ -2,7 +2,10 @@ const { Router } = require("express");
 const { requireRole } = require("../utils/permissions");
 // const { passwordValidationRules } = require("../middleware/passwordValidationRules");
 const { createUserValidator,  } = require("../middleware/validationCreateUser");
-const { editUserValidator } = require("../middleware/validationEditUser");
+const {
+  adminEditUserValidator,
+  editProfileUserValidator,
+} = require("../middleware/validationEditUser");
 
 // TODO - arrange by order of ROUTES far below
 const {
@@ -47,7 +50,9 @@ const {
   getUserDetails,
   getYourProfilePage,
   deleteYourAccount,
-  postYourProfilePageEdit,
+  // postYourProfilePageEdit,
+  getEditProfile,
+  postEditProfile,
   postYourProfilePageAvatar,
 } = require("../controllers/userControllers");
 
@@ -99,7 +104,7 @@ appRouter.post("/admin-create", requireRole("admin"), createUserValidator, postA
 // ROUTES: ADMIN EDIT PAGE (admin-edit.ejs) 
 appRouter.get("/admin-edit/:id", requireRole("admin"), getAdminEditPage);
 // appRouter.post("/admin-edit/:id", requireRole("admin"), postAdminEditPage);
-appRouter.post("/admin-edit/:id", requireRole("admin"), editUserValidator(), postAdminEditPage);
+appRouter.post("/admin-edit/:id", requireRole("admin"), adminEditUserValidator(), postAdminEditPage);
 
 // ROUTES: SITE INFO PAGE (info.ejs)
 appRouter.get("/info", requireRole("guest"), getInfo);
@@ -138,7 +143,12 @@ appRouter.get("/your-profile", requireRole("guest"), getYourProfilePage);
 appRouter.post("/your-profile/delete-your-account", requireRole("guest"), deleteYourAccount);
 
 // ROUTES: EDIT PROFILE MODAL (edit-profile.ejs)
-appRouter.post("/your-profile/edit-profile", requireRole("guest"), postYourProfilePageEdit);
+// appRouter.post("/your-profile/edit-profile", requireRole("guest"),postYourProfilePageEdit);
+// appRouter.post("/your-profile/edit-profile", requireRole("guest"), yourProfileEditUserValidator(), postYourProfilePageEdit);
+
+// ROUTE: EDIT PROFILE PAGE (edit-profile.ejs)
+appRouter.get("/edit-profile", requireRole("guest"), getEditProfile);
+appRouter.post("/edit-profile", requireRole("guest"), editProfileUserValidator(), postEditProfile);
 
 // ROUTES: CHANGE AVATAR MODAL (change-avatar.ejs)
 appRouter.post("/your-profile/change-avatar", requireRole("guest"), postYourProfilePageAvatar);

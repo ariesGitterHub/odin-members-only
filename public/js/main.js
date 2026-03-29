@@ -1,6 +1,7 @@
 import {
   attachCloseModalListener,
   attachOpenModalListener,
+  // reopenModalIfErrors,
   // attachAvatarPreviewListeners,
 } from "./modalFunctions.js";
 
@@ -25,6 +26,16 @@ import {
 document.addEventListener("DOMContentLoaded", () => {
   attachCloseModalListener();
   attachOpenModalListener();
+
+  // reopenModalIfErrors();
+  // if (document.body.dataset.reopenModal === "true") {
+  //   reopenModalIfErrors();
+  // }
+// if (document.body.dataset.reopenModal === "true") {
+//   // Pass the currentUser data safely from the backend
+//   reopenModalIfErrors(currentUserWithBirthdate);
+// }
+
   // attachAvatarPreviewListeners();
 
   handleEmojiOpen();

@@ -1,7 +1,7 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcryptjs');
-const pool = require('../db/pool'); // Import connection pool
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcryptjs");
+const pool = require("../db/pool"); // Import connection pool
 
 passport.use(
   new LocalStrategy(
@@ -41,60 +41,15 @@ passport.use(
   ),
 );
 
-// -- Serialize and Deserialize User
+// SERIALIZE & DESERIALIZE THE USER
 
 // Serialize user information into the session (store user ID and permission status)
-// passport.serializeUser((user, done) => {
-//   done(null, { id: user.id, permission_status: user.permission_status });
-// });
 passport.serializeUser((user, done) => {
-    // console.log("Serializing user:", user.id);
   done(null, user.id);
 });
 
 // Deserialize user information from the session (retrieve user data)
-// passport.deserializeUser(async (sessionData, done) => {
-//   try {
-//     const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [sessionData.id]);
-//     const user = rows[0];
-//     done(null, user);  // Attach full user object (including permission status)
-//   } catch (err) {
-//     done(err);
-//   }
-// });
-// passport.deserializeUser(async (id, done) => {
-//   // `id` is passed from the session
-//   try {
-//     const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [
-//       id,
-//     ]);
-//     if (rows.length > 0) {
-//       done(null, rows[0]); // Pass the user object (including permission_status) to `req.user`
-//     } else {
-//       done(new Error("User not found"), null);
-//     }
-//   } catch (err) {
-//     done(err);
-//   }
-// });
-// passport.deserializeUser(async (id, done) => {
-//    console.log("Deserializing user:", id);
-//   try {
-//     const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [
-//       id,
-//     ]);
-
-//     if (rows.length === 0) {
-//       return done(null, false);
-//     }
-
-//     done(null, rows[0]);
-//   } catch (err) {
-//     done(err);
-//   }
-// });
 passport.deserializeUser(async (id, done) => {
-  // console.log("Deserializing user:", id);
   try {
     const { rows } = await pool.query(
       `

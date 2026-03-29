@@ -2,10 +2,11 @@
 // const passport = require("passport");
 // const { v4: uuidv4 } = require('uuid'); // To generate a session token
 // const { check, validationResult } = require("express-validator");
-// const { validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 // const { hasRole } = require("../utils/permissions");
 // const { buildThreadedMessages } = require("../utils/threadUtils");
 // const { usStates } = require("../utils/usStates");
+const { usStates } = require("../utils/usStates");
 
 const {
   // getUsers,
@@ -121,6 +122,7 @@ async function getYourProfilePage(req, res, next) {
       // currentUser: currentUserWithAvatar, // send single processed user
       currentUser: currentUserWithBirthdate,
       errors: [],
+      reopenModal: false,
     });
   } catch (err) {
     next(err);
@@ -147,11 +149,236 @@ async function deleteYourAccount(req, res, next) {
 }
 
 
+// TODO - delete later!
 // CONTROLLER: EDIT PROFILE MODAL (edit-profile.ejs)
-async function postYourProfilePageEdit(req, res, next) {
+// async function postYourProfilePageEdit(req, res, next) {
+//   console.log("Controller hit!");
+
+//   // const currentUser_id = req.user.id; // Always use logged-in user ID
+//   const targetId = req.user.id;
+//   const currentUser = await getUserById(targetId);
+//   console.log("postYourProfilePageEdit", currentUser);
+  
+
+//   // Add computed fields: age, formattedBirthdate
+//   const currentUserWithBirthdate = addBirthdateFields(
+//     [currentUser], // pass as array to reuse your helper
+//     calculateAge,
+//     formatShortDate,
+//   )[0]; // get first element
+
+//   const {
+//     first_name,
+//     last_name,
+//     email,
+//     birthdate,
+//     password,
+//     confirm_password,
+//     phone,
+//     street_address,
+//     apt_unit,
+//     city,
+//     us_state,
+//     zip_code,
+//   } = req.body;
+
+//   const errors = [];
+
+//   // Simple validation checks
+//   if (password && password !== confirm_password) {
+//     errors.push("Passwords do not match.");
+//     console.log(errors);
+    
+//   }
+
+//   // const existingUser = await checkIfEmailExists(email, currentUser_id);
+//   const existingUser = await checkIfEmailExists(email, targetId);
+
+//   if (existingUser.length > 0) {
+//     errors.push("Email is already taken.");
+//        console.log(errors);
+//     return res.render("your-profile", {
+//       title: "Your Profile",
+//       // user: req.user,
+//       // currentUser,
+//       user: currentUserWithBirthdate,
+//       errors,
+//       formData: req.body || {},
+//     });
+//   }
+
+//   try {
+//     const sanitize = (v) => (v === "" ? null : v); // Empty strings -> null
+
+//     // --- Update the user ---
+//     await updateUser(
+//       // currentUser_id,
+//       targetId,
+//       sanitize(first_name),
+//       sanitize(last_name),
+//       sanitize(email),
+//       sanitize(birthdate), // Keep as string 'yyyy-MM-dd' for <input type="date">
+//       password, // hashed inside updateAdminEditedUser if provided
+//       sanitize(phone),
+//       sanitize(street_address),
+//       sanitize(apt_unit),
+//       sanitize(city),
+//       sanitize(us_state),
+//       sanitize(zip_code),
+//     );
+//     console.log("User inserted successfully");
+
+//     // Redirect after successful creation
+//     res.redirect("/app/your-profile");
+//     console.log("Redirected to /app/your-profile");
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
+// async function postYourProfilePageEdit(req, res, next) {
+//   console.log("Controller hit!");
+
+//   // const currentUser_id = req.user.id; // Always use logged-in user ID
+//   const targetId = req.user.id;
+//   const targetCurrentUser = await getUserById(targetId);
+//   console.log("postYourProfilePageEdit", targetCurrentUser);
+
+//     if (!targetCurrentUser) return res.status(404).send("User not found");
+
+//   // Add computed fields: age, formattedBirthdate
+//   const currentUserWithBirthdate = addBirthdateFields(
+//     [targetCurrentUser], // pass as array to reuse your helper
+//     calculateAge,
+//     formatShortDate,
+//   )[0]; // get first element
+
+//   const {
+//     first_name,
+//     last_name,
+//     email,
+//     birthdate,
+//     password,
+//     confirm_password,
+//     phone,
+//     street_address,
+//     apt_unit,
+//     city,
+//     us_state,
+//     zip_code,
+//   } = req.body;
+
+//   // const errors = [];
+
+//   // // Simple validation checks
+//   // if (password && password !== confirm_password) {
+//   //   errors.push("Passwords do not match.");
+//   //   console.log(errors);
+//   // }
+
+//   // // const existingUser = await checkIfEmailExists(email, currentUser_id);
+//   // const existingUser = await checkIfEmailExists(email, targetId);
+
+//   // if (existingUser.length > 0) {
+//   //   errors.push("Email is already taken.");
+//   //   console.log(errors);
+//   //   return res.render("your-profile", {
+//   //     title: "Your Profile",
+//   //     // user: req.user,
+//   //     // currentUser,
+//   //     user: currentUserWithBirthdate,
+//   //     errors,
+//   //     formData: req.body || {},
+//   //   });
+//   // }
+
+//   try {
+//     // --- Run validation from middleware ---
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       const formattedErrors = [];
+//       const seen = new Set();
+//       errors.array().forEach((err) => {
+//         if (!seen.has(err.path)) {
+//           formattedErrors.push({ param: err.path, msg: err.msg });
+//           seen.add(err.path);
+//         }
+//       });
+
+//       return res.render("your-profile", {
+//         title: "Your Profile",
+//         // user: req.user,
+//         // currentUser,
+//         currentUser: currentUserWithBirthdate,
+//         // errors,
+//         errors: formattedErrors,
+//         formData: req.body || {},
+//         // reopenModal: "edit-profile",
+//         reopenModal: true,
+//       });
+//     }
+
+//     const sanitize = (v) => (v === "" ? null : v); // Empty strings -> null
+
+//      const passwordToUpdate = password ? password : null;
+
+//     // --- Update the user ---
+//     await updateUser(
+//       // currentUser_id,
+//       targetId,
+//       sanitize(first_name),
+//       sanitize(last_name),
+//       sanitize(email),
+//       sanitize(birthdate), // Keep as string 'yyyy-MM-dd' for <input type="date">
+//       // password, // hashed inside updateAdminEditedUser if provided
+//       passwordToUpdate,
+//       sanitize(phone),
+//       sanitize(street_address),
+//       sanitize(apt_unit),
+//       sanitize(city),
+//       sanitize(us_state),
+//       sanitize(zip_code),
+//     );
+//     console.log("User inserted successfully");
+
+//     // Redirect after successful creation
+//     res.redirect("/app/your-profile");
+//     console.log("Redirected to /app/your-profile");
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
+// CONTROLLER: EDIT PROFILE PAGE (edit-profile.ejs)
+async function getEditProfile(req, res, next) {
+  try {
+    const targetId = req.user.id;
+    const currentUser = await getUserById(targetId);
+
+    //Format birthdate for input/display
+    if (currentUser.birthdate instanceof Date) {
+      currentUser.birthdate = currentUser.birthdate.toISOString().split("T")[0];
+    }
+    if (!currentUser) return res.status(404).send("User not found");
+    res.render("edit-profile", {
+      title: "Edit Profile",
+      currentUser,
+      usStates: usStates, // Pass the array to the EJS template   ????
+      errors: [],
+      formData: currentUser,
+    }); // Pass user to EJS view
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function postEditProfile(req, res, next) {
   console.log("Controller hit!");
 
-  const currentUser_id = req.user.id; // Always use logged-in user ID
+  const targetId = req.user.id;
+  const currentUser = await getUserById(targetId); // fetch target user
+
+  if (!currentUser) return res.status(404).send("User not found");
 
   const {
     first_name,
@@ -168,45 +395,43 @@ async function postYourProfilePageEdit(req, res, next) {
     zip_code,
   } = req.body;
 
-  const errors = [];
-
-  // Simple validation checks
-  if (password && password !== confirm_password) {
-    errors.push("Passwords do not match.");
-  }
-
-  const existingUser = await checkIfEmailExists(email, currentUser_id);
-
-  if (existingUser.length > 0) {
-    errors.push("Email is already taken.");
-    return res.render("your-profile", {
-      title: "Your Profile",
-      user: req.user,
-      errors,
-      formData: req.body || {},
-    });
-  }
-
-  if (errors.length > 0) {
-    return res.render("your-profile", {
-      title: "Your Profile",
-      user: req.user,
-      errors,
-      formData: req.body || {},
-    });
-  }
-
   try {
-    const sanitize = (v) => (v === "" ? null : v); // Empty strings -> null
+    // --- Run validation from middleware ---
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const formattedErrors = [];
+      const seen = new Set();
+      errors.array().forEach((err) => {
+        if (!seen.has(err.path)) {
+          formattedErrors.push({ param: err.path, msg: err.msg });
+          seen.add(err.path);
+        }
+      });
 
-    // --- Update the user ---
+      return res.render("edit-profile", {
+        title: "Edit Profile",
+        currentUser,
+        errors: formattedErrors,
+        formData: req.body || {},
+        usStates: usStates,
+      });
+    }
+
+    // --- Sanitize fields ---
+    const sanitize = (v) => (v === "" ? null : v);
+
+    // If updateAdminEditedUser function tries to hash or validate an empty string, it may fail silently or throw, which could redirect to login depending on error handling.
+    const passwordToUpdate = password ? password : null;
+
+    // --- Update user in DB ---
     await updateUser(
-      currentUser_id,
+      targetId, // ID of the currentUser being edited
       sanitize(first_name),
       sanitize(last_name),
       sanitize(email),
-      sanitize(birthdate), // Keep as string 'yyyy-MM-dd' for <input type="date">
-      password, // hashed inside updateAdminEditedUser if provided
+      sanitize(birthdate),
+      //   password, // hashed inside updateAdminEditedUser if provided
+      passwordToUpdate,
       sanitize(phone),
       sanitize(street_address),
       sanitize(apt_unit),
@@ -214,15 +439,16 @@ async function postYourProfilePageEdit(req, res, next) {
       sanitize(us_state),
       sanitize(zip_code),
     );
-    console.log("User inserted successfully");
 
-    // Redirect after successful creation
+    console.log("User updated successfully");
+
     res.redirect("/app/your-profile");
-    console.log("Redirected to /app/your-profile");
   } catch (err) {
     next(err);
   }
 }
+
+
 
 
 // CONTROLLER: CHANGE AVATAR MODAL (change-avatar.ejs)
@@ -265,6 +491,8 @@ module.exports = {
   getUserDetails,
   getYourProfilePage,
   deleteYourAccount,
-  postYourProfilePageEdit,
+  // postYourProfilePageEdit,
+  getEditProfile,
+  postEditProfile,
   postYourProfilePageAvatar,
 };

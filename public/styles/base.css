@@ -16,29 +16,29 @@
 
   /* --off-red: #994e4e; */
   --off-red: #9d6161;
-  --off-orange: #a18553;
+  /* --off-orange: #a18553; */
   --off-yellow: #a0a054;
   --off-green: #519d64;
-  --off-teal: #4b9595;
-  --off-blue: #4c7d98;
-  --off-purple: #864e97;
+  /* --off-teal: #4b9595; */
+  /* --off-blue: #4c7d98; */
+  /* --off-purple: #864e97; */
 
-  --dk-red: #521313;
+  --dk-red: #4f2b2a;
   --dk-orange: #8a581a;
-  --dk-yellow: #83741d;
-  --dk-green: #324632;
-  --dk-teal: #394d4d;
-  --dk-blue: #2d2d3d;
-  --dk-purple: #483548;
+  /* --dk-yellow: #83741d; */
+  --dk-green: #404d44;
+  /* --dk-teal: #394d4d; */
+  /* --dk-blue: #2d2d3d; */
+  /* --dk-purple: #483548; */
 
   --lt-gray: #838684;
-  --lt-red: #eabebe;
-  --lt-orange: #dbbf77;
-  --lt-yellow: #e1d795;
-  --lt-green: #aec6ae;
-  --lt-teal: #b3e3e3;
-  --lt-blue: #b8dde9;
-  --lt-purple: #a790af;
+  --lt-red: #e0b8b8;
+  --lt-orange: #e2c780;
+  --lt-yellow: #dbd5ad;
+  --lt-green: #a8b8a8;
+  /* --lt-teal: #b3e3e3; */
+  /* --lt-blue: #b8dde9; */
+  /* --lt-purple: #a790af; */
 
   --error-color: rgb(220, 37, 24);
 
@@ -51,23 +51,21 @@
   --member-status-declined: var(--lt-red);
   --account-is-inactive: var(--lt-gray);
 
-  /* --border-o-card: 0.125rem double var(--off-blue); */
   --border-admin-card: 0.125rem double var(--off-red);
   --border-member-card: 0.125rem solid var(--off-red);
   --border-guest-card: 0.125rem dotted var(--off-red);
   --border-hr-top: 0.125rem solid var(--white);
-  /* --border-hr-bottom: 0.125rem solid var(--off-gray); */
   --border-inactive-card: 0.125rem solid var(--off-white);
-  /* --border-off-white: 0.125rem solid var(--off-white); */
   --border-default: 0.125rem solid var(--off-gray);
   --border-message: 0.125rem solid var(--off-white);
   --border-message-card-parent: 0.25rem solid var(--off-red);
   --border-message-card-child: 0.25rem dashed var(--off-red);
   --border-message-badge: 0.125rem solid var(--off-gray);
-  /* --border-topic-number: 1px solid var(--off-white); */
   --border-highlight: 0.125rem solid var(--off-red);
 
   --box-shadow-gray: inset 0 0.25rem 1rem var(--off-gray);
+  --box-shadow-red: inset 0.125rem 0.25rem 2rem var(--dk-red);
+  --box-shadow-green: inset 0.125rem 0.25rem 2rem var(--dk-green);
   --box-shadow-black: 0 1rem 1rem var(--off-black);
 
   --font-text: "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
@@ -101,7 +99,6 @@
   --avatar-circle-small-h-w: 4rem;
   --avatar-preview-current-preview-new-h-w: 5rem; 
   --avatar-circle-large-h-w: 10rem;
- 
 
   --emoji-quick-view-bar-size: 1.125rem;
   --emoji-list-change-avatar-picker-h: 180px;
@@ -123,17 +120,13 @@
   --avatar-emoji-ratio-number: 0.575;
 
   /* Corresponds to --avatar-circle-small-h-w above */  
-  /* --avatar-emoji-small-size: 2.5rem; */
   --avatar-emoji-small-size: calc(var(--avatar-circle-small-h-w) * var(--avatar-emoji-ratio-number));
 
   /* Corresponds to --avatar-preview-current-preview-new-h-w above */
-    /* --avatar-emoji-preview-size: 3rem; */
   --avatar-emoji-preview-size: calc(var(--avatar-preview-current-preview-new-h-w) * var(--avatar-emoji-ratio-number));
 
   /* Corresponds to --avatar-circle-large-h-w above */
-  /* --avatar-emoji-large-size: 6rem; */
   --avatar-emoji-large-size: calc(var(--avatar-circle-large-h-w) * var(--avatar-emoji-ratio-number));
-
 
   --avatar-emoji-largest-size: 8rem;
 
@@ -145,7 +138,6 @@
   --font-weight-light: 100;
   --font-weight-medium: 100;
   --font-weight-heavy: 600;
-
 }
 
 *,

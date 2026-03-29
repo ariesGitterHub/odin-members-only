@@ -40,8 +40,9 @@
 
 button:hover,
 .button-default:hover {
-  background-color: var(--off-red);
-  box-shadow: none;
+  /* background-color: var(--off-red); */
+  background-color: var(--off-black);
+  box-shadow: var(--box-shadow-gray);
   color: var(--off-white);
 }
 
@@ -91,10 +92,18 @@ button:hover,
   background-color: transparent;
   border: var(--border-default);
   border-radius: var(--border-radius-circle);
-  box-shadow: var(--box-shadow-gray);
+  /* box-shadow: var(--box-shadow-gray); */
   cursor: pointer;
   font-size: var(--font-size-large);
   margin: 0;
+}
+
+.cancel-button {
+  box-shadow: var(--box-shadow-red);
+}
+
+.submit-button {
+box-shadow: var(--box-shadow-green);
 }
 
 

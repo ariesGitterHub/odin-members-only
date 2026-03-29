@@ -1,16 +1,28 @@
 const { check } = require("express-validator");
 const { checkIfEmailExists } = require("../db/queries/userQueries");
 
-const emailUpdateValidator = () =>
+const emailUpdateAdminEditValidator = () =>
   check("email")
     .isEmail()
     .withMessage("Invalid email format")
     .custom(async (email, { req }) => {
-      const userId = req.params.id; 
-      const existingUser = await checkIfEmailExists(email, userId);
+      const targetId = req.params.id; 
+      const existingUser = await checkIfEmailExists(email, targetId);
       if (existingUser.length > 0) throw new Error("Email is already taken.");
       return true;
     });
+
+  const emailUpdateEditProfileValidator = () =>
+    check("email")
+      .isEmail()
+      .withMessage("Invalid email format")
+      .custom(async (email, { req }) => {
+        const targetId = req.user.id;
+        const existingUser = await checkIfEmailExists(email, targetId);
+        if (existingUser.length > 0)
+          throw new Error("Email is already taken.");
+        return true;
+      });
 
 const passwordUpdateValidator = check("password")
   .optional({ checkFalsy: true })
@@ -21,7 +33,7 @@ const passwordUpdateValidator = check("password")
     const hasNumber = /\d/.test(value);
     const hasSpecial = /[@$!%*?&]/.test(value);
     if (!(hasMinLength && hasLower && hasUpper && hasNumber && hasSpecial)) {
-      throw new Error("Incorrect password pattern, see below.");
+      throw new Error("weak password, see below.");
     }
     return true;
   });
@@ -36,12 +48,19 @@ const confirmPasswordUpdateValidator = check("confirm_password")
   });
 
 // Dynamic array for update
-const editUserValidator = (userId) => [
-  emailUpdateValidator(userId),
+const adminEditUserValidator = (userId) => [
+  emailUpdateAdminEditValidator(userId),
+  passwordUpdateValidator,
+  confirmPasswordUpdateValidator,
+];
+
+const editProfileUserValidator = (currentUserId) => [
+  emailUpdateEditProfileValidator(currentUserId),
   passwordUpdateValidator,
   confirmPasswordUpdateValidator,
 ];
 
 module.exports = {
-  editUserValidator,
+  adminEditUserValidator,
+  editProfileUserValidator,
 };

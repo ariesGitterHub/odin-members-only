@@ -25,7 +25,7 @@ h2 {
 }
 
 h3 {
-  font-size: var(--font-size-largest);
+  font-size: var(--font-size-large);
 }
 
 main {
@@ -104,9 +104,9 @@ main {
   padding: var(--spacer-biggest);
 }
 
-/* .o-card {
+/* .infinity-card {
   background-color: var(--dk-blue);
-  border: var(--border-o-card);
+  border: var(--border-infinity-card);
   color: var(--off-white);
 } */
 

@@ -3,7 +3,8 @@
   <head>
     <%- include('./partials/head.ejs') %>
   </head>
-  <body>
+  <!-- <body> -->
+    <body data-reopen-modal="<%= reopenModal === true ? 'true' : 'false' %>">
     <%- include('./partials/header.ejs') %>
     <main>
       <div class="page-title-off-card uppercase">
@@ -96,13 +97,14 @@
                   delete your account
                   </button> 
                 <% } %>
-                <button 
+                <!-- <button 
                   class="button-default wide-button open-modal-btn" 
                   data-section="modal-edit-profile"
                   data-title="modal-title-edit-profile"
-                  data-target-id="<%= currentUser.id %>">
+                  data-target-id="<%#= currentUser.id %>">
                     update your profile
-                  </button>
+                </button> -->
+                <a class="button-default wide-button" href="/app/edit-profile">update your profile</a>
                 <button 
                   class="button-default wide-button edit-change-avatar-button" 
                   data-section="modal-change-avatar-user"

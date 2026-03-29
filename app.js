@@ -74,11 +74,11 @@ app.use("/app", appRouter);
 
 // NEW
 // 6. Catch-all 404 handler (important)
-// app.use((req, res, next) => {
-//   const err = new Error("Not Found");
-//   err.status = 404;
-//   next(err);  // Forward the error to the error-handling middleware
-// });
+app.use((req, res, next) => {
+  const err = new Error("Not Found");
+  err.status = 404;
+  next(err);  // Forward the error to the error-handling middleware
+});
 
 // 7. Centralized Error Handling Middleware (Generic Error and 404)
 app.use(require("./middleware/errorMiddleware"));  // Handle both 404 and other errors here

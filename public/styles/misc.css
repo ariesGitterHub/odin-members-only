@@ -107,6 +107,7 @@
   display: flex;
   justify-content: center;
   background-color: var(--lt-orange);
+  /* border: var(--border-new-message-date); */
   border-radius: var(--border-radius-small);
   color: var(--off-black);
   font-size: var(--font-size-small);
@@ -124,9 +125,9 @@ gap: var(--spacer-default);
   justify-content: space-between;
 }
 
-/* .margin-top-bottom {
+.margin-top-bottom {
   margin: var(--spacer-default) 0;
-} */
+}
 
 .margin-bottom {
   margin-bottom: var(--spacer-default);

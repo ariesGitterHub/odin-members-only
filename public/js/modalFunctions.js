@@ -8,61 +8,61 @@ import {
 
 import { handleEmojiOpen } from "./emojiFunctions.js"
 
-const usStates = [
-  //   { code: "", name: "Choose state" },
-  { code: "", name: "Choose state", disabled: true }, // Placeholder
-  { code: "AL", name: "Alabama" },
-  { code: "AK", name: "Alaska" },
-  { code: "AZ", name: "Arizona" },
-  { code: "AR", name: "Arkansas" },
-  { code: "CA", name: "California" },
-  { code: "CO", name: "Colorado" },
-  { code: "CT", name: "Connecticut" },
-  { code: "DE", name: "Delaware" },
-  { code: "DC", name: "Washington, DC" },
-  { code: "FL", name: "Florida" },
-  { code: "GA", name: "Georgia" },
-  { code: "HI", name: "Hawaii" },
-  { code: "ID", name: "Idaho" },
-  { code: "IL", name: "Illinois" },
-  { code: "IN", name: "Indiana" },
-  { code: "IA", name: "Iowa" },
-  { code: "KS", name: "Kansas" },
-  { code: "KY", name: "Kentucky" },
-  { code: "LA", name: "Louisiana" },
-  { code: "ME", name: "Maine" },
-  { code: "MD", name: "Maryland" },
-  { code: "MA", name: "Massachusetts" },
-  { code: "MI", name: "Michigan" },
-  { code: "MN", name: "Minnesota" },
-  { code: "MS", name: "Mississippi" },
-  { code: "MO", name: "Missouri" },
-  { code: "MT", name: "Montana" },
-  { code: "NE", name: "Nebraska" },
-  { code: "NV", name: "Nevada" },
-  { code: "NH", name: "New Hampshire" },
-  { code: "NJ", name: "New Jersey" },
-  { code: "NM", name: "New Mexico" },
-  { code: "NY", name: "New York" },
-  { code: "NC", name: "North Carolina" },
-  { code: "ND", name: "North Dakota" },
-  { code: "OH", name: "Ohio" },
-  { code: "OK", name: "Oklahoma" },
-  { code: "OR", name: "Oregon" },
-  { code: "PA", name: "Pennsylvania" },
-  { code: "RI", name: "Rhode Island" },
-  { code: "SC", name: "South Carolina" },
-  { code: "SD", name: "South Dakota" },
-  { code: "TN", name: "Tennessee" },
-  { code: "TX", name: "Texas" },
-  { code: "UT", name: "Utah" },
-  { code: "VT", name: "Vermont" },
-  { code: "VA", name: "Virginia" },
-  { code: "WA", name: "Washington" },
-  { code: "WV", name: "West Virginia" },
-  { code: "WI", name: "Wisconsin" },
-  { code: "WY", name: "Wyoming" },
-];
+// const usStates = [
+//   //   { code: "", name: "Choose state" },
+//   { code: "", name: "Choose state", disabled: true }, // Placeholder
+//   { code: "AL", name: "Alabama" },
+//   { code: "AK", name: "Alaska" },
+//   { code: "AZ", name: "Arizona" },
+//   { code: "AR", name: "Arkansas" },
+//   { code: "CA", name: "California" },
+//   { code: "CO", name: "Colorado" },
+//   { code: "CT", name: "Connecticut" },
+//   { code: "DE", name: "Delaware" },
+//   { code: "DC", name: "Washington, DC" },
+//   { code: "FL", name: "Florida" },
+//   { code: "GA", name: "Georgia" },
+//   { code: "HI", name: "Hawaii" },
+//   { code: "ID", name: "Idaho" },
+//   { code: "IL", name: "Illinois" },
+//   { code: "IN", name: "Indiana" },
+//   { code: "IA", name: "Iowa" },
+//   { code: "KS", name: "Kansas" },
+//   { code: "KY", name: "Kentucky" },
+//   { code: "LA", name: "Louisiana" },
+//   { code: "ME", name: "Maine" },
+//   { code: "MD", name: "Maryland" },
+//   { code: "MA", name: "Massachusetts" },
+//   { code: "MI", name: "Michigan" },
+//   { code: "MN", name: "Minnesota" },
+//   { code: "MS", name: "Mississippi" },
+//   { code: "MO", name: "Missouri" },
+//   { code: "MT", name: "Montana" },
+//   { code: "NE", name: "Nebraska" },
+//   { code: "NV", name: "Nevada" },
+//   { code: "NH", name: "New Hampshire" },
+//   { code: "NJ", name: "New Jersey" },
+//   { code: "NM", name: "New Mexico" },
+//   { code: "NY", name: "New York" },
+//   { code: "NC", name: "North Carolina" },
+//   { code: "ND", name: "North Dakota" },
+//   { code: "OH", name: "Ohio" },
+//   { code: "OK", name: "Oklahoma" },
+//   { code: "OR", name: "Oregon" },
+//   { code: "PA", name: "Pennsylvania" },
+//   { code: "RI", name: "Rhode Island" },
+//   { code: "SC", name: "South Carolina" },
+//   { code: "SD", name: "South Dakota" },
+//   { code: "TN", name: "Tennessee" },
+//   { code: "TX", name: "Texas" },
+//   { code: "UT", name: "Utah" },
+//   { code: "VT", name: "Vermont" },
+//   { code: "VA", name: "Virginia" },
+//   { code: "WA", name: "Washington" },
+//   { code: "WV", name: "West Virginia" },
+//   { code: "WI", name: "Wisconsin" },
+//   { code: "WY", name: "Wyoming" },
+// ];
 
 
 // *** BASIC FUNCTIONS ***
@@ -90,9 +90,47 @@ export function openModal(sectionId, titleId) {
 }
 
 // Close modal
-function closeModal() {
+export function closeModal() {
   document.getElementById("modal").classList.add("hidden");
 }
+
+
+// TODO - delete later, no longer using edit profile modal
+
+// Helper to reopen the modal when errors exist.
+// export function reopenModalIfErrors() {
+//   const modal = document.getElementById("modal");
+//   const editProfileModal = document.getElementById("modal-edit-profile");
+
+//   // if (!modal && !editProfileModal) return;
+//   if (!modal || !editProfileModal) return;
+
+//   const errorExists = document.querySelector(".error");
+
+//   if (errorExists) {
+//     modal.classList.remove("hidden");
+//     editProfileModal.classList.remove("hidden");
+//   }
+// }
+
+// export function reopenModalIfErrors(user) {
+//   const modal = document.getElementById("modal");
+//   const editProfileModal = document.getElementById("modal-edit-profile");
+
+//   if (!modal || !editProfileModal) return;
+
+//   const errorExists = document.querySelector(".error");
+
+//   if (errorExists) {
+//     modal.classList.remove("hidden");
+//     editProfileModal.classList.remove("hidden");
+
+//     if (user) {
+//       populateEditProfileUser(user); // safely fill in inputs (never password)
+//     }
+//   }
+// }
+
 
 
 // *** EVENT LISTENER ATTACHERS
@@ -153,12 +191,13 @@ export function attachOpenModalListener() {
         openModal(sectionId, titleId);
       }
 
-       if (sectionId === "modal-edit-profile") {
-         const currentUser = await fetchCurrentUserData(targetId);
-         console.log(JSON.stringify(currentUser.birthdate));
-         populateEditProfileUser(currentUser);
-         openModal(sectionId, titleId);
-       }
+      // TODO - delete later no longer using edit profile modal
+      //  if (sectionId === "modal-edit-profile") {
+      //    const currentUser = await fetchCurrentUserData(targetId);
+      //    console.log(JSON.stringify(currentUser.birthdate));
+      //    populateEditProfileUser(currentUser);
+      //    openModal(sectionId, titleId);
+      //  }
 
       // TODO - Decide where this goes later, testing emoji/avatar related code in emojiFunctions.js
       //  if (sectionId === "modal-change-avatar-user") {
@@ -246,60 +285,98 @@ export function attachOpenModalListener() {
   //   select.required = true;
   // }
 
-  function populateEditProfileUser(user) {
-    document.getElementById("first-name-edit-profile").value = user.first_name;
-    document.getElementById("last-name-edit-profile").value = user.last_name;
-    document.getElementById("email-edit-profile").value = user.email;
-    document.getElementById("phone-edit-profile").value = user.phone || "";
+  // function populateEditProfileUser(user) {
+  //   document.getElementById("first-name-edit-profile").value = user.first_name;
+  //   document.getElementById("last-name-edit-profile").value = user.last_name;
+  //   document.getElementById("email-edit-profile").value = user.email;
+  //   document.getElementById("phone-edit-profile").value = user.phone || "";
 
-    // Format birthdate for input/display
-    let rawBirthdate = user.birthdate;
-    if (rawBirthdate && rawBirthdate.includes("T")) {
-      rawBirthdate = rawBirthdate.split("T")[0];
-    }
-    document.getElementById("birthdate-edit-profile").value =
-      rawBirthdate || "";
+  //   // Format birthdate for input/display
+  //   let rawBirthdate = user.birthdate;
+  //   if (rawBirthdate && rawBirthdate.includes("T")) {
+  //     rawBirthdate = rawBirthdate.split("T")[0];
+  //   }
+  //   document.getElementById("birthdate-edit-profile").value =
+  //     rawBirthdate || "";
 
-    document.getElementById("street-address-edit-profile").value =
-      user.street_address || "";
-    document.getElementById("apt-unit-edit-profile").value =
-      user.apt_unit || "";
-    document.getElementById("city-edit-profile").value = user.city || "";
-    document.getElementById("zip-code-edit-profile").value =
-      user.zip_code || "";
+  //   document.getElementById("street-address-edit-profile").value =
+  //     user.street_address || "";
+  //   document.getElementById("apt-unit-edit-profile").value =
+  //     user.apt_unit || "";
+  //   document.getElementById("city-edit-profile").value = user.city || "";
+  //   document.getElementById("zip-code-edit-profile").value =
+  //     user.zip_code || "";
 
-    // Populate the state dropdown
-    const select = document.getElementById("us-state-edit-profile");
+  //   // Populate the state dropdown
+  //   const select = document.getElementById("us-state-edit-profile");
 
-    // Clear existing options (to prevent duplicating entries)
-    select.innerHTML = "";
+  //   // Clear existing options (to prevent duplicating entries)
+  //   select.innerHTML = "";
 
-    // Add state options
-    usStates.forEach((state) => {
-      const option = document.createElement("option");
-      option.value = state.code;
-      option.textContent = state.name;
+  //   // Add state options
+  //   usStates.forEach((state) => {
+  //     const option = document.createElement("option");
+  //     option.value = state.code;
+  //     option.textContent = state.name;
 
-      // Set the selected option if it matches the user's state
-      if (state.code === user.us_state) {
-        option.selected = true;
-      }
+  //     // Set the selected option if it matches the user's state
+  //     if (state.code === user.us_state) {
+  //       option.selected = true;
+  //     }
 
-      select.appendChild(option);
-    });
+  //     select.appendChild(option);
+  //   });
 
-    // Ensure the <select> is required
-    // select.required = true;
-  }
-
-  // Populates the new-message.ejs partial modal with currentUser data
-  // function populateNewMessage(user) {
-
-  //   document.getElementById("first-name-new-message").innerText =
-  //     user.first_name;
-  //   document.getElementById("last-name-new-message").innerText = user.last_name;
+  //   // Ensure the <select> is required
+  //   // select.required = true;
   // }
 
+    // function populateEditProfileUser(user) {
+
+    //   //Because the modal needs to reopen when using error messages, I need to get the data resent using forData
+    //   document.getElementById("first-name-edit-profile").value = user.first_name;
+    //   document.getElementById("last-name-edit-profile").value = user.last_name;
+    //   document.getElementById("email-edit-profile").value = user.email;
+    //   document.getElementById("phone-edit-profile").value = user.phone || "";
+
+    //   // Format birthdate for input/display
+    //   let rawBirthdate = user.birthdate;
+    //   if (rawBirthdate && rawBirthdate.includes("T")) {
+    //     rawBirthdate = rawBirthdate.split("T")[0];
+    //   }
+    //   document.getElementById("birthdate-edit-profile").value =
+    //     rawBirthdate || "";
+
+    //   document.getElementById("street-address-edit-profile").value =
+    //     user.street_address || "";
+    //   document.getElementById("apt-unit-edit-profile").value =
+    //     user.apt_unit || "";
+    //   document.getElementById("city-edit-profile").value = user.city || "";
+    //   document.getElementById("zip-code-edit-profile").value =
+    //     user.zip_code || "";
+
+    //   // Populate the state dropdown
+    //   const select = document.getElementById("us-state-edit-profile");
+
+    //   // Clear existing options (to prevent duplicating entries)
+    //   select.innerHTML = "";
+
+    //   // Add state options
+    //   usStates.forEach((state) => {
+    //     const option = document.createElement("option");
+    //     option.value = state.code;
+    //     option.textContent = state.name;
+
+    //     // Set the selected option if it matches the user's state
+    //     if (state.code === user.us_state) {
+    //       option.selected = true;
+    //     }
+
+    //     select.appendChild(option);
+    //   });
+    // }
+
+  // Populates the new-message.ejs partial modal with currentUser data
     function populateNewMessage(user) {
       const firstName =  document.getElementById("first-name-new-message");
       const lastName = document.getElementById("last-name-new-message");

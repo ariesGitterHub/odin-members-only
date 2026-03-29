@@ -82,14 +82,11 @@ export function handleShowProfileToggle() {
 // Toggle .hidden for info page sections on info.ejs
 export function handleShowInfoSectionToggle() {
   const infoButtons = document.querySelectorAll(".info-button");
-  // const infoButtonSpans = document.querySelectorAll(".info-button-span");
-  // const infoButtonSpanText = ""; // Slightly different set up on these, so ""
 
   infoButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const infoSection = button.closest('.info-list-card').querySelector(".info-section");
       toggleVisibility(infoSection);
-      // updateButtonText(button, infoSection, infoButtonSpanText);
     })
   });
 }

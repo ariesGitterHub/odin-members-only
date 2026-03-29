@@ -11,20 +11,19 @@ INSERT INTO users (
   guest_upgrade_invite,
   invite_decision
 )
-VALUES (
-  'admin@can.org',
-  '$2b$12$RF0Zoj3moNJOziNwh2bSa.DxlWqUSn0QZNnhYPDjCHjWyzagrsHD6',
-  'CAN Board',
-  'Admin',
-  '1974-04-20',
-  'admin',
-  true,
-  true,
-  'accepted'
-)
+VALUES 
+  (
+    'admin@can.org',
+    '$2b$12$RF0Zoj3moNJOziNwh2bSa.DxlWqUSn0QZNnhYPDjCHjWyzagrsHD6',
+    'Admin',
+    '(CAN Board)',
+    '1974-04-20',
+    'admin',
+    true,
+    true,
+    'accepted'
+  )
 ON CONFLICT (email) DO NOTHING;
-
--- Ensure admin has a profile and is verified
 
 INSERT INTO user_profiles (
   user_id,   

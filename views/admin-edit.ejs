@@ -176,6 +176,9 @@
                 name="confirm_password"
                 placeholder="re-enter new password"
             />
+            <div class="background-yellow border-default margin-top-bottom">
+              <%- include('./partials/password-rules.ejs') %>
+            </div>
             <label class="capitalize" for="street-address-admin-edit-page">
                 street address
             </label>
@@ -274,13 +277,10 @@
                 </div>
             </div>
             <label class="capitalize" for="notes-admin-edit-page">notes</label>
-            <textarea id="notes-admin-edit-page" name="notes"><%= formData?.notes || '' %></textarea>
-            <div class="background-yellow border-default margin-bottom">
-              <%- include('./partials/password-rules.ejs') %>
-            </div>
+            <textarea id="notes-admin-edit-page" name="notes" class="margin-bottom"><%= formData?.notes || '' %></textarea>
             <div class="button-container-col">
-              <a class="button-default wide-button" href="/app/admin">cancel changes</a>
-              <button class="button-default wide-button" type="submit">submit profile changes</button>
+              <a class="button-default wide-button cancel-button" href="/app/admin">cancel changes</a>
+              <button class="button-default wide-button submit-button" type="submit">submit profile changes</button>
             </div>
         </form>
       </div>

@@ -50,7 +50,8 @@
             <span>
               <% if (user && user.permission_status === "admin") { %>
                 <p class="emoji">🔑</p>
-              <% } else if (user && user.permission_status === "member") { %>
+              <% }
+              else if (user && user.permission_status === "member") { %>
                 <p class="emoji">⭐</p>  
               <% } else { %>
                 <p class="emoji">👤</p>  

@@ -63,25 +63,18 @@ function canPerformHasRole(user, action, resource) {
     // Only the admin or the user who wrote the message may edit or delete their own message.
     case "admin-or-author":
       return (
-        hasRole(user, "admin") || (resource && resource.user_id === user.id)
+        hasRole(user, "admin") ||
+        (resource && resource.user_id === user.id)
       );
 
     case "author-only":
       return resource && resource.user_id === user.id;
 
-    // Unused at this time...
-    // case "admin-edit-profile":
-    //   return (
-    //     hasRole(user, "admin") || (resource && resource.user_id === user.id)
-    //   );
-    // Unused at this time...
-    // case "admin-delete-profile":
-    //   return (
-    //     hasRole(user, "admin") || (resource && resource.user_id === user.id)
-    //   );
-
     case "members-only":
-      return hasRole(user, "admin") || hasRole(user, "member");
+      return (
+        hasRole(user, "admin") ||
+        hasRole(user, "member")
+      );
 
     // Test for member upgrade, must have permission_status === guest, verified_by_admin === true, and guest_upgrade_invite === true to be able to see button.
     case "guest-members-upgrade":
