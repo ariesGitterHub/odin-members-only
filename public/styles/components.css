@@ -43,7 +43,8 @@ button:hover,
   /* background-color: var(--off-red); */
   background-color: var(--off-black);
   box-shadow: var(--box-shadow-gray);
-  color: var(--off-white);
+  /* color: var(--off-white); */
+  color: var(--lt-yellow);
 }
 
 .wide-button {

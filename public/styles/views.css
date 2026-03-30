@@ -43,6 +43,17 @@
   padding: var(--spacer-medium);
 }
 
+.admin-card a, .admin-card button[type="button"] {
+  background-color: var(--lt-red);
+  /* color: var(--off-white); */
+  box-shadow: var(--box-shadow-red);
+}
+
+.admin-card a:hover, .admin-card button[type="button"]:hover {
+  background-color: var(--dk-red);
+}
+
+
 /* .o-card .admin-quick-view-bar span {
   background-color: var(--off-white);
   color: var(--off-black);
@@ -94,6 +105,42 @@
   background-color: var(--account-is-inactive);
   border: var(--border-inactive-card);
 }
+
+#retention-controls-div, #site-statistics-div {
+  width: 96%;
+  background-color: var(--off-black);
+  border-radius: var(--border-radius-small);
+  /* margin: var(--spacer-default); */
+  padding: var(--spacer-default);
+}
+
+.admin-card fieldset {
+  /* width: var(--width-default-percent); */
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+  border: var(--border-default);
+  border-radius: var(--border-radius-small);
+  margin-bottom: var(--spacer-default);
+  padding: var(--spacer-default);
+  text-transform: uppercase;
+}
+
+.admin-card fieldset h3 {
+  margin-top: var(--spacer-default);
+  margin-bottom: var(--spacer-default);
+}
+
+.admin-card fieldset input {
+  width: 3rem;
+  /* margin-right: var(--spacer-small); */
+}
+
+.admin-card fieldset p {
+  text-transform: lowercase;
+}
+
 
 /* -- admin-create.ejs */
 

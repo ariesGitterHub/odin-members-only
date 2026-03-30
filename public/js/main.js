@@ -10,8 +10,10 @@ import { handleEmojiOpen } from "./emojiFunctions.js"
 import { formActionsFromModals } from "./formActions.js";
 
 import {
-  handleUserCensusToggle,
-  handleMessageOverviewToggle,
+  handleRetentionControlsToggle,
+  // handleUserCensusToggle,
+  // handleMessageOverviewToggle,
+  handleSiteStatisticsToggle,
   handleGuestCardsToggle,
   handleMemberCardsToggle,
   handleShowProfileToggle,
@@ -42,8 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   formActionsFromModals();
 
-  handleUserCensusToggle();
-  handleMessageOverviewToggle();
+  handleRetentionControlsToggle();
+  // handleUserCensusToggle();
+  // handleMessageOverviewToggle();
+  handleSiteStatisticsToggle();
   handleGuestCardsToggle();
   handleMemberCardsToggle();
   handleShowProfileToggle();

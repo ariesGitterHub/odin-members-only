@@ -47,6 +47,14 @@ CREATE TABLE user_profiles (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- App configurations for soft and hard deletes
+CREATE TABLE app_config (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+
 -- Topics 
 CREATE TABLE topics (
   id SERIAL PRIMARY KEY,

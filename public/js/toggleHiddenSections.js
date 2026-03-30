@@ -5,33 +5,55 @@ function updateButtonText(button, element, text) {
     ? button.textContent = `open ${text}` 
     : button.textContent = `close ${text}`;}
 
-// Toggle .hidden user census in admin.ejs
-export function handleUserCensusToggle() {
-  const userCensusButton = document.querySelector("#user-census-button");
-  const userCensusDiv = document.querySelector("#user-census-div");
-  const userCensusButtonText = "user census"
+ // Toggle .hidden messages/session logs retention controls in admin.ejs
+export function handleRetentionControlsToggle() {
+  const retentionControlsButton = document.querySelector("#retention-controls-button");
+  const retentionControlsDiv = document.querySelector("#retention-controls-div");
+  const retentionControlsText = "retention controls";
 
-  if (userCensusButton && userCensusDiv) {
-    userCensusButton.addEventListener("click", () => {
-      toggleVisibility(userCensusDiv);
-      updateButtonText(userCensusButton, userCensusDiv, userCensusButtonText);
+  if (retentionControlsButton && retentionControlsDiv) {
+    retentionControlsButton.addEventListener("click", () => {
+      toggleVisibility(retentionControlsDiv);
+      updateButtonText(
+        retentionControlsButton,
+        retentionControlsDiv,
+        retentionControlsText,
+      );
+    });
+  }
+}
+
+// Toggle .hidden user census in admin.ejs
+export function handleSiteStatisticsToggle() {
+  const siteStatisticsButton = document.querySelector("#site-statistics-button");
+  const siteStatisticsDiv = document.querySelector("#site-statistics-div");
+  const siteStatisticsButtonText = "site statistics";
+
+  if (siteStatisticsButton && siteStatisticsDiv) {
+    siteStatisticsButton.addEventListener("click", () => {
+      toggleVisibility(siteStatisticsDiv);
+      updateButtonText(
+        siteStatisticsButton,
+        siteStatisticsDiv,
+        siteStatisticsButtonText,
+      );
     });
   }
 }
 
 // Toggle .hidden message overview in admin.ejs
-export function handleMessageOverviewToggle() {
-  const messagesOverviewButton = document.querySelector("#messages-overview-button");
-  const messagesOverviewDiv = document.querySelector("#messages-overview-div");
-  const messagesOverviewButtonText = "messages overview"
+// export function handleMessageOverviewToggle() {
+//   const messagesOverviewButton = document.querySelector("#messages-overview-button");
+//   const messagesOverviewDiv = document.querySelector("#messages-overview-div");
+//   const messagesOverviewButtonText = "messages overview"
 
-  if (messagesOverviewButton && messagesOverviewDiv) {
-    messagesOverviewButton.addEventListener("click", () => {
-      toggleVisibility(messagesOverviewDiv);
-      updateButtonText(messagesOverviewButton, messagesOverviewDiv, messagesOverviewButtonText);
-    });
-  }
-}
+//   if (messagesOverviewButton && messagesOverviewDiv) {
+//     messagesOverviewButton.addEventListener("click", () => {
+//       toggleVisibility(messagesOverviewDiv);
+//       updateButtonText(messagesOverviewButton, messagesOverviewDiv, messagesOverviewButtonText);
+//     });
+//   }
+// }
 
 // Toggle .hidden for all "guest cards" on admin.ejs
 export function handleGuestCardsToggle() {

@@ -27,7 +27,6 @@ async function getInfo(req, res, next) {
   }
 }
 
-
 module.exports = {
   getHome,
   getInfo,

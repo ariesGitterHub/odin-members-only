@@ -25,15 +25,16 @@ import { openModal } from "./modalFunctions.js"
 
 async function populateChangeAvatar(user) {
   //Hide fields that are not mean to be used by a "guest"
-  if (user.permission_status === "guest") {
-    document
-      .querySelector(".change-avatar-hide-element")
-      .classList.add("hidden");
-  } else {
-    document
-      .querySelector(".change-avatar-hide-element")
-      .classList.remove("hidden");
-  }
+  // UPDATE, guests are now allowed to have special avatars; previously only allowed to have the letter of their first name.
+  // if (user.permission_status === "guest") {
+  //   document
+  //     .querySelector(".change-avatar-hide-element")
+  //     .classList.add("hidden");
+  // } else {
+  //   document
+  //     .querySelector(".change-avatar-hide-element")
+  //     .classList.remove("hidden");
+  // }
 
   // Access CSS variables
   const rootStyles = getComputedStyle(document.documentElement);

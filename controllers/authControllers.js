@@ -103,6 +103,7 @@ async function postLogIn(req, res, next) {
       });
     }
 
+    // TODO - THIS SHOWS THE HASH
     console.log("User authenticated:", user);
 
     try {

@@ -38,6 +38,14 @@ LEFT JOIN user_profiles p ON p.user_id = u.id
 WHERE u.email = 'admin@can.org'
   AND p.user_id IS NULL;
 
+-- App configurations (soft and hard deletes)
+-- NOTE: Hard delete is counted from the time of soft delete, not from creation.
+INSERT INTO app_config (key, value) VALUES
+('message_soft_delete_days', '14'),
+('message_hard_delete_days', '14'),
+('session_soft_delete_days', '7'),
+('session_hard_delete_days', '28');
+
 -- Seed default topics (safe to re-run)
 
 INSERT INTO topics (slug, name, description, required_permission, sort_order)

@@ -72,7 +72,13 @@ app.get("/", (req, res) => {
 // -- Mount app routes
 app.use("/app", appRouter);
 
-// NEW
+// NEW - TESTING ODD 404 that keeps popping up
+// Appears to b popping up from devTools.
+app.use((req, res, next) => {
+  console.log("❌ Fell through:", req.method, req.originalUrl);
+  next();
+});
+
 // 6. Catch-all 404 handler (important)
 app.use((req, res, next) => {
   const err = new Error("Not Found");

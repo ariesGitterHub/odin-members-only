@@ -220,37 +220,63 @@
               
               <a class="button-default wide-button" href="/app/admin-create">create new user</a>
               
-              <button id="user-census-button" class="button-default wide-button" type="button">open user census</button>
-              <div id="user-census-div" class="element-container-col-default hidden ">
-                <p>Total number of site users: <%= users.length %>.</p>
-                <div class="element-container-row-space-between">
-                  <div class="element-container-col-start-center capitalize">
-                  <p>guests: <%= users.filter(user => user.permission_status === "guest").length %></p>
-                  <p>members: <%= users.filter(user => user.permission_status === "member").length %></p>
+              <button id="retention-controls-button" class="button-default wide-button" type="button">open retention controls</button>
+              <div id="retention-controls-div" class="hidden">
+                <form id="retention-controls-form" action="/app/admin/config/retention-days" method="POST">
+                  <fieldset>
+                    <h3>message retention</h3>
+                    <div class="element-container-row-default flex-gap">                  
+                      <label>soft delete:</label>
+                      <input type="number" name="message_soft_delete_days" value="<%= config.message_soft_delete_days %>" min="0" />
+                      <p class="lowercase">days</p>
+                    </div>
+                    <div class="element-container-row-default flex-gap">                  
+                      <label>hard delete:</label>
+                      <input type="number" name="message_hard_delete_days" value="<%= config.message_hard_delete_days %>" min="0" />
+                      <p class="lowercase">days</p>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <h3>session retention</h3>
+                    <div class="element-container-row-default flex-gap">                  
+                      <label>soft delete:</label>
+                      <input type="number" name="session_soft_delete_days" value="<%= config.session_soft_delete_days %>" min="0" />
+                      <p class="lowercase">days</p>
+                    </div>
+                    <div class="element-container-row-default flex-gap">                  
+                      <label>hard delete:</label>
+                      <input type="number" name="session_hard_delete_days" value="<%= config.session_hard_delete_days %>" min="0" />
+                      <p class="lowercase">days</p>
+                    </div>
+                  </fieldset>
+                  <div class="button-container-col">
+                    <button class="button-default wide-button" type="submit">save retention period</button>                  
                   </div>
-                  <div class="element-container-col-start-center capitalize">
-                    <p>admins: <%= users.filter(user => user.permission_status === "admin").length %></p>
-                    <p>inactive: <%= users.filter(user => user.is_active === false).length %></p>                   
-                  </div>                  
-                </div>                 
+                </form>
               </div>
-
-              <button id="messages-overview-button" class="button-default wide-button" type="button">open messages overview</button>
-              <div id="messages-overview-div" class="element-container-col-default hidden">
-                <p>Total number of messages: <%= messages.length %></p>
-                <div class="element-container-row-space-between">
-                  <div class="element-container-col-start-center capitalize">
-                  <p>pinned <%= messages.filter(message => message.is_sticky).length %></p>
-                  <p>deleted: <%= messages.filter(message => message.is_deleted).length %></p>
-                  </div>
-                  <div class="element-container-col-start-center capitalize">
-                  <p>replies <%= messages.filter(message => message.parent_message_id).length %></p>
-                  <p>edited: <%= messages.filter(message => message.is_edited).length %></p>                 
-                  </div>                  
-                </div>                 
+              <button id="site-statistics-button" class="button-default wide-button" type="button">open site statistics</button>
+              <div id="site-statistics-div" class="element-container-row-space-evenly  hidden">
+                <div class="element-container-col-start-center">
+                  <h3 class="uppercase">users</h3>
+                  <div class="element-container-col-start-center">
+                    <p class="underline"><%= users.length %> total users</p>  
+                    <p><%= users.filter(user => user.permission_status === "guest").length %> total guests</p>
+                    <p><%= users.filter(user => user.permission_status === "member").length %> total members</p>
+                    <p><%= users.filter(user => user.permission_status === "admin").length %> total admin(s)</p>
+                    <p><%= users.filter(user => user.is_active === false).length %> total inactive</p>                   
+                  </div>                   
+                </div>
+                <div class="element-container-col-start-center">
+                  <h3 class="uppercase">messages</h3>
+                  <div class="element-container-col-start-center">
+                    <p class="underline"><%= messages.length %> total messages</p>  
+                    <p><%= messages.filter(message => message.parent_message_id).length %> total replies</p>
+                    <p><%= messages.filter(message => message.is_edited).length %> total edited</p>
+                    <p><%= messages.filter(message => message.is_deleted).length %> total deleted</p>
+                    <p><%= messages.filter(message => message.is_sticky).length %> total pinned</p>                   
+                  </div>                   
+                </div>
               </div>
-
-
               <button id="show-guests-button" class="button-default wide-button" type="button">open guest profiles</button>
 
               <button id="show-members-button" class="button-default wide-button" type="button">open member profiles</button>

@@ -12,6 +12,8 @@ const {
   // checkIfEmailExists,
 } = require("../db/queries/userQueries");
 
+const { getAllRetentionDays, updateAllRetentionDays } = require("../db/queries/appConfigQueries");
+
 const { getMessages } = require("../db/queries/messageQueries");
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
@@ -38,6 +40,7 @@ async function getAdminPage(req, res, next) {
   try {
     const users = await getUsers();
     const messages = await getMessages();
+    const retentionDays = await getAllRetentionDays();
 
     const usersWithBirthdates = addBirthdateFields(
       users,
@@ -73,12 +76,14 @@ async function getAdminPage(req, res, next) {
       title: "Admin Panel",
       users: usersWithChineseZodiacSigns,
       messages,
+      config: retentionDays,
       errors: [],
     });
   } catch (err) {
     next(err);
   }
 }
+
 
 // CONTROLLER: ADMIN CREATE PAGE (admin-create.ejs)
 
