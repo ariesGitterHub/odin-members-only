@@ -246,12 +246,7 @@
                   <fieldset>
                     <h3>session retention</h3>
                     <div class="element-container-row-default flex-gap">                  
-                      <label>soft delete:</label>
-                      <input type="number" name="session_soft_delete_days" value="<%= config.session_soft_delete_days %>" min="0" />
-                      <p class="lowercase">days</p>
-                    </div>
-                    <div class="element-container-row-default flex-gap">                  
-                      <label>hard delete:</label>
+                      <label>hard delete (only):</label>
                       <input type="number" name="session_hard_delete_days" value="<%= config.session_hard_delete_days %>" min="0" />
                       <p class="lowercase">days</p>
                     </div>

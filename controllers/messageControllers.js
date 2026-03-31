@@ -1,5 +1,7 @@
 const { hasRole } = require("../utils/permissions");
 
+const { getAllRetentionDays } = require("../db/queries/appConfigQueries");
+
 const {
   getMessageById,
   getTopicById,
@@ -49,6 +51,9 @@ async function getTopicPage(req, res, next) {
   try {
     const { slug } = req.params;
 
+    const retentionDays = await getAllRetentionDays();
+
+
     // Get topic info
     const topic = await getTopicBySlug(slug);
 
@@ -70,15 +75,31 @@ async function getTopicPage(req, res, next) {
     // Get messages for this topic
     const messages = await getValidMessagesByTopic(topic.id, 50);
 
+    const messagesWithExpiry = messages.map((message) => {
+      const createdAt = new Date(message.created_at);
+
+      const softExpiry = new Date(
+        createdAt.getTime() +
+          retentionDays.message_soft_delete_days * 24 * 60 * 60 * 1000,
+      );
+
+      return {
+        ...message,
+        soft_expiry: softExpiry,
+      };
+    });
+
     // const messageLikes = makeAnotherConrtoller()
 
     // const messagesWithAvatars = addAvatarFields(messages, avatarTypeDefault);
 
     res.render("topic", {
       title: topic.name,
+      config: retentionDays,
       topic,
       // messages: messagesWithAvatars,
-      messages,
+      // messages,
+      messages: messagesWithExpiry,
       currentUser,
       errors: [],
     });
@@ -91,7 +112,7 @@ async function getTopicPage(req, res, next) {
 
 // CONTROLLER: GET MESSAGES BY ID
 
-// Function to fetch individual user data for modal
+// Function to fetch individual user data for modal????
 async function getMessageDetails(req, res, next) {
   const targetId = req.params.id;
   try {

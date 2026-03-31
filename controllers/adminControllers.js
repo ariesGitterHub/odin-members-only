@@ -89,7 +89,6 @@ async function postNewRetentionDaysAdminPage(req, res, next) {
     const {
       message_soft_delete_days,
       message_hard_delete_days,
-      session_soft_delete_days,
       session_hard_delete_days,
     } = req.body;
 
@@ -97,7 +96,6 @@ async function postNewRetentionDaysAdminPage(req, res, next) {
     const values = [
       message_soft_delete_days,
       message_hard_delete_days,
-      session_soft_delete_days,
       session_hard_delete_days,
     ];
 
@@ -117,7 +115,6 @@ async function postNewRetentionDaysAdminPage(req, res, next) {
       parsedValues[0],
       parsedValues[1],
       parsedValues[2],
-      parsedValues[3],
     );
 
     // ✅ Redirect on success

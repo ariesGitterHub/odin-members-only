@@ -42,8 +42,7 @@ WHERE u.email = 'admin@can.org'
 -- NOTE: Hard delete is counted from the time of soft delete, not from creation.
 INSERT INTO app_config (key, value) VALUES
 ('message_soft_delete_days', '14'),
-('message_hard_delete_days', '14'),
-('session_soft_delete_days', '7'),
+('message_hard_delete_days', '28'),
 ('session_hard_delete_days', '28');
 
 -- Seed default topics (safe to re-run)

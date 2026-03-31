@@ -1,21 +1,5 @@
 const pool = require("../pool");
 
-
-// const getAllRetention = async () => {
-//   const { rows } = await pool.query(`
-//     SELECT *
-//     FROM app_config
-//     WHERE key IN (
-//       'message_soft_delete_days',
-//       'message_hard_delete_days',
-//       'session_soft_delete_days',
-//       'session_hard_delete_days'
-//     );
-//   `);
-
-//   return rows;
-// };
-
 const getAllRetentionDays = async () => {
   const { rows } = await pool.query(`
     SELECT key, value
@@ -26,7 +10,7 @@ const getAllRetentionDays = async () => {
   return Object.fromEntries(rows.map((r) => [r.key, Number(r.value)]));
 };
 
-const updateAllRetentionDays = async (messageSoft, messageHard, sessionSoft, sessionHard) => {
+const updateAllRetentionDays = async (messageSoft, messageHard, sessionHard) => {
   const client = await pool.connect();
 
   try {
@@ -42,12 +26,6 @@ const updateAllRetentionDays = async (messageSoft, messageHard, sessionSoft, ses
       `UPDATE app_config SET value = $1, updated_at = NOW()
        WHERE key = 'message_hard_delete_days'`,
       [Number(messageHard)],
-    );
-
-    await client.query(
-      `UPDATE app_config SET value = $1, updated_at = NOW()
-       WHERE key = 'session_soft_delete_days'`,
-      [Number(sessionSoft)],
     );
 
     await client.query(
