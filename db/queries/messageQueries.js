@@ -36,7 +36,7 @@ const getMessageById = async (targetId) => {
     m.is_edited,    
     m.created_at,
     m.updated_at,
-    m.expires_at,
+    -- m.expires_at,
     m.is_sticky,
     m.is_deleted,
     m.deleted_at,
@@ -271,7 +271,7 @@ const getValidMessagesByTopic = async (topicId, userId, limit = 50) => {
       m.is_edited, 
       m.created_at,
       m.updated_at,
-      m.expires_at,
+      -- m.expires_at,
       m.is_sticky,
       ml.user_id AS is_liked_by_user_id,
       u.first_name,
@@ -290,7 +290,7 @@ const getValidMessagesByTopic = async (topicId, userId, limit = 50) => {
       AND ml.user_id = $2
     WHERE m.topic_id = $1
       AND m.is_deleted = false
-      AND (m.expires_at IS NULL OR m.expires_at > NOW())
+      -- AND (m.expires_at IS NULL OR m.expires_at > NOW())
     ORDER BY 
       m.is_sticky DESC,
       m.thread_path
@@ -340,18 +340,37 @@ const updateMessage = async (targetId, title, body) => {
 // NOTE - NOT is_sticky (below) ---> this flips true and false
 // NOTE - CASE updates expires_at depending on the previous value
 
+// const stickyMessageById = async (message_id) => {
+//   const client = await pool.connect();
+//   try {
+//     await client.query(
+//       `
+//       UPDATE messages
+//       SET 
+//         is_sticky = NOT is_sticky,
+//         expires_at = CASE 
+//           WHEN is_sticky = FALSE THEN NULL
+//           ELSE NOW() + INTERVAL '28 days'
+//         END
+//       WHERE id = $1;
+//       `,
+//       [message_id],
+//     );
+//   } catch (err) {
+//     console.error("Error toggling sticky message:", err);
+//     throw err;
+//   } finally {
+//     client.release();
+//   }
+// };
+
 const stickyMessageById = async (message_id) => {
   const client = await pool.connect();
   try {
     await client.query(
       `
       UPDATE messages
-      SET 
-        is_sticky = NOT is_sticky,
-        expires_at = CASE 
-          WHEN is_sticky = FALSE THEN NULL
-          ELSE NOW() + INTERVAL '28 days'
-        END
+      SET is_sticky = NOT is_sticky
       WHERE id = $1;
       `,
       [message_id],
@@ -463,33 +482,44 @@ const toggleLike = async (messageId, userId) => {
  * Sets is_deleted = true and deleted_at = NOW()
  * Can be run hourly/daily via cron.
  */
-const softDeleteExpiredMessages = async () => {
-  const query = `
-    UPDATE messages
-    SET is_deleted = true,
-        deleted_at = NOW()
-    WHERE expires_at IS NOT NULL
-      AND expires_at < NOW()
-      AND is_deleted = false;
-  `;
-  const res = await pool.query(query);
-  return res.rowCount; // number of rows updated
-};
+// const softDeleteExpiredMessages = async () => {
+//   const query = `
+//     UPDATE messages
+//     SET is_deleted = true,
+//         deleted_at = NOW()
+//     WHERE expires_at IS NOT NULL
+//       AND expires_at < NOW()
+//       AND is_deleted = false;
+//   `;
+//   const res = await pool.query(query);
+//   return res.rowCount; // number of rows updated
+// };
+
+// const softDeleteExpiredMessages = async () => {
+//   const query = `
+//     UPDATE messages
+//     SET is_deleted = true,
+//         deleted_at = NOW()
+//     WHERE is_deleted = false;
+//   `;
+//   const res = await pool.query(query);
+//   return res.rowCount; // number of rows updated
+// };
 
 /**
  * Hard delete messages that were soft-deleted more than olderThanDays ago.
  * Frees up DB storage.
  * @param olderThanDays: number of days after which soft-deleted messages are permanently deleted
  */
-const hardDeleteMessages = async (olderThanDays = 30) => {
-  const query = `
-    DELETE FROM messages
-    WHERE is_deleted = true
-      AND deleted_at < NOW() - INTERVAL $1::text;
-  `;
-  const res = await pool.query(query, [`${olderThanDays} days`]);
-  return res.rowCount; // number of rows deleted
-};
+// const hardDeleteMessages = async (olderThanDays = 30) => {
+//   const query = `
+//     DELETE FROM messages
+//     WHERE is_deleted = true
+//       AND deleted_at < NOW() - INTERVAL $1::text;
+//   `;
+//   const res = await pool.query(query, [`${olderThanDays} days`]);
+//   return res.rowCount; // number of rows deleted
+// };
 
 /**
  * Combined cleanup function:
@@ -500,42 +530,42 @@ const hardDeleteMessages = async (olderThanDays = 30) => {
  * - If soft-delete fails, hard-delete is not executed
  * - If hard-delete fails, soft-deletes are rolled back
  */
-const cleanupMessages = async (olderThanDays = 30) => {
-  const client = await pool.connect();
-  try {
-    await client.query("BEGIN"); // start transaction
+// const cleanupMessages = async (olderThanDays = 30) => {
+//   const client = await pool.connect();
+//   try {
+//     await client.query("BEGIN"); // start transaction
 
-    const softDeletedRes = await client.query(`
-      UPDATE messages
-      SET is_deleted = true,
-          deleted_at = NOW()
-      WHERE expires_at IS NOT NULL
-        AND expires_at < NOW()
-        AND is_deleted = false
-      RETURNING id;
-    `);
-    const softDeleted = softDeletedRes.rowCount;
+//     const softDeletedRes = await client.query(`
+//       UPDATE messages
+//       SET is_deleted = true,
+//           deleted_at = NOW()
+//       WHERE expires_at IS NOT NULL
+//         AND expires_at < NOW()
+//         AND is_deleted = false
+//       RETURNING id;
+//     `);
+//     const softDeleted = softDeletedRes.rowCount;
 
-    const hardDeletedRes = await client.query(
-      `
-      DELETE FROM messages
-      WHERE is_deleted = true
-        AND deleted_at < NOW() - INTERVAL $1::text
-      RETURNING id;
-    `,
-      [`${olderThanDays} days`],
-    );
-    const hardDeleted = hardDeletedRes.rowCount;
+//     const hardDeletedRes = await client.query(
+//       `
+//       DELETE FROM messages
+//       WHERE is_deleted = true
+//         AND deleted_at < NOW() - INTERVAL $1::text
+//       RETURNING id;
+//     `,
+//       [`${olderThanDays} days`],
+//     );
+//     const hardDeleted = hardDeletedRes.rowCount;
 
-    await client.query("COMMIT");
-    return { softDeleted, hardDeleted };
-  } catch (err) {
-    await client.query("ROLLBACK");
-    throw err;
-  } finally {
-    client.release();
-  }
-};
+//     await client.query("COMMIT");
+//     return { softDeleted, hardDeleted };
+//   } catch (err) {
+//     await client.query("ROLLBACK");
+//     throw err;
+//   } finally {
+//     client.release();
+//   }
+// };
 
 /**
  * Fetch messages by a specific user
@@ -594,8 +624,8 @@ module.exports = {
   incrementReplyCount,
   toggleLike,
   // TODO - get these working as CRON jobs
-  softDeleteExpiredMessages,
-  hardDeleteMessages,
-  cleanupMessages,
+  // softDeleteExpiredMessages,
+  // hardDeleteMessages,
+  // cleanupMessages,
 };
 

@@ -88,7 +88,7 @@ CREATE TABLE messages (
   updated_at TIMESTAMPTZ DEFAULT NOW(),  -- NEW!
   -- expires_at TIMESTAMPTZ,
   -- expires_at TIMESTAMPTZ DEFAULT NOW() + INTERVAL '28 days', -- default expires_at
-  expires_at TIMESTAMPTZ,
+  -- expires_at TIMESTAMPTZ,
 
   is_sticky BOOLEAN DEFAULT false,
 
@@ -186,8 +186,8 @@ CREATE TABLE sessions (
   ip_address TEXT,
   user_agent TEXT,
 
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  expires_at TIMESTAMPTZ NOT NULL
+  created_at TIMESTAMPTZ DEFAULT NOW()
+  -- expires_at TIMESTAMPTZ NOT NULL
 );
 
 

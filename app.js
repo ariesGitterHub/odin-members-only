@@ -5,6 +5,8 @@ require("./config/passport"); // This initializes the Passport strategies
 // 1. Imports at the top
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const { runRetentionJobs } = require("./jobs/retentionJobs");  // TODO - FOR DEV ONLY
+
 // const { validateSession } = require("./middleware/sessionMiddleware"); // Import the session validation middleware
 const path = require("node:path");
 // const bcrypt = require("bcryptjs");
@@ -90,7 +92,16 @@ app.use((req, res, next) => {
 app.use(require("./middleware/errorMiddleware"));  // Handle both 404 and other errors here
 
 // 8. Start cron jobs
-require("./cron/cleanup"); // starts the daily cleanup job
+require('./cron/retentionScheduler'); // <-- this schedules the daily retention job
+
+(async () => {
+  try {
+    await runRetentionJobs(); // ensures any missed deletions happen on startup
+    console.log('Retention job run on server start');
+  } catch (err) {
+    console.error('Error running retention job on startup:', err);
+  }
+})();
 
 // 9. Start Server
 app.listen(PORT, (error) => {

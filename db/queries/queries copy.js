@@ -131,7 +131,7 @@ const getMessageById = async (targetId) => {
     m.is_edited,    
     m.created_at,
     m.updated_at,
-    m.expires_at,
+    -- m.expires_at,
     m.is_sticky,
     m.is_deleted,
     m.deleted_at,

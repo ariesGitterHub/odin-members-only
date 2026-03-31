@@ -205,7 +205,7 @@ async function postEditMessage(req, res, next) {
     if (!message) {
       return res.status(404).send("Message not found.");
     }
-    console.log("Updated message with is_edited1:", message.is_edited);
+    console.log("Updated message with is_edited!:", message.is_edited);
     // Check if the logged-in user is the author of the message
     if (message.user_id !== currentUserId) {
       return res.status(403).send("You are not the author of this message.");

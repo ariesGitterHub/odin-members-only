@@ -4,6 +4,7 @@ const passport = require("passport");
 const { validationResult } = require("express-validator");
 
 const {
+  insertSessionLog,
   insertNewUser,
   updateLastLogin,
 } = require("../db/queries/userQueries");
@@ -83,19 +84,58 @@ async function getLogIn(req, res, next) {
   }
 }
 
+// async function postLogIn(req, res, next) {
+//   // console.log("Form data:", req.body); // Log the request body to see the submitted data
+//   passport.authenticate("local", async (err, user, info) => {
+//     if (err) {
+//       console.error("Error during authentication:", err);
+//       return next(err); // handle unexpected error
+//     }
+
+//     if (!user) {
+//       console.log(
+//         "Authentication failed:",
+//         info.message || "Invalid email or password",
+//       );
+//       return res.render("log-in", {
+//         title: "Log In",
+//         errors: [info.message || "Invalid email or password"],
+//         formData: req.body || {},
+//       });
+//     }
+
+//     // TODO - THIS SHOWS THE HASH
+//     // console.log("User authenticated:", user);
+//     console.log("User authenticated!!!!! 🎈");
+
+//     try {
+//       // Update the user's last login timestamp
+//       await updateLastLogin(user.id);
+
+//       // Log the user in (via Passport session)
+//       req.login(user, (err) => {
+//         if (err) {
+//           console.error("Error during login:", err);
+//           return next(err); // Handle login errors
+//         }
+
+//         // console.log("Login successful! Redirecting to message boards...");
+//         res.redirect("/app/message-boards"); // Redirect to message boards after login
+//       });
+//     } catch (err) {
+//       console.error("Error updating last login:", err);
+//       return next(err); // Handle any error with updating the last login
+//     }
+//   })(req, res, next); // Execute the Passport authentication logic
+// }
+
+const { createSessionLog } = require("../db/queries/userQueries"); // import the helper
+
 async function postLogIn(req, res, next) {
-  // console.log("Form data:", req.body); // Log the request body to see the submitted data
   passport.authenticate("local", async (err, user, info) => {
-    if (err) {
-      console.error("Error during authentication:", err);
-      return next(err); // handle unexpected error
-    }
+    if (err) return next(err);
 
     if (!user) {
-      console.log(
-        "Authentication failed:",
-        info.message || "Invalid email or password",
-      );
       return res.render("log-in", {
         title: "Log In",
         errors: [info.message || "Invalid email or password"],
@@ -103,33 +143,42 @@ async function postLogIn(req, res, next) {
       });
     }
 
-    // TODO - THIS SHOWS THE HASH
-    // console.log("User authenticated:", user);
     console.log("User authenticated!!!!! 🎈");
 
     try {
-      // Update the user's last login timestamp
+      // Update last login
       await updateLastLogin(user.id);
 
-      // Log the user in (via Passport session)
-      req.login(user, (err) => {
-        if (err) {
-          console.error("Error during login:", err);
-          return next(err); // Handle login errors
+      // Log the user in (Passport session)
+      req.login(user, async (err) => {
+        if (err) return next(err);
+
+        // ✅ Insert session log AFTER login
+        try {
+          await insertSessionLog(
+            user.id,
+            req.sessionID,
+            req.ip,
+            req.headers["user-agent"],
+          );
+        } catch (logErr) {
+          console.error("Failed to create session log:", logErr);
+          // You can decide: ignore or fail login
         }
 
-        // console.log("Login successful! Redirecting to message boards...");
-        res.redirect("/app/message-boards"); // Redirect to message boards after login
+        res.redirect("/app/message-boards"); // Redirect after successful login
       });
     } catch (err) {
       console.error("Error updating last login:", err);
-      return next(err); // Handle any error with updating the last login
+      return next(err);
     }
-  })(req, res, next); // Execute the Passport authentication logic
+  })(req, res, next);
 }
 
 
 // CONTROLLER: LOG-OUT
+
+
 
 async function postLogOut(req, res, next) {
   try {

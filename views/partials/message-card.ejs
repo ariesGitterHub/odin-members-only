@@ -37,15 +37,7 @@
       <p class="message-title bold"><%= message.title %></p>
     </div>
   </div>
-  <!-- <div class="message-details uppercase">
-    <span class="regular-message">created: <%#= new Date(message.created_at).toLocaleDateString() %></span>
-     <%# if (message.is_sticky) { %> 
-    <span class="important-message">important message</span> 
-    <%# } else { %>
-    <span class="regular-message">expires: <%#= new Date(message.expires_at).toLocaleDateString() %></span> 
-    <%# } %>
-  </div> --> 
-    <div class="message-badge-container uppercase <%= canPerformHasRole(currentUser, 'members-only', message) ? '' : 'hidden' %>">
+  <div class="message-badge-container uppercase <%= canPerformHasRole(currentUser, 'members-only', message) ? '' : 'hidden' %>">
     <% if (message.is_edited) { %> 
       <p>
         <span class="emoji">✏</span> <span>edited</span>     

@@ -98,6 +98,27 @@ const getUserById = async (targetId) => {
   return rows[0]; // Returning only the first row (one user)
 };
 
+// QUERY: INSERT SESSION INFO
+
+const insertSessionLog = async (
+  user_id,
+  session_token,
+  ip_address,
+  user_agent,
+) => {
+  const query = `
+    INSERT INTO sessions (user_id, session_token, ip_address, user_agent)
+    VALUES ($1, $2, $3, $4)
+  `;
+  try {
+    await pool.query(query, [user_id, session_token, ip_address, user_agent]);
+    // console.log({ user_id: user.id, sessionID: req.sessionID, ip: req.ip });
+  } catch (err) {
+    console.error("Failed to create session log:", err);
+    throw err;
+  }
+};
+
 // QUERY: INSERT A NEW USER FROM SIGN UP (sign-up.ejs)
 
 const insertNewUser = async (
@@ -690,6 +711,7 @@ const updateLastLogin = async (userId) => {
 module.exports = {
   getUsers,
   getUserById,
+  insertSessionLog,
   insertNewUser,
   insertAdminCreatedUser,
   updateAdminEditedUser,
