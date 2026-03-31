@@ -10,6 +10,7 @@ const {
 // TODO - arrange by order of ROUTES far below
 const {
   getAdminPage,
+  postNewRetentionDaysAdminPage,
   getAdminCreatePage,
   postAdminCreatePage,
   getAdminEditPage,
@@ -93,6 +94,11 @@ appRouter.post("/log-out", (req, res, next) => {
 
 // ROUTES: ADMIN PAGE (admin.ejs) 
 appRouter.get("/admin", requireRole("admin"), getAdminPage);
+appRouter.post(
+  "/admin/config/retention-days",
+  requireRole("admin"),
+  postNewRetentionDaysAdminPage,
+);
 
 // ROUTE: DELETE ACCOUNT MODAL (warning-account-deletion.ejs)
 appRouter.post("/admin/delete-user-account", requireRole("admin"), deleteUserAccount);

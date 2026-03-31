@@ -84,7 +84,7 @@ async function getLogIn(req, res, next) {
 }
 
 async function postLogIn(req, res, next) {
-  console.log("Form data:", req.body); // Log the request body to see the submitted data
+  // console.log("Form data:", req.body); // Log the request body to see the submitted data
   passport.authenticate("local", async (err, user, info) => {
     if (err) {
       console.error("Error during authentication:", err);
@@ -104,7 +104,8 @@ async function postLogIn(req, res, next) {
     }
 
     // TODO - THIS SHOWS THE HASH
-    console.log("User authenticated:", user);
+    // console.log("User authenticated:", user);
+    console.log("User authenticated!!!!! 🎈");
 
     try {
       // Update the user's last login timestamp

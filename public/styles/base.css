@@ -40,7 +40,8 @@
   --lt-blue: #b8dde9;
   /* --lt-purple: #a790af; */
 
-  --error-color: rgb(220, 37, 24);
+  --error-color: #dc2518;
+  --success-color: #3cdc18;
 
   --avatar-color-fg: var(--off-black);
   --avatar-color-bg-top: var(--off-white);

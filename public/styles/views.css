@@ -133,8 +133,10 @@
 }
 
 .admin-card fieldset input {
-  width: 3rem;
+  width: 3.5rem;
   /* margin-right: var(--spacer-small); */
+  font-size: var(--font-size-default);
+  text-align: right;
 }
 
 .admin-card fieldset p {
@@ -602,7 +604,7 @@
   font-size: var(--font-size-largest);
 }
 
-.error-message {
+/* .error-message {
   height: fit-content;
   width: var(--width-default-percent);
   display: flex;
@@ -615,17 +617,6 @@
   border-radius: var(--spacer-biggest);
   margin-top: var(--spacer-medium);
   padding: var(--spacer-default);
-}
+} */
 
-.error {
-  /* background-color: var(--off-red); */
-  /* border-radius: var(--border-radius-small); */
-  /* color: var(--lt-orange); */
-  color: var(--error-color);
-  font-family: var(--font-error);
-  font-size: var(--font-size-small);
-  font-weight: var(--font-weight-heavy);
-  margin: 0;
-  padding: 0;
-  text-transform: uppercase;
-}
+

@@ -35,7 +35,6 @@ const {
 } = require("../utils/viewFormatters");
 
 // CONTROLLER: ADMIN PAGE (admin.ejs)
-
 async function getAdminPage(req, res, next) {
   try {
     const users = await getUsers();
@@ -78,9 +77,61 @@ async function getAdminPage(req, res, next) {
       messages,
       config: retentionDays,
       errors: [],
+      query: req.query, // add this for messages about retention days changes!!!
     });
   } catch (err) {
     next(err);
+  }
+}
+
+async function postNewRetentionDaysAdminPage(req, res, next) {
+  try {
+    const {
+      message_soft_delete_days,
+      message_hard_delete_days,
+      session_soft_delete_days,
+      session_hard_delete_days,
+    } = req.body;
+
+    // ✅ Basic validation
+    const values = [
+      message_soft_delete_days,
+      message_hard_delete_days,
+      session_soft_delete_days,
+      session_hard_delete_days,
+    ];
+
+    const parsedValues = values.map((v) => Number(v));
+
+    const hasInvalid = parsedValues.some((v) => Number.isNaN(v) || v < 0);
+
+    if (hasInvalid) {
+      // You could also store this in a flash message
+      return res.redirect(
+        "/app/admin?error=invalid-input",
+      );
+    }
+
+    // ✅ Call your query
+    await updateAllRetentionDays(
+      parsedValues[0],
+      parsedValues[1],
+      parsedValues[2],
+      parsedValues[3],
+    );
+
+    // ✅ Redirect on success
+    return res.redirect(
+      "/app/admin?success=retention-updated",
+    );
+  } catch (err) {
+    console.error("Error updating retention settings:", err);
+
+    // Option 1 (recommended): pass to global error handler
+    return next(err);
+
+    // Option 2 (alternative): redirect with error
+    // return res.redirect("/admin?error=update-failed");
   }
 }
 
@@ -253,7 +304,8 @@ async function postAdminEditPage(req, res, next) {
 
       return res.render("admin-edit", {
         title: "Admin Edit",
-        user: targetUser, // show the user being edited
+        // user: targetUser, // show the user being edited
+        user,
         errors: formattedErrors,
         formData: req.body || {},
         usStates: usStates,
@@ -324,6 +376,7 @@ async function deleteUserAccount(req, res, next) {
 
 module.exports = {
   getAdminPage,
+  postNewRetentionDaysAdminPage,
   getAdminCreatePage,
   postAdminCreatePage,
   getAdminEditPage,

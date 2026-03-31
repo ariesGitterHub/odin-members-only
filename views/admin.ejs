@@ -221,7 +221,14 @@
               <a class="button-default wide-button" href="/app/admin-create">create new user</a>
               
               <button id="retention-controls-button" class="button-default wide-button" type="button">open retention controls</button>
-              <div id="retention-controls-div" class="hidden">
+              <div id="retention-controls-div" class="<%= (query.success || query.error) ? '' : 'hidden' %>">
+                <% if (query.success === "retention-updated") { %>
+                  <div class="element-container-row-default success-message">[retention settings saved.]</div>
+                <% } %>
+
+                <% if (query.error === "invalid-input") { %>
+                  <div class="element-container-row-default error-message">[retention changes failed.] please try again.</div>
+                <% } %>
                 <form id="retention-controls-form" action="/app/admin/config/retention-days" method="POST">
                   <fieldset>
                     <h3>message retention</h3>

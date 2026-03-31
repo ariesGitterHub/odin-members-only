@@ -355,3 +355,25 @@ li:last-child {
   padding: var(--spacer-default);
 }
 
+
+/* ERROR and success messages */
+.error-message {
+  color: var(--error-color);
+  font-family: var(--font-error);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-heavy);
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+}
+
+.success-message {
+  color: var(--success-color);
+  font-family: var(--font-error);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-heavy);
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+}
+

@@ -21,7 +21,7 @@
           <div class="element-container-row-start-center">
            <label for="email-log-in"> email </label>           
            <% if (errors && errors.some(e => e.includes('email'))) { %>
-            <span class="error">[<%= errors.find(e => e.includes('email')) %>]</span>
+            <span class="error-message">[<%= errors.find(e => e.includes('email')) %>]</span>
           <% } %>
           </div>
           <input
@@ -35,7 +35,7 @@
           <div class="element-container-row-start-center">
             <label for="password-log-in"> password </label> 
             <% if (errors && errors.some(e => e.includes('password'))) { %>
-            <span class="error">[<%= errors.find(e => e.includes('password')) %>]</span>
+            <span class="error-message">[<%= errors.find(e => e.includes('password')) %>]</span>
             <% } %>           
           </div>
           
