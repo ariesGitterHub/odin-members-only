@@ -164,13 +164,9 @@ WHERE u.email IN (
 AND p.user_id IS NULL;
 
 
-
--- =====================================================
 -- DUMMY MESSAGES
--- =====================================================
 
-
--- 1️⃣ Introductions
+-- Introductions
 INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id,
   'Hello from Alan',
@@ -182,7 +178,7 @@ WHERE t.slug = 'introductions'
 LIMIT 1;
 
 
--- 2️⃣ Safety Alert
+-- Safety Alert
 INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id,
   'Car break-ins reported on Maple St.',
@@ -194,7 +190,7 @@ WHERE t.slug = 'safety-alerts'
 LIMIT 1;
 
 
--- 3️⃣ Buy & Sell
+-- Buy & Sell
 INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id,
   'Bike for sale - $75', 
@@ -205,9 +201,9 @@ WHERE t.slug = 'buy-sell'
   AND u.email = 'chet@can.org'
 LIMIT 1;
 
--- 4️⃣ Buy & Sell
-INSERT INTO messages (topic_id, user_id, title, body, thread_path)
-SELECT t.id, u.id,
+-- Buy & Sell
+INSERT INTO messages (topic_id, user_id, like_count, title, body, thread_path)
+SELECT t.id, u.id, 87,
   'Old silverware.',
   'I''m moving and need to downsize. Free forks, knives, and spoons.',
   '4' 
@@ -216,9 +212,9 @@ WHERE t.slug = 'buy-sell'
   AND u.email = 'evil@can.org'
 LIMIT 1;
 
--- 5️⃣ Buy & Sell
-INSERT INTO messages (topic_id, user_id, title, body, thread_path)
-SELECT t.id, u.id,
+-- Buy & Sell
+INSERT INTO messages (topic_id, user_id, like_count, title, body, thread_path)
+SELECT t.id, u.id, 123,
   'Comic Books.',
   'Throwing out a box of old comic books; YOURS FOR A DOLLAR!',
   '5' 
@@ -228,9 +224,9 @@ WHERE t.slug = 'buy-sell'
 LIMIT 1;
 
 
--- 6️⃣ Free Stuff
-INSERT INTO messages (topic_id, user_id, title, body, thread_path)
-SELECT t.id, u.id, 
+-- Free Stuff
+INSERT INTO messages (topic_id, user_id, like_count, reply_count, title, body, thread_path)
+SELECT t.id, u.id, 5, 53,
   'Free moving boxes',
   'Just finished moving — free 20 boxes, in good shape.',
   '6'
@@ -240,9 +236,9 @@ WHERE t.slug = 'free-stuff'
 LIMIT 1;
 
 
--- 7️⃣ Help Request
-INSERT INTO messages (topic_id, user_id, title, body, thread_path)
-SELECT t.id, u.id, 
+-- Help Request
+INSERT INTO messages (topic_id, user_id, like_count, reply_count, title, body, thread_path)
+SELECT t.id, u.id, 11, 200,
   'Need recommendation for plumber',
   'Can anyone recommend a reliable plumber for a small kitchen leak?',
   '7'
@@ -252,9 +248,9 @@ WHERE t.slug = 'help-requests'
 LIMIT 1;
 
 
--- 8️⃣ Event
-INSERT INTO messages (topic_id, user_id, title, body, thread_path)
-SELECT t.id, u.id,
+-- Event
+INSERT INTO messages (topic_id, user_id, like_count, reply_count, title, body, thread_path)
+SELECT t.id, u.id, 345, 778,
   'Neighborhood BBQ this Saturday',
   'Planning a casual BBQ at Riverside Park at 4pm. Bring something to share!',
   '8'
@@ -264,7 +260,7 @@ WHERE t.slug = 'events'
 LIMIT 1;
 
 
--- 9️⃣ Lost & Found
+-- Lost & Found
 INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id, 
   'Found: small brown dog',
@@ -276,7 +272,7 @@ WHERE t.slug = 'lost-found'
 LIMIT 1;
 
 
--- 🔟 General Discussion
+-- General Discussion
 INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id, 
   'Anyone else hearing construction noise?',

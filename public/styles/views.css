@@ -239,11 +239,12 @@
 }
 
 .topic-title {
-  font-size: var(--font-size-default);
+  font-size: var(--font-size-small);
 }
 
 .topic-hr {
   width: var(--width-default-percent);
+  max-width: 800px;
   border: 0;
   border-top: var(--border-hr-top);
 }
@@ -251,17 +252,18 @@
 
 /* -- topic.ejs */
 .topic-card {
-  max-width: var(--max-width);
-  min-width: var(--card-width);
+  /* max-width: var(--max-width); */
+  /* min-width: var(--card-width); */
+  width: var(--card-width);
   display: flex;
   flex-direction: column;
   gap: var(--spacer-biggest);
   margin: var(--spacer-biggest);
+  transition: width 0.3s ease, height 0.3s ease, margin 0.3s ease, padding 0.3s ease;
 }
 
 
 /* -- message-card.ejs */
-
 .message-card {
   border-radius: var(--border-radius-default);
   box-shadow: var(--box-shadow-black);
@@ -347,6 +349,8 @@
 }
 
 .message-body {
+  /* display: flex; */
+  /* flex-wrap: wrap; */
   border: transparent;
   border-radius: var(--border-radius-default);
   font-size: var(--message-body-size);
@@ -382,6 +386,14 @@
   background-color: var(--white);
 }
 
+/* -- edit-profile modal */
+/* #apt-unit-edit-profile {
+  width: 90%;
+} */
+
+/* #us-state-edit-profile {
+  width: var(--width-default-percent);
+} */
 
 /* -- member-directory.ejs */
 .member-card .neighbor-relevant-data {

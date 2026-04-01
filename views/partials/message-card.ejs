@@ -72,7 +72,7 @@
       <span>created:</span> <span><%= new Date(message.created_at).toLocaleDateString() %></span>   
     </p>
     <p>
-      <span><%= message.soft_expiry.toLocaleDateString() %></span>
+      <span>expires:</span> <span><%= message.soft_expiry.toLocaleDateString() %></span>
     </p>
   </div>
    <% } %>

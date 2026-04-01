@@ -71,13 +71,16 @@ button:hover,
   width: var(--width-default-percent);
   justify-content: start;
   gap: var(--spacer-default);
+  font-size: var(--font-size-small);
   padding-left: var(--spacer-default);
 }
 
 .message-button {
-  min-width: 3.5rem;
+  min-width: 2.25rem;
   width: fit-content;
   color: var(--off-black);
+  font-size: var(--font-size-small);
+  padding: var(--spacer-small);
 }
 
 .close-button {

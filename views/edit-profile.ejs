@@ -125,29 +125,29 @@
           />
           <div class="element-container-row-space-between">
             <div class="element-container-col-start-center">
-            <label class="capitalize" for="apt-unit-edit-profile">
-              apt/unit
-            </label>
-            <input
-              id="apt-unit-edit-profile"
-              class="bold"
-              type="text"
-              name="apt_unit"
-              value="<%= formData?.apt_unit || '' %>"
-            />
+              <label class="capitalize" for="apt-unit-edit-profile">
+                apt/unit
+              </label>
+              <input
+                id="apt-unit-edit-profile"
+                class="bold"
+                type="text"
+                name="apt_unit"
+                value="<%= formData?.apt_unit || '' %>"
+              />
             </div>
             <div class="element-container-col-start-center">
-            <label class="capitalize" for="us-state-edit-profile">
-              state
-            </label>
-            <select id="us-state-edit-profile" name="us_state">
-            <option value="" disabled <%= !formData?.us_state ? "selected" : "" %>>Choose state</option>
-              <% usStates.forEach((state) => { %>
-                <option value="<%= state.code %>" <%= formData?.us_state === state.code ? "selected" : "" %>>
-                  <%= state.name %>
-                </option>
-              <% }) %>
-            </select>
+              <label class="capitalize" for="us-state-edit-profile">
+                state
+              </label>
+              <select id="us-state-edit-profile" name="us_state">
+              <option value="" disabled <%= !formData?.us_state ? "selected" : "" %>>Choose state</option>
+                <% usStates.forEach((state) => { %>
+                  <option value="<%= state.code %>" <%= formData?.us_state === state.code ? "selected" : "" %>>
+                    <%= state.name %>
+                  </option>
+                <% }) %>
+              </select>
             <!-- <select>
             <%#= generateStateSelect("us-state-admin-edit-page", formData) %>
             </select> -->

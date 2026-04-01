@@ -9,9 +9,9 @@
   --white: #fff;
   --black: #000;
 
-  --off-white: #d7d1c5;
-  --off-gray: #727e76;
-  --off-black: #1c1d1f;
+  --off-white: #e2dcd3;
+  --off-gray: #758179;
+  --off-black: #1c1c1e;
   --off-black-trans: #1a1b1c80;
 
   --off-red: #944f4f;
@@ -23,10 +23,10 @@
   --dk-green: #353d32;
 
   --lt-gray: #838684;
-  --lt-red: #ebb7b7;
+  --lt-red: #d19f9f;
   --lt-orange: #e4bf62;
-  --lt-yellow: #d8cd83;
-  --lt-green: #93e1a9;
+  --lt-yellow: #d3cb9b;
+  --lt-green: #a1cba1;
 
   --error-color: #c83126;
   --success-color: #3fd41e;
@@ -62,7 +62,7 @@
   --font-error: monospace;
 
   /* Root sizing for Media Queries */
-  --max-width: 700px;
+  --max-width: 650px;
   --width-default-percent: 100%;
 
   --button-default-h: 1.75rem;
@@ -119,10 +119,10 @@
 
   --avatar-emoji-largest-size: 8rem;
 
-  --message-name-size: 1.125rem;
-  --message-title-size: 1rem;
+  --message-name-size: 1.1rem;
+  --message-title-size: 1.1rem;
   --message-details-size: var(--font-size-small);
-  --message-body-size: 1.1rem;
+  --message-body-size: 1.125rem;
 
   --font-weight-light: 100;
   --font-weight-medium: 100;

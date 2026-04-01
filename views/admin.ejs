@@ -9,6 +9,7 @@
       <div class="page-title-off-card uppercase">
         <h1>admin panel</h1>
       </div>
+      <div class="large-screen-flex-row">
       <% if (users.length === 0) { %> 
         <!-- TODO - keep else here??? -->
         <p>No users yet. Be the first to join!</p>
@@ -289,6 +290,7 @@
         </div>
       <% }) %>
     <% } %>
+    </div>
     </main>
     <%- include('./partials/modal-root.ejs') %>
     <%- include('./partials/footer.ejs') %>

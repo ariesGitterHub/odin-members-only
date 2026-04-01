@@ -10,6 +10,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: start;
+   gap: var(--spacer-biggest);
   background: linear-gradient(05deg, var(--off-black), var(--off-gray));
   color: var(--off-black);
   font-family: var(--font-text);
@@ -96,6 +97,7 @@ main {
   box-shadow: var(--box-shadow-black);
   margin: var(--spacer-default);
   padding: var(--spacer-biggest);
+  transition: width 0.3s ease, height 0.3s ease, margin 0.3s ease, padding 0.3s ease;
 }
 
 .admin-card {
