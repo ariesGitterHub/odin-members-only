@@ -43,7 +43,6 @@ main {
   background: linear-gradient(180deg, var(--off-red), var(--off-black));
   -webkit-background-clip: text; /* Clips background to text shape */
   -webkit-text-fill-color: transparent; /* Makes original text color transparent */
-  /* padding: var(--spacer-medium) 0 0 0 ; */
 }
 
 .page-title-off-card {
@@ -84,11 +83,6 @@ main {
   text-align: center;
 }
 
-/* .page-section-title {
-  font-size: var(--font-size-large);
-  text-transform: uppercase;
-} */
-
 /* -- Card */
 .card {
   height: fit-content;
@@ -103,12 +97,6 @@ main {
   margin: var(--spacer-default);
   padding: var(--spacer-biggest);
 }
-
-/* .infinity-card {
-  background-color: var(--dk-blue);
-  border: var(--border-infinity-card);
-  color: var(--off-white);
-} */
 
 .admin-card {
   background-color: var(--black);

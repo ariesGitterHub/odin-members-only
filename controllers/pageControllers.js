@@ -1,3 +1,5 @@
+const { getAllRetentionDays } = require("../db/queries/appConfigQueries");
+
 // CONTROLLER: INDEX (index.ejs)
 
 async function getHome(req, res, next) {
@@ -16,11 +18,14 @@ async function getHome(req, res, next) {
 // CONTROLLER: INFO PAGE (info.ejs)
 
 async function getInfo(req, res, next) {
+  const retentionDays = await getAllRetentionDays();
+
   try {
     res.render("info", {
       title: "Site Information",
       // user: req.user,
       // errors: [],
+      config: retentionDays,
     });
   } catch (err) {
     next(err);

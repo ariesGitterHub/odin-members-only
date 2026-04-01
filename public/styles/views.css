@@ -1,5 +1,6 @@
 /* UNIQUE TO ONE VIEW (GLOBAL GLASSES GO IN LAYOUT-BASICS.CSS) */
 
+
 /* -- index.ejs */
 .index-image {
   height: var(--index-image-size);
@@ -9,6 +10,7 @@
   box-shadow: var(--box-shadow-gray);
   margin: var(--spacer-default);
 }
+
 
 /* -- admin.ejs */
 .admin-quick-view-bar {
@@ -21,10 +23,6 @@
   font-size: var(--emoji-quick-view-bar-size);
   padding: var(--spacer-default);
 }
-
-/* .infinity-card .admin-quick-view-bar {
-  background-color: var(--off-blue);
-} */
 
 .admin-card .admin-quick-view-bar {
   background-color: var(--off-black);
@@ -45,24 +43,12 @@
 
 .admin-card a, .admin-card button[type="button"] {
   background-color: var(--lt-red);
-  /* color: var(--off-white); */
   box-shadow: var(--box-shadow-red);
 }
 
 .admin-card a:hover, .admin-card button[type="button"]:hover {
   background-color: var(--dk-red);
 }
-
-
-/* .o-card .admin-quick-view-bar span {
-  background-color: var(--off-white);
-  color: var(--off-black);
-} */
-
-/* .infinity-card .admin-quick-view-bar span, .admin-card .admin-quick-view-bar span {
-  background-color: var(--off-white);
-  color: var(--off-black);
-} */
 
 .admin-card .admin-quick-view-bar span {
   background-color: var(--off-white);
@@ -79,10 +65,6 @@
   margin-left: var(--spacer-default);
 }
 
-/* .infinity-card .neighbor-relevant-data {
-  background-color: var(--off-blue);
-} */
-
 .admin-card .neighbor-relevant-data {
   background-color: var(--off-black);
 }
@@ -94,9 +76,11 @@
 .upgrade-possible {
   background-color: var(--member-status-possible);
 }
+
 .upgrade-no-decision {
   background-color: var(--member-status-no-decision);
 }
+
 .upgrade-declined {
   background-color: var(--member-status-declined);
 }
@@ -110,12 +94,10 @@
   width: 96%;
   background-color: var(--off-black);
   border-radius: var(--border-radius-small);
-  /* margin: var(--spacer-default); */
   padding: var(--spacer-default);
 }
 
 .admin-card fieldset {
-  /* width: var(--width-default-percent); */
   display: flex;
   flex-direction: column;
   align-self: center;
@@ -134,7 +116,6 @@
 
 .admin-card fieldset input {
   width: 3.5rem;
-  /* margin-right: var(--spacer-small); */
   font-size: var(--font-size-default);
   text-align: right;
 }
@@ -145,9 +126,10 @@
 
 
 /* -- admin-create.ejs */
+/* NONE */
+
 
 /* -- admin-edit.ejs */
-/* ---- Makes emoji input width more suitable for a small emoji */
 .element-container-row-space-between .emoji {
   width: 2.75rem;
   text-align: center;
@@ -155,17 +137,10 @@
 
 .profile-block-select {
   min-width: fit-content;
-  /* max-width: 100%; */
 }
+
 
 /* -- info.ejs */
-.card .info-list {
-  /* width: var(--width-default-percent); */
-  /* align-items: center; */
-  /* gap: var(--spacer-default); */
-  /* padding: 0 var(--spacer-default); */
-}
-
 .info-list {
   display: flex;
   flex-direction: column;
@@ -181,20 +156,16 @@
 
 .info-list-card {
   width: var(--width-default-percent);
-
-  /* width: var(--card-width); */
-    /* margin: 0 var(--spacer-default); */
 }
 
 .info-ul {
-  /* width: var(--width-default-percent); */
-  /* background-color: var(--white); */
   background-color: var(--lt-yellow);
   border: var(--border-default);
   border-radius: var(--border-radius-default);
   margin: var(--spacer-small) 0;
   padding: var(--spacer-medium);
 }
+
 
 /* -- new-message.ejs AND reply-message.ejs; TODO -**maybe** move to components*/
 .author-draft-message {
@@ -219,7 +190,6 @@
 .topic-draft-message,
 .title-draft-message,
 .body-draft-message {
-  /* font-family: var(--font-text); */
   font-size: var(--font-size-default);
 }
 
@@ -242,14 +212,8 @@
   border: var(--border-highlight);
 }
 
-/* -- message-boards.ejs */
-/* .message-boards-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-} */
 
+/* -- message-boards.ejs */
 .topic-list {
   width: var(--width-default-percent);
 }
@@ -269,10 +233,7 @@
 }
 
 .topic-count-square {
-  /* background-color: var(--off-black); */
-  /* border: var(--border-topic-number); */
   border-radius: var(--border-radius-small);
-  /* color: var(--off-black); */
   font-weight: var(--font-weight-heavy);
   padding: var(--spacer-small) var(--spacer-medium);
 }
@@ -285,24 +246,12 @@
   width: var(--width-default-percent);
   border: 0;
   border-top: var(--border-hr-top);
-  /* border-bottom: var(--border-hr-bottom);  */
 }
 
-/* -- topic.ejs */
-/* .button-card {
-  width: 350px;
-  background-color: var(--white);
-  border-radius: var(--border-radius-default);
-  box-shadow: var(--box-shadow-black);
-  color: var(--off-black);
-  line-height: 1.5;
-  margin: var(--spacer-default) 0;
-} */
 
+/* -- topic.ejs */
 .topic-card {
-  /* 750px is good for reading... */
   max-width: var(--max-width);
-  /* max-width: var(--card-width); */
   min-width: var(--card-width);
   display: flex;
   flex-direction: column;
@@ -310,12 +259,10 @@
   margin: var(--spacer-biggest);
 }
 
+
 /* -- message-card.ejs */
 
 .message-card {
-  /* background-color: var(--white); */
-  /* border: var(--border-default); */
-  /* border: var(--border-message-card-parent); */
   border-radius: var(--border-radius-default);
   box-shadow: var(--box-shadow-black);
   color: var(--off-black);
@@ -325,25 +272,12 @@
 
 .message-header {
   display: flex;
-  /* align-items: center; */
   align-items: start;
   justify-content: start;
   border-top-left-radius: var(--border-radius-default);
   border-top-right-radius: var(--border-radius-default);
   margin-bottom: var(--spacer-default);
-  /* padding: var(--spacer-medium); */
-  /* padding-bottom: var(--spacer-medium); */
 }
-
-/* .message-avatar-container {
-  background-color: blue;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: start;
-  margin:auto 0;
-} */
 
 .message-name-and-title {
   width: 100%;
@@ -355,15 +289,13 @@
 .message-name {
   width: 100%;
   border-bottom: transparent;
-  /* border-bottom: var(--border-default); */
   border-bottom: transparent;
   color: var(--off-red);
   font-size: var(--message-name-size);
 }
 
 .message-title {
-   width: 100%;
-  /* border-top: var(--border-message); */
+  width: 100%;
   border-top: var(--border-default);
   color: var(--off-black);
   font-size: var(--message-title-size);
@@ -377,18 +309,11 @@
   gap: var(--spacer-small);
   border-top: 0.125rem solid var(--off-gray);
   color: var(--off-red);
-  /* font-size: var(--font-size-small); */
-  /* font-size: var(--font-size-small); */
 }
+
 .message-badge-container span {
-  /* width: var(--width-default-percent); */
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
-  /* border: var(--border-default); */
-  /* border-radius: var(--border-radius-default); */
-    font-size: var(--font-size-small);
-    font-weight: var(--font-weight-heavy);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-heavy);
   padding: var(--spacer-medium) 0;
   text-align: center;
 }
@@ -396,26 +321,14 @@
 .message-details {
   display: flex;
   align-items: center;
-  /* justify-content: start; */
   justify-content: space-evenly;
   gap: var(--spacer-small);
-  /* background-color: var(--lt-green); */
-  /* font-size: var(--message-details-size); */
-  /* font-size: var(--font-size-small); */
-  /* padding: var(--spacer-medium); */
-  /* padding-bottom: var(--spacer-medium); */
 }
 
 .regular-details {
   border-top: 0.125rem solid var(--off-gray);
   border-bottom: 0.125rem solid var(--off-gray);
   color: var(--off-red);
-}
-
-.regular-details span {
-
-    /* border-top: 0.125rem solid var(--off-gray);
-  border-bottom: 0.125rem solid var(--off-gray); */
 }
 
 /* Use on message that were made sticky */
@@ -427,33 +340,18 @@
 }
 
 .message-details span {
-  /* width: var(--width-default-percent);
-  display: flex;
-  align-items: center;
-  justify-content: center; */
-  /* border: var(--border-default); */
-  /* border-radius: var(--border-radius-default); */
-      font-size: var(--font-size-small);
-    font-weight: var(--font-weight-heavy);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-heavy);
   padding: var(--spacer-medium) 0;
   text-align: center;
 }
 
-/* .message-badge {
-  max-width: 1rem;
-} */
-
 .message-body {
-  /* border: var(--border-message); */
-  /* border: var(--border-default); */
   border: transparent;
   border-radius: var(--border-radius-default);
   font-size: var(--message-body-size);
   padding: var(--spacer-big);
 }
-
-/* .message-body-max {
-} */
 
 .message-footer {
   border-bottom-left-radius: var(--border-radius-default);
@@ -469,6 +367,7 @@
 
 /* .message-button - see components.css */
 
+
 /* -- your-profile.ejs */
 .your-profile-card {
   background-color: var(--off-white);
@@ -478,9 +377,11 @@
 .your-profile-card .neighbor-relevant-data {
   background-color: var(--white);
 }
+
 .your-profile-card .app-relevant-data {
   background-color: var(--white);
 }
+
 
 /* -- member-directory.ejs */
 .member-card .neighbor-relevant-data {
@@ -494,9 +395,9 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--border-radius-default);
-  /* padding: var(--spacer-big) 0 var(--spacer-medium) 0; */
   padding: var(--spacer-big);
 }
+
 
 /* -- change-avatar.ejs */
 .preview-current,
@@ -594,8 +495,8 @@
   font-weight: var(--font-weight-heavy);
 }
 
-/* error-page.ejs */
 
+/* error-page.ejs */
 .page-errors h1 {
   color: var(--off-red);
 }
@@ -604,19 +505,5 @@
   font-size: var(--font-size-largest);
 }
 
-/* .error-message {
-  height: fit-content;
-  width: var(--width-default-percent);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacer-medium);
-  background: linear-gradient(05deg, var(--off-yellow), var(--white));
-  border: var(--border-default);
-  border-radius: var(--spacer-biggest);
-  margin-top: var(--spacer-medium);
-  padding: var(--spacer-default);
-} */
 
 

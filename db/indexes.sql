@@ -22,8 +22,16 @@ CREATE INDEX idx_messages_topic_created
 --   ON messages(expires_at);
 
 -- Speeds up lookups of messages by author
-CREATE INDEX idx_messages_user_id
-  ON messages(user_id);
+-- CREATE INDEX idx_messages_user_id
+--   ON messages(user_id);
+-- Below is useful if frequently querying messages by user (e.g., fetching all messages from a specific user). However, might want to ensure you are also filtering by other fields (such as topic_id or is_deleted) within queries. In such cases, a composite index could further improve performance...
+CREATE INDEX idx_messages_user_topic
+  ON messages(user_id, topic_id, is_deleted);
+
+-- In the future, if querying messages by parent_message_id (especially when displaying threads)
+CREATE INDEX idx_messages_topic_parent
+ON messages(topic_id, parent_message_id, created_at DESC)
+WHERE is_deleted = false;
 
  -- MESSAGE LIKES
 -- Speeds up finding all likes for a specific message
@@ -41,7 +49,10 @@ CREATE UNIQUE INDEX IF NOT EXISTS unique_message_like
 ON message_likes (message_id, user_id);
 
 -- TODO delete if I go back to flat reply threads
-CREATE INDEX idx_messages_thread_path ON messages(thread_path);
+-- CREATE INDEX idx_messages_thread_path ON messages(thread_path);
+-- a composite index may be more effective than a single-column index on thread_path alone.
+CREATE INDEX idx_messages_topic_thread_path
+ON messages(topic_id, thread_path);
 
 -- SESSIONS
 -- Used on every authenticated request

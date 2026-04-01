@@ -114,8 +114,7 @@
           </div>
           <ul class="info-ul info-section hidden">
             <li>
-              All messages automatically expire and are deleted after a fixed
-              period of time. Expiration dates are provided on all messages, except those messages pinned (for extended duration) by the admin.
+              All messages automatically expire and are deleted after <span class="red-letter"><%= config.message_soft_delete_days %> days</span> . Expiration dates are provided on all messages, except those messages pinned (for extended duration) by the admin.
             </li>
             <li>
               Expired messages cannot be recovered. This helps keep information

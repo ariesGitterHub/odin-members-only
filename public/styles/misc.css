@@ -15,10 +15,6 @@
   background-color: var(--white);
 }
 
-/* .background-red {
-  background-color: var(--lt-red);
-} */
-
 .background-yellow {
   background-color: var(--lt-yellow);
 }
@@ -47,7 +43,6 @@
 .font-color-yellow {
   color: var(--off-yellow);
 }
-
 
 /* Font size */
 .font-size-small {
@@ -97,7 +92,6 @@
 
 .parent-message {
   background-color: var(--white);
-  /* border: var(--border-default); */
   border: var(--border-message-card-parent);
 }
 
@@ -111,7 +105,6 @@
   display: flex;
   justify-content: center;
   background-color: var(--lt-orange);
-  /* border: var(--border-new-message-date); */
   border-radius: var(--border-radius-small);
   color: var(--off-black);
   font-size: var(--font-size-small);
@@ -144,7 +137,6 @@ gap: var(--spacer-default);
 .width-full {
   width: var(--width-default-percentage)
 }
-
 
 /* Force uniform emoji pointers in change-avatar.ejs */
 input[type="button"],

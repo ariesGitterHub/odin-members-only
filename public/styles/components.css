@@ -14,7 +14,6 @@
 .button-default {
   all: unset; /* nukes browser defaults */
   height: var(--button-default-h);
-  /* width: var(--button-default-w); */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,7 +27,6 @@
   font-size: var(--font-size-default);
   font-weight: var(--font-weight-heavy);
   margin: 0;
-  /* padding: 0 var(--spacer-medium); */
   text-transform: uppercase;
 }
 
@@ -40,10 +38,8 @@
 
 button:hover,
 .button-default:hover {
-  /* background-color: var(--off-red); */
   background-color: var(--off-black);
   box-shadow: var(--box-shadow-gray);
-  /* color: var(--off-white); */
   color: var(--lt-yellow);
 }
 
@@ -93,7 +89,6 @@ button:hover,
   background-color: transparent;
   border: var(--border-default);
   border-radius: var(--border-radius-circle);
-  /* box-shadow: var(--box-shadow-gray); */
   cursor: pointer;
   font-size: var(--font-size-large);
   margin: 0;
@@ -147,12 +142,10 @@ box-shadow: var(--box-shadow-green);
 
 
 .element-container-col-start-center {
-  /* width: var(--width-default-percent); */
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: center;
-  /* gap: var(--spacer-medium); */
 }
 
 /* --row-based */
@@ -208,8 +201,6 @@ box-shadow: var(--box-shadow-green);
   align-items: start;
   justify-content: start;
   gap: var(--spacer-small);
-  /* background-color: var(--lt-red); */
-  /* border: var(--border-default); */
   padding: var(--spacer-default);
 }
 
@@ -266,10 +257,6 @@ box-shadow: var(--box-shadow-green);
   transform: scale(1.1);
 }
 
-/* .emoji-size-large:hover {
-  transform: scale(0.875);
-} */
-
 .emoji {
   font-family: var(--font-emoji) !important;
   font-weight: var(--font-weight-light);
@@ -321,10 +308,6 @@ textarea {
   white-space: pre-line
 }
 
-/* #notes-edit-profile-admin, #notes-create-profile-admin {
-  height: 75px;
-} */
-
 /* LIST related */
 li {
   width: var(--width-default-percent);
@@ -354,7 +337,6 @@ li:last-child {
   color: var(--off-black);
   padding: var(--spacer-default);
 }
-
 
 /* ERROR and success messages */
 .error-message {

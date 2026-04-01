@@ -1,4 +1,5 @@
 const { hasRole } = require("../utils/permissions");
+const { buildThreadedMessages } = require("../utils/threadUtils");
 
 const { getAllRetentionDays } = require("../db/queries/appConfigQueries");
 
@@ -15,10 +16,6 @@ const {
   softDeleteMessageById,
   incrementReplyCount,
   toggleLike,
-  // TODO - get these working as CRON jobs
-//   softDeleteExpiredMessages,
-//   hardDeleteMessages,
-//   cleanupMessages,
 } = require("../db/queries/messageQueries");
 
 
@@ -89,7 +86,7 @@ async function getTopicPage(req, res, next) {
       };
     });
 
-    // const messageLikes = makeAnotherConrtoller()
+    // const messageLikes = makeAnotherController()
 
     // const messagesWithAvatars = addAvatarFields(messages, avatarTypeDefault);
 

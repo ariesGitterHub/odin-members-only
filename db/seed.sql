@@ -41,9 +41,9 @@ WHERE u.email = 'admin@can.org'
 -- App configurations (soft and hard deletes)
 -- NOTE: Hard delete is counted from the time of soft delete, not from creation.
 INSERT INTO app_config (key, value) VALUES
-('message_soft_delete_days', '14'),
-('message_hard_delete_days', '28'),
-('session_hard_delete_days', '28');
+('message_soft_delete_days', '1'),
+('message_hard_delete_days', '2'),
+('session_hard_delete_days', '1');
 
 -- Seed default topics (safe to re-run)
 
@@ -171,10 +171,11 @@ AND p.user_id IS NULL;
 
 
 -- 1️⃣ Introductions
-INSERT INTO messages (topic_id, user_id, title, body)
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id,
   'Hello from Alan',
-  'Hi everyone, just moved to the neighborhood last week. Looking forward to meeting you all!'
+  'Hi everyone, just moved to the neighborhood last week.',
+  '1'
 FROM topics t, users u
 WHERE t.slug = 'introductions'
   AND u.email = 'alan@can.org'
@@ -182,10 +183,11 @@ LIMIT 1;
 
 
 -- 2️⃣ Safety Alert
-INSERT INTO messages (topic_id, user_id, title, body)
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id,
   'Car break-ins reported on Maple St.',
-  'Just a heads up — two cars were broken into overnight near Maple and 3rd. Please remember to lock your vehicles.'
+  'Just a heads up — two cars were broken into overnight near Maple and 3rd.',
+  '2'
 FROM topics t, users u
 WHERE t.slug = 'safety-alerts'
   AND u.email = 'bruce@can.org'
@@ -193,85 +195,93 @@ LIMIT 1;
 
 
 -- 3️⃣ Buy & Sell
-INSERT INTO messages (topic_id, user_id, title, body)
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id,
   'Bike for sale - $75', 
-  'Selling a lightly used mountain bike. 26-inch wheels, great condition. Reply if interested.'
+  'Selling a lightly used mountain bike. 26-inch wheels, ok condition.',
+  '3'
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
   AND u.email = 'chet@can.org'
 LIMIT 1;
 
--- 3️⃣ Buy & Sell
-INSERT INTO messages (topic_id, user_id, title, body)
+-- 4️⃣ Buy & Sell
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id,
   'Old silverware.',
-  'I''m moving and need to downsize. This was my grandmother''s old mixed box of forks, knives, spoons, and some other bits I don''t know the names of. make me an offer.' 
+  'I''m moving and need to downsize. Free forks, knives, and spoons.',
+  '4' 
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
   AND u.email = 'evil@can.org'
 LIMIT 1;
 
--- 3️⃣ Buy & Sell
-INSERT INTO messages (topic_id, user_id, title, body)
+-- 5️⃣ Buy & Sell
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id,
   'Comic Books.',
-  'Throwing out a box of old comic books left behind by a prior renter, YOURS FOR A DOLLAR!' 
+  'Throwing out a box of old comic books; YOURS FOR A DOLLAR!',
+  '5' 
 FROM topics t, users u
 WHERE t.slug = 'buy-sell'
   AND u.email = 'chet@can.org'
 LIMIT 1;
 
 
--- 4️⃣ Free Stuff
-INSERT INTO messages (topic_id, user_id, title, body)
+-- 6️⃣ Free Stuff
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id, 
   'Free moving boxes',
-  'Just finished moving — have about 20 boxes in good shape. Free for pickup.'
+  'Just finished moving — free 20 boxes, in good shape.',
+  '6'
 FROM topics t, users u
 WHERE t.slug = 'free-stuff'
   AND u.email = 'dave@can.org'
 LIMIT 1;
 
 
--- 5️⃣ Help Request
-INSERT INTO messages (topic_id, user_id, title, body)
+-- 7️⃣ Help Request
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id, 
   'Need recommendation for plumber',
-  'Can anyone recommend a reliable plumber for a small kitchen leak?'
+  'Can anyone recommend a reliable plumber for a small kitchen leak?',
+  '7'
 FROM topics t, users u
 WHERE t.slug = 'help-requests'
   AND u.email = 'alan@can.org'
 LIMIT 1;
 
 
--- 6️⃣ Event
-INSERT INTO messages (topic_id, user_id, title, body)
+-- 8️⃣ Event
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id,
   'Neighborhood BBQ this Saturday',
-  'Planning a casual BBQ at Riverside Park at 4pm. Bring something to share!'
+  'Planning a casual BBQ at Riverside Park at 4pm. Bring something to share!',
+  '8'
 FROM topics t, users u
 WHERE t.slug = 'events'
   AND u.email = 'bruce@can.org'
 LIMIT 1;
 
 
--- 7️⃣ Lost & Found
-INSERT INTO messages (topic_id, user_id, title, body)
+-- 9️⃣ Lost & Found
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id, 
   'Found: small brown dog',
-  'Small, friendly, brown dog found near Pine Ave. No collar. Please reply if yours.'
+  'Small, friendly, brown dog found near Pine Ave. No collar.',
+  '9'
 FROM topics t, users u
 WHERE t.slug = 'lost-found'
   AND u.email = 'chet@can.org'
 LIMIT 1;
 
 
--- 8️⃣ General Discussion
-INSERT INTO messages (topic_id, user_id, title, body)
+-- 🔟 General Discussion
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
 SELECT t.id, u.id, 
   'Anyone else hearing construction noise?',
-  'There has been loud construction starting around 5:30am this week. Anyone know what project this is?'
+  'There has been loud construction starting around 5:30am this week.',
+  '10'
 FROM topics t, users u
 WHERE t.slug = 'nuisances'
   AND u.email = 'dave@can.org'

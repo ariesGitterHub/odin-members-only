@@ -9,39 +9,27 @@
   --white: #fff;
   --black: #000;
 
-  --off-white: #e5dfd5;
-  --off-gray: #768179;
-  --off-black: #1a1b1c;
+  --off-white: #d7d1c5;
+  --off-gray: #727e76;
+  --off-black: #1c1d1f;
   --off-black-trans: #1a1b1c80;
 
-  /* --off-red: #994e4e; */
-  --off-red: #9d6161;
-  /* --off-orange: #a18553; */
-  --off-yellow: #a0a054;
-  --off-green: #519d64;
-  /* --off-teal: #4b9595; */
-  /* --off-blue: #4c7d98; */
-  /* --off-purple: #864e97; */
+  --off-red: #944f4f;
+  --off-yellow: #948f4f;
+  --off-green: #5a944f;
 
-  --dk-red: #4f2b2a;
-  --dk-orange: #8a581a;
+  --dk-red: #422c2c;
   /* --dk-yellow: #83741d; */
-  --dk-green: #404d44;
-  /* --dk-teal: #394d4d; */
-  --dk-blue: #2d2d3d;
-  /* --dk-purple: #483548; */
+  --dk-green: #353d32;
 
   --lt-gray: #838684;
-  --lt-red: #e0b8b8;
-  --lt-orange: #e2c780;
-  --lt-yellow: #dbd5ad;
-  --lt-green: #a8b8a8;
-  /* --lt-teal: #b3e3e3; */
-  --lt-blue: #b8dde9;
-  /* --lt-purple: #a790af; */
+  --lt-red: #ebb7b7;
+  --lt-orange: #e4bf62;
+  --lt-yellow: #d8cd83;
+  --lt-green: #93e1a9;
 
-  --error-color: #dc2518;
-  --success-color: #3cdc18;
+  --error-color: #c83126;
+  --success-color: #3fd41e;
 
   --avatar-color-fg: var(--off-black);
   --avatar-color-bg-top: var(--off-white);

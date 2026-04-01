@@ -152,7 +152,7 @@ async function postLogIn(req, res, next) {
       // Log the user in (Passport session)
       req.login(user, async (err) => {
         if (err) return next(err);
-
+console.log("Session ID:", req.sessionID);
         // ✅ Insert session log AFTER login
         try {
           await insertSessionLog(

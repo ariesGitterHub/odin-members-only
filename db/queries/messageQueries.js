@@ -105,6 +105,7 @@ const insertMessage = async (
   try {
     let res;
 
+    // If there's no parent_message_id, it's a top-level message
     if (!parent_message_id) {
       // Top-level message
       res = await client.query(
@@ -119,10 +120,8 @@ const insertMessage = async (
       const messageId = res.rows[0].id;
 
       // Update thread_path to its own id
-      await client.query(`UPDATE messages SET thread_path = $1 WHERE id = $2`, [
-        messageId.toString(),
-        messageId,
-      ]);
+      await client.query(`UPDATE messages SET thread_path = $1 WHERE id = $2`,
+        [messageId.toString(), messageId]);
 
       return { id: messageId };
     } else {
@@ -149,6 +148,8 @@ const insertMessage = async (
       const messageId = res.rows[0].id;
 
       // Set proper thread_path
+      // Update thread_path after insert (this could be done at insert time, depending on DB)
+
       const threadPath = `${parentPath}/${messageId}`;
       await client.query(`UPDATE messages SET thread_path = $1 WHERE id = $2`, [
         threadPath,
@@ -476,139 +477,6 @@ const toggleLike = async (messageId, userId) => {
   }
 };
 
-
-/**
- * Soft-delete messages that have expired but are not yet marked as deleted.
- * Sets is_deleted = true and deleted_at = NOW()
- * Can be run hourly/daily via cron.
- */
-// const softDeleteExpiredMessages = async () => {
-//   const query = `
-//     UPDATE messages
-//     SET is_deleted = true,
-//         deleted_at = NOW()
-//     WHERE expires_at IS NOT NULL
-//       AND expires_at < NOW()
-//       AND is_deleted = false;
-//   `;
-//   const res = await pool.query(query);
-//   return res.rowCount; // number of rows updated
-// };
-
-// const softDeleteExpiredMessages = async () => {
-//   const query = `
-//     UPDATE messages
-//     SET is_deleted = true,
-//         deleted_at = NOW()
-//     WHERE is_deleted = false;
-//   `;
-//   const res = await pool.query(query);
-//   return res.rowCount; // number of rows updated
-// };
-
-/**
- * Hard delete messages that were soft-deleted more than olderThanDays ago.
- * Frees up DB storage.
- * @param olderThanDays: number of days after which soft-deleted messages are permanently deleted
- */
-// const hardDeleteMessages = async (olderThanDays = 30) => {
-//   const query = `
-//     DELETE FROM messages
-//     WHERE is_deleted = true
-//       AND deleted_at < NOW() - INTERVAL $1::text;
-//   `;
-//   const res = await pool.query(query, [`${olderThanDays} days`]);
-//   return res.rowCount; // number of rows deleted
-// };
-
-/**
- * Combined cleanup function:
- * 1. Soft-delete expired messages
- * 2. Hard-delete old soft-deleted messages
- * Can be scheduled as a cron job.
- * Runs in a single transaction so cleanup is atomic:
- * - If soft-delete fails, hard-delete is not executed
- * - If hard-delete fails, soft-deletes are rolled back
- */
-// const cleanupMessages = async (olderThanDays = 30) => {
-//   const client = await pool.connect();
-//   try {
-//     await client.query("BEGIN"); // start transaction
-
-//     const softDeletedRes = await client.query(`
-//       UPDATE messages
-//       SET is_deleted = true,
-//           deleted_at = NOW()
-//       WHERE expires_at IS NOT NULL
-//         AND expires_at < NOW()
-//         AND is_deleted = false
-//       RETURNING id;
-//     `);
-//     const softDeleted = softDeletedRes.rowCount;
-
-//     const hardDeletedRes = await client.query(
-//       `
-//       DELETE FROM messages
-//       WHERE is_deleted = true
-//         AND deleted_at < NOW() - INTERVAL $1::text
-//       RETURNING id;
-//     `,
-//       [`${olderThanDays} days`],
-//     );
-//     const hardDeleted = hardDeletedRes.rowCount;
-
-//     await client.query("COMMIT");
-//     return { softDeleted, hardDeleted };
-//   } catch (err) {
-//     await client.query("ROLLBACK");
-//     throw err;
-//   } finally {
-//     client.release();
-//   }
-// };
-
-/**
- * Fetch messages by a specific user
- * @param targetId: ID of the user
- * @param limit: number of messages to return
- */
-// const getMessagesByUser = async (targetId, limit = 50) => {
-//   const query = `
-//     SELECT id, topic_id, title, body, created_at, expires_at
-//     FROM messages
-//     WHERE user_id = $1
-//       AND is_deleted = false
-//       AND (expires_at IS NULL OR expires_at > NOW())
-//     ORDER BY created_at DESC
-//     LIMIT $2;
-//   `;
-//   const res = await pool.query(query, [targetId, limit]);
-//   return res.rows;
-// };
-
-/**
- * Fetch messages by a specific topic
- * @param topicId: ID of the topic
- * @param limit: number of messages to return
- */
-
-// TODO - what is this? Old, not needed?
-// const getMessagesByTopic = async (targetId, limit = 50) => {
-//   const query = `
-//     SELECT id, user_id, title, body, created_at, expires_at
-//     FROM messages
-//     WHERE topic_id = $1
-//       AND is_deleted = false
-//       AND (expires_at IS NULL OR expires_at > NOW())
-//     ORDER BY created_at DESC
-//     LIMIT $2;
-//   `;
-//   const res = await pool.query(query, [targetId, limit]);
-//   return res.rows;
-// };
-
-
-// TODO - rename all of these eby type, get, update, post, insert, find out the major types of queries!
 module.exports = {
   getMessages,
   getMessageById,
@@ -623,9 +491,5 @@ module.exports = {
   softDeleteMessageById,
   incrementReplyCount,
   toggleLike,
-  // TODO - get these working as CRON jobs
-  // softDeleteExpiredMessages,
-  // hardDeleteMessages,
-  // cleanupMessages,
 };
 
