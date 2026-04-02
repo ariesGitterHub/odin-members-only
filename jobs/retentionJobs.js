@@ -1,6 +1,6 @@
 // // jobs/retentionJobs.js
 // const pool = require("../db/pool"); // your pg pool
-// const { getAllRetentionDays } = require("../db/queries/appConfigQueries");
+// const { getAllSiteControls } = require("../db/queries/appConfigQueries");
 
 // /**
 //  * Run all retention jobs:
@@ -11,7 +11,7 @@
 // async function runRetentionJobs() {
 //   try {
 //     // 1️⃣ Load retention values from app_config
-//     const retentionDays = await getAllRetentionDays();
+//     const retentionDays = await getAllSiteControls();
 //     const messageSoftDays = retentionDays.message_soft_delete_days;
 //     const messageHardDays = retentionDays.message_hard_delete_days;
 //     const sessionHardDays = retentionDays.session_hard_delete_days;
@@ -80,7 +80,7 @@
 // };
 
 const pool = require("../db/pool");
-const { getAllRetentionDays } = require("../db/queries/appConfigQueries");
+const { getAllSiteControls } = require("../db/queries/appConfigQueries");
 
 // Run all retention jobs (soft + hard deletes)
 const runRetentionJobs = async () => {
@@ -88,7 +88,7 @@ const runRetentionJobs = async () => {
 
   try {
     // 1️⃣ Get retention days from app_config
-    const retention = await getAllRetentionDays();
+    const retention = await getAllSiteControls();
     const {
       message_soft_delete_days,
       message_hard_delete_days,

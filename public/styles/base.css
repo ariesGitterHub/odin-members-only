@@ -9,10 +9,10 @@
   --white: #fff;
   --black: #000;
 
-  --off-white: #e2dcd3;
+  --off-white: #e3e0d3;
   --off-gray: #758179;
-  --off-black: #1c1c1e;
-  --off-black-trans: #1a1b1c80;
+  --off-black: #171819;
+  --off-black-trans: #17181980;
 
   --off-red: #944f4f;
   --off-yellow: #948f4f;
@@ -62,6 +62,7 @@
   --font-error: monospace;
 
   /* Root sizing for Media Queries */
+  --card-width: 300px;
   --max-width: 650px;
   --width-default-percent: 100%;
 
@@ -81,9 +82,9 @@
 
   --nav-button-h-w: 2.5rem;
   --nav-bar-h: 4rem;
-  --card-width: 300px;
+ 
 
-  --index-image-size: 15rem;
+  --index-image-size: 17rem;
   
   --avatar-circle-small-h-w: 4rem;
   --avatar-preview-current-preview-new-h-w: 5rem; 

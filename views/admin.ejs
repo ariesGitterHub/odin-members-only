@@ -83,16 +83,26 @@
               </span>
             <% } %>
           </div>
+          <% if (user && user.permission_status === "admin" && (config.maintenance_mode || process.env.MAINTENANCE_MODE === "true")) { %> 
+            <div class="element-container-col-start-center ui-message ui-message-bubble background-black font-color-white">         
+              <% if (config.maintenance_mode) { %>
+                <p><span class="emoji">🚧</span> Maintenance mode set to <span class="font-color-green">true</span> in the admin panel.</p>
+              <% } %>   
+              <% if (process.env.MAINTENANCE_MODE === "true") { %>
+              <p><span class="emoji">🚧</span> Maintenance mode set to <span class="font-color-green">true</span> in environment variables (.env).</p>
+              <% } %>          
+            </div>   
+          <% } %>
           <% if (user && user.permission_status === "guest" && user.verified_by_admin === true) { %> 
-            <div class="element-container-col-start-center ui-message ui-message-bubble">         
+            <div class="element-container-col-start-center ui-message ui-message-bubble">                    
               <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "declined") { %>
-              <p>Guest user declined member status.</p>
+              <p><span class="emoji">🚫</span> Guest user declined member status.</p>
               <% } %>            
               <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "none") { %>
-              <p>Pending member status, awaiting guest user decision.</p>
+              <p><span class="emoji">⚖</span> Pending member status, awaiting guest user decision.</p>
               <% } %>
               <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === false && user.invite_decision === "none") { %>
-              <p>Consider upgrading this guest to member status.</p>
+              <p><span class="emoji">🤔</span> Consider upgrading this guest to member status.</p>
               <% } %>
             </div>   
           <% } %>
@@ -221,16 +231,16 @@
               
               <a class="button-default wide-button" href="/app/admin-create">create new user</a>
               
-              <button id="retention-controls-button" class="button-default wide-button" type="button">open retention controls</button>
-              <div id="retention-controls-div" class="<%= (query.success || query.error) ? '' : 'hidden' %>">
-                <% if (query.success === "retention-updated") { %>
-                  <div class="element-container-row-default success-message">[retention settings saved.]</div>
+              <button id="site-controls-button" class="button-default wide-button" type="button">open site controls</button>
+              <div id="site-controls-div" class="<%= (query.success || query.error) ? '' : 'hidden' %>">
+                <% if (query.success === "site-settings-updated") { %>
+                  <div class="element-container-row-default success-message">[site settings saved.]</div>
                 <% } %>
 
                 <% if (query.error === "invalid-input") { %>
-                  <div class="element-container-row-default error-message">[retention changes failed.] please try again.</div>
+                  <div class="element-container-row-default error-message">[site changes failed.] please try again.</div>
                 <% } %>
-                <form id="retention-controls-form" action="/app/admin/config/retention-days" method="POST">
+                <form id="site-controls-form" action="/app/admin/config/site-controls" method="POST">
                   <fieldset>
                     <h3>message retention</h3>
                     <div class="element-container-row-default flex-gap">                  
@@ -252,8 +262,19 @@
                       <p class="lowercase">days</p>
                     </div>
                   </fieldset>
+                  <fieldset>
+                    <h3>Maintenance Mode</h3>
+                    <div class="element-container-row-default flex-gap">
+                      <label class="font-color-warning" for="maintenance_mode">save to enable changes</label>
+                      <label class="switch">
+                        <input type="checkbox" name="maintenance_mode" value="on" <% if(config.maintenance_mode) { %>checked<% } %> />
+                        <span class="slider round"></span>
+                      </label>
+                      <p class="uppercase"><%= config.maintenance_mode ? 'on' : 'off' %></p>
+                    </div>
+                  </fieldset>
                   <div class="button-container-col">
-                    <button class="button-default wide-button" type="submit">save retention period</button>                  
+                    <button class="button-default wide-button" type="submit">save site settings</button>                  
                   </div>
                 </form>
               </div>

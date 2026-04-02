@@ -5,19 +5,19 @@ function updateButtonText(button, element, text) {
     ? button.textContent = `open ${text}` 
     : button.textContent = `close ${text}`;}
 
- // Toggle .hidden messages/session logs retention controls in admin.ejs
-export function handleRetentionControlsToggle() {
-  const retentionControlsButton = document.querySelector("#retention-controls-button");
-  const retentionControlsDiv = document.querySelector("#retention-controls-div");
-  const retentionControlsText = "retention controls";
+ // Toggle .hidden messages/session logs site controls in admin.ejs
+export function handleSiteControlsToggle() {
+  const siteControlsButton = document.querySelector("#site-controls-button");
+  const siteControlsDiv = document.querySelector("#site-controls-div");
+  const siteControlsText = "site controls";
 
-  if (retentionControlsButton && retentionControlsDiv) {
-    retentionControlsButton.addEventListener("click", () => {
-      toggleVisibility(retentionControlsDiv);
+  if (siteControlsButton && siteControlsDiv) {
+    siteControlsButton.addEventListener("click", () => {
+      toggleVisibility(siteControlsDiv);
       updateButtonText(
-        retentionControlsButton,
-        retentionControlsDiv,
-        retentionControlsText,
+        siteControlsButton,
+        siteControlsDiv,
+        siteControlsText,
       );
     });
   }

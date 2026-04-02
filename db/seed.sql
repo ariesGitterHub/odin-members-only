@@ -38,12 +38,14 @@ LEFT JOIN user_profiles p ON p.user_id = u.id
 WHERE u.email = 'admin@can.org'
   AND p.user_id IS NULL;
 
--- App configurations (soft and hard deletes)
+-- App configurations (soft and hard deletes, and maintenance mode)
 -- NOTE: Hard delete is counted from the time of soft delete, not from creation.
 INSERT INTO app_config (key, value) VALUES
 ('message_soft_delete_days', '1'),
 ('message_hard_delete_days', '2'),
-('session_hard_delete_days', '1');
+('session_hard_delete_days', '1'),
+('maintenance_mode', 'false');
+
 
 -- Seed default topics (safe to re-run)
 
@@ -139,10 +141,10 @@ LEFT JOIN (
     ('eve@can.org', 'E', '', '', '',  '', '', '', '', '', ''),
     ('alan@can.org', 'A', '', '', '#997a98',  '', '', '', '', '', ''),
     ('brad@can.org', 'B', '', '#a91313', '',  '', '', '', '', '', ''),
-    ('chet@can.org', '🦍', '', '#92cfe4', '#7de9e9',  '555-111-2222', '123 Maple St', 'Harrisburg', 'PA', '17102', 'Likes peanut brittle; watches squirrels in the park on hot summer days.'),
-    ('dave@can.org', '🦙', '#521313', '#eeee7d', '#83741d', '555-333-4444', '456 Oak Ave',  'Harrisburg', 'PA', '17101', ''),
-    ('evil@can.org', 'E', '#2b0505', '#bfbf0c', '#1d2c83', '555-313-4444', '45 Nope Ave',  'Harrisburg', 'PA', '17101', ''),
-    ('zee@can.org', '🐝', '#1f1e1d', '#dddd16', '#d7d70d', '555-666-4444', '123 Yikes Lane',  'Harrisburg', 'PA', '17102', 'Owns a bee hive.')
+    ('chet@can.org', '🦍', '', '#92cfe4', '#7de9e9',  '555-111-2222', '123 Maple St', 'HBG', 'PA', '17102', 'Likes peanut brittle; watches squirrels in the park on hot summer days.'),
+    ('dave@can.org', '🦙', '#521313', '#eeee7d', '#83741d', '555-333-4444', '456 Oak Ave',  'HBG', 'PA', '17101', ''),
+    ('evil@can.org', 'E', '#2b0505', '#bfbf0c', '#1d2c83', '555-313-4444', '45 Nope Ave',  'HBG', 'PA', '17101', ''),
+    ('zee@can.org', '🐝', '#1f1e1d', '#dddd16', '#d7d70d', '555-666-4444', '123 Yikes Lane',  'HBG', 'PA', '17102', 'Owns a bee hive.')
 ) AS v(email, avatar_type, avatar_color_fg, avatar_color_bg_top, avatar_color_bg_bottom, phone, street_address, city, us_state, zip_code, notes)
 ON u.email = v.email
 
@@ -202,8 +204,8 @@ WHERE t.slug = 'buy-sell'
 LIMIT 1;
 
 -- Buy & Sell
-INSERT INTO messages (topic_id, user_id, like_count, title, body, thread_path)
-SELECT t.id, u.id, 87,
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
+SELECT t.id, u.id,
   'Old silverware.',
   'I''m moving and need to downsize. Free forks, knives, and spoons.',
   '4' 
@@ -213,8 +215,8 @@ WHERE t.slug = 'buy-sell'
 LIMIT 1;
 
 -- Buy & Sell
-INSERT INTO messages (topic_id, user_id, like_count, title, body, thread_path)
-SELECT t.id, u.id, 123,
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
+SELECT t.id, u.id,
   'Comic Books.',
   'Throwing out a box of old comic books; YOURS FOR A DOLLAR!',
   '5' 
@@ -225,8 +227,8 @@ LIMIT 1;
 
 
 -- Free Stuff
-INSERT INTO messages (topic_id, user_id, like_count, reply_count, title, body, thread_path)
-SELECT t.id, u.id, 5, 53,
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
+SELECT t.id, u.id, 
   'Free moving boxes',
   'Just finished moving — free 20 boxes, in good shape.',
   '6'
@@ -237,8 +239,8 @@ LIMIT 1;
 
 
 -- Help Request
-INSERT INTO messages (topic_id, user_id, like_count, reply_count, title, body, thread_path)
-SELECT t.id, u.id, 11, 200,
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
+SELECT t.id, u.id, 
   'Need recommendation for plumber',
   'Can anyone recommend a reliable plumber for a small kitchen leak?',
   '7'
@@ -249,8 +251,8 @@ LIMIT 1;
 
 
 -- Event
-INSERT INTO messages (topic_id, user_id, like_count, reply_count, title, body, thread_path)
-SELECT t.id, u.id, 345, 778,
+INSERT INTO messages (topic_id, user_id, title, body, thread_path)
+SELECT t.id, u.id,
   'Neighborhood BBQ this Saturday',
   'Planning a casual BBQ at Riverside Park at 4pm. Bring something to share!',
   '8'

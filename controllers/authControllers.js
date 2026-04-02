@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
-// const { v4: uuidv4 } = require('uuid'); // To generate a session token
 const { validationResult } = require("express-validator");
 
 const {
@@ -152,7 +151,7 @@ async function postLogIn(req, res, next) {
       // Log the user in (Passport session)
       req.login(user, async (err) => {
         if (err) return next(err);
-console.log("Session ID:", req.sessionID);
+// console.log("Session ID:", req.sessionID);
         // ✅ Insert session log AFTER login
         try {
           await insertSessionLog(

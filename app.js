@@ -4,17 +4,13 @@ require("./config/passport"); // This initializes the Passport strategies
 
 // 1. Imports at the top
 const express = require("express");
-const cookieParser = require("cookie-parser");
 const { runRetentionJobs } = require("./jobs/retentionJobs");  // TODO - FOR DEV ONLY
-
-// const { validateSession } = require("./middleware/sessionMiddleware"); // Import the session validation middleware
 const path = require("node:path");
-// const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const passport = require("passport");
 const setCurrentUser = require('./middleware/setCurrentUser'); // Import the middleware
-// const { body, validationResult } = require("express-validator");
 const setPermissions = require("./middleware/setPermissions");
+// const checkMaintenanceMode = require("./middleware/checkMaintenanceMode");
 
 const PORT = process.env.PORT || 3000;
 const appRouter = require("./routes/appRouter");
@@ -35,7 +31,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
 // Add cookie-parser middleware before your session validation
-app.use(cookieParser()); 
+// app.use(cookieParser()); 
 
 // Apply session validation globally, before any routes
 // app.use(validateSession);  // This checks if the user has a valid session
@@ -64,6 +60,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(setCurrentUser);  // Use it globally
 app.use(setPermissions);  // Use it globally
+// app.use(checkMaintenanceMode);  // Use it globally
 
 // 5. Routes
 // -- "Home"

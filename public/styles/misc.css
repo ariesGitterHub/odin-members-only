@@ -10,6 +10,9 @@
 .lowercase {
   text-transform: lowercase;
 }
+.background-black {
+  background-color: var(--off-black);
+}
 
 .background-white {
   background-color: var(--white);
@@ -40,8 +43,8 @@
   color: var(--off-red);
 }
 
-.font-color-yellow {
-  color: var(--off-yellow);
+.font-color-warning {
+  color: var(--lt-orange);
 }
 
 /* Font size */

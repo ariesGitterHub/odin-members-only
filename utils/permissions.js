@@ -76,6 +76,11 @@ function canPerformHasRole(user, action, resource) {
         hasRole(user, "member")
       );
 
+    case "admin-only":
+      return (
+        hasRole(user, "admin")
+      );
+
     // Test for member upgrade, must have permission_status === guest, verified_by_admin === true, and guest_upgrade_invite === true to be able to see button.
     case "guest-members-upgrade":
       return hasRole(user, "guest") && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.is_active === true && user.invite_decision === "none";

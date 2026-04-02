@@ -1,6 +1,8 @@
 const { Router } = require("express");
 const { requireRole } = require("../utils/permissions");
-// const { passwordValidationRules } = require("../middleware/passwordValidationRules");
+const checkMaintenanceMode = require("../middleware/checkMaintenanceMode");
+
+
 const { createUserValidator,  } = require("../middleware/validationCreateUser");
 const {
   adminEditUserValidator,
@@ -10,7 +12,7 @@ const {
 // TODO - arrange by order of ROUTES far below
 const {
   getAdminPage,
-  postNewRetentionDaysAdminPage,
+  postNewSiteSettingsAdminPage,
   getAdminCreatePage,
   postAdminCreatePage,
   getAdminEditPage,
@@ -74,14 +76,17 @@ appRouter.get("/message/:id", requireRole("guest"), getMessageDetails);
 // ROUTES: INDEX/HOME (index.ejs)
 appRouter.get("/", getHome);
 
+// ROUTES: INDEX/HOME (index.ejs)
+appRouter.get("/", getHome);
+
 // ROUTES: SIGN UP PAGE (sign-up.ejs)
 appRouter.get("/sign-up", getSignUp);
 // appRouter.post("/sign-up", passwordValidationRules, postSignUp);
-appRouter.post("/sign-up", createUserValidator, postSignUp);
+appRouter.post("/sign-up", checkMaintenanceMode, createUserValidator, postSignUp);
 
 // ROUTES: LOG IN PAGE (log-in.ejs)
 appRouter.get("/log-in", getLogIn);
-appRouter.post("/log-in", postLogIn);
+appRouter.post("/log-in", checkMaintenanceMode, postLogIn);
 
 // TODO - make uniform like other routes?
 // ROUTES: LOG OUT BUTTON
@@ -95,9 +100,9 @@ appRouter.post("/log-out", (req, res, next) => {
 // ROUTES: ADMIN PAGE (admin.ejs) 
 appRouter.get("/admin", requireRole("admin"), getAdminPage);
 appRouter.post(
-  "/admin/config/retention-days",
+  "/admin/config/site-controls",
   requireRole("admin"),
-  postNewRetentionDaysAdminPage,
+  postNewSiteSettingsAdminPage,
 );
 
 // ROUTE: DELETE ACCOUNT MODAL (warning-account-deletion.ejs)

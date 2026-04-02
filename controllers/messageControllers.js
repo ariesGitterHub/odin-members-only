@@ -1,7 +1,7 @@
 const { hasRole } = require("../utils/permissions");
 const { buildThreadedMessages } = require("../utils/threadUtils");
 
-const { getAllRetentionDays } = require("../db/queries/appConfigQueries");
+const { getAllSiteControls } = require("../db/queries/appConfigQueries");
 
 const {
   getMessageById,
@@ -48,7 +48,7 @@ async function getTopicPage(req, res, next) {
   try {
     const { slug } = req.params;
 
-    const retentionDays = await getAllRetentionDays();
+    const siteSettings = await getAllSiteControls();
 
 
     // Get topic info
@@ -77,7 +77,7 @@ async function getTopicPage(req, res, next) {
 
       const softExpiry = new Date(
         createdAt.getTime() +
-          retentionDays.message_soft_delete_days * 24 * 60 * 60 * 1000,
+          siteSettings.message_soft_delete_days * 24 * 60 * 60 * 1000,
       );
 
       return {
@@ -92,7 +92,7 @@ async function getTopicPage(req, res, next) {
 
     res.render("topic", {
       title: topic.name,
-      config: retentionDays,
+      config: siteSettings,
       topic,
       // messages: messagesWithAvatars,
       // messages,

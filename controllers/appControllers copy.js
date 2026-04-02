@@ -1,7 +1,5 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
-// const { v4: uuidv4 } = require('uuid'); // To generate a session token
-// const { check, validationResult } = require("express-validator");
 const { validationResult } = require("express-validator");
 const { hasRole } = require("../utils/permissions");
 const { buildThreadedMessages } = require("../utils/threadUtils");

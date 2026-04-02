@@ -1,4 +1,3 @@
-// const { v4: uuidv4 } = require('uuid'); // To generate a session token
 const { validationResult } = require("express-validator");
 const { usStates } = require("../utils/usStates");
 

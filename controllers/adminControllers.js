@@ -1,5 +1,4 @@
 const bcrypt = require("bcryptjs");
-// const { v4: uuidv4 } = require('uuid'); // To generate a session token
 const { validationResult } = require("express-validator");
 const { usStates } = require("../utils/usStates");
 
@@ -12,7 +11,7 @@ const {
   // checkIfEmailExists,
 } = require("../db/queries/userQueries");
 
-const { getAllRetentionDays, updateAllRetentionDays } = require("../db/queries/appConfigQueries");
+const { getAllSiteControls, updateAllSiteControls } = require("../db/queries/appConfigQueries");
 
 const { getMessages } = require("../db/queries/messageQueries");
 
@@ -39,7 +38,7 @@ async function getAdminPage(req, res, next) {
   try {
     const users = await getUsers();
     const messages = await getMessages();
-    const retentionDays = await getAllRetentionDays();
+    const siteControls = await getAllSiteControls();
 
     const usersWithBirthdates = addBirthdateFields(
       users,
@@ -75,24 +74,25 @@ async function getAdminPage(req, res, next) {
       title: "Admin Panel",
       users: usersWithChineseZodiacSigns,
       messages,
-      config: retentionDays,
+      config: siteControls,
       errors: [],
-      query: req.query, // add this for messages about retention days changes!!!
+      query: req.query, // add this for messages about site settings changes!!!
     });
   } catch (err) {
     next(err);
   }
 }
 
-async function postNewRetentionDaysAdminPage(req, res, next) {
+async function postNewSiteSettingsAdminPage(req, res, next) {
   try {
     const {
       message_soft_delete_days,
       message_hard_delete_days,
       session_hard_delete_days,
+      maintenance_mode,
     } = req.body;
 
-    // ✅ Basic validation
+    // Basic validation
     const values = [
       message_soft_delete_days,
       message_hard_delete_days,
@@ -105,24 +105,24 @@ async function postNewRetentionDaysAdminPage(req, res, next) {
 
     if (hasInvalid) {
       // You could also store this in a flash message
-      return res.redirect(
-        "/app/admin?error=invalid-input",
-      );
+      return res.redirect("/app/admin?error=invalid-input");
     }
 
+    // Now we handle maintenance_mode separately since it's a boolean
+    const isMaintenanceModeEnabled = maintenance_mode === "on"; // You can adjust this based on your form input
+
     // ✅ Call your query
-    await updateAllRetentionDays(
+    await updateAllSiteControls(
       parsedValues[0],
       parsedValues[1],
       parsedValues[2],
+      isMaintenanceModeEnabled, // maintenance_mode as boolean
     );
 
     // ✅ Redirect on success
-    return res.redirect(
-      "/app/admin?success=retention-updated",
-    );
+    return res.redirect("/app/admin?success=site-settings-updated");
   } catch (err) {
-    console.error("Error updating retention settings:", err);
+    console.error("Error updating site settings:", err);
 
     // Option 1 (recommended): pass to global error handler
     return next(err);
@@ -373,7 +373,7 @@ async function deleteUserAccount(req, res, next) {
 
 module.exports = {
   getAdminPage,
-  postNewRetentionDaysAdminPage,
+  postNewSiteSettingsAdminPage,
   getAdminCreatePage,
   postAdminCreatePage,
   getAdminEditPage,
