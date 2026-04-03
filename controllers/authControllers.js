@@ -2,6 +2,8 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const { validationResult } = require("express-validator");
 
+const { getAllSiteControls } = require("../db/queries/appConfigQueries");
+
 const {
   insertSessionLog,
   insertNewUser,
@@ -128,7 +130,49 @@ async function getLogIn(req, res, next) {
 //   })(req, res, next); // Execute the Passport authentication logic
 // }
 
-const { createSessionLog } = require("../db/queries/userQueries"); // import the helper
+// async function postLogIn(req, res, next) {
+//   passport.authenticate("local", async (err, user, info) => {
+//     if (err) return next(err);
+
+//     if (!user) {
+//       return res.render("log-in", {
+//         title: "Log In",
+//         errors: [info.message || "Invalid email or password"],
+//         formData: req.body || {},
+//       });
+//     }
+
+//     console.log("User authenticated!!!!! 🎈");
+
+//     try {
+//       // Update last login
+//       await updateLastLogin(user.id);
+
+//       // Log the user in (Passport session)
+//       req.login(user, async (err) => {
+//         if (err) return next(err);
+// // console.log("Session ID:", req.sessionID);
+//         // ✅ Insert session log AFTER login
+//         try {
+//           await insertSessionLog(
+//             user.id,
+//             req.sessionID,
+//             req.ip,
+//             req.headers["user-agent"],
+//           );
+//         } catch (logErr) {
+//           console.error("Failed to create session log:", logErr);
+//           // You can decide: ignore or fail login
+//         }
+
+//         res.redirect("/app/message-boards"); // Redirect after successful login
+//       });
+//     } catch (err) {
+//       console.error("Error updating last login:", err);
+//       return next(err);
+//     }
+//   })(req, res, next);
+// }
 
 async function postLogIn(req, res, next) {
   passport.authenticate("local", async (err, user, info) => {
@@ -142,17 +186,30 @@ async function postLogIn(req, res, next) {
       });
     }
 
-    console.log("User authenticated!!!!! 🎈");
-
     try {
+      const siteSettings = await getAllSiteControls();
+
+      const isMaintenanceModeEnv = process.env.MAINTENANCE_MODE === "true"; 
+      const isMaintenanceModeDb = siteSettings.maintenance_mode || false;
+      const isMaintenanceModeActive = isMaintenanceModeEnv || isMaintenanceModeDb;
+
+      if (isMaintenanceModeActive && user.permission_status !== "admin") {
+        return res.redirect("/");
+      }
+
+      console.log("🎈 User authenticated!");
+
       // Update last login
       await updateLastLogin(user.id);
 
       // Log the user in (Passport session)
       req.login(user, async (err) => {
-        if (err) return next(err);
-// console.log("Session ID:", req.sessionID);
-        // ✅ Insert session log AFTER login
+        if (err) {
+          console.error("Error during login:", err); // Log error for debugging
+          return next(err);
+        }
+        // console.log("Session ID:", req.sessionID);
+        // Insert session log AFTER login
         try {
           await insertSessionLog(
             user.id,
@@ -162,10 +219,13 @@ async function postLogIn(req, res, next) {
           );
         } catch (logErr) {
           console.error("Failed to create session log:", logErr);
-          // You can decide: ignore or fail login
         }
 
-        res.redirect("/app/message-boards"); // Redirect after successful login
+        if (user.permission_status === "admin") {
+          res.redirect("/app/admin");
+        } else {
+          res.redirect("/app/message-boards");
+        }
       });
     } catch (err) {
       console.error("Error updating last login:", err);
@@ -173,6 +233,7 @@ async function postLogIn(req, res, next) {
     }
   })(req, res, next);
 }
+
 
 
 // CONTROLLER: LOG-OUT

@@ -1,8 +1,5 @@
 const { Router } = require("express");
 const { requireRole } = require("../utils/permissions");
-const checkMaintenanceMode = require("../middleware/checkMaintenanceMode");
-
-
 const { createUserValidator,  } = require("../middleware/validationCreateUser");
 const {
   adminEditUserValidator,
@@ -82,11 +79,11 @@ appRouter.get("/", getHome);
 // ROUTES: SIGN UP PAGE (sign-up.ejs)
 appRouter.get("/sign-up", getSignUp);
 // appRouter.post("/sign-up", passwordValidationRules, postSignUp);
-appRouter.post("/sign-up", checkMaintenanceMode, createUserValidator, postSignUp);
+appRouter.post("/sign-up", createUserValidator, postSignUp);
 
 // ROUTES: LOG IN PAGE (log-in.ejs)
 appRouter.get("/log-in", getLogIn);
-appRouter.post("/log-in", checkMaintenanceMode, postLogIn);
+appRouter.post("/log-in", postLogIn);
 
 // TODO - make uniform like other routes?
 // ROUTES: LOG OUT BUTTON

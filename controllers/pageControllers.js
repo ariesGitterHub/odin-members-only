@@ -4,14 +4,13 @@ const { getAllSiteControls } = require("../db/queries/appConfigQueries");
 
 async function getHome(req, res, next) {
   try {
-    // const isMaintenanceModeProcessEnv = process.env.MAINTENANCE_MODE === "true";
-
     const siteSettings = await getAllSiteControls();
+
+    const isMaintenanceModeEnv = process.env.MAINTENANCE_MODE === "true";
+    const isMaintenanceModeDb = siteSettings.maintenance_mode || false;
+    const isMaintenanceModeActive = isMaintenanceModeEnv || isMaintenanceModeDb;
     
-    if (
-      process.env.MAINTENANCE_MODE === "true" ||
-      siteSettings.maintenance_mode
-    ) {
+    if (isMaintenanceModeActive) {
       res.render("maintenance", {
         title: "Maintenance",
         // user: req.user,
