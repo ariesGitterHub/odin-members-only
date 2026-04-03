@@ -2,7 +2,8 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const { validationResult } = require("express-validator");
 
-const { getAllSiteControls } = require("../db/queries/appConfigQueries");
+// const { getAllSiteControls } = require("../db/queries/appConfigQueries");
+const { isMaintenanceMode } = require("../utils/isMaintenanceMode");
 
 const {
   insertSessionLog,
@@ -15,6 +16,16 @@ const {
 
 async function getSignUp(req, res, next) {
   try {
+    // const siteSettings = await getAllSiteControls();
+    // const isMaintenanceModeEnv = process.env.MAINTENANCE_MODE === "true";
+    // const isMaintenanceModeDb = siteSettings.maintenance_mode || false;
+    // const isMaintenanceModeActive = isMaintenanceModeEnv || isMaintenanceModeDb;
+
+    // if (isMaintenanceModeActive) {
+    if (await isMaintenanceMode()) {
+      return res.redirect("/");
+    }
+
     res.render("sign-up", {
       title: "Sign Up",
       // user: req.user,
@@ -37,6 +48,15 @@ async function postSignUp(req, res, next) {
   } = req.body;
 
   try {
+    // const siteSettings = await getAllSiteControls();
+    // const isMaintenanceModeEnv = process.env.MAINTENANCE_MODE === "true";
+    // const isMaintenanceModeDb = siteSettings.maintenance_mode || false;
+    // const isMaintenanceModeActive = isMaintenanceModeEnv || isMaintenanceModeDb;
+
+    // if (isMaintenanceModeActive) {
+    if (await isMaintenanceMode()) {
+      return res.redirect("/");
+    }
 
     // Run middleware validation results
     const errors = validationResult(req);
@@ -187,13 +207,13 @@ async function postLogIn(req, res, next) {
     }
 
     try {
-      const siteSettings = await getAllSiteControls();
+      // const siteSettings = await getAllSiteControls();
+      // const isMaintenanceModeEnv = process.env.MAINTENANCE_MODE === "true"; 
+      // const isMaintenanceModeDb = siteSettings.maintenance_mode || false;
+      // const isMaintenanceModeActive = isMaintenanceModeEnv || isMaintenanceModeDb;
 
-      const isMaintenanceModeEnv = process.env.MAINTENANCE_MODE === "true"; 
-      const isMaintenanceModeDb = siteSettings.maintenance_mode || false;
-      const isMaintenanceModeActive = isMaintenanceModeEnv || isMaintenanceModeDb;
-
-      if (isMaintenanceModeActive && user.permission_status !== "admin") {
+      // if (isMaintenanceModeActive && user.permission_status !== "admin") {
+      if (await isMaintenanceMode() && user.permission_status !== "admin") {
         return res.redirect("/");
       }
 
