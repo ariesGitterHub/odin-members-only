@@ -1,11 +1,11 @@
 /* UNIQUE TO ONE VIEW (GLOBAL GLASSES GO IN LAYOUT-BASICS.CSS) */
 
 
-/* -- index.ejs */
+/* -- index.ejs and maintenance.ejs*/
 .index-image {
   height: var(--index-image-size);
   width: auto;
-  border: var(--border-default);
+  /* border: var(--border-default); */
   border-radius: var(--border-radius-circle);
   box-shadow: var(--box-shadow-gray);
   margin: var(--spacer-default);

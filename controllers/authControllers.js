@@ -258,8 +258,6 @@ async function postLogIn(req, res, next) {
 
 // CONTROLLER: LOG-OUT
 
-
-
 async function postLogOut(req, res, next) {
   try {
     req.logout((err) => {
