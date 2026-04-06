@@ -678,6 +678,7 @@ const deleteUserById = async (targetId) => {
 };
 
 //QUERY: CHECK IF EMAIL ALREADY EXISTS IN THE DB AT SIGN UP (PREVENTS USING CODE BELOW THAT DOES NOT WORK WELL WITH NEW USER SITUATIONS)
+
 async function checkIfEmailExistsForSignUp(email) {
   const result = await pool.query(`SELECT id FROM users WHERE email = $1`, [
     email,

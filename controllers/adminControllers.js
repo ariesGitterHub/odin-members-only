@@ -363,8 +363,10 @@ async function postAdminEditPage(req, res, next) {
 
 async function deleteUserAccount(req, res, next) {
   try {
-    const { userId } = req.body;
-    await deleteUserById(userId);
+    // targetId from req.body of user account's id number to be deleted.
+    const { targetId } = req.body;
+
+    await deleteUserById(targetId);
     res.redirect("/app/admin");
   } catch (err) {
     next(err);

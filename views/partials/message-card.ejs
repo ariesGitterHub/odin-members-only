@@ -84,6 +84,8 @@
   <div class="message-footer">
     <div class="message-button-container">
       <form action="/app/message-boards/sticky-message" method="POST">
+        <!-- CSRF Token -->
+        <input type="hidden" name="_csrf" value="<%#= csrfToken %>">
         <input type="hidden" name="message_id" value="<%= message.id %>" />
         <input type="hidden" name="slug" value="<%= topic.slug %>" />
         <button 
@@ -140,6 +142,8 @@
       </button>
       
       <form action="/app/message-boards/like-message" method="POST">
+        <!-- CSRF Token -->
+        <input type="hidden" name="_csrf" value="<%#= csrfToken %>">
         <input type="hidden" name="message_id" value="<%= message.id %>" />
         <input type="hidden" name="slug" value="<%= topic.slug %>" />
         <button 

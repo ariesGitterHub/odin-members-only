@@ -22,6 +22,12 @@ async function getSignUp(req, res, next) {
     // const isMaintenanceModeActive = isMaintenanceModeEnv || isMaintenanceModeDb;
 
     // if (isMaintenanceModeActive) {
+
+        console.log(
+          "Rendering sign-up form with CSRF token:",
+          res.locals.csrfToken,
+        );
+
     if (await isMaintenanceMode()) {
       return res.redirect("/");
     }
@@ -94,6 +100,12 @@ async function postSignUp(req, res, next) {
 
 async function getLogIn(req, res, next) {
   try {
+    // const { _csrf } = req.body;
+
+    // console.log("getLogIn 1 - Session ID during GET request:", req.sessionID);
+    // console.log("getLogIn 2 - CSRF token from form: ", _csrf);
+    // console.log("getLogIn 3 - Session CSRF token during GET: ", req.session.csrfToken);
+
     res.render("log-in", {
       title: "Log In",
       // user: req.user,
@@ -207,13 +219,17 @@ async function postLogIn(req, res, next) {
     }
 
     try {
+      // console.log("Session ID during POST request:", req.sessionID);
+      // console.log("POST request body:", req.body); // Check the body of the POST request
+      // console.log("Session Data in POST request:", req.session);
+
       // const siteSettings = await getAllSiteControls();
-      // const isMaintenanceModeEnv = process.env.MAINTENANCE_MODE === "true"; 
+      // const isMaintenanceModeEnv = process.env.MAINTENANCE_MODE === "true";
       // const isMaintenanceModeDb = siteSettings.maintenance_mode || false;
       // const isMaintenanceModeActive = isMaintenanceModeEnv || isMaintenanceModeDb;
 
       // if (isMaintenanceModeActive && user.permission_status !== "admin") {
-      if (await isMaintenanceMode() && user.permission_status !== "admin") {
+      if ((await isMaintenanceMode()) && user.permission_status !== "admin") {
         return res.redirect("/");
       }
 

@@ -27,6 +27,8 @@
         <br>
         <!-- <form id="member-invite-form" method="POST"> -->
         <form action="/app/member-invite/accepted" method="POST">
+          <!-- CSRF Token -->
+          <!-- <input type="hidden" name="_csrf" value="<%#= csrfToken %>"> -->
           <!-- <input id="member-invite-target-id" type="hidden" name="targetId" /> -->
           <input
             name="permission_status"
@@ -97,6 +99,8 @@
           </div>
         </form>
         <form action="/app/member-invite/declined" method="POST">
+          <!-- CSRF Token -->
+          <!-- <input type="hidden" name="_csrf" value="<%#= csrfToken %>"> -->
           <!-- <input
             name="permission_status"
             value="guest"
