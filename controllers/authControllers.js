@@ -80,6 +80,7 @@ async function postSignUp(req, res, next) {
         title: "Sign Up",
         errors: formattedErrors,
         formData: req.body || {},
+        csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
       });
     }
 
@@ -100,17 +101,14 @@ async function postSignUp(req, res, next) {
 
 async function getLogIn(req, res, next) {
   try {
-    // const { _csrf } = req.body;
-
-    // console.log("getLogIn 1 - Session ID during GET request:", req.sessionID);
-    // console.log("getLogIn 2 - CSRF token from form: ", _csrf);
-    // console.log("getLogIn 3 - Session CSRF token during GET: ", req.session.csrfToken);
+    console.log("getLogIn - CSRF Token:", req.csrfToken()); // Log the token
 
     res.render("log-in", {
       title: "Log In",
       // user: req.user,
       errors: [],
       formData: req.body || {},
+      // csrfToken: req.csrfToken(),
     });
   } catch (err) {
     next(err);
@@ -215,20 +213,12 @@ async function postLogIn(req, res, next) {
         title: "Log In",
         errors: [info.message || "Invalid email or password"],
         formData: req.body || {},
+        csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
       });
     }
 
     try {
-      // console.log("Session ID during POST request:", req.sessionID);
-      // console.log("POST request body:", req.body); // Check the body of the POST request
-      // console.log("Session Data in POST request:", req.session);
-
-      // const siteSettings = await getAllSiteControls();
-      // const isMaintenanceModeEnv = process.env.MAINTENANCE_MODE === "true";
-      // const isMaintenanceModeDb = siteSettings.maintenance_mode || false;
-      // const isMaintenanceModeActive = isMaintenanceModeEnv || isMaintenanceModeDb;
-
-      // if (isMaintenanceModeActive && user.permission_status !== "admin") {
+      console.log("postLogIn - Received CSRF Token:", req.body._csrf);
       if ((await isMaintenanceMode()) && user.permission_status !== "admin") {
         return res.redirect("/");
       }

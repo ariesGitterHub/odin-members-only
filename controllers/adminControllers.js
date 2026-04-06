@@ -202,6 +202,7 @@ async function postAdminCreatePage(req, res, next) {
         title: "Admin Create",
         errors: formattedErrors,
         formData: req.body || {},
+        csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
       });
     }
 
@@ -306,6 +307,7 @@ async function postAdminEditPage(req, res, next) {
         errors: formattedErrors,
         formData: req.body || {},
         usStates: usStates,
+        csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
       });
     }
 

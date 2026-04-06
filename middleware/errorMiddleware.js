@@ -13,6 +13,9 @@ module.exports = (err, req, res, next) => {
   } else if (status === 401) {
     title = "401 - Unauthorized";
     message = "You must be logged in to access this page.";
+  } else if (status === 403 && err.message && err.message.includes("CSRF")) {
+    title = "403 - Forbidden";
+    message = "CSRF token invalid or missing"; // Custom CSRF error message
   } else if (status === 403) {
     title = "403 - Forbidden";
     message = "You do not have permission to access this resource.";

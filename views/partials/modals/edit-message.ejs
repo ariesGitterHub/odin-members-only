@@ -1,7 +1,7 @@
 <!-- <form action="/app/edit-message" method="POST"> -->
 <form id="edit-message-form" class="draft-message-form" method="POST">
   <!-- CSRF Token -->
-  <!-- <input type="hidden" name="_csrf" value="<%#= csrfToken %>"> -->
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
   <!-- <input id="edit-message-title" type="hidden" name="messageTitle" /> -->
   <input id="edit-message-target-id" type="hidden" name="targetId" />
   <input id="edit-message-topic-name" type="hidden" name="topicName" />

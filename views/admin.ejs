@@ -242,7 +242,7 @@
                 <% } %>
                 <form id="site-controls-form" action="/app/admin/config/site-controls" method="POST">
                   <!-- CSRF Token -->
-                  <!-- <input type="hidden" name="_csrf" value="<%#= csrfToken %>"> -->
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   <fieldset>
                     <h3>message retention</h3>
                     <div class="element-container-row-default flex-gap">                  

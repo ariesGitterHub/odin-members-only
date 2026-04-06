@@ -4,10 +4,8 @@ require("./config/passport"); // This initializes the Passport strategies
 
 // *** Imports at the top
 const express = require("express");
-// const csurf = require("@dr.pogodin/csurf");
-const cookieParser = require('cookie-parser'); // Required for cookie-based token storage
+// const csrf = require("csrf");
 const { runRetentionJobs } = require("./jobs/retentionJobs");  // TODO - FOR DEV ONLY
-const { csrfProtection, csrfTokenMiddleware, csrfErrorHandler } = require('./middleware/csrfMiddleware'); // Import CSRF middleware
 const path = require("node:path");
 const session = require("express-session");
 const passport = require("passport");
@@ -33,10 +31,8 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Middleware to parse cookies (before CSRF protection)
-app.use(cookieParser());
-
 // *** Session middleware must come before CSRF middleware (important for CSRF protection)
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -44,7 +40,6 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true, // ????? This right? TODO - USE ONLY IN DEV
-      // Only send over HTTPS in production
       // secure: process.env.NODE_ENV === "production", //TODO!
       secure: false, // use in dev
       // secure: true, // use in production
@@ -55,28 +50,8 @@ app.use(
   }),
 );
 
-// *** CSRF middleware
-app.use(csrfProtection);  // CSRF protection middleware to validate tokens
-
-// CSRF token middleware to add the CSRF token to res.locals
-app.use(csrfTokenMiddleware);  // This adds the token to res.locals for all GET requests
-
-
-// CSRF middleware setup (after session middleware)
-// const csrfProtection = csurf({
-//   cookie: {
-//     httpOnly: true, // Secure the cookie, can't be accessed via JavaScript
-//     // Only send over HTTPS in production
-//     // secure: process.env.NODE_ENV === "production", //TODO!
-//     secure: false, // use in dev
-//     // secure: true, // use in production
-//     sameSite: "Strict", // Mitigate CSRF risk
-//     maxAge: 1000 * 60 * 60 * 1, // 1 hour
-//   },
-// });
-
-// // *** Apply CSRF middleware (after session setup)
-// app.use(csrfProtection);
+// *** Apply CSRF middleware (after session setup, as it depends on session)
+//  app.use(csrfProtection);  // <-- CSRF middleware to verify tokens
 
 // Passport Middleware setup (after session)
 
@@ -92,11 +67,6 @@ app.get("/", (req, res) => {
   res.redirect("/app");
 });
 
-// // Route to render login form with CSRF token
-// app.get("/login", (req, res) => {
-//   res.render("login", { csrfToken: req.csrfToken() });
-// });
-
 // *** Mount app routes
 app.use("/app", appRouter);
 
@@ -107,41 +77,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// Error handler for CSRF validation failures
-// app.use((err, req, res, next) => {
-//   if (err.code === 'EBADCSRFTOKEN') {
-//     console.error("CSRF Error: Token is invalid or missing.");
-//     res.status(403).send('CSRF token invalid or missing');
-//   } else {
-//     next(err);
-//   }
-// });
-
-// app.use((err, req, res, next) => {
-//   if (err.code === 'EBADCSRFTOKEN') {
-//     // Optionally log the error for debugging
-//     console.error("CSRF Token Error:", err);
-
-//     // Forward the error to the centralized error handler
-//     err.status = 403;  // Set the status code to 403 (Forbidden)
-//     err.message = 'CSRF token invalid or missing';  // Customize the error message
-//     next(err);  // Forward the error to the next middleware (your error handler)
-//   } else {
-//     next(err);  // Continue to the next middleware if it's not a CSRF error
-//   }
-// });
-
-
 // *** Catch-all 404 handler (important)
 app.use((req, res, next) => {
   const err = new Error("Not Found");
   err.status = 404;
   next(err);  // Forward the error to the error-handling middleware
 });
-
-// *** CSRF Error Handling Middleware
-app.use(csrfErrorHandler);  // CSRF error handler that sends 403 on CSRF errors
-
 
 // *** Centralized Error Handling Middleware (Generic Error and 404)
 app.use(require("./middleware/errorMiddleware"));  // Handle both 404 and other errors here
@@ -166,14 +107,3 @@ app.listen(PORT, (error) => {
   console.log(`Listening on port ${PORT}!`);
 });
 
-// console.log("Request Body:", req.body);  // Log the entire body of the request
-
-      // csrfToken: req.csrfToken(), // Even though this is global, putting this here explicitly to handle errors when validationCreateUser or validationEditUser causes re-render when an incorrect email, password, or confirm_password is used
-
-      // app.js or server.js
-
-// // Middleware to make CSRF token available globally to all views
-// app.use((req, res, next) => {
-//   res.locals.csrfToken = req.csrfToken();  // Make CSRF token available in all views
-//   next();
-// });
