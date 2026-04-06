@@ -17,7 +17,6 @@
             <span class="red-letter">N</span>eigborhood Message Board.
           </p>
         </div>
-        <p class="font-color-green">CSRF Token: <%= csrfToken %></p>
         <form class="black" action="/app/log-in" method="POST">
           <!-- CSRF Token -->
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">

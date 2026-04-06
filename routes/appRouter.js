@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { requireRole } = require("../utils/permissions");
-const { createUserValidator,  } = require("../middleware/validationCreateUser");
+const { createUserValidator  } = require("../middleware/validationCreateUser");
 const {
   adminEditUserValidator,
   editProfileUserValidator,
