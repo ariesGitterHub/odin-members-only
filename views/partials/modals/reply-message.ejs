@@ -1,5 +1,5 @@
 <form id="reply-message-form" class="draft-message-form" method="POST">
-  <!-- CSRF Token -->
+  <%# CSRF Token - hidden input for forms %>
   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
   <input id="reply-message-title" type="hidden" name="messageTitle" />
   <input id="reply-message-target-id" type="hidden" name="targetId" />

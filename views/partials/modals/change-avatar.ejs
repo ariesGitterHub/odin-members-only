@@ -5,7 +5,7 @@
 </div>
 <div class="element-container-row-default ">
   <form action="/app/your-profile/change-avatar" method="POST"> 
-    <!-- CSRF Token -->
+    <%# CSRF Token - hidden input for forms %>
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <div class="change-avatar-hide-element element-container-col-start-center">
       <div class="element-container-row-space-evenly">

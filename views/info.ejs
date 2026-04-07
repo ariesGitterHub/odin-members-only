@@ -25,9 +25,9 @@
               <span class="red-letter">A</span>rea
               <span class="red-letter">N</span>eigborhood. Non-neighborhood
               residents may be allowed to participate on an ad hoc basis as
-              <span class="italic">guests</span>, but they will not be given full
-              <span class="italic">member</span> status, which is limited to
-              trusted neighbors, who are, or were, active in the
+              <span class="italic">guests</span>, but they will not be given
+              full <span class="italic">member</span> status, which is limited
+              to trusted neighbors, who are, or were, active in the
               <span class="red-letter">C.A.N.</span> organization.
             </li>
             <li>
@@ -36,10 +36,11 @@
             </li>
           </ul>
         </div>
-        <!-- <br /> -->
         <div class="info-list-card">
           <div class="button-container-col">
-            <button class="button-default info-button">how to use this app</button>
+            <button class="button-default info-button">
+              how to use this app
+            </button>
           </div>
           <ul class="info-ul info-section hidden">
             <li>
@@ -57,7 +58,6 @@
             </li>
           </ul>
         </div>
-        <!-- <br /> -->
         <div class="info-list-card">
           <div class="button-container-col">
             <button class="button-default info-button">
@@ -76,7 +76,6 @@
             </li>
           </ul>
         </div>
-        <!-- <br /> -->
         <div class="info-list-card">
           <div class="button-container-col">
             <button class="button-default info-button">
@@ -84,9 +83,7 @@
             </button>
           </div>
           <ul class="info-ul info-section hidden">
-            <li>
-              Keep messages brief and to the point.
-            </li>
+            <li>Keep messages brief and to the point.</li>
             <li>Assume messages are visible to all users of this app.</li>
             <li>Avoid sharing sensitive personal information.</li>
             <li>
@@ -105,7 +102,6 @@
             </li>
           </ul>
         </div>
-        <!-- <br /> -->
         <div class="info-list-card">
           <div class="button-container-col">
             <button class="button-default info-button">
@@ -114,7 +110,12 @@
           </div>
           <ul class="info-ul info-section hidden">
             <li>
-              All messages automatically expire and are deleted after <span class="red-letter"><%= config.message_soft_delete_days %> days</span> . Expiration dates are provided on all messages, except those messages pinned (for extended duration) by the admin.
+              All messages automatically expire and are deleted after
+              <span class="red-letter"
+                ><%= config.message_soft_delete_days %> days</span
+              >
+              . Expiration dates are provided on all messages, except those
+              messages pinned (for extended duration) by the admin.
             </li>
             <li>
               Expired messages cannot be recovered. This helps keep information
@@ -122,7 +123,6 @@
             </li>
           </ul>
         </div>
-        <!-- <br /> -->
         <div class="info-list-card">
           <div class="button-container-col">
             <button class="button-default info-button">
@@ -142,7 +142,6 @@
             </li>
           </ul>
         </div>
-        <!-- <br /> -->
         <div class="info-list-card">
           <div class="button-container-col">
             <button class="button-default info-button">
@@ -156,22 +155,21 @@
             </li>
             <li>You are responsible for the content you post.</li>
             <li>
-              This app is not responsible for user-generated content or
-              actions taken based on it.
+              This app is not responsible for user-generated content or actions
+              taken based on it.
             </li>
             <li>Access may be suspended or revoked at any time for misuse.</li>
             <li>The app may change, pause, or shut down without notice.</li>
           </ul>
         </div>
-        <!-- <br /> -->
         <div class="info-list-card">
           <div class="button-container-col">
             <button class="button-default info-button">privacy policy</button>
           </div>
           <ul class="info-ul info-section hidden">
             <li>
-              Basic personal information is collected and is used only for internal verification and community
-              purposes.
+              Basic personal information is collected and is used only for
+              internal verification and community purposes.
             </li>
             <li>Your information is not sold or shared with third parties.</li>
             <li>
@@ -192,7 +190,6 @@
             </li>
           </ul>
         </div>
-        <!-- <br /> -->
         <div class="info-list-card">
           <div class="button-container-col">
             <button class="button-default info-button">password rules</button>
@@ -206,7 +203,6 @@
             <%- include('./partials/password-rules.ejs') %>
           </ul>
         </div>
-        <!-- <br /> -->
         <div class="info-list-card">
           <div class="button-container-col">
             <button class="button-default info-button">attributions</button>
@@ -222,7 +218,6 @@
             </li>
           </ul>
         </div>
-        <!-- <br /> -->
       </div>
     </main>
     <%- include('./partials/modal-root.ejs') %> <%-

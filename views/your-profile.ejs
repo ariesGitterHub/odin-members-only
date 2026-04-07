@@ -3,7 +3,6 @@
   <head>
     <%- include('./partials/head.ejs') %>
   </head>
-  <!-- <body> -->
     <body data-reopen-modal="<%= reopenModal === true ? 'true' : 'false' %>">
     <%- include('./partials/header.ejs') %>
     <main>
@@ -11,24 +10,10 @@
         <h1>your profile</h1>
       </div>
       <div class="card your-profile-card">
-        <!-- TODO - refactor this, only logged in currentUsers should even be on this app -->
         <% if (!currentUser) { %> 
         <p>No current user is logged in.</p>
         <% } else { %>
             <div class="profile-data-container">
-              <!-- <div class="avatar-image-container-wide">
-                <div 
-                  class="avatar-image-container circle avatar-circle-large" 
-                  style="
-                    --avatar-color-fg: <%#= currentUser.avatar_color_fg || 'var(--off-black)' %>;
-                    --avatar-color-bg-top: <%#= currentUser.avatar_color_bg_top || 'var(--off-white)' %>;
-                    --avatar-color-bg-bottom: <%#= currentUser.avatar_color_bg_bottom || 'var(--off-gray)' %>;
-                  ">
-                  <span class="emoji avatar-emoji-large-size" role="img" aria-label="avatar image">
-                    <%#= currentUser.avatarLetter %>
-                  </span>
-                </div>            
-              </div> -->
               <div class="element-container-row-default margin-bottom">
                 <div 
                   class="avatar-container avatar-container-size-large avatar-background circle margin-bottom " 
@@ -38,7 +23,6 @@
                     --avatar-color-bg-bottom: <%= currentUser.avatar_color_bg_bottom || 'var(--off-gray)' %>;
                   ">
                   <span class="emoji emoji-size-large" role="image" aria-label="avatar image">
-                    <%#= currentUser.avatarLetter %>
                     <%= currentUser.avatar_type %>
                   </span>
                 </div>           
@@ -97,13 +81,6 @@
                   delete your account
                   </button> 
                 <% } %>
-                <!-- <button 
-                  class="button-default wide-button open-modal-btn" 
-                  data-section="modal-edit-profile"
-                  data-title="modal-title-edit-profile"
-                  data-target-id="<%#= currentUser.id %>">
-                    update your profile
-                </button> -->
                 <a class="button-default wide-button" href="/app/edit-profile">update your profile</a>
                 <button 
                   class="button-default wide-button edit-change-avatar-button" 

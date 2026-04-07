@@ -45,15 +45,15 @@
     <% } %>
       <% if (message.permission_status === "admin") { %> 
         <p>
-          <span class="emoji">🔑</span> <span>admin</span>  
+          <span class="emoji"><%= config.admin_emoji %></span> <span>admin</span>  
         </p>
       <% } else if (message.permission_status === "member") { %> 
         <p>
-          <span class="emoji">⭐</span> <span>member</span>          
+          <span class="emoji"><%= config.member_emoji %></span> <span>member</span>          
         </p>
       <% } else { %> 
         <p>
-          <span class="emoji">👤</span> <span>guest</span>          
+          <span class="emoji"><%= config.guest_emoji %></span> <span>guest</span>          
         </p>
       <% } %>
       <p>
@@ -84,7 +84,7 @@
   <div class="message-footer">
     <div class="message-button-container">
       <form action="/app/message-boards/sticky-message" method="POST">
-        <!-- CSRF Token -->
+        <%# CSRF Token - hidden input for forms %>
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input type="hidden" name="message_id" value="<%= message.id %>" />
         <input type="hidden" name="slug" value="<%= topic.slug %>" />
@@ -142,7 +142,7 @@
       </button>
       
       <form action="/app/message-boards/like-message" method="POST">
-        <!-- CSRF Token -->
+        <%# CSRF Token - hidden input for forms %>
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input type="hidden" name="message_id" value="<%= message.id %>" />
         <input type="hidden" name="slug" value="<%= topic.slug %>" />

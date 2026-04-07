@@ -8,32 +8,16 @@
     <main>
       <div>
         <h1 class="page-title-off-card uppercase">member directory</h1>
-        <!-- TODO - rename this below and turn it into a component or misc -->
         <hr class="topic-hr"> 
         <h2 class="page-subtitle-off-card uppercase">for trusted neighbors only</h2>
       </div>
       <div class="large-screen-flex-row">
-      <!-- <div class="card member-card"> -->
       <% if (users.length === 0) { %> 
-        <!-- TODO -  make the message below render appropriately via css, etc...-->
       <p>There are no current members.</p>
       <% } else { users.forEach(function(user) { %> 
           <% if (user && (user.permission_status === "member" || user.permission_status === "admin")) { %> 
           <div class="card member-card">
             <div class="profile-data-container">
-              <!-- <div class="avatar-image-container-wide">
-                <div 
-                  class="avatar-image-container avatar-member-directory"
-                  style="
-                    --avatar-color-fg: <%#= user.avatar_color_fg || 'var(--off-black)' %>;
-                    --avatar-color-bg-top: <%#= user.avatar_color_bg_top || 'var(--off-white)' %>;
-                    --avatar-color-bg-bottom: <%#= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
-                  ">
-                  <span class="emoji avatar-emoji-large-size" role="img" aria-label="avatar image">
-                    <%#= user.avatarLetter %>
-                  </span>
-                </div>            
-              </div> -->
               <div class="member-directory-extra-avatar-container avatar-background" 
               style="
                 --avatar-color-fg: <%= user.avatar_color_fg || 'var(--off-black)' %>;
@@ -43,7 +27,6 @@
                 <div 
                   class="avatar-container avatar-container-size-large">
                   <span class="emoji emoji-size-largest" role="image" aria-label="avatar image">
-                    <%#= user.avatarLetter %>
                     <%= user.avatar_type %>
                   </span>
                 </div>           
@@ -53,11 +36,6 @@
                   <dt class="capitalize">name</dt>
                   <dd class="capitalize"><%= user.first_name %> <%= user.last_name %></dd>
                 </div class="app-relevant-data">
-                <!-- TODO - DELETE PERMISSION_STATUES ENTRY BELOW AFTER TESTING -->
-                <!-- <div>
-                  <dt class="capitalize">status</dt>
-                  <dd><%#= user.permission_status %></dd>
-                </div> -->
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">email</dt>
                   <dd><%= user.email%></dd>
@@ -66,10 +44,6 @@
                   <dt class="capitalize">phone</dt>
                   <dd><%= user.phone || "n/a" %></dd>
                 </div>
-                <!-- <div>
-                  <dt class="capitalize">birthdate</dt>
-                  <dd><%#= user.formattedBirthdate %> (age: <%#= user.age %>)</dd>
-                </div> -->
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">street</dt>
                   <dd><%= user.street_address || "n/a" %></dd>
@@ -96,7 +70,6 @@
           <% } %>
         <% })}; %>
         </div>
-      <!-- </div> -->
     </main>
     <%- include('./partials/modal-root.ejs') %>
     <%- include('./partials/footer.ejs') %>

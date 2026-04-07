@@ -1,5 +1,5 @@
 <form action="/app/new-message" class="draft-message-form" method="POST">
-  <!-- CSRF Token -->
+  <%# CSRF Token - hidden input for forms %>
   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
   <!-- TODO - and reminder that js is no longer needed in the modal since the front end is populating it, is this safeguarded? -->
   <%# if (currentUser) { %> 

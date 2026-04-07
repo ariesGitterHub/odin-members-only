@@ -1,24 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <%#- include('./partials/head.ejs') %>
-  </head>
-  <body>
-    <main>
-      <div class="card page-errors">
-        <div class="page-title uppercase">
-          <h1><%#= title %></h1>  
-        </div>
-        <p><%#= error %></p>
-        <div class="button-container-row-space-evenly">
-             <a class="button-default wide-button" href="javascript:history.back()">Go Back</a>
-        </div>
-      </div>
-    </main>
-    <%#- include('./partials/footer.ejs') %>    
-  </body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -31,69 +10,48 @@
           <h1><%= title %></h1>  
         </div>
         <p><%= error %></p>
-
-        <!-- Specific Content for 400 - Bad Request -->
+        <%# -- Specific Content for 400 - Bad Request -- %>
         <% if (status === 400) { %>
-          <!-- <p>Your request was malformed. Please check your input and try again.</p> -->
         <% } %>
-
-        <!-- Specific Content for 401 - Unauthorized -->
+        <%# -- Specific Content for 401 - Unauthorized -- %>
         <% if (status === 401) { %>
-          <!-- <p>You must be logged in to access this page.</p> -->
           <div class="button-container-row-space-evenly">
             <a class="button-default wide-button" href="/login">Login</a>
           </div>
         <% } %>
-
-        <!-- Specific Content for 403 - Forbidden -->
+        <%# -- Specific Content for 403 - Forbidden -- %>
         <% if (status === 403) { %>
-          <!-- <p>You do not have permission to access this resource.</p> -->
           <div class="button-container-row-space-evenly">
             <a class="button-default wide-button" href="/app">Back to Home</a>
           </div>
         <% } %>
-
-        <!-- Specific Content for 404 - Not Found -->
+        <%# -- Specific Content for 404 - Not Found -- %>
         <% if (status === 404) { %>
-          <!-- <p>Sorry, we couldn't find the page you were looking for.</p> -->
           <div class="button-container-row-space-evenly">
             <a class="button-default wide-button" href="/">Go Back Home</a>
           </div>
         <% } %>
-
-        <!-- Specific Content for 405 - Method Not Allowed -->
+        <%# -- Specific Content for 405 - Method Not Allowed -- %>
         <% if (status === 405) { %>
-          <!-- <p>The method you used is not allowed for this endpoint.</p> -->
         <% } %>
-
-        <!-- Specific Content for 500 - Internal Server Error -->
+        <%# -- Specific Content for 500 - Internal Server Error -- %>
         <% if (status === 500) { %>
-          <!-- <p>Something went wrong on the server. Please try again later.</p> -->
           <div class="button-container-row-space-evenly">
             <a class="button-default wide-button" href="javascript:history.back()">Go Back</a>
           </div>
         <% } %>
-
-        <!-- Specific Content for 502 - Bad Gateway -->
+        <%# -- Specific Content for 502 - Bad Gateway -- %>
         <% if (status === 502) { %>
-          <!-- <p>The server encountered an issue while communicating with another service.</p> -->
         <% } %>
-
-        <!-- Specific Content for 503 - Service Unavailable -->
+        <%# -- Specific Content for 503 - Service Unavailable -- %>
         <% if (status === 503) { %>
-          <!-- <p>The server is temporarily unavailable. Please try again later.</p> -->
         <% } %>
-
-        <!-- Specific Content for 504 - Gateway Timeout -->
+        <%# -- Specific Content for 504 - Gateway Timeout -- %>
         <% if (status === 504) { %>
-          <!-- <p>The request timed out while waiting for a response from an external server.</p> -->
         <% } %>
-
-        <!-- Specific Content for 429 - Too Many Requests -->
+        <%# -- Specific Content for 429 - Too Many Requests -- %>
         <% if (status === 429) { %>
-          <!-- <p>You have made too many requests. Please try again later.</p> -->
         <% } %>
-
       </div>
     </main>
     <%- include('./partials/footer.ejs') %>    

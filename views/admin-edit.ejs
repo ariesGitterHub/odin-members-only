@@ -14,7 +14,7 @@
           <h1><%=user.first_name%> <%=user.last_name%></h1>
         </div>
         <form action="/app/admin-edit/<%= user.id %>" method="POST">
-          <!-- CSRF Token -->
+          <%# CSRF Token - hidden input for forms %>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <label class="capitalize" for="first-name-admin-edit-page">
               first name
@@ -49,9 +49,9 @@
                     <%= canPerformHasRole(currentUser, 'changePermissionStatus', formData) ? '' : 'disabled' %>
                     required
                 >
-                  <option value="guest" <%= formData?.permission_status === "guest" ? "selected" : "" %>>👤 guest </option>
-                  <option value="member" <%= formData?.permission_status === "member" ? "selected" : "" %>>⭐ member </option>
-                  <option value="admin" <%= formData?.permission_status === "admin" ? "selected" : "" %>>🔑 admin </option>
+                  <option value="guest" <%= formData?.permission_status === "guest" ? "selected" : "" %>><%= config.guest_emoji %> guest </option>
+                  <option value="member" <%= formData?.permission_status === "member" ? "selected" : "" %>><%= config.member_emoji %> member </option>
+                  <option value="admin" <%= formData?.permission_status === "admin" ? "selected" : "" %>><%= config.admin_emoji %> admin </option>
                 </select>
               </div>  
               <div class="element-container-col-default">

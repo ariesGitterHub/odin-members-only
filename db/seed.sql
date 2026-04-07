@@ -44,7 +44,10 @@ INSERT INTO app_config (key, value) VALUES
 ('message_soft_delete_days', '1'),
 ('message_hard_delete_days', '2'),
 ('session_hard_delete_days', '1'),
-('maintenance_mode', 'false');
+('maintenance_mode', 'false'),
+('admin_emoji', '🔑'),
+('member_emoji', '⭐'),
+('guest_emoji', '👤');
 
 
 -- Seed default topics (safe to re-run)

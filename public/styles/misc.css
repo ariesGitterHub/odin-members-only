@@ -70,6 +70,15 @@
   font-weight: var(--font-weight-light);
 }
 
+/* Font align */
+.text-align-right {
+  text-align: right;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
 /* Special text styling */
 .red-letter {
   color: var(--off-red);

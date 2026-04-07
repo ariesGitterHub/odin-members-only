@@ -14,7 +14,7 @@
             <p>Make updates to your profile here.</p>
           </div>
           <form action="/app/edit-profile" method="POST">
-            <!-- CSRF Token -->
+            <%# CSRF Token - hidden input for forms %>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <label class="capitalize" for="first-name-edit-profile">
               first name
@@ -109,9 +109,6 @@
               name="confirm_password"
               placeholder="re-enter chosen password"
             />
-            <!-- <div class="element-container-row-center-start margin-bottom ">
-              <p>*See password rules <a class="text-link" href="/app/info">here</a>.</p>
-            </div> -->
             <div class="background-yellow border-default margin-top-bottom">
               <%- include('./partials/password-rules.ejs') %>
             </div>
@@ -150,9 +147,6 @@
                     </option>
                   <% }) %>
                 </select>
-              <!-- <select>
-              <%#= generateStateSelect("us-state-admin-edit-page", formData) %>
-              </select> -->
               </div>
             </div>
             <div class="element-container-row-space-between margin-bottom">

@@ -117,7 +117,15 @@
 .admin-card fieldset input {
   width: 3.5rem;
   font-size: var(--font-size-default);
-  text-align: right;
+  /* text-align: right; */
+}
+
+.site-controls-emoji {
+  width: 2.75rem;
+  display: flex;
+  justify-content: center;
+  font-size: var(--font-size-default);
+  text-align: center;
 }
 
 /* .admin-card fieldset p {

@@ -1,82 +1,49 @@
 <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
   <div class="modal-overlay" data-close-modal></div>
-  <!-- <div class="modal-content" role="document"> -->
   <div class="modal-content-card" role="document">
-    <button class=" close-button cancel-button" aria-label="close modal" data-close-modal>
+    <button
+      class="close-button cancel-button"
+      aria-label="close modal"
+      data-close-modal
+    >
       <span class="emoji">❌</span>
     </button>
-
-    <!-- BECOME MEMBER -->
-    <!-- <div class="modal-section hidden" id="modal-become-member">
-      <div class="page-title-modal uppercase">
-        <h1 id="modal-title-become-member">be a member</h1>
-      </div>
-      <%#- include('./modals/become-member.ejs') %>
-    </div> -->
-
-    <!-- MEMBER INVITATION -->
-    <!-- <div class="modal-section hidden" id="modal-member-invitation">
-      <div class="page-title-modal uppercase">
-        <h1 id="modal-title-member-invitation">membership invite</h1>
-      </div>
-      <%#- include('./modals/member-invitation.ejs') %>
-    </div> -->
-
-    <!-- NEW MESSAGE -->
+    <%# -- NEW MESSAGE -- %>
     <div class="modal-section hidden" id="modal-new-message">
       <div class="page-title-modal uppercase">
-        <h1 id="modal-title-new-message">
-          new message
-        </h1>
+        <h1 id="modal-title-new-message">new message</h1>
       </div>
       <%- include('./modals/new-message.ejs') %>
     </div>
-
-    <!-- REPLY MESSAGE -->
+    <%# -- REPLY MESSAGE -- %>
     <div class="modal-section hidden" id="modal-reply-message">
       <div class="page-title-modal uppercase">
-        <h1 id="modal-title-reply-message">
-          reply message
-        </h1>
+        <h1 id="modal-title-reply-message">reply message</h1>
       </div>
       <%- include('./modals/reply-message.ejs') %>
     </div>
-
-    <!-- EDIT MESSAGE -->
+    <%# -- EDIT MESSAGE -- %>
     <div class="modal-section hidden" id="modal-edit-message">
       <div class="page-title-modal uppercase">
-        <h1 id="modal-title-edit-message">
-          edit message
-        </h1>
+        <h1 id="modal-title-edit-message">edit message</h1>
       </div>
       <%- include('./modals/edit-message.ejs') %>
     </div>
-
-    <!-- EDIT PROFILE (USER) -->
-    <!-- <div class="modal-section hidden" id="modal-edit-profile">
-      <div class="page-title-modal uppercase">
-        <h1 id="modal-title-edit-profile">edit profile</h1>
-      </div>
-      <%#- include('./modals/edit-profile.ejs') %>
-    </div> -->
-
-    <!-- WARNING - ACCOUNT DELETION -->
+    <%# -- WARNING - ACCOUNT DELETION -- %>
     <div class="modal-section hidden" id="modal-warning-account-deletion">
       <div class="page-title-modal uppercase">
         <h1 id="modal-title-warning-account-deletion">warning!</h1>
       </div>
       <%- include('./modals/warning-account-deletion.ejs') %>
     </div>
-
-        <!-- WARNING - MESSAGE DELETION -->
+    <%# -- WARNING - MESSAGE DELETION -- %>
     <div class="modal-section hidden" id="modal-warning-message-deletion">
       <div class="page-title-modal uppercase">
         <h1 id="modal-title-warning-message-deletion">warning!</h1>
       </div>
       <%- include('./modals/warning-message-deletion.ejs') %>
     </div>
-
-    <!-- CHANGE AVATAR -->
+    <%# -- CHANGE AVATAR -- %>
     <div class="modal-section hidden" id="modal-change-avatar-user">
       <div class="page-title-modal uppercase">
         <h1 id="modal-title-change-avatar-user">Edit Avatar</h1>

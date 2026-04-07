@@ -90,6 +90,9 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
       message_hard_delete_days,
       session_hard_delete_days,
       maintenance_mode,
+      admin_emoji,
+      member_emoji,
+      guest_emoji,
     } = req.body;
 
     // Basic validation
@@ -111,12 +114,17 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
     // Now we handle maintenance_mode separately since it's a boolean
     const isMaintenanceModeEnabled = maintenance_mode === "on"; // You can adjust this based on your form input
 
+    const emojis = [admin_emoji, member_emoji, guest_emoji];
+
     // ✅ Call your query
     await updateAllSiteControls(
       parsedValues[0],
       parsedValues[1],
       parsedValues[2],
       isMaintenanceModeEnabled, // maintenance_mode as boolean
+      emojis[0],
+      emojis[1],
+      emojis[2],
     );
 
     // ✅ Redirect on success
@@ -236,6 +244,7 @@ async function getAdminEditPage(req, res, next) {
   try {
     const userId = req.params.id;
     const user = await getUserById(userId);
+    const siteControls = await getAllSiteControls();
 
     //Format birthdate for input/display
     if (user.birthdate instanceof Date) {
@@ -246,6 +255,7 @@ async function getAdminEditPage(req, res, next) {
       title: "Admin Edit",
       user,
       usStates: usStates, // Pass the array to the EJS template
+      config: siteControls,
       errors: [],
       formData: user,
     }); // Pass user to EJS view
@@ -259,6 +269,7 @@ async function postAdminEditPage(req, res, next) {
 
   const userId = parseInt(req.params.id, 10); // the user being edited
   const user = await getUserById(userId); // fetch target user
+  const siteControls = await getAllSiteControls();
 
   if (!user) return res.status(404).send("User not found");
 
@@ -304,6 +315,7 @@ async function postAdminEditPage(req, res, next) {
         title: "Admin Edit",
         // user: targetUser, // show the user being edited
         user,
+        config: siteControls,
         errors: formattedErrors,
         formData: req.body || {},
         usStates: usStates,

@@ -2,7 +2,7 @@
 require("dotenv").config(); // Load environment variables
 
 
-// --- Global process error handlers (uncaught sync errors + unhandled promise rejections)
+// *** Global process error handlers (uncaught sync errors + unhandled promise rejections)
 process.on("uncaughtException", (err) => {
   console.error("Uncaught Exception:", err);
   process.exit(1); // Exit safely; process manager can restart
@@ -32,19 +32,10 @@ const appRouter = require("./routes/appRouter");
 
 const PORT = process.env.PORT || 3000;
 
-// Catch uncaught exceptions (useful dev/debug)
-// process.on("uncaughtException", (err) => {
-//   console.error("Uncaught Exception:", err);
-//   process.exit(1); // Exit safely so a process manager can restart the server
-// });
-
 // *** Create the app
 const app = express();
 
-//CORS is not needed at all. My fetch/ajax requests from main.js to your backend routes are same-origin, so they won’t be blocked by the browser. I don’t need the cors middleware unless I later serve my frontend from a completely separate domain or port.
-
-// Catch any uncaught exceptions to prevent Node from crashing...This prevents Node from completely crashing on unexpected errors during development. Important: This is mostly for development/debugging — you shouldn’t rely on it in production to silently swallow real bugs. Always fix the root cause.
-process.on("uncaughtException", console.error);
+//CORS is not needed at all. My fetch/ajax requests from main.js to my backend routes are same-origin, so they won’t be blocked by the browser. I don’t need the cors middleware unless I (big IF too, later) serve my frontend from a completely separate domain or port.
 
 // *** App.config - boilerplate app configurations
 app.use(express.static(__dirname + "/public"));

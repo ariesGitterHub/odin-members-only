@@ -18,7 +18,7 @@
           </p>
         </div>
         <form class="black" action="/app/sign-up" method="POST">
-          <!-- CSRF Token -->
+          <%# CSRF Token - hidden input for forms %>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <label for="first-name-sign-up">first name</label>
           <input
@@ -103,8 +103,6 @@
         </form>
       </div>
     </main>
-    <!-- TODO - I need errors to go somewhere! -->
-    <%#- include('./partials/errors.ejs') %>
     <%- include('./partials/footer.ejs') %>
   </body>
 </html>

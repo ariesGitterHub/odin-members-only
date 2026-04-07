@@ -11,8 +11,7 @@
       </div>
       <div class="large-screen-flex-row">
       <% if (users.length === 0) { %> 
-        <!-- TODO - keep else here??? -->
-        <p>No users yet. Be the first to join!</p>
+        <p>There are no current users.</p>
         <% } else { users.forEach(function(user) { %>
         <div class="card
           <% if (user && user.permission_status === "admin") { %>
@@ -41,7 +40,6 @@
                 --avatar-color-bg-bottom: <%= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
               ">
               <span class="emoji emoji-size-small" role="image" aria-label="avatar image">
-                <%#= user.avatarLetter %>
                 <%= user.avatar_type %>
               </span>
             </div>   
@@ -50,12 +48,12 @@
           <div class="admin-quick-view-bar">
             <span>
               <% if (user && user.permission_status === "admin") { %>
-                <p class="emoji">🔑</p>
+                <p class="emoji"><%= config.admin_emoji %></p>
               <% }
               else if (user && user.permission_status === "member") { %>
-                <p class="emoji">⭐</p>  
+                <p class="emoji"><%= config.member_emoji %></p>  
               <% } else { %>
-                <p class="emoji">👤</p>  
+                <p class="emoji"><%= config.guest_emoji %></p>  
               <% } %>
             </span>
             <span>
@@ -120,7 +118,6 @@
                 <dt class="capitalize">verified</dt>
                 <dd>admin verified = <span class="<%= user.verified_by_admin ? 'font-color-green' : 'font-color-red' %>"><%= user.verified_by_admin %></span></dd>
               </div>
-              <!-- TODO - ??? if status === member, then show; else hidden -->
               <div class="app-relevant-data">
                 <dt class="capitalize">upgrade</dt>
                 <dd>invite sent = <span class="<%= user.guest_upgrade_invite ? 'font-color-green' : 'font-color-red' %>"><%= user.guest_upgrade_invite %></span></dd>
@@ -185,10 +182,6 @@
                 <dt class="capitalize">colorBG↓</dt>
                 <dd><%= user.avatar_color_bg_bottom %></dd>
               </div>
-              <!-- <div class="<%#= user.notes ? '' : 'hidden' %> app-relevant-data">
-                <dt class="capitalize">notes</dt>
-                <dd><%#= user.notes %></dd>
-              </div> -->
               <% const notesValue = (user.notes || '').trim(); %>
               <div class="<%= notesValue ? '' : 'hidden' %> app-relevant-data">
                 <dt class="capitalize">notes</dt>
@@ -196,17 +189,14 @@
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">created</dt>
-                <!-- <dd><%#= user.formattedCreateDate %></dd> -->
                 <dd><%= new Date(user.created_at).toLocaleString() %></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">updated</dt>
-                <!-- <dd><%#= user.formattedUpdateDate %></dd> -->
                 <dd><%= new Date(user.updated_at).toLocaleString() %></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">last login</dt>
-                <!-- <dd><%#= user.formattedLastLoginDate %></dd> -->
                 <dd><%= new Date(user.last_login_at).toLocaleString() %></dd>
               </div>
             </dl>
@@ -228,31 +218,28 @@
           <br>
           <div class="button-container-col">
             <% if (user && user.permission_status === "admin") { %>
-              
               <a class="button-default wide-button" href="/app/admin-create">create new user</a>
-              
               <button id="site-controls-button" class="button-default wide-button" type="button">open site controls</button>
               <div id="site-controls-div" class="<%= (query.success || query.error) ? '' : 'hidden' %>">
                 <% if (query.success === "site-settings-updated") { %>
                   <div class="element-container-row-default success-message">[site settings saved.]</div>
                 <% } %>
-
                 <% if (query.error === "invalid-input") { %>
                   <div class="element-container-row-default error-message">[site changes failed.] please try again.</div>
                 <% } %>
                 <form id="site-controls-form" action="/app/admin/config/site-controls" method="POST">
-                  <!-- CSRF Token -->
+                  <%# CSRF Token - hidden input for forms %>
                   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   <fieldset>
                     <h3>message retention</h3>
                     <div class="element-container-row-default flex-gap">                  
                       <label>soft delete:</label>
-                      <input type="number" name="message_soft_delete_days" value="<%= config.message_soft_delete_days %>" min="0" />
+                      <input class="text-align-right" type="number" name="message_soft_delete_days" value="<%= config.message_soft_delete_days %>" min="0" />
                       <p class="lowercase">days</p>
                     </div>
                     <div class="element-container-row-default flex-gap">                  
                       <label>hard delete:</label>
-                      <input type="number" name="message_hard_delete_days" value="<%= config.message_hard_delete_days %>" min="0" />
+                      <input class="text-align-right" type="number" name="message_hard_delete_days" value="<%= config.message_hard_delete_days %>" min="0" />
                       <p class="lowercase">days</p>
                     </div>
                   </fieldset>
@@ -260,7 +247,7 @@
                     <h3>session retention</h3>
                     <div class="element-container-row-default flex-gap">                  
                       <label>hard delete (only):</label>
-                      <input type="number" name="session_hard_delete_days" value="<%= config.session_hard_delete_days %>" min="0" />
+                      <input class="text-align-right" type="number" name="session_hard_delete_days" value="<%= config.session_hard_delete_days %>" min="0" />
                       <p class="lowercase">days</p>
                     </div>
                   </fieldset>
@@ -273,6 +260,23 @@
                         <span class="slider round"></span>
                       </label>
                       <p class="uppercase"><%= config.maintenance_mode ? 'on' : 'off' %></p>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <h3>Permission Emojis</h3>
+                    <div class="element-container-row-space-evenly flex-gap">
+                      <div class="element-container-col-default">
+                        <label for="admin_emoji">Admin</label>
+                        <input class="text-align-center" type="text" name="admin_emoji" value="<%= config.admin_emoji %>">
+                      </div>
+                      <div class="element-container-col-default">
+                        <label for="mmeber_emoji">Member</label>
+                        <input class="text-align-center" type="text" name="member_emoji" value="<%= config.member_emoji %>">
+                      </div>
+                      <div class="element-container-col-default">
+                        <label for="guest_emoji">Guest</label>
+                        <input class="text-align-center" type="text" name="guest_emoji" value="<%= config.guest_emoji %>">
+                      </div>
                     </div>
                   </fieldset>
                   <div class="button-container-col">
@@ -304,9 +308,7 @@
                 </div>
               </div>
               <button id="show-guests-button" class="button-default wide-button" type="button">open guest profiles</button>
-
               <button id="show-members-button" class="button-default wide-button" type="button">open member profiles</button>
-
             <% } %> 
             <button class="button-default wide-button show-profile-button" type="button">open this profile</button>
           </div>
