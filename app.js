@@ -22,6 +22,7 @@ const cookieParser = require('cookie-parser'); // Required for cookie-based toke
 const path = require("node:path");
 const session = require("express-session");
 const passport = require("passport");
+const crypto = require("crypto");
 const helmet = require("helmet");
 
 const { runRetentionJobs } = require("./jobs/retentionJobs");  // TODO - FOR DEV ONLY
@@ -49,6 +50,12 @@ app.use(express.json());
 // Middleware to parse cookies (before CSRF protection)
 app.use(cookieParser());
 
+// Generate nonce per request
+app.use((req, res, next) => {
+  res.locals.nonce = crypto.randomBytes(16).toString('hex');
+  next();
+});
+
 // *** Helmet security headers
 app.use(
   helmet({
@@ -58,12 +65,16 @@ app.use(
         defaultSrc: ["'self'"],
         // Only allow scripts and styles from self
         "script-src": ["'self'"],
-        "style-src": ["'self'", "https://fonts.googleapis.com"],
+        styleSrc: [
+          "'self'",
+          "https://fonts.googleapis.com",
+          (req, res) => `'nonce-${res.locals.nonce}'`,
+        ],
         "font-src": ["'self'", "https://fonts.gstatic.com"],
-        "img-src": ["'self'", "data:"]
-      }
-    }
-  })
+        "img-src": ["'self'", "data:"],
+      },
+    },
+  }),
 );
 
 // *** Session middleware must come before CSRF middleware (important for CSRF protection)

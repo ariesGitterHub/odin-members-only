@@ -89,6 +89,7 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
       message_soft_delete_days,
       message_hard_delete_days,
       session_hard_delete_days,
+      max_message_chars,
       maintenance_mode,
       admin_emoji,
       member_emoji,
@@ -100,6 +101,7 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
       message_soft_delete_days,
       message_hard_delete_days,
       session_hard_delete_days,
+      max_message_chars,
     ];
 
     const parsedValues = values.map((v) => Number(v));
@@ -121,6 +123,7 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
       parsedValues[0],
       parsedValues[1],
       parsedValues[2],
+      parsedValues[3],
       isMaintenanceModeEnabled, // maintenance_mode as boolean
       emojis[0],
       emojis[1],

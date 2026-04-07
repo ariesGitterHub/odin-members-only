@@ -23,6 +23,7 @@ const {
   getMessageBoards,
   getTopicPage,
   getMessageDetails,
+  getMaxMessageChars,
   postNewMessage,
   postStickyMessageToggle,
   postEditMessage,
@@ -59,7 +60,7 @@ const {
 const appRouter = Router();
 
 //TODO - keep or axe this if I am using fetch as needed?
-// ROUTES: CURRENTUSER API 
+// ROUTES: CURRENT USER API 
 appRouter.get("/current-user", requireRole("guest"), getCurrentUser);
 
 //TODO - keep or axe this if I am using fetch as needed?
@@ -70,14 +71,15 @@ appRouter.get("/user/:id", requireRole("guest"), getUserDetails);
 // ROUTES: MESSAGES API 
 appRouter.get("/message/:id", requireRole("guest"), getMessageDetails);
 
-// ROUTES: INDEX/HOME (index.ejs)
-appRouter.get("/", getHome);
+// ROUTES: CONFIG API 
+appRouter.get("/config", requireRole("guest"), getMaxMessageChars);
 
 // ROUTES: INDEX/HOME (index.ejs)
 appRouter.get("/", getHome);
 
 // ROUTES: SIGN UP PAGE (sign-up.ejs)
 appRouter.get("/sign-up", getSignUp);
+
 // appRouter.post("/sign-up", passwordValidationRules, postSignUp);
 appRouter.post("/sign-up", createUserValidator, postSignUp);
 
@@ -96,11 +98,7 @@ appRouter.post("/log-out", (req, res, next) => {
 
 // ROUTES: ADMIN PAGE (admin.ejs) 
 appRouter.get("/admin", requireRole("admin"), getAdminPage);
-appRouter.post(
-  "/admin/config/site-controls",
-  requireRole("admin"),
-  postNewSiteSettingsAdminPage,
-);
+appRouter.post("/admin/config/site-controls", requireRole("admin"), postNewSiteSettingsAdminPage);
 
 // ROUTE: DELETE ACCOUNT MODAL (warning-account-deletion.ejs)
 appRouter.post("/admin/delete-user-account", requireRole("admin"), deleteUserAccount);

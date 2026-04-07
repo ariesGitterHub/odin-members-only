@@ -44,6 +44,7 @@ INSERT INTO app_config (key, value) VALUES
 ('message_soft_delete_days', '1'),
 ('message_hard_delete_days', '2'),
 ('session_hard_delete_days', '1'),
+('max_message_chars', '700'),
 ('maintenance_mode', 'false'),
 ('admin_emoji', '🔑'),
 ('member_emoji', '⭐'),

@@ -15,6 +15,7 @@ const getAllSiteControls = async () => {
     SELECT key, value
     FROM app_config
     WHERE key LIKE '%_delete_days' 
+      OR key = 'max_message_chars'
       OR key = 'maintenance_mode' 
       OR key IN ('admin_emoji', 'member_emoji', 'guest_emoji');
   `);
@@ -29,7 +30,7 @@ const getAllSiteControls = async () => {
       ) {
         return [r.key, r.value]; // keep emoji as string
       } else {
-        return [r.key, Number(r.value)]; // Convert delete days to number
+        return [r.key, Number(r.value)]; // Convert delete days or max chars to numbers
       }
     }),
   );
@@ -123,6 +124,7 @@ const updateAllSiteControls = async (
   messageSoft,
   messageHard,
   sessionHard,
+  maxMessageChars,
   maintenanceMode,
   adminEmoji,
   memberEmoji,
@@ -145,6 +147,7 @@ const updateAllSiteControls = async (
     await updateKey("message_soft_delete_days", Number(messageSoft));
     await updateKey("message_hard_delete_days", Number(messageHard));
     await updateKey("session_hard_delete_days", Number(sessionHard));
+    await updateKey("max_message_chars", Number(maxMessageChars));
 
     // Update boolean maintenance mode
     await updateKey("maintenance_mode", maintenanceMode ? "true" : "false");

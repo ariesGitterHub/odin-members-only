@@ -26,6 +26,8 @@ import {
   // generateStateSelect,
 } from "./miscFunctions.js";
 
+import { avatarColors } from "./avatarColors.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   attachCloseModalListener();
   attachOpenModalListener();
@@ -58,6 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
   messageBodyCharCounter();
   // generateStateSelect();
   // usStates
+  
+  avatarColors();
 
   // end
 });

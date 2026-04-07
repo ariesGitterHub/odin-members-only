@@ -16,11 +16,8 @@
     <div class="message-avatar-container margin-right">
       <div 
         class="avatar-container avatar-container-size-small avatar-background border-default circle" 
-        style="
-          --avatar-color-fg: <%= message.avatar_color_fg || 'var(--off-black)' %>;
-          --avatar-color-bg-top: <%= message.avatar_color_bg_top || 'var(--off-white)' %>;
-          --avatar-color-bg-bottom: <%= message.avatar_color_bg_bottom || 'var(--off-gray)' %>;
-        ">
+          <%- include('./partials/avatar-color-data-helper.ejs', { obj: message }) %>
+        >
         <span class="emoji emoji-size-small" role="image" aria-label="avatar image">
           <%= message.avatar_type %>
         </span>

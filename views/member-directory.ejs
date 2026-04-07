@@ -19,11 +19,8 @@
           <div class="card member-card">
             <div class="profile-data-container">
               <div class="member-directory-extra-avatar-container avatar-background" 
-              style="
-                --avatar-color-fg: <%= user.avatar_color_fg || 'var(--off-black)' %>;
-                --avatar-color-bg-top: <%= user.avatar_color_bg_top || 'var(--off-white)' %>;
-                --avatar-color-bg-bottom: <%= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
-              ">
+                <%- include('./partials/avatar-color-data-helper.ejs', { obj: user }) %>
+                >
                 <div 
                   class="avatar-container avatar-container-size-large">
                   <span class="emoji emoji-size-largest" role="image" aria-label="avatar image">
@@ -35,7 +32,7 @@
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">name</dt>
                   <dd class="capitalize"><%= user.first_name %> <%= user.last_name %></dd>
-                </div class="app-relevant-data">
+                </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">email</dt>
                   <dd><%= user.email%></dd>
@@ -68,7 +65,7 @@
             </div>
           </div>
           <% } %>
-        <% })}; %>
+        <% })} %>
         </div>
     </main>
     <%- include('./partials/modal-root.ejs') %>

@@ -34,11 +34,8 @@
           <div class="element-container-row-center-start margin-bottom">
             <div 
               class="avatar-container avatar-container-size-small avatar-background circle " 
-              style="
-                --avatar-color-fg: <%= user.avatar_color_fg || 'var(--off-black)' %>;
-                --avatar-color-bg-top: <%= user.avatar_color_bg_top || 'var(--off-white)' %>;
-                --avatar-color-bg-bottom: <%= user.avatar_color_bg_bottom || 'var(--off-gray)' %>;
-              ">
+                <%- include('./partials/avatar-color-data-helper.ejs', { obj: user }) %>  
+              >
               <span class="emoji emoji-size-small" role="image" aria-label="avatar image">
                 <%= user.avatar_type %>
               </span>
@@ -233,22 +230,26 @@
                   <fieldset>
                     <h3>message retention</h3>
                     <div class="element-container-row-default flex-gap">                  
-                      <label>soft delete:</label>
+                      <label>soft delete (days):</label>
                       <input class="text-align-right" type="number" name="message_soft_delete_days" value="<%= config.message_soft_delete_days %>" min="0" />
-                      <p class="lowercase">days</p>
                     </div>
                     <div class="element-container-row-default flex-gap">                  
-                      <label>hard delete:</label>
+                      <label>hard delete (days):</label>
                       <input class="text-align-right" type="number" name="message_hard_delete_days" value="<%= config.message_hard_delete_days %>" min="0" />
-                      <p class="lowercase">days</p>
                     </div>
                   </fieldset>
                   <fieldset>
                     <h3>session retention</h3>
                     <div class="element-container-row-default flex-gap">                  
-                      <label>hard delete (only):</label>
+                      <label>hard delete (days):</label>
                       <input class="text-align-right" type="number" name="session_hard_delete_days" value="<%= config.session_hard_delete_days %>" min="0" />
-                      <p class="lowercase">days</p>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <h3>Message Limit</h3>
+                    <div class="element-container-row-default flex-gap">                  
+                      <label>maximum characters:</label>
+                      <input class="text-align-right" type="number" name="max_message_chars" value="<%= config.max_message_chars %>" min="100" />
                     </div>
                   </fieldset>
                   <fieldset>

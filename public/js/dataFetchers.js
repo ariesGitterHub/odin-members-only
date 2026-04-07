@@ -22,15 +22,23 @@ export async function fetchTopicNameData(targetId) {
 // Fetch data with currentUser.id
 export async function fetchCurrentUserData(targetId) {
   const response = await fetch("/app/current-user");
-  if (!response.ok) throw new Error("Failed to fetch user");
+  if (!response.ok) throw new Error("Failed to fetch current user");
   const user = await response.json();
   console.log("Current user:", user);
   return user;
 }
 
-  // Fetch emoji data
+// Fetch emoji data
 export async function fetchEmojiData() {
-    const response = await fetch("/data/NotoEmoji-edited-monochrome-only.json");
-    if (!response.ok) throw new Error("Failed to fetch user");
-    return await response.json();
-  }
+  const response = await fetch("/data/NotoEmoji-edited-monochrome-only.json");
+  if (!response.ok) throw new Error("Failed to fetch emoji data");
+  return await response.json();
+}
+
+// Fetch maximum message characters from db
+export async function fetchMaxChars() {
+  const response = await fetch("/app/config");
+  if (!response.ok) throw new Error("Network response not ok");
+  const data = await response.json();
+  return data.maxChars ?? 708; // default to 700 if missing
+} 

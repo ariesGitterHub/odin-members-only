@@ -48,8 +48,16 @@
 //   });
 // }
 
-export function messageBodyCharCounter() {
-  const maxChars = 700;
+import { fetchMaxChars } from "./dataFetchers.js";
+
+export async function messageBodyCharCounter() {
+  // const maxChars = 700;
+    const maxChars = await fetchMaxChars(); // fetch maxChars here
+
+  if (maxChars === null) {
+    console.error("Could not fetch maxChars. Character counter disabled.");
+    return;
+  }
 
   // Array of message body IDs and corresponding max count IDs
   const messageElements = [
@@ -64,6 +72,7 @@ export function messageBodyCharCounter() {
   messageElements.forEach(({ textareaId, countId }) => {
     const bodyMessage = document.getElementById(textareaId);
     const maxCharCount = document.getElementById(countId);
+    if (!bodyMessage || !maxCharCount) return;
 
     // Set initial character count
     const initialLength = bodyMessage.value.length;

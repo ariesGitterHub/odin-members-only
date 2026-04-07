@@ -125,6 +125,22 @@ async function getMessageDetails(req, res, next) {
   }
 }
 
+// CONTROLLER: GET MAXCHARS FOR USE IN FRONTEND FILE miscFunctions.js VIA FETCH IN dataFetchers.js
+
+async function getMaxMessageChars(req, res, next) {
+  try {
+    const config = await getAllSiteControls();
+
+    if (config && typeof config.max_message_chars !== "undefined") {
+      res.json({ maxChars: config.max_message_chars });
+    } else {
+      res.status(404).send("Maximum message characters not found");
+    }
+  } catch (err) {
+    next(err);
+  }
+}
+
 
 // CONTROLLER: NEW MESSAGE (new-message.ejs)
 
@@ -350,6 +366,7 @@ module.exports = {
   getTopicPage,
   getMessageDetails,
   postNewMessage,
+  getMaxMessageChars,
   postStickyMessageToggle,
   postEditMessage,
   postReplyMessage,

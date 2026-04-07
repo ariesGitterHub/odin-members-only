@@ -221,13 +221,18 @@ box-shadow: var(--box-shadow-green);
 
 .avatar-background {
   background: linear-gradient(
-    05deg,
+    5deg,
     var(--avatar-color-bg-bottom),
     var(--avatar-color-bg-top)
   );
   box-shadow: var(--box-shadow-gray);
-  color: var(--avatar-color-fg);/
+  color: var(--avatar-color-fg);
 }
+
+/* .avatar-background {
+  background: linear-gradient(5deg, var(--avatar-bg-bottom, var(--off-gray)), var(--avatar-bg-top, var(--off-white)));
+  color: var(--avatar-fg, var(--off-black));
+} */
 
 .avatar-container-size-small {
   height: var(--avatar-circle-small-h-w);

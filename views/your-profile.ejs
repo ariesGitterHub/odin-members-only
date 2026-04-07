@@ -17,11 +17,8 @@
               <div class="element-container-row-default margin-bottom">
                 <div 
                   class="avatar-container avatar-container-size-large avatar-background circle margin-bottom " 
-                  style="
-                    --avatar-color-fg: <%= currentUser.avatar_color_fg || 'var(--off-black)' %>;
-                    --avatar-color-bg-top: <%= currentUser.avatar_color_bg_top || 'var(--off-white)' %>;
-                    --avatar-color-bg-bottom: <%= currentUser.avatar_color_bg_bottom || 'var(--off-gray)' %>;
-                  ">
+                    <%- include('./partials/avatar-color-data-helper.ejs', { obj: currentUser }) %>
+                  >
                   <span class="emoji emoji-size-large" role="image" aria-label="avatar image">
                     <%= currentUser.avatar_type %>
                   </span>
