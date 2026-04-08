@@ -1,25 +1,36 @@
 const pool = require("../pool");
 
-// const getAllSiteControls = async () => {
-//   const { rows } = await pool.query(`
-//     SELECT key, value
-//     FROM app_config
-//     WHERE key LIKE '%_delete_days';
-//   `);
-
-//   return Object.fromEntries(rows.map((r) => [r.key, Number(r.value)]));
-// };
-
 const getAllSiteControls = async () => {
+  // const { rows } = await pool.query(`
+  //   SELECT key, value
+  //   FROM app_config
+  //   WHERE key LIKE '%_delete_days' 
+  //     OR key IN ('signup_limit_window_minutes', 'signup_limit_max_users', 'login_limit_window_minutes', 'login_limit_max_users')
+  //     OR key = 'max_message_chars'
+  //     OR key = 'maintenance_mode' 
+  //     OR key IN ('admin_emoji', 'member_emoji', 'guest_emoji');
+  // `);
+
+  const keysToFetch = [
+    "message_soft_delete_days",
+    "message_hard_delete_days",
+    "session_hard_delete_days",
+    "signup_limit_window_minutes",
+    "signup_limit_max_users",
+    "login_limit_window_minutes",
+    "login_limit_max_users",
+    "max_message_chars",
+    "maintenance_mode",
+    "admin_emoji",
+    "member_emoji",
+    "guest_emoji",
+  ];
+
   const { rows } = await pool.query(`
-    SELECT key, value
-    FROM app_config
-    WHERE key LIKE '%_delete_days' 
-      OR key IN ('signup_limit_window_minutes', 'signup_limit_max_users', 'login_limit_window_minutes', 'login_limit_max_users')
-      OR key = 'max_message_chars'
-      OR key = 'maintenance_mode' 
-      OR key IN ('admin_emoji', 'member_emoji', 'guest_emoji');
-  `);
+  SELECT key, value
+  FROM app_config
+  WHERE key IN (${keysToFetch.map((key) => `'${key}'`).join(", ")})
+`);
 
   // Convert the rows into an object, ensuring to handle the boolean for maintenance_mode
   const config = Object.fromEntries(
@@ -152,10 +163,16 @@ const updateAllSiteControls = async (
     await updateKey("message_soft_delete_days", Number(messageSoft));
     await updateKey("message_hard_delete_days", Number(messageHard));
     await updateKey("session_hard_delete_days", Number(sessionHard));
-    await updateKey("session_hard_delete_days", Number(signupLimitWindowMinutes));
-    await updateKey("session_hard_delete_days", Number(signupLimitMaxUsers));
-    await updateKey("session_hard_delete_days", Number(loginLimitWindowMinutes));
-    await updateKey("session_hard_delete_days", Number(loginLimitMaxUsers));
+    await updateKey(
+      "signup_limit_window_minutes",
+      Number(signupLimitWindowMinutes),
+    );
+    await updateKey("signup_limit_max_users", Number(signupLimitMaxUsers));
+    await updateKey(
+      "login_limit_window_minutes",
+      Number(loginLimitWindowMinutes),
+    );
+    await updateKey("login_limit_max_users", Number(loginLimitMaxUsers));
     await updateKey("max_message_chars", Number(maxMessageChars));
 
     // Update boolean maintenance mode
@@ -170,6 +187,20 @@ const updateAllSiteControls = async (
   } catch (err) {
     await client.query("ROLLBACK");
     console.error("Failed to update site settings:", err);
+    console.error("Update parameters:", {
+      messageSoft,
+      messageHard,
+      sessionHard,
+      signupLimitWindowMinutes,
+      signupLimitMaxUsers,
+      loginLimitWindowMinutes,
+      loginLimitMaxUsers,
+      maxMessageChars,
+      maintenanceMode,
+      adminEmoji,
+      memberEmoji,
+      guestEmoji,
+    });
     throw new Error("Could not update site settings");
   } finally {
     client.release();

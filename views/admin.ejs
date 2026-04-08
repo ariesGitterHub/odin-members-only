@@ -227,7 +227,7 @@
                   <div class="element-container-row-default success-message">[site settings saved.]</div>
                 <% } %>
                 <% if (query.error === "invalid-input") { %>
-                  <div class="element-container-row-default error-message">[site changes failed.] please try again.</div>
+                  <div class="element-container-row-default error-message">[site changes failed.]</div>
                 <% } %>
                 <form id="site-controls-form" action="/app/admin/config/site-controls" method="POST">
                   <%# CSRF Token - hidden input for forms %>
@@ -269,7 +269,7 @@
                     </div>
                       <div class="element-container-row-default flex-gap">                  
                       <label>maximum users:</label>
-                      <input class="text-align-right" type="number" name="signup_limit_max_users" value="<%= config.signup_limit_max_users %>" min="0" />
+                      <input class="text-align-right" type="number" name="login_limit_max_users" value="<%= config.login_limit_max_users %>" min="0" />
                     </div>
                   </fieldset>
                   <fieldset>
@@ -299,7 +299,7 @@
                         <input class="text-align-center" type="text" name="admin_emoji" value="<%= config.admin_emoji %>">
                       </div>
                       <div class="element-container-col-default">
-                        <label for="mmeber_emoji">Member</label>
+                        <label for="member_emoji">Member</label>
                         <input class="text-align-center" type="text" name="member_emoji" value="<%= config.member_emoji %>">
                       </div>
                       <div class="element-container-col-default">

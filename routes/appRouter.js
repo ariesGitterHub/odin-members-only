@@ -6,11 +6,7 @@ const {
   editProfileUserValidator,
 } = require("../middleware/validationEditUser");
 
-const {
-  signupLimiter,
-  // postLimiter,
-  loginLimiter,
-} = require("../middleware/rateLimiters");
+const rateLimiter = require("../middleware/rateLimiters");
 
 // TODO - arrange by order of ROUTES far below
 const {
@@ -90,11 +86,11 @@ appRouter.get("/", getHome);
 appRouter.get("/sign-up", getSignUp);
 
 // appRouter.post("/sign-up", passwordValidationRules, postSignUp);
-appRouter.post("/sign-up", createUserValidator, signupLimiter,postSignUp);
+appRouter.post("/sign-up", createUserValidator, rateLimiter, postSignUp);
 
 // ROUTES: LOG IN PAGE (log-in.ejs)
 appRouter.get("/log-in", getLogIn);
-appRouter.post("/log-in", loginLimiter, postLogIn);
+appRouter.post("/log-in", rateLimiter, postLogIn);
 
 // TODO - make uniform like other routes?
 // ROUTES: LOG OUT BUTTON
