@@ -141,6 +141,29 @@ async function getMaxMessageChars(req, res, next) {
   }
 }
 
+// // CONTROLLER: GET RATE LIMIT DATA FOR USE IN MIDDLEWARE FILE rateLimiters.js VIA FETCH IN dataFetchers.js
+
+// async function getRateLimiterData(req, res, next) {
+//   try {
+//     const config = await getAllSiteControls();
+
+//     if (config && (typeof config.signup_limit_window_minutes !== "undefined" || typeof config.signup_limit_max_users !== "undefined" || typeof config.login_limit_window_minutes !== "undefined" || typeof config.login_limit_max_users !== "undefined")) {
+//       res.json({ signupLimitWindowMinutes: config.signup_limit_window_minutes, signupLimitMaxUsers: config.signup_limit_max_users, loginLimitWindowMinutes: config.login_limit_window_minutes, loginLimitMaxUsers: config.login_limit_max_users });
+//     } else {
+//       res.status(404).send("Rate limiter data not found");
+//     }
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
+// async function fetchSiteConfig() {
+//   try {
+//     return await getAllSiteControls();
+//   } catch (err) {
+//     throw new Error("Error fetching site config");
+//   }
+// }
 
 // CONTROLLER: NEW MESSAGE (new-message.ejs)
 
@@ -367,6 +390,7 @@ module.exports = {
   getMessageDetails,
   postNewMessage,
   getMaxMessageChars,
+  // getRateLimiterData,
   postStickyMessageToggle,
   postEditMessage,
   postReplyMessage,

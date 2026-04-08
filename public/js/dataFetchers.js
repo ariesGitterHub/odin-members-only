@@ -37,8 +37,16 @@ export async function fetchEmojiData() {
 
 // Fetch maximum message characters from db
 export async function fetchMaxChars() {
-  const response = await fetch("/app/config");
+  const response = await fetch("/app/config/max-chars");
   if (!response.ok) throw new Error("Network response not ok");
   const data = await response.json();
   return data.maxChars ?? 708; // default to 700 if missing
 } 
+
+// Fetch rate limited data from db
+// export async function fetchRateLimiterData() {
+//   const response = await fetch("/app/config/rate-limiter");
+//   if (!response.ok) throw new Error("Network response not ok");
+//   const data = await response.json();
+//   return data;
+// } 

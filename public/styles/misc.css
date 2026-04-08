@@ -43,9 +43,9 @@
   color: var(--off-red);
 }
 
-.font-color-warning {
+/* .font-color-warning {
   color: var(--lt-orange);
-}
+} */
 
 /* Font size */
 .font-size-small {
@@ -140,6 +140,10 @@ gap: var(--spacer-default);
 
 .margin-bottom {
   margin-bottom: var(--spacer-default);
+}
+
+.margin-left {
+  margin-left: var(--spacer-default);
 }
 
 .margin-right {

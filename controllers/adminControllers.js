@@ -89,6 +89,10 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
       message_soft_delete_days,
       message_hard_delete_days,
       session_hard_delete_days,
+      signup_limit_window_minutes,
+      signup_limit_max_users,
+      login_limit_window_minutes,
+      login_limit_max_users,
       max_message_chars,
       maintenance_mode,
       admin_emoji,
@@ -101,6 +105,10 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
       message_soft_delete_days,
       message_hard_delete_days,
       session_hard_delete_days,
+      signup_limit_window_minutes,
+      signup_limit_max_users,
+      login_limit_window_minutes,
+      login_limit_max_users,
       max_message_chars,
     ];
 
@@ -124,6 +132,10 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
       parsedValues[1],
       parsedValues[2],
       parsedValues[3],
+      parsedValues[4],
+      parsedValues[5],
+      parsedValues[6],
+      parsedValues[7],
       isMaintenanceModeEnabled, // maintenance_mode as boolean
       emojis[0],
       emojis[1],

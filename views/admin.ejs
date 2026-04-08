@@ -18,13 +18,15 @@
             admin-card
             <% } else if (user && user.permission_status === "member") { %>
             member-card user-card hidden
-            <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "declined" ) { %>
-            guest-card user-card hidden upgrade-declined
-            <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "none" ) { %>
-            guest-card user-card hidden upgrade-no-decision
             <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === false) { %>
             guest-card user-card hidden upgrade-possible
-            <% } else { %>
+            <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "none" ) { %>
+            guest-card user-card hidden upgrade-no-decision
+            <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "declined" ) { %>
+            guest-card user-card hidden upgrade-declined
+            <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "accepted" ) { %>
+            guest-card user-card hidden upgrade-review
+            <% }  else { %>
             guest-card user-card hidden
             <% } %>
           <% if (user && user.is_active === false) { %> 
@@ -98,6 +100,9 @@
               <% } %>
               <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === false && user.invite_decision === "none") { %>
               <p><span class="emoji">🤔</span> Consider upgrading this guest to member status.</p>
+              <% } %>
+              <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "accepted") { %>
+              <p><span class="emoji">😬</span> Review this profile for errors.</p>
               <% } %>
             </div>   
           <% } %>
@@ -246,6 +251,28 @@
                     </div>
                   </fieldset>
                   <fieldset>
+                    <h3>sign-up rate limit</h3>
+                    <div class="element-container-row-default flex-gap">                  
+                      <label>window (minutes):</label>
+                      <input class="text-align-right" type="number" name="signup_limit_window_minutes" value="<%= config.signup_limit_window_minutes %>" min="0" />
+                    </div>
+                      <div class="element-container-row-default flex-gap">                  
+                      <label>maximum users:</label>
+                      <input class="text-align-right" type="number" name="signup_limit_max_users" value="<%= config.signup_limit_max_users %>" min="0" />
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <h3>log-in rate limit</h3>
+                    <div class="element-container-row-default flex-gap">                  
+                      <label>window (minutes):</label>
+                      <input class="text-align-right" type="number" name="login_limit_window_minutes" value="<%= config.login_limit_window_minutes %>" min="0" />
+                    </div>
+                      <div class="element-container-row-default flex-gap">                  
+                      <label>maximum users:</label>
+                      <input class="text-align-right" type="number" name="signup_limit_max_users" value="<%= config.signup_limit_max_users %>" min="0" />
+                    </div>
+                  </fieldset>
+                  <fieldset>
                     <h3>Message Limit</h3>
                     <div class="element-container-row-default flex-gap">                  
                       <label>maximum characters:</label>
@@ -254,13 +281,14 @@
                   </fieldset>
                   <fieldset>
                     <h3>Maintenance Mode</h3>
-                    <div class="element-container-row-default flex-gap">
-                      <label class="font-color-warning" for="maintenance_mode">save to enable changes</label>
+                    <div class="element-container-row-default">
+                      <label for="maintenance_mode" hidden>save to enable changes</label>
+                      <p class="uppercase margin-right <%= config.maintenance_mode ? 'font-color-gray' : 'font-color-red' %>"><%= config.maintenance_mode ? '---' : 'off' %></p>
                       <label class="switch">
                         <input type="checkbox" name="maintenance_mode" value="on" <% if(config.maintenance_mode) { %>checked<% } %> />
                         <span class="slider round"></span>
                       </label>
-                      <p class="uppercase"><%= config.maintenance_mode ? 'on' : 'off' %></p>
+                      <p class="uppercase margin-left <%= config.maintenance_mode ? 'font-color-green' : 'font-color-gray' %>"><%= config.maintenance_mode ? 'on' : '---' %></p>
                     </div>
                   </fieldset>
                   <fieldset>

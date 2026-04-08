@@ -6,6 +6,12 @@ const {
   editProfileUserValidator,
 } = require("../middleware/validationEditUser");
 
+const {
+  signupLimiter,
+  // postLimiter,
+  loginLimiter,
+} = require("../middleware/rateLimiters");
+
 // TODO - arrange by order of ROUTES far below
 const {
   getAdminPage,
@@ -24,6 +30,7 @@ const {
   getTopicPage,
   getMessageDetails,
   getMaxMessageChars,
+  // getRateLimiterData,
   postNewMessage,
   postStickyMessageToggle,
   postEditMessage,
@@ -72,7 +79,9 @@ appRouter.get("/user/:id", requireRole("guest"), getUserDetails);
 appRouter.get("/message/:id", requireRole("guest"), getMessageDetails);
 
 // ROUTES: CONFIG API 
-appRouter.get("/config", requireRole("guest"), getMaxMessageChars);
+appRouter.get("/config/max-chars", requireRole("guest"), getMaxMessageChars);
+// appRouter.get("/config/rate-limiter", requireRole("guest"), getRateLimiterData);
+
 
 // ROUTES: INDEX/HOME (index.ejs)
 appRouter.get("/", getHome);
@@ -81,11 +90,11 @@ appRouter.get("/", getHome);
 appRouter.get("/sign-up", getSignUp);
 
 // appRouter.post("/sign-up", passwordValidationRules, postSignUp);
-appRouter.post("/sign-up", createUserValidator, postSignUp);
+appRouter.post("/sign-up", createUserValidator, signupLimiter,postSignUp);
 
 // ROUTES: LOG IN PAGE (log-in.ejs)
 appRouter.get("/log-in", getLogIn);
-appRouter.post("/log-in", postLogIn);
+appRouter.post("/log-in", loginLimiter, postLogIn);
 
 // TODO - make uniform like other routes?
 // ROUTES: LOG OUT BUTTON

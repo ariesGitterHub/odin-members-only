@@ -85,6 +85,10 @@
   background-color: var(--member-status-declined);
 }
 
+.upgrade-review {
+  background-color: var(--member-status-review);
+}
+
 .dead-account {
   background-color: var(--account-is-inactive);
   border: var(--border-inactive-card);

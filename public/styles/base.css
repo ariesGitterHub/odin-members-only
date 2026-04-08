@@ -38,6 +38,7 @@
   --member-status-possible: var(--lt-green);
   --member-status-no-decision: var(--lt-yellow);
   --member-status-declined: var(--lt-red);
+  --member-status-review: var(--lt-orange);
   --account-is-inactive: var(--lt-gray);
 
   --border-admin-card: 0.125rem double var(--off-red);

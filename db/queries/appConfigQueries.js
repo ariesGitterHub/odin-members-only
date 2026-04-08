@@ -15,6 +15,7 @@ const getAllSiteControls = async () => {
     SELECT key, value
     FROM app_config
     WHERE key LIKE '%_delete_days' 
+      OR key IN ('signup_limit_window_minutes', 'signup_limit_max_users', 'login_limit_window_minutes', 'login_limit_max_users')
       OR key = 'max_message_chars'
       OR key = 'maintenance_mode' 
       OR key IN ('admin_emoji', 'member_emoji', 'guest_emoji');
@@ -124,6 +125,10 @@ const updateAllSiteControls = async (
   messageSoft,
   messageHard,
   sessionHard,
+  signupLimitWindowMinutes,
+  signupLimitMaxUsers,
+  loginLimitWindowMinutes,
+  loginLimitMaxUsers,
   maxMessageChars,
   maintenanceMode,
   adminEmoji,
@@ -147,6 +152,10 @@ const updateAllSiteControls = async (
     await updateKey("message_soft_delete_days", Number(messageSoft));
     await updateKey("message_hard_delete_days", Number(messageHard));
     await updateKey("session_hard_delete_days", Number(sessionHard));
+    await updateKey("session_hard_delete_days", Number(signupLimitWindowMinutes));
+    await updateKey("session_hard_delete_days", Number(signupLimitMaxUsers));
+    await updateKey("session_hard_delete_days", Number(loginLimitWindowMinutes));
+    await updateKey("session_hard_delete_days", Number(loginLimitMaxUsers));
     await updateKey("max_message_chars", Number(maxMessageChars));
 
     // Update boolean maintenance mode

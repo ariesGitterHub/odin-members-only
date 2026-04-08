@@ -1,7 +1,6 @@
 // *** FIRST!
 require("dotenv").config(); // Load environment variables
 
-
 // *** Global process error handlers (uncaught sync errors + unhandled promise rejections)
 process.on("uncaughtException", (err) => {
   console.error("Uncaught Exception:", err);
@@ -13,7 +12,6 @@ process.on("unhandledRejection", (reason, promise) => {
   process.exit(1); // Exit safely
 });
 
-
 require("./config/passport"); // This initializes the Passport strategies
 
 // *** Imports at the top
@@ -22,8 +20,9 @@ const cookieParser = require('cookie-parser'); // Required for cookie-based toke
 const path = require("node:path");
 const session = require("express-session");
 const passport = require("passport");
-const crypto = require("crypto");
+// const crypto = require("crypto");
 const helmet = require("helmet");
+const rateLimit = require("express-rate-limit"); // Import express-rate-limit
 
 const { runRetentionJobs } = require("./jobs/retentionJobs");  // TODO - FOR DEV ONLY
 const { csrfProtection, csrfTokenMiddleware, csrfErrorHandler } = require('./middleware/csrfMiddleware'); // Import CSRF middleware
@@ -35,6 +34,35 @@ const PORT = process.env.PORT || 3000;
 
 // *** Create the app
 const app = express();
+
+// *** Express-rate-limit middleware
+
+// Set up rate limiting for sign-up (guest registration)
+const signupLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 sign-ups per window
+  message: 'Too many sign-up attempts, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Set up rate limiting for message posting (guests can post)
+const postLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, // Limit each guest to 20 posts per window
+  message: 'Too many posts from this IP, please wait a while before posting again.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Set up rate limiting for login attempts (if guests can log in later)
+const loginLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 3, // Limit each IP to 3 login attempts per window
+  message: 'Too many login attempts, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 //CORS is not needed at all. My fetch/ajax requests from main.js to my backend routes are same-origin, so they won’t be blocked by the browser. I don’t need the cors middleware unless I (big IF too, later) serve my frontend from a completely separate domain or port.
 
@@ -51,10 +79,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Generate nonce per request
-app.use((req, res, next) => {
-  res.locals.nonce = crypto.randomBytes(16).toString('hex');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.locals.nonce = crypto.randomBytes(16).toString('hex');
+//   next();
+// });
 
 // *** Helmet security headers
 app.use(
@@ -63,13 +91,8 @@ app.use(
       useDefaults: true,
       directives: {
         defaultSrc: ["'self'"],
-        // Only allow scripts and styles from self
         "script-src": ["'self'"],
-        styleSrc: [
-          "'self'",
-          "https://fonts.googleapis.com",
-          (req, res) => `'nonce-${res.locals.nonce}'`,
-        ],
+        "style-src": ["'self'"],
         "font-src": ["'self'", "https://fonts.gstatic.com"],
         "img-src": ["'self'", "data:"],
       },
@@ -118,6 +141,11 @@ app.use(passport.session());
 app.use(setCurrentUser);  // Use it globally
 app.use(setPermissions);  // Use it globally
 // app.use(checkMaintenanceMode);  // Use it globally
+
+// // *** Apply rate limiting to routes
+// app.use('/signup', signupLimiter); // Apply rate limiter to sign-up route
+// app.use('/post', postLimiter); // Apply rate limiter to post route
+// app.use('/login', loginLimiter); // Apply rate limiter to login route
 
 // *** Routes
 // "Home"
