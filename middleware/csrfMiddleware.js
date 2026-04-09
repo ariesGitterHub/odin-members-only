@@ -2,13 +2,10 @@ const csurf = require("@dr.pogodin/csurf");
 
 const csrfProtection = csurf({
   cookie: {
-    httpOnly: true, // Secure the cookie, can't be accessed via JavaScript
-    // Only send over HTTPS in production
-    // secure: process.env.NODE_ENV === "production", //TODO!
-    secure: false, // use in dev
-    // secure: true, // use in production
-    sameSite: "Strict", // Mitigate CSRF risk
-    maxAge: 1000 * 60 * 60 * 1, // 1 hour
+    httpOnly: true, // Prevents JS access to the CSRF cookie
+    secure: process.env.NODE_ENV === "production", // Only use HTTPS in production
+    sameSite: "Strict", // Mitigates CSRF attacks
+    maxAge: 1000 * 60 * 60 * 1, // 1 hour validity
   },
 });
 

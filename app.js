@@ -85,15 +85,16 @@ app.use(
 
 // *** Session middleware must come before CSRF middleware (important for CSRF protection)
 const sessionConfig = {
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === "production", // Use HTTPS in production only
-      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // 'strict' in production, 'lax' in dev
-      maxAge: 1000 * 60 * 60 * 1, // 1 hour
-    },
-  };
+  httpOnly: true,
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === "production", // Use HTTPS in production only
+    sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // 'strict' in production, 'lax' in dev
+    maxAge: 1000 * 60 * 60 * 1, // 1 hour
+  },
+};
 
 
 // Apply session middleware with dynamic configuration

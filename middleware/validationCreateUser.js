@@ -1,9 +1,7 @@
 const { check } = require("express-validator");
 const { checkIfEmailExistsForSignUp } = require("../db/queries/userQueries.js");
-// const { checkIfEmailExists } = require("../db/userQueries.js");
 
 // Use on any form that has email, password, and confirm_password
-
 const emailValidator = check("email")
   .isEmail()
   .withMessage("Invalid email format")
@@ -14,17 +12,6 @@ const emailValidator = check("email")
     }
     return true;
   })
-
-// const emailUpdateValidator = check("email")
-//   .isEmail()
-//   .withMessage("Invalid email format")
-//   .custom(async (email, user_id) => {
-//     const existingUser = await checkIfEmailExists(email, user_id);
-//     if (existingUser.length > 0) {
-//       throw new Error("Email is already taken.");
-//     }
-//     return true;
-//   });
 
 const passwordValidator = [
   check("password").custom((value) => {

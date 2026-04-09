@@ -12,7 +12,6 @@ async function checkMaintenanceMode(req, res, next) {
     const config = await getAllSiteControls();
     // const isMaintenanceModeEnabledDatabase = config.maintenance_mode || false; 
 
-    // if ((isMaintenanceModeEnabledProcessEnv && (!req.user || !hasRole(req.user, 'admin'))) || (isMaintenanceModeEnabledDatabase && (!req.user || !hasRole(req.user, 'admin')))) {
     if (
       (process.env.MAINTENANCE_MODE === "true" &&
         req.user &&
