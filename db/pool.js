@@ -3,6 +3,10 @@ const { Pool } = require("pg");
 
 const isProd = process.env.NODE_ENV === "production";
 
+if (isProd && !process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL is required in production");
+}
+
 let pool;
 
 if (isProd) {

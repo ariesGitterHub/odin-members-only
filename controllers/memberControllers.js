@@ -1,11 +1,6 @@
 const { usStates } = require("../utils/usStates");
 
-const {
-  getUsers,
-  // getUserById,
-  updateUserToMember,
-} = require("../db/queries/userQueries");
-
+const { getUsers, updateUserToMember } = require("../db/queries/userQueries");
 
 // CONTROLLER: GET MEMBER DIRECTORY PAGE
 
@@ -23,20 +18,14 @@ async function getMemberDirectory(req, res, next) {
   }
 }
 
-
 // CONTROLLER: GET MEMBER INVITE PAGE
 
 async function getMemberInvite(req, res, next) {
   try {
-    // const targetId = req.user.id;
-    // const currentUser = await getUserById(targetId);
-
-    // const targetId = req.currentUser.id;
     const currentUser = req.currentUser;
 
     res.render("member-invite", {
       title: "Member Invite",
-      // user: req.user,
       currentUser,
       formData: req.body || {},
       usStates: usStates, // Pass the array to the EJS template
@@ -47,9 +36,6 @@ async function getMemberInvite(req, res, next) {
 }
 
 async function postMemberInviteAccepted(req, res, next) {
-  // const targetId = req.user.id; // Always use logged-in user ID
-  // const currentUser = await getUserById(targetId);
-
   const currentUserId = req.currentUser.id;
   const currentUser = req.currentUser;
 
@@ -74,7 +60,6 @@ async function postMemberInviteAccepted(req, res, next) {
   if (errors.length > 0) {
     return res.render("member-invite", {
       title: "Member Invite",
-      // user: req.user,
       currentUser,
       errors,
       formData: req.body || {},
@@ -83,7 +68,7 @@ async function postMemberInviteAccepted(req, res, next) {
   }
 
   try {
-    const sanitize = (v) => (v === "" ? null : v); // Empty strings -> null
+    const sanitize = (v) => (v === "" ? null : v); // Empty strings ---> null
 
     // --- Update the user ---
     await updateUserToMember(
@@ -110,12 +95,8 @@ async function postMemberInviteAccepted(req, res, next) {
 async function postMemberInviteDeclined(req, res, next) {
   console.log("Controller hit!");
 
-  // const currentUser_id = req.user.id; // Always use logged-in user ID
-    // const targetId = req.user.id; // Always use logged-in user ID
-    // const currentUser = await getUserById(targetId);
-
-    const currentUserId = req.currentUser.id;
-    const currentUser = req.currentUser;
+  const currentUserId = req.currentUser.id;
+  const currentUser = req.currentUser;
 
   const {
     invite_decision, // "declined"
@@ -126,7 +107,6 @@ async function postMemberInviteDeclined(req, res, next) {
   if (errors.length > 0) {
     return res.render("member-invite", {
       title: "Member Invite",
-      // user: req.user,
       currentUser,
       errors,
       formData: req.body || {},

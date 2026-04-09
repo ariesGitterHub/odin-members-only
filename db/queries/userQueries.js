@@ -112,7 +112,6 @@ const insertSessionLog = async (
   `;
   try {
     await pool.query(query, [user_id, session_token, ip_address, user_agent]);
-    // console.log({ user_id: user.id, sessionID: req.sessionID, ip: req.ip });
   } catch (err) {
     console.error("Failed to create session log:", err);
     throw err;
@@ -170,7 +169,6 @@ const insertNewUser = async (
   }
 };
 
-
 // QUERY: INSERT A NEW USER VIA ADMIN (admin-create.ejs)
 
 const insertAdminCreatedUser = async (
@@ -200,13 +198,7 @@ const insertAdminCreatedUser = async (
        (first_name, last_name, email, birthdate, password_hash)
        VALUES ($1,$2,$3,$4,$5)
        RETURNING *`,
-      [
-        first_name,
-        last_name,
-        email,
-        birthdate,
-        password_hash,
-      ],
+      [first_name, last_name, email, birthdate, password_hash],
     );
 
     const user = userRes.rows[0];
@@ -515,7 +507,6 @@ const updateUser = async (
   }
 };
 
-
 // QUERY: UPDATE OF A USER'S AVATAR BY A USER (your-profile.ejs/change-avatar.ejs modal)
 
 // Only updating one table. Only use transactions when updating multiple tables.
@@ -575,7 +566,6 @@ const updateUserAvatar = async (
   }
 };
 
-
 // QUERY: UPDATE OF A USER FROM A GUEST TO A MEMBER (member-invite.ejs)
 
 const updateUserToMember = async (
@@ -618,19 +608,6 @@ const updateUserToMember = async (
 
     const currentUser = userRes.rows[0];
 
-    console.log("Users table updated successfully:", currentUser);
-
-    // Update user_profiles table
-    console.log("Updating user_profiles table with sanitized values...", {
-      user_id: currentUser.id,
-      phone,
-      street_address,
-      apt_unit,
-      city,
-      us_state,
-      zip_code,
-    });
-
     // Update user_profiles table
     await client.query(
       `UPDATE user_profiles
@@ -653,11 +630,7 @@ const updateUserToMember = async (
       ],
     );
 
-    console.log("Committing transaction...");
-
     await client.query("COMMIT");
-
-    console.log("updateUser completed successfully.");
 
     return currentUser;
   } catch (err) {
@@ -669,7 +642,6 @@ const updateUserToMember = async (
     console.log("Database client released.");
   }
 };
-
 
 // QUERY: DELETE USER ACCOUNT BY A USER (your-profile.ejs) OR DELETE USER ACCOUNT VIA ADMIN (admin.ejs)
 
@@ -686,7 +658,6 @@ async function checkIfEmailExistsForSignUp(email) {
 
   return result.rows;
 }
-
 
 // QUERY: CHECK IF EMAIL ALREADY EXISTS IN THE DB (SET UP TO NOT AFFECT USER EDITS TO SAME ENTRY)
 

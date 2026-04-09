@@ -18,7 +18,6 @@ const {
   toggleLike,
 } = require("../db/queries/messageQueries");
 
-
 // CONTROLLER: GET MESSAGE BOARD PAGE
 
 async function getMessageBoards(req, res, next) {
@@ -41,7 +40,6 @@ async function getMessageBoards(req, res, next) {
   }
 }
 
-
 // CONTROLLER: GET MESSAGE BOARD TOPIC PAGE
 
 async function getTopicPage(req, res, next) {
@@ -49,7 +47,6 @@ async function getTopicPage(req, res, next) {
     const { slug } = req.params;
 
     const siteSettings = await getAllSiteControls();
-
 
     // Get topic info
     const topic = await getTopicBySlug(slug);
@@ -59,7 +56,6 @@ async function getTopicPage(req, res, next) {
     }
 
     // Ensure currentUser is defined (guests may be undefined)
-    // const currentUser = req.user || res.locals.currentUser || null;
     const currentUser = req.currentUser;
 
     // Authorization check based on DB permission
@@ -86,16 +82,10 @@ async function getTopicPage(req, res, next) {
       };
     });
 
-    // const messageLikes = makeAnotherController()
-
-    // const messagesWithAvatars = addAvatarFields(messages, avatarTypeDefault);
-
     res.render("topic", {
       title: topic.name,
       config: siteSettings,
       topic,
-      // messages: messagesWithAvatars,
-      // messages,
       messages: messagesWithExpiry,
       currentUser,
       errors: [],
@@ -106,10 +96,8 @@ async function getTopicPage(req, res, next) {
   }
 }
 
-
 // CONTROLLER: GET MESSAGES BY ID
 
-// Function to fetch individual user data for modal????
 async function getMessageDetails(req, res, next) {
   const targetId = req.params.id;
   try {
@@ -125,7 +113,7 @@ async function getMessageDetails(req, res, next) {
   }
 }
 
-// CONTROLLER: GET MAXCHARS FOR USE IN FRONTEND FILE miscFunctions.js VIA FETCH IN dataFetchers.js
+// CONTROLLER: GET MAX CHARS FOR USE IN FRONTEND FILE miscFunctions.js VIA FETCH IN dataFetchers.js
 
 async function getMaxMessageChars(req, res, next) {
   try {
@@ -141,30 +129,6 @@ async function getMaxMessageChars(req, res, next) {
   }
 }
 
-// // CONTROLLER: GET RATE LIMIT DATA FOR USE IN MIDDLEWARE FILE rateLimiters.js VIA FETCH IN dataFetchers.js
-
-// async function getRateLimiterData(req, res, next) {
-//   try {
-//     const config = await getAllSiteControls();
-
-//     if (config && (typeof config.signup_limit_window_minutes !== "undefined" || typeof config.signup_limit_max_users !== "undefined" || typeof config.login_limit_window_minutes !== "undefined" || typeof config.login_limit_max_users !== "undefined")) {
-//       res.json({ signupLimitWindowMinutes: config.signup_limit_window_minutes, signupLimitMaxUsers: config.signup_limit_max_users, loginLimitWindowMinutes: config.login_limit_window_minutes, loginLimitMaxUsers: config.login_limit_max_users });
-//     } else {
-//       res.status(404).send("Rate limiter data not found");
-//     }
-//   } catch (err) {
-//     next(err);
-//   }
-// }
-
-// async function fetchSiteConfig() {
-//   try {
-//     return await getAllSiteControls();
-//   } catch (err) {
-//     throw new Error("Error fetching site config");
-//   }
-// }
-
 // CONTROLLER: NEW MESSAGE (new-message.ejs)
 
 // Use below to model postReplyMessage
@@ -172,9 +136,7 @@ async function postNewMessage(req, res, next) {
   const { topic_id, title, body } = req.body;
 
   // Assuming you're using session-based authentication
-  // const currentUser_id = req.user.id; // or whatever key stores user_id in the session
-    const currentUserId = req.currentUser.id;
-    // const currentUser = req.currentUser;
+  const currentUserId = req.currentUser.id;
 
   if (!currentUserId) {
     return res.status(401).send("User is not logged in.");
@@ -188,8 +150,6 @@ async function postNewMessage(req, res, next) {
       return res.status(404).send("Topic not found.");
     }
 
-    // await insertNewMessage(currentUser_id, topic_id, title, body); // Pass user_id from session
-    // await insertMessage(currentUser_id, topic_id, title, body); // Pass user_id from session
     const newMessage = await insertMessage(
       currentUserId,
       topic_id,
@@ -202,20 +162,17 @@ async function postNewMessage(req, res, next) {
   }
 }
 
-
 // CONTROLLER: STICKY MESSAGE TOGGLE (message-boards/topic slug)
 
 async function postStickyMessageToggle(req, res, next) {
   try {
     const { message_id, slug } = req.body;
-    //  console.log("sticky:", message_id, slug);
     await stickyMessageById(message_id);
     res.redirect(`/app/message-boards/${slug}`);
   } catch (err) {
     next(err);
   }
 }
-
 
 // CONTROLLER: POST EDITED MESSAGE (edit-message.ejs)
 
@@ -230,7 +187,6 @@ async function postEditMessage(req, res, next) {
     }
 
     // Get the currently logged-in user ID
-    // const currentUserId = req.user?.id;
     const currentUserId = req.currentUser.id;
     if (!currentUserId) {
       return res.status(401).send("User is not logged in.");
@@ -250,8 +206,8 @@ async function postEditMessage(req, res, next) {
     // Update the message in the database
     const updatedMessage = await updateMessage(
       targetId, // message_id
-      title, // title
-      body, // body
+      title,
+      body,
     );
 
     // Log updated message data to ensure it's correctly updated
@@ -273,7 +229,6 @@ async function postReplyMessage(req, res, next) {
 
     const prefixedTitle = `↪ ${messageTitle}`;
 
-    // console.log("Received messageTitle:", messageTitle);
     console.log("Received adjusted messageTitle:", prefixedTitle);
 
     // Validate form data
@@ -282,7 +237,6 @@ async function postReplyMessage(req, res, next) {
     }
 
     // Get the currently logged-in user ID
-    // const currentUserId = req.user?.id;
     const currentUserId = req.currentUser.id;
     if (!currentUserId) {
       return res.status(401).send("User is not logged in.");
@@ -295,21 +249,12 @@ async function postReplyMessage(req, res, next) {
     }
 
     // Insert the new reply message
-    // const replyMessage = await insertMessage({
-    //   title: messageTitle,
-    //   body: body,
-    //   user_id: currentUserId,
-    //   parent_message_id: parentMessage.id,
-    //   topic_id: parentMessage.topic_id,
-    //   // created_at: new Date(),
-    // });
 
     const replyMessage = await insertMessage(
-      currentUserId, // user_id
-      parentMessage.topic_id, // topic_id
-      // messageTitle, // title
+      currentUserId,
+      parentMessage.topic_id,
       prefixedTitle,
-      body, // body
+      body,
       parentMessage.message_id, // parent_message_id
     );
 
@@ -332,7 +277,6 @@ async function deleteUserMessage(req, res, next) {
     const { targetId, topicSlug } = req.body;
     const rowsUpdated = await softDeleteMessageById(targetId);
     if (rowsUpdated === 0) return res.status(404).send("Message not found");
-    // res.redirect("/app/message-boards");
     res.redirect(`/app/message-boards/${topicSlug}`);
   } catch (err) {
     next(err);
@@ -343,11 +287,9 @@ async function deleteUserMessage(req, res, next) {
 
 async function postLikeMessageToggle(req, res, next) {
   const { message_id, slug } = req.body;
-  const currentUserId = req.currentUser.id; // <-- TODO - MORE OF THIS!
+  const currentUserId = req.currentUser.id;
   try {
     await toggleLike(message_id, currentUserId);
-    // console.log("User ID:", user_id); // Check the value
-    // console.log("Message ID:", message_id); // Check the value
 
     res.redirect(`/app/message-boards/${slug}`);
   } catch (err) {
@@ -360,13 +302,12 @@ async function postLikeMessageToggle(req, res, next) {
 
 const getTopicNamesForDropdown = async (req, res, next) => {
   try {
-    // const currentUser = req.user || res.locals.currentUser || null;
     const currentUser = req.currentUser;
     const topics = await getTopicNames(); // returns [{id, name, required_permission}, ...]
     const visibleTopics = topics.filter((topic) =>
       hasRole(currentUser, topic.required_permission),
     );
-    res.json(visibleTopics); // MUST be an array
+    res.json(visibleTopics); // Must be an array
   } catch (err) {
     next(err);
   }
@@ -377,8 +318,7 @@ const getTopicNamesForDropdown = async (req, res, next) => {
 const getMessagesForTopic = async (req, res) => {
   const messages = await getValidMessagesByTopic(
     req.params.topicId,
-    // req.user.id,
-    req.currentUser.id
+    req.currentUser.id,
   );
   const threaded = buildThreadedMessages(messages);
   res.json(threaded);
@@ -390,7 +330,6 @@ module.exports = {
   getMessageDetails,
   postNewMessage,
   getMaxMessageChars,
-  // getRateLimiterData,
   postStickyMessageToggle,
   postEditMessage,
   postReplyMessage,

@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const { validationResult } = require("express-validator");
 
-// const { getAllSiteControls } = require("../db/queries/appConfigQueries");
 const { isMaintenanceMode } = require("../utils/isMaintenanceMode");
 
 const {
@@ -11,22 +10,14 @@ const {
   updateLastLogin,
 } = require("../db/queries/userQueries");
 
-
 // CONTROLLER: SIGN-UP PAGE (sign-up.ejs)
 
 async function getSignUp(req, res, next) {
   try {
-    // const siteSettings = await getAllSiteControls();
-    // const isMaintenanceModeEnv = process.env.MAINTENANCE_MODE === "true";
-    // const isMaintenanceModeDb = siteSettings.maintenance_mode || false;
-    // const isMaintenanceModeActive = isMaintenanceModeEnv || isMaintenanceModeDb;
-
-    // if (isMaintenanceModeActive) {
-
-        console.log(
-          "Rendering sign-up form with CSRF token:",
-          res.locals.csrfToken,
-        );
+    console.log(
+      "Rendering sign-up form with CSRF token:",
+      res.locals.csrfToken,
+    );
 
     if (await isMaintenanceMode()) {
       return res.redirect("/");
@@ -34,7 +25,6 @@ async function getSignUp(req, res, next) {
 
     res.render("sign-up", {
       title: "Sign Up",
-      // user: req.user,
       errors: [],
       formData: req.body || {},
     });
@@ -44,22 +34,9 @@ async function getSignUp(req, res, next) {
 }
 
 async function postSignUp(req, res, next) {
-  const {
-    first_name,
-    last_name,
-    email,
-    birthdate,
-    password,
-    confirm_password,
-  } = req.body;
+  const { first_name, last_name, email, birthdate, password } = req.body;
 
   try {
-    // const siteSettings = await getAllSiteControls();
-    // const isMaintenanceModeEnv = process.env.MAINTENANCE_MODE === "true";
-    // const isMaintenanceModeDb = siteSettings.maintenance_mode || false;
-    // const isMaintenanceModeActive = isMaintenanceModeEnv || isMaintenanceModeDb;
-
-    // if (isMaintenanceModeActive) {
     if (await isMaintenanceMode()) {
       return res.redirect("/");
     }
@@ -72,7 +49,7 @@ async function postSignUp(req, res, next) {
       errors.array().forEach((err) => {
         if (!seen.has(err.path)) {
           formattedErrors.push({ param: err.path, msg: err.msg });
-          seen.add(err.path); // seen ensures only one error per field, so your EJS shows one message for password, not multiple.
+          seen.add(err.path); // Seen ensures only one error per field, so your EJS shows one message for password, not multiple.
         }
       });
 
@@ -96,7 +73,6 @@ async function postSignUp(req, res, next) {
   }
 }
 
-
 // CONTROLLER: LOG-IN PAGE (log-in.ejs)
 
 async function getLogIn(req, res, next) {
@@ -105,104 +81,13 @@ async function getLogIn(req, res, next) {
 
     res.render("log-in", {
       title: "Log In",
-      // user: req.user,
       errors: [],
       formData: req.body || {},
-      // csrfToken: req.csrfToken(),
     });
   } catch (err) {
     next(err);
   }
 }
-
-// async function postLogIn(req, res, next) {
-//   // console.log("Form data:", req.body); // Log the request body to see the submitted data
-//   passport.authenticate("local", async (err, user, info) => {
-//     if (err) {
-//       console.error("Error during authentication:", err);
-//       return next(err); // handle unexpected error
-//     }
-
-//     if (!user) {
-//       console.log(
-//         "Authentication failed:",
-//         info.message || "Invalid email or password",
-//       );
-//       return res.render("log-in", {
-//         title: "Log In",
-//         errors: [info.message || "Invalid email or password"],
-//         formData: req.body || {},
-//       });
-//     }
-
-//     // TODO - THIS SHOWS THE HASH
-//     // console.log("User authenticated:", user);
-//     console.log("User authenticated!!!!! 🎈");
-
-//     try {
-//       // Update the user's last login timestamp
-//       await updateLastLogin(user.id);
-
-//       // Log the user in (via Passport session)
-//       req.login(user, (err) => {
-//         if (err) {
-//           console.error("Error during login:", err);
-//           return next(err); // Handle login errors
-//         }
-
-//         // console.log("Login successful! Redirecting to message boards...");
-//         res.redirect("/app/message-boards"); // Redirect to message boards after login
-//       });
-//     } catch (err) {
-//       console.error("Error updating last login:", err);
-//       return next(err); // Handle any error with updating the last login
-//     }
-//   })(req, res, next); // Execute the Passport authentication logic
-// }
-
-// async function postLogIn(req, res, next) {
-//   passport.authenticate("local", async (err, user, info) => {
-//     if (err) return next(err);
-
-//     if (!user) {
-//       return res.render("log-in", {
-//         title: "Log In",
-//         errors: [info.message || "Invalid email or password"],
-//         formData: req.body || {},
-//       });
-//     }
-
-//     console.log("User authenticated!!!!! 🎈");
-
-//     try {
-//       // Update last login
-//       await updateLastLogin(user.id);
-
-//       // Log the user in (Passport session)
-//       req.login(user, async (err) => {
-//         if (err) return next(err);
-// // console.log("Session ID:", req.sessionID);
-//         // ✅ Insert session log AFTER login
-//         try {
-//           await insertSessionLog(
-//             user.id,
-//             req.sessionID,
-//             req.ip,
-//             req.headers["user-agent"],
-//           );
-//         } catch (logErr) {
-//           console.error("Failed to create session log:", logErr);
-//           // You can decide: ignore or fail login
-//         }
-
-//         res.redirect("/app/message-boards"); // Redirect after successful login
-//       });
-//     } catch (err) {
-//       console.error("Error updating last login:", err);
-//       return next(err);
-//     }
-//   })(req, res, next);
-// }
 
 async function postLogIn(req, res, next) {
   passport.authenticate("local", async (err, user, info) => {
@@ -234,8 +119,7 @@ async function postLogIn(req, res, next) {
           console.error("Error during login:", err); // Log error for debugging
           return next(err);
         }
-        // console.log("Session ID:", req.sessionID);
-        // Insert session log AFTER login
+
         try {
           await insertSessionLog(
             user.id,
@@ -259,8 +143,6 @@ async function postLogIn(req, res, next) {
     }
   })(req, res, next);
 }
-
-
 
 // CONTROLLER: LOG-OUT
 

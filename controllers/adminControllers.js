@@ -8,10 +8,12 @@ const {
   insertAdminCreatedUser,
   updateAdminEditedUser,
   deleteUserById,
-  // checkIfEmailExists,
 } = require("../db/queries/userQueries");
 
-const { getAllSiteControls, updateAllSiteControls } = require("../db/queries/appConfigQueries");
+const {
+  getAllSiteControls,
+  updateAllSiteControls,
+} = require("../db/queries/appConfigQueries");
 
 const { getMessages } = require("../db/queries/messageQueries");
 
@@ -117,16 +119,16 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
     const hasInvalid = parsedValues.some((v) => Number.isNaN(v) || v < 0);
 
     if (hasInvalid) {
-      // You could also store this in a flash message
+      // I could also store this in a flash message, not a fan of flash though
       return res.redirect("/app/admin?error=invalid-input");
     }
 
-    // Now we handle maintenance_mode separately since it's a boolean
-    const isMaintenanceModeEnabled = maintenance_mode === "on"; // You can adjust this based on your form input
+    // Handle maintenance_mode separately since it's a boolean
+    const isMaintenanceModeEnabled = maintenance_mode === "on"; // I can adjust this based on your form input
 
     const emojis = [admin_emoji, member_emoji, guest_emoji];
 
-    // ✅ Call your query
+    // Call the query
     await updateAllSiteControls(
       parsedValues[0],
       parsedValues[1],
@@ -147,14 +149,10 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
   } catch (err) {
     console.error("Error updating site settings:", err);
 
-    // Option 1 (recommended): pass to global error handler
+    // Pass to global error handler
     return next(err);
-
-    // Option 2 (alternative): redirect with error
-    // return res.redirect("/admin?error=update-failed");
   }
 }
-
 
 // CONTROLLER: ADMIN CREATE PAGE (admin-create.ejs)
 
@@ -181,32 +179,6 @@ async function postAdminCreatePage(req, res, next) {
     notes,
   } = req.body;
   const errors = [];
-
-  // Simple validation checks -- OLD
-  // if (
-  //   !first_name ||
-  //   !last_name ||
-  //   !email ||
-  //   !birthdate ||
-  //   !password ||
-  //   !confirm_password
-  // ) {
-  //   errors.push("All fields are required.");
-  // }
-
-  // Check if password is the same -- OLD
-  // if (password !== confirm_password) {
-  //   errors.push("Passwords do not match.");
-  // }
-
-  // if (errors.length > 0) {
-  //   return res.render("admin-create", {
-  //     title: "Admin Create",
-  //     user: req.user,
-  //     errors,
-  //     formData: req.body || {},
-  //   });
-  // }
 
   try {
     // Run middleware validation results
@@ -328,7 +300,6 @@ async function postAdminEditPage(req, res, next) {
 
       return res.render("admin-edit", {
         title: "Admin Edit",
-        // user: targetUser, // show the user being edited
         user,
         config: siteControls,
         errors: formattedErrors,
@@ -392,7 +363,6 @@ async function postAdminEditPage(req, res, next) {
 
 async function deleteUserAccount(req, res, next) {
   try {
-    // targetId from req.body of user account's id number to be deleted.
     const { targetId } = req.body;
 
     await deleteUserById(targetId);

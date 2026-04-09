@@ -9,25 +9,24 @@ async function getHome(req, res, next) {
     const isMaintenanceModeEnv = process.env.MAINTENANCE_MODE === "true";
     const isMaintenanceModeDb = siteSettings.maintenance_mode || false;
     const isMaintenanceModeActive = isMaintenanceModeEnv || isMaintenanceModeDb;
-    
+
     if (isMaintenanceModeActive) {
       res.render("maintenance", {
         title: "Maintenance",
-        // user: req.user,
-        // errors: [],
+        // user: req.user, // Not needed here
+        // errors: [], // Not needed here
       });
     } else {
       res.render("index", {
         title: "Home",
-        // user: req.user,
-        // errors: [],
+        // user: req.user, // Not needed here
+        // errors: [], // Not needed here
       });
     }
   } catch (err) {
     next(err);
   }
 }
-
 
 // CONTROLLER: INFO PAGE (info.ejs)
 
@@ -37,8 +36,8 @@ async function getInfo(req, res, next) {
   try {
     res.render("info", {
       title: "Site Information",
-      // user: req.user,
-      // errors: [],
+      // user: req.user, // Not needed here
+      // errors: [], // Not needed here
       config: siteSettings,
     });
   } catch (err) {

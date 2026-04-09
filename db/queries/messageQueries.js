@@ -1,6 +1,4 @@
 const pool = require("../pool");
-// const bcrypt = require("bcryptjs");
-
 
 // QUERY: GET ALL MESSAGES
 
@@ -18,7 +16,6 @@ const getMessages = async () => {
     throw err; // Optionally, rethrow the error or handle it as needed
   }
 };
-
 
 // QUERY: GET MESSAGES BY ID
 
@@ -54,14 +51,13 @@ const getMessageById = async (targetId) => {
   `;
 
   const res = await pool.query(query, [targetId]);
-  
+
   if (res.rowCount === 0) {
     return null; // not found
   }
 
   return res.rows[0]; // the message object
 };
-
 
 // QUERY: GET TOPICS BY ID
 
@@ -77,7 +73,6 @@ const getTopicById = async (topic_id) => {
   return res.rows[0];
 };
 
-
 // QUERY: GET TOPIC LIST FOR DROPDOWN IN NEW MESSAGE (new-message.ejs)
 
 const getTopicNames = async () => {
@@ -90,7 +85,6 @@ const getTopicNames = async () => {
 
   return rows;
 };
-
 
 // QUERY: INSERT INTO NEW MESSAGE (new-message.ejs) OR REPLY MESSAGE (reply-message.ejs)
 
@@ -120,8 +114,10 @@ const insertMessage = async (
       const messageId = res.rows[0].id;
 
       // Update thread_path to its own id
-      await client.query(`UPDATE messages SET thread_path = $1 WHERE id = $2`,
-        [messageId.toString(), messageId]);
+      await client.query(`UPDATE messages SET thread_path = $1 WHERE id = $2`, [
+        messageId.toString(),
+        messageId,
+      ]);
 
       return { id: messageId };
     } else {
@@ -166,7 +162,6 @@ const insertMessage = async (
   }
 };
 
-
 // QUERY: TOPICS FOR MESSAGE BOARD (message-boards.ejs)
 
 const getAllTopics = async () => {
@@ -186,7 +181,6 @@ const getAllTopics = async () => {
   return rows;
 };
 
-
 // QUERY TOPIC SLUGS FOR MESSAGE BOARD TOPIC ROUTES (topic.ejs and message-card.ejs)
 
 const getTopicBySlug = async (slug) => {
@@ -201,14 +195,13 @@ const getTopicBySlug = async (slug) => {
   return res.rows[0];
 };
 
-
-// QUERY: MESSAGES BY TOPIC (topic.ejs and message-card.ejs) - SIMPLE FLAT THREAD VERSION - KEEP FOR REFERENCE
+// QUERY: MESSAGES BY TOPIC (topic.ejs and message-card.ejs) - SIMPLE FLAT THREAD VERSION - NOTE - KEEP FOR REFERENCE
 
 // This uses simple, flat threads; contrast with the thread path approach below
 
 // const getValidMessagesByTopic = async (messageId, userId, limit = 50) => {
 //   const query = `
-//     SELECT 
+//     SELECT
 //       m.id,
 //       m.parent_message_id,
 //       m.topic_id,
@@ -233,13 +226,13 @@ const getTopicBySlug = async (slug) => {
 //     JOIN users u ON m.user_id = u.id
 //     LEFT JOIN user_profiles up ON up.user_id = u.id
 //     -- below is new
-//       LEFT JOIN message_likes ml 
+//       LEFT JOIN message_likes ml
 //       ON ml.message_id = m.id
 //       AND ml.user_id = $2
 //     WHERE m.topic_id = $1
 //       AND m.is_deleted = false
 //       AND (m.expires_at IS NULL OR m.expires_at > NOW())
-//     ORDER BY 
+//     ORDER BY
 //       m.is_sticky DESC,
 //       -- m.created_at DESC
 //       -- changed from above due to reordering when the like button was clicked
@@ -253,11 +246,9 @@ const getTopicBySlug = async (slug) => {
 //   return res.rows;
 // };
 
-
 // QUERY: MESSAGES BY TOPIC (topic.ejs and message-card.ejs) - THREAD PATH APPROACH
 
 // This uses the thread path approach; contrast with simple, flat threads above
-
 const getValidMessagesByTopic = async (topicId, userId, limit = 50) => {
   const query = `
     SELECT 
@@ -301,7 +292,6 @@ const getValidMessagesByTopic = async (topicId, userId, limit = 50) => {
   return res.rows;
 };
 
-
 // QUERY: UPDATE MESSAGE (edit-message.ejs)
 
 const updateMessage = async (targetId, title, body) => {
@@ -335,35 +325,7 @@ const updateMessage = async (targetId, title, body) => {
   }
 };
 
-
 // QUERY: STICKY BUTTON FOR MESSAGES (message-card.ejs)
-
-// NOTE - NOT is_sticky (below) ---> this flips true and false
-// NOTE - CASE updates expires_at depending on the previous value
-
-// const stickyMessageById = async (message_id) => {
-//   const client = await pool.connect();
-//   try {
-//     await client.query(
-//       `
-//       UPDATE messages
-//       SET 
-//         is_sticky = NOT is_sticky,
-//         expires_at = CASE 
-//           WHEN is_sticky = FALSE THEN NULL
-//           ELSE NOW() + INTERVAL '28 days'
-//         END
-//       WHERE id = $1;
-//       `,
-//       [message_id],
-//     );
-//   } catch (err) {
-//     console.error("Error toggling sticky message:", err);
-//     throw err;
-//   } finally {
-//     client.release();
-//   }
-// };
 
 const stickyMessageById = async (message_id) => {
   const client = await pool.connect();
@@ -384,7 +346,6 @@ const stickyMessageById = async (message_id) => {
   }
 };
 
-
 // QUERY: DELETE MESSAGE BUTTON BY USER OR ADMIN (message-card.ejs)
 
 const softDeleteMessageById = async (targetId) => {
@@ -398,7 +359,6 @@ const softDeleteMessageById = async (targetId) => {
   const res = await pool.query(query, [targetId]);
   return res.rowCount; // number of rows updated
 };
-
 
 // QUERY: REPLY MESSAGE BUTTON INCREMENTOR (message-card.ejs)
 
@@ -481,10 +441,10 @@ module.exports = {
   getMessages,
   getMessageById,
   getTopicById,
-  getTopicNames,  
+  getTopicNames,
   insertMessage,
   getAllTopics,
-  getTopicBySlug, 
+  getTopicBySlug,
   getValidMessagesByTopic,
   updateMessage,
   stickyMessageById,
@@ -492,4 +452,3 @@ module.exports = {
   incrementReplyCount,
   toggleLike,
 };
-
