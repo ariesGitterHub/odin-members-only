@@ -1,4 +1,5 @@
 /* Font case */
+
 .capitalize {
   text-transform: capitalize;
 }
@@ -22,7 +23,9 @@
   background-color: var(--lt-yellow);
 }
 
+
 /* Font color */
+
 .font-color-black {
   color: var(--off-black);
 }
@@ -43,16 +46,16 @@
   color: var(--off-red);
 }
 
-/* .font-color-warning {
-  color: var(--lt-orange);
-} */
 
 /* Font size */
+
 .font-size-small {
   font-size: var(--font-size-small);
 }
 
+
 /* Font style */
+
 .italic {
   font-style: italic;
 }
@@ -61,7 +64,9 @@
   text-decoration: underline;
 }
 
+
 /* Font weight */
+
 .bold {
   font-weight: var(--font-weight-heavy);
 }
@@ -70,7 +75,9 @@
   font-weight: var(--font-weight-light);
 }
 
+
 /* Font align */
+
 .text-align-right {
   text-align: right;
 }
@@ -79,18 +86,23 @@
   text-align: center;
 }
 
+
 /* Special text styling */
+
 .red-letter {
   color: var(--off-red);
   font-weight: var(--font-weight-heavy);
 }
 
+
 /* Word breakers to prevent field stretching by long single words like emails */
+
 .word-breaker {
   word-wrap: break-word; /* Ensures text breaks to the next line if too long */
   overflow-wrap: break-word; /* Ensures long words also break if they overflow */
   word-break: break-all; /* Forces breaking of very long words */
 }
+
 
 /* Special border options */
 
@@ -125,7 +137,9 @@
   padding: var(--spacer-small);
 }
 
+
 /* Special spacing */
+
 .flex-gap {
 gap: var(--spacer-default);
 }
@@ -154,7 +168,9 @@ gap: var(--spacer-default);
   width: var(--width-default-percentage)
 }
 
+
 /* Force uniform emoji pointers in change-avatar.ejs */
+
 input[type="button"],
 input[type="submit"],
 input[type="checkbox"],
@@ -163,7 +179,9 @@ input[type="color"] {
   cursor: pointer !important;
 }
 
+
 /* Make hidden */
+
 .hidden {
   display: none;
 }

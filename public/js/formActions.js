@@ -6,31 +6,40 @@ export function formActionsFromModals() {
   const deleteUserTargetId = document.getElementById("delete-user-target-id"); // user_id
 
   const deleteMessageForm = document.getElementById("delete-message-form");
-  const deleteMessageTopicSlug = document.getElementById("delete-message-topic-slug");  
-  const deleteMessageTargetId = document.getElementById("delete-message-target-id"); // message_id
+  const deleteMessageTopicSlug = document.getElementById(
+    "delete-message-topic-slug",
+  );
+  const deleteMessageTargetId = document.getElementById(
+    "delete-message-target-id",
+  ); // message_id
 
   const replyMessageForm = document.getElementById("reply-message-form");
   const replyMessageTitle = document.getElementById("reply-message-title");
-  const replyMessageTargetId = document.getElementById("reply-message-target-id"); // message_id
-  const replyMessageTopicSlug = document.getElementById("reply-message-topic-slug");
-  const replyMessageTopicName = document.getElementById("reply-message-topic-name");
-  
-  const editMessageForm = document.getElementById("edit-message-form");
-  // const editMessageTitle = document.getElementById("edit-message-title");
-  const editMessageTargetId = document.getElementById("edit-message-target-id"); // message_id
-  const editMessageTopicSlug = document.getElementById("edit-message-topic-slug");
-  const editMessageTopicName = document.getElementById("edit-message-topic-name");
+  const replyMessageTargetId = document.getElementById(
+    "reply-message-target-id",
+  ); // message_id
+  const replyMessageTopicSlug = document.getElementById(
+    "reply-message-topic-slug",
+  );
+  const replyMessageTopicName = document.getElementById(
+    "reply-message-topic-name",
+  );
 
-  // TODO - get Member Stuff working...
-  // const becomeMemberForm = document.getElementById("become-member-form");
-  // const becomeMemberTargetId = document.getElementById("become-member-target-id");
+  const editMessageForm = document.getElementById("edit-message-form");
+  const editMessageTargetId = document.getElementById("edit-message-target-id"); // message_id
+  const editMessageTopicSlug = document.getElementById(
+    "edit-message-topic-slug",
+  );
+  const editMessageTopicName = document.getElementById(
+    "edit-message-topic-name",
+  );
 
   actionTargetButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const action = button.dataset.action;    
-      const messageTitle = button.dataset.messageTitle;      
-      const topicSlug = button.dataset.topicSlug;      
-      const topicName = button.dataset.topicName;      
+      const action = button.dataset.action;
+      const messageTitle = button.dataset.messageTitle;
+      const topicSlug = button.dataset.topicSlug;
+      const topicName = button.dataset.topicName;
       const targetId = button.dataset.targetId;
 
       console.log("You are looking for this number:", targetId);
@@ -56,16 +65,10 @@ export function formActionsFromModals() {
 
       if (editMessageForm) {
         editMessageForm.action = action;
-        // editMessageTitle.value = messageTitle;
         editMessageTopicSlug.value = topicSlug;
         editMessageTopicName.value = topicName;
         editMessageTargetId.value = targetId;
       }
-
-      // if (becomeMemberForm) {
-      //   becomeMemberForm.action = action;
-      //   becomeMemberTargetId.value = targetId;
-      // }
     });
   });
 }

@@ -3,7 +3,7 @@
     <% if (currentUser && currentUser.permission_status === "admin") { %>
     <a class="button-default nav-button" href="/app/admin">
       <span class="emoji emoji-nav-size" role="img" aria-label="admin's overview">
-      ⚙
+        ⚙
       </span>
     </a>
     <% } %>
@@ -13,26 +13,25 @@
       </span>
     </a>
     <% if (currentUser) { %>
-      <button
-        class="button-default nav-button new-message-button"
-        data-section="modal-new-message"
-        data-title="modal-title-new-message"
-        data-target-id="<%= currentUser.id %>"
-        >
-        <span class="emoji emoji-nav-size" role="img" aria-label="create a new message">
-          ✍🏼
-        </span>
+    <button
+      class="button-default nav-button new-message-button"
+      data-section="modal-new-message"
+      data-title="modal-title-new-message"
+      data-target-id="<%= currentUser.id %>"
+      >
+      <span class="emoji emoji-nav-size" role="img" aria-label="create a new message">
+        ✍🏼
+      </span>
     </button>
     <% } %>
     <a class="button-default nav-button" href="/app/message-boards">
       <span class="emoji emoji-nav-size" role="img" aria-label="message board link">
-      💬
+        💬
       </span>
     </a>
     <% if (currentUser) { %>
     <a class="button-default nav-button" href="/app/your-profile">
       <span class="emoji emoji-nav-size" role="img" aria-label="avatar image and link to your profile">
-        <%#= currentUser.avatarLetter %>
         <%= currentUser.avatar_type %>
       </span>
     </a>

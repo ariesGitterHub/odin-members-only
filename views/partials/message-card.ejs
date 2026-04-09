@@ -1,6 +1,6 @@
 <div class="message-card <%= message.parent_message_id ? 'child-message' : 'parent-message' %>">
-      <p>    
-      <!-- Check if the message is less than 24 hours old -->
+    <p>  
+      <%# Check if the message is less than 24 hours old %>
       <% 
       const messageDate = new Date(message.created_at);
       const now = new Date();
@@ -30,7 +30,6 @@
           <%= message.last_name %>
         </span>
       </p>
-      <!-- <p class="message-title bold"><span class="emoji"><%#= message.parent_message_id ? '↪' : '' %></span> <%#= message.title %></p> -->
       <p class="message-title bold"><%= message.title %></p>
     </div>
   </div>
@@ -74,7 +73,6 @@
   </div>
    <% } %>
   <div class="message-body">
-    <!-- <p class="<%#= message.is_edited ? 'font-color-green' : 'font-color-red' %>"> -->
       <%= message.body %>
     </p>
   </div>
@@ -94,8 +92,7 @@
           </span>
         </button>
       </form>
-      <!-- MODAL (warning message deletion by message author or admin only) -->
-      <!-- NOTE - data-topic-slug="<%#= topic.slug %>" must use topic.slug, as using message.topic_slug, which is available, will be deleted along with the whole message and lose its reference that is used to redirect back to the same /app/message-boards/${topicSlug}, in other words, not using topic.slug messes up teh redirect.-->
+      <%# Button click opens the Modal (warning message deletion by message author or admin only) %>
       <button 
         class="button-default message-button action-target-button <%= canPerformHasRole(currentUser, 'admin-or-author', message) ? '' : 'hidden' %>" 
         type="button"
@@ -107,8 +104,7 @@
       >
         <span class="emoji">🗑</span>
       </button>
-
-      <!-- MODAL (warning message deletion by message author or admin only) -->
+      <%# Button click opens the Modal (edit message by author only) %>
       <button 
         class="button-default message-button action-target-button <%= canPerformHasRole(currentUser, 'author-only', message) ? '' : 'hidden' %>" 
         type="button"
@@ -120,10 +116,7 @@
       >
         <span class="emoji">✏</span>
       </button>
-
-      <!-- TODO - BELOW NEEDS TO BE HIDDEN TO THE PERSON WHO WROTE IT **OR** DOES IT??????-->
-
-      <!-- MODAL (reply message) -->
+      <%# Button click opens the Modal (reply message) %>
       <button 
         class="button-default message-button action-target-button"
         type="button"
@@ -137,7 +130,6 @@
         >
         <span class="emoji">↪</span>(<%= message.reply_count %>)
       </button>
-      
       <form action="/app/message-boards/like-message" method="POST">
         <%# CSRF Token - hidden input for forms %>
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">

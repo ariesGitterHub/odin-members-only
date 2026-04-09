@@ -1,29 +1,29 @@
 import { fetchCurrentUserData, fetchEmojiData } from "./dataFetchers.js";
-import { openModal } from "./modalFunctions.js"
-
+import { openModal } from "./modalFunctions.js";
 
 // TODO - MAJOR TODO! Refactor this file
- export async function handleEmojiOpen(targetId, sectionId, titleId) {
-   try {
-     console.log("handleModalOpen targetId:", targetId); // Debugging line
+export async function handleEmojiOpen(targetId, sectionId, titleId) {
+  try {
+    console.log("handleModalOpen targetId:", targetId); // Debugging line
 
-     // Check if targetId exists (not null or undefined)
-     if (targetId != null && targetId !== "") {
-       if (sectionId === "modal-change-avatar-user") {
-         const currentUser = await fetchCurrentUserData(targetId);
-         populateChangeAvatar(currentUser);
-         openModal(sectionId, titleId);
-         initChangeAvatarModal();
-         console.log("modal-change-avatar-user");
-       }
-     }
-   } catch (err) {
-     console.error(err);
-     alert("Failed to load user data");
-   }
- }
+    // Check if targetId exists (not null or undefined)
+    if (targetId != null && targetId !== "") {
+      if (sectionId === "modal-change-avatar-user") {
+        const currentUser = await fetchCurrentUserData(targetId);
+        populateChangeAvatar(currentUser);
+        openModal(sectionId, titleId);
+        initChangeAvatarModal();
+        console.log("modal-change-avatar-user");
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Failed to load user data");
+  }
+}
 
 async function populateChangeAvatar(user) {
+  // NOTE - Keep this commented out section, it deals with the decision change to let guests chose avatar emojis (because why not!?)
   //Hide fields that are not mean to be used by a "guest"
   // UPDATE, guests are now allowed to have special avatars; previously only allowed to have the letter of their first name.
   // if (user.permission_status === "guest") {
@@ -137,7 +137,6 @@ async function loadEmojis() {
 }
 
 // Call the loadEmojis function to run it
-
 async function findInitialEmojiText(avatarInputValue) {
   const emojiMapSorted = await loadEmojis(); // Wait for emoji data to load
   if (avatarInputValue) {

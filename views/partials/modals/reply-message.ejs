@@ -5,13 +5,7 @@
   <input id="reply-message-target-id" type="hidden" name="targetId" />
   <input id="reply-message-topic-name" type="hidden" name="topicName" />
   <input id="reply-message-topic-slug" type="hidden" name="topicSlug" />
-  <!-- TODO - and reminder that js is no longer needed in the modal since the front end is populating it, is this safeguarded? -->
-  <%# if (currentUser) { %> 
-  <h2 class="author-draft-message">By <span id="first-name-reply-message"><%#= currentUser.first_name %></span> <span id="last-name-reply-message"><%#= currentUser.last_name %></span></h2>
-  <%# } %>
-  <!-- <p class="reply-name-draft-message">reply to
-    <span id="reply-to-first-name-draft-message"></span> <span id="reply-to-last-name-draft-message"></span>
-  </p> -->
+  <h2 class="author-draft-message">By <span id="first-name-reply-message"></span> <span id="last-name-reply-message"></span></h2>
   <label class="bold capitalize" for="topic-reply-message">Message Topic</label>
   <input
     id="topic-reply-message"

@@ -19,7 +19,6 @@
   --off-green: #5a944f;
 
   --dk-red: #422c2c;
-  /* --dk-yellow: #83741d; */
   --dk-green: #353d32;
 
   --lt-gray: #838684;
@@ -83,19 +82,17 @@
 
   --nav-button-h-w: 2.5rem;
   --nav-bar-h: 4rem;
- 
 
   --index-image-size: 17rem;
-  
+
   --avatar-circle-small-h-w: 4rem;
-  --avatar-preview-current-preview-new-h-w: 5rem; 
+  --avatar-preview-current-preview-new-h-w: 5rem;
   --avatar-circle-large-h-w: 10rem;
 
   --emoji-quick-view-bar-size: 1.125rem;
   --emoji-list-change-avatar-picker-h: 180px;
 
   /* Font related */
-
   --font-size-small: 0.8rem;
   --font-size-default: 1rem;
   --font-size-large: 1.125rem;
@@ -104,20 +101,27 @@
   --font-size-page-title: 1.65rem;
   --font-size-page-subtitle: 1.45rem;
 
-  --avatar-emoji-nav-size: 1.75rem; 
+  --avatar-emoji-nav-size: 1.75rem;
   --avatar-emoji-option-size: 2rem;
 
   /* All avatar-emojis are a percentage of their outer circle container's size, below is teh magic number for that */
   --avatar-emoji-ratio-number: 0.575;
 
-  /* Corresponds to --avatar-circle-small-h-w above */  
-  --avatar-emoji-small-size: calc(var(--avatar-circle-small-h-w) * var(--avatar-emoji-ratio-number));
+  /* Corresponds to --avatar-circle-small-h-w above */
+  --avatar-emoji-small-size: calc(
+    var(--avatar-circle-small-h-w) * var(--avatar-emoji-ratio-number)
+  );
 
   /* Corresponds to --avatar-preview-current-preview-new-h-w above */
-  --avatar-emoji-preview-size: calc(var(--avatar-preview-current-preview-new-h-w) * var(--avatar-emoji-ratio-number));
+  --avatar-emoji-preview-size: calc(
+    var(--avatar-preview-current-preview-new-h-w) *
+      var(--avatar-emoji-ratio-number)
+  );
 
   /* Corresponds to --avatar-circle-large-h-w above */
-  --avatar-emoji-large-size: calc(var(--avatar-circle-large-h-w) * var(--avatar-emoji-ratio-number));
+  --avatar-emoji-large-size: calc(
+    var(--avatar-circle-large-h-w) * var(--avatar-emoji-ratio-number)
+  );
 
   --avatar-emoji-largest-size: 8rem;
 

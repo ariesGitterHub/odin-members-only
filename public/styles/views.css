@@ -1,7 +1,8 @@
-/* UNIQUE TO ONE VIEW (GLOBAL GLASSES GO IN LAYOUT-BASICS.CSS) */
+/* UNIQUE TO ONE VIEW (GLOBAL CASES GO IN LAYOUT-BASICS.CSS) */
 
 
 /* -- index.ejs and maintenance.ejs*/
+
 .index-image {
   height: var(--index-image-size);
   width: auto;
@@ -13,6 +14,7 @@
 
 
 /* -- admin.ejs */
+
 .admin-quick-view-bar {
   width: var(--width-default-percent);
   display: flex;
@@ -124,17 +126,13 @@
 }
 
 
-
-/* .admin-card fieldset p {
-  text-transform: lowercase;
-} */
-
-
 /* -- admin-create.ejs */
+
 /* NONE */
 
 
 /* -- admin-edit.ejs */
+
 .element-container-row-space-between .emoji {
   width: 2.75rem;
   text-align: center;
@@ -146,6 +144,7 @@
 
 
 /* -- info.ejs */
+
 .info-list {
   display: flex;
   flex-direction: column;
@@ -172,53 +171,11 @@
 }
 
 
-/* -- new-message.ejs AND reply-message.ejs; TODO -**maybe** move to components*/
-.author-draft-message {
-  color: var(--off-black);
-  font-size: var(--font-size-large);
-  margin-bottom: var(--spacer-default);
-}
-
-.reply-name-draft-message {
-  width: fit-content;
-  background-color: var(--off-white);
-  color: var(--off-red);
-  border: var(--border-highlight);
-  border-radius: var(--border-radius-default);
-  font-size: var(--font-size-small);
-  font-weight: var(--font-weight-medium);
-  margin: var(--spacer-default) 0;
-  padding: var(--spacer-default);
-  text-transform: uppercase;
-}
-
-.topic-draft-message,
-.title-draft-message,
-.body-draft-message {
-  font-size: var(--font-size-default);
-}
-
-.title-draft-message {
-  outline: none; /* Remove the default focus outline (optional, use with caution) */
-}
-
-.body-draft-message {
-  width: 100%; /* Make the textarea span full width */
-  height: 180px; /* Set a fixed height, adjust as needed */
-  line-height: 1.5; /* Control line height for readability */
-  outline: none; /* Remove the default focus outline (optional, use with caution) */
-  margin: 0;
-  padding: 3px;
-}
-
-.topic-draft-message:focus,
-.title-draft-message:focus,
-.body-draft-message:focus {
-  border: var(--border-highlight);
-}
+/* -- new-message.ejs, reply-message.ejs, edit-message.ejs; Moved to components*/
 
 
 /* -- message-boards.ejs */
+
 .topic-list {
   width: var(--width-default-percent);
 }
@@ -256,19 +213,18 @@
 
 
 /* -- topic.ejs */
+
 .topic-card {
-  /* max-width: var(--max-width); */
-  /* min-width: var(--card-width); */
   width: var(--card-width);
   display: flex;
   flex-direction: column;
   gap: var(--spacer-biggest);
   margin: var(--spacer-biggest);
-  /* transition: width 0.3s ease, height 0.3s ease, margin 0.3s ease, padding 0.3s ease; */
 }
 
 
 /* -- message-card.ejs */
+
 .message-card {
   border-radius: var(--border-radius-default);
   box-shadow: var(--box-shadow-black);
@@ -354,8 +310,6 @@
 }
 
 .message-body {
-  /* display: flex; */
-  /* flex-wrap: wrap; */
   border: transparent;
   border-radius: var(--border-radius-default);
   font-size: var(--message-body-size);
@@ -378,6 +332,7 @@
 
 
 /* -- your-profile.ejs */
+
 .your-profile-card {
   background-color: var(--off-white);
   color: var(--off-black);
@@ -391,16 +346,8 @@
   background-color: var(--white);
 }
 
-/* -- edit-profile modal */
-/* #apt-unit-edit-profile {
-  width: 90%;
-} */
-
-/* #us-state-edit-profile {
-  width: var(--width-default-percent);
-} */
-
 /* -- member-directory.ejs */
+
 .member-card .neighbor-relevant-data {
   background-color: var(--off-white);
 }
@@ -417,6 +364,7 @@
 
 
 /* -- change-avatar.ejs */
+
 .preview-current,
 .preview-new {
   height: var(--avatar-preview-current-preview-new-h-w);
@@ -460,11 +408,13 @@
 }
 
 /* ---- Hide the default radio button */
+
 .emoji-option input[type="radio"] {
   display: none;
 }
 
 /* ---- Custom radio button styling */
+
 .emoji-option label {
   display: flex;
   align-items: center;
@@ -472,6 +422,7 @@
 }
 
 /* ---- Emoji styling */
+
 .emoji-option .emoji {
   cursor: pointer;
   font-size: var(--avatar-emoji-option-size);
@@ -480,6 +431,7 @@
 }
 
 /* ---- Text styling */
+
 .emoji-option p {
   color: var(--off-black);
   cursor: pointer;
@@ -501,19 +453,22 @@
 }
 
 /* ---- Checked state - when the radio button is selected */
+
 .emoji-option input[type="radio"]:checked + label .emoji {
   transform: scale(1.25);
   color: var(--dk-red);
 }
 
 /* ---- Makes the text bold when the radio button is selected */
+
 .emoji-option input[type="radio"]:checked + label p {
   color: var(--black);
   font-weight: var(--font-weight-heavy);
 }
 
 
-/* error-page.ejs */
+/* -- error-page.ejs */
+
 .page-errors h1 {
   color: var(--off-red);
 }

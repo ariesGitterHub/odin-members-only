@@ -1,11 +1,14 @@
-function toggleVisibility(element) {element.classList.toggle("hidden");}
+function toggleVisibility(element) {
+  element.classList.toggle("hidden");
+}
 
 function updateButtonText(button, element, text) {
-  element.classList.contains("hidden") 
-    ? button.textContent = `open ${text}` 
-    : button.textContent = `close ${text}`;}
+  element.classList.contains("hidden")
+    ? (button.textContent = `open ${text}`)
+    : (button.textContent = `close ${text}`);
+}
 
- // Toggle .hidden messages/session logs site controls in admin.ejs
+// Toggle .hidden messages/session logs site controls in admin.ejs
 export function handleSiteControlsToggle() {
   const siteControlsButton = document.querySelector("#site-controls-button");
   const siteControlsDiv = document.querySelector("#site-controls-div");
@@ -14,18 +17,16 @@ export function handleSiteControlsToggle() {
   if (siteControlsButton && siteControlsDiv) {
     siteControlsButton.addEventListener("click", () => {
       toggleVisibility(siteControlsDiv);
-      updateButtonText(
-        siteControlsButton,
-        siteControlsDiv,
-        siteControlsText,
-      );
+      updateButtonText(siteControlsButton, siteControlsDiv, siteControlsText);
     });
   }
 }
 
 // Toggle .hidden user census in admin.ejs
 export function handleSiteStatisticsToggle() {
-  const siteStatisticsButton = document.querySelector("#site-statistics-button");
+  const siteStatisticsButton = document.querySelector(
+    "#site-statistics-button",
+  );
   const siteStatisticsDiv = document.querySelector("#site-statistics-div");
   const siteStatisticsButtonText = "site statistics";
 
@@ -41,20 +42,6 @@ export function handleSiteStatisticsToggle() {
   }
 }
 
-// Toggle .hidden message overview in admin.ejs
-// export function handleMessageOverviewToggle() {
-//   const messagesOverviewButton = document.querySelector("#messages-overview-button");
-//   const messagesOverviewDiv = document.querySelector("#messages-overview-div");
-//   const messagesOverviewButtonText = "messages overview"
-
-//   if (messagesOverviewButton && messagesOverviewDiv) {
-//     messagesOverviewButton.addEventListener("click", () => {
-//       toggleVisibility(messagesOverviewDiv);
-//       updateButtonText(messagesOverviewButton, messagesOverviewDiv, messagesOverviewButtonText);
-//     });
-//   }
-// }
-
 // Toggle .hidden for all "guest cards" on admin.ejs
 export function handleGuestCardsToggle() {
   const showGuestsButton = document.querySelector("#show-guests-button");
@@ -66,8 +53,12 @@ export function handleGuestCardsToggle() {
       guestCardDivs.forEach((card) => {
         toggleVisibility(card);
       });
-      updateButtonText(showGuestsButton, guestCardDivs[0], showGuestsButtonText);
-    })
+      updateButtonText(
+        showGuestsButton,
+        guestCardDivs[0],
+        showGuestsButtonText,
+      );
+    });
   }
 }
 
@@ -82,8 +73,12 @@ export function handleMemberCardsToggle() {
       memberCardDivs.forEach((card) => {
         toggleVisibility(card);
       });
-      updateButtonText(showMembersButton, memberCardDivs[0], showMembersButtonText);
-    })
+      updateButtonText(
+        showMembersButton,
+        memberCardDivs[0],
+        showMembersButtonText,
+      );
+    });
   }
 }
 
@@ -94,10 +89,12 @@ export function handleShowProfileToggle() {
 
   showProfileButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const profileDataDiv = button.closest('.card').querySelector('.profile-data-container');
+      const profileDataDiv = button
+        .closest(".card")
+        .querySelector(".profile-data-container");
       toggleVisibility(profileDataDiv);
       updateButtonText(button, profileDataDiv, showProfileButtonText);
-    })
+    });
   });
 }
 
@@ -107,8 +104,10 @@ export function handleShowInfoSectionToggle() {
 
   infoButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const infoSection = button.closest('.info-list-card').querySelector(".info-section");
+      const infoSection = button
+        .closest(".info-list-card")
+        .querySelector(".info-section");
       toggleVisibility(infoSection);
-    })
+    });
   });
 }

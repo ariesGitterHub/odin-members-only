@@ -8,7 +8,6 @@ const {
 
 const rateLimiter = require("../middleware/rateLimiters");
 
-// TODO - arrange by order of ROUTES far below
 const {
   getAdminPage,
   postNewSiteSettingsAdminPage,
@@ -26,7 +25,6 @@ const {
   getTopicPage,
   getMessageDetails,
   getMaxMessageChars,
-  // getRateLimiterData,
   postNewMessage,
   postStickyMessageToggle,
   postEditMessage,
@@ -54,7 +52,6 @@ const {
   getUserDetails,
   getYourProfilePage,
   deleteYourAccount,
-  // postYourProfilePageEdit,
   getEditProfile,
   postEditProfile,
   postYourProfilePageAvatar,
@@ -62,37 +59,36 @@ const {
 
 const appRouter = Router();
 
-//TODO - keep or axe this if I am using fetch as needed?
-// ROUTES: CURRENT USER API 
+// *** APIs
+
+// ROUTES: CURRENT USER API FOR FRONTEND FETCH
 appRouter.get("/current-user", requireRole("guest"), getCurrentUser);
 
-//TODO - keep or axe this if I am using fetch as needed?
-// ROUTES: USER ID API 
+// ROUTES: USER ID API FOR FRONTEND FETCH
 appRouter.get("/user/:id", requireRole("guest"), getUserDetails);
 
-//TODO - keep or axe this if I am using fetch as needed?
-// ROUTES: MESSAGES API 
+// ROUTES: MESSAGES API FOR FRONTEND FETCH
 appRouter.get("/message/:id", requireRole("guest"), getMessageDetails);
 
-// ROUTES: CONFIG API 
+// ROUTES: CONFIG MAX CHARS API FOR FRONTEND FETCH
 appRouter.get("/config/max-chars", requireRole("guest"), getMaxMessageChars);
-// appRouter.get("/config/rate-limiter", requireRole("guest"), getRateLimiterData);
 
 
-// ROUTES: INDEX/HOME (index.ejs)
+// *** Index/Maintenance
+
+// ROUTES: INDEX/HOME (index.ejs), ALSO USED FOR MAINTENANCE (maintenance.ejs)
 appRouter.get("/", getHome);
+
+// *** Auth
 
 // ROUTES: SIGN UP PAGE (sign-up.ejs)
 appRouter.get("/sign-up", getSignUp);
-
-// appRouter.post("/sign-up", passwordValidationRules, postSignUp);
 appRouter.post("/sign-up", createUserValidator, rateLimiter, postSignUp);
 
 // ROUTES: LOG IN PAGE (log-in.ejs)
 appRouter.get("/log-in", getLogIn);
 appRouter.post("/log-in", rateLimiter, postLogIn);
 
-// TODO - make uniform like other routes?
 // ROUTES: LOG OUT BUTTON
 appRouter.post("/log-out", (req, res, next) => {
     console.log("Logout form submitted, good bye!");
@@ -100,6 +96,8 @@ appRouter.post("/log-out", (req, res, next) => {
   },
   postLogOut,
 );
+
+// *** Admin Related
 
 // ROUTES: ADMIN PAGE (admin.ejs) 
 appRouter.get("/admin", requireRole("admin"), getAdminPage);
@@ -114,11 +112,16 @@ appRouter.post("/admin-create", requireRole("admin"), createUserValidator, postA
 
 // ROUTES: ADMIN EDIT PAGE (admin-edit.ejs) 
 appRouter.get("/admin-edit/:id", requireRole("admin"), getAdminEditPage);
-// appRouter.post("/admin-edit/:id", requireRole("admin"), postAdminEditPage);
 appRouter.post("/admin-edit/:id", requireRole("admin"), adminEditUserValidator(), postAdminEditPage);
+
+
+// *** Info
 
 // ROUTES: SITE INFO PAGE (info.ejs)
 appRouter.get("/info", requireRole("guest"), getInfo);
+
+
+// *** Message Related
 
 // ROUTES: NEW MESSAGE MODAL (new-message.ejs)
 appRouter.post("/new-message", requireRole("guest"), postNewMessage);
@@ -144,18 +147,21 @@ appRouter.post("/message-boards/edit-message", requireRole("guest"), postEditMes
 // ROUTES: REPLY MESSAGE MODAL (reply-message.ejs)
 appRouter.post("/message-boards/reply-message", requireRole("guest"), postReplyMessage);
 
+// ROUTE: THREAD_PATH API FOR REPLY MESSAGES (?)
+// NOTE - getMessagesForTopic is used with threaded paths that get my messages replies to order properly; I experimented with commenting this out and message replies still ordered correctly, but leaving this in in case something else is relying on it.
+appRouter.get('/topics/:topicId/messages', getMessagesForTopic);
+
 // ROUTES: LIKE MESSAGE (message-boards.ejs by topic slug)
 appRouter.post("/message-boards/like-message", postLikeMessageToggle);
+
+
+// *** User Related
 
 // ROUTES: YOUR PROFILE PAGE (your-profile.ejs)
 appRouter.get("/your-profile", requireRole("guest"), getYourProfilePage);
 
 // ROUTE: DELETE YOUR ACCOUNT MODAL (warning-account-deletion.ejs)
 appRouter.post("/your-profile/delete-your-account", requireRole("guest"), deleteYourAccount);
-
-// ROUTES: EDIT PROFILE MODAL (edit-profile.ejs)
-// appRouter.post("/your-profile/edit-profile", requireRole("guest"),postYourProfilePageEdit);
-// appRouter.post("/your-profile/edit-profile", requireRole("guest"), yourProfileEditUserValidator(), postYourProfilePageEdit);
 
 // ROUTE: EDIT PROFILE PAGE (edit-profile.ejs)
 appRouter.get("/edit-profile", requireRole("guest"), getEditProfile);
@@ -164,16 +170,12 @@ appRouter.post("/edit-profile", requireRole("guest"), editProfileUserValidator()
 // ROUTES: CHANGE AVATAR MODAL (change-avatar.ejs)
 appRouter.post("/your-profile/change-avatar", requireRole("guest"), postYourProfilePageAvatar);
 
-// ROUTE: MEMBER DIRECTOR PAGE (member-directory.ejs) 
+// ROUTE: MEMBER DIRECTORY PAGE (member-directory.ejs) 
 appRouter.get("/member-directory", requireRole("member"), getMemberDirectory);
 
 // ROUTE: MEMBER INVITATION PAGE (member-invite.ejs) 
 appRouter.get("/member-invite", requireRole("guest"), getMemberInvite);
 appRouter.post("/member-invite/accepted", requireRole("guest"), postMemberInviteAccepted);
 appRouter.post("/member-invite/declined", requireRole("guest"), postMemberInviteDeclined);
-
-// ???
-// GET /app/topics/:topicId/messages TODO - is below needed?
-appRouter.get('/topics/:topicId/messages', getMessagesForTopic);
 
 module.exports = appRouter;

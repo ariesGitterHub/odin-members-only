@@ -25,11 +25,9 @@
           <p>Note: maintaining member status is contingent upon adherence to site policies (see <a class="text-link" href="/app/info">Site Information</a>).</p>
         </div>
         <br>
-        <!-- <form id="member-invite-form" method="POST"> -->
         <form action="/app/member-invite/accepted" method="POST">
           <%# CSRF Token - hidden input for forms %>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          <!-- <input id="member-invite-target-id" type="hidden" name="targetId" /> -->
           <input
             name="permission_status"
             value="member"
@@ -101,11 +99,6 @@
         <form action="/app/member-invite/declined" method="POST">
           <%# CSRF Token - hidden input for forms %>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-          <!-- <input
-            name="permission_status"
-            value="guest"
-            hidden
-          /> -->
           <input
             name="invite_decision"
             value="declined"

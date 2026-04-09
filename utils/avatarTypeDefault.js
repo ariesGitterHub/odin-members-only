@@ -2,7 +2,7 @@
 
 // 2026.03.14, well it's a later date, because, weird issues starting making emojis vanish in the header nav profile button. The glitch seems to be coming from avatarLetter not getting read soon enough. Not sure for certain, but it's time for this old code to go. 🤨
 
-// KEEP JUST IN CASE SOMETHING ELSE IS DISCOVERED TO HAVE BROKEN
+// NOTE - KEEP FOR REFERENCE
 
 // function avatarTypeDefault(avatar_type, permission_status, first_name) {
 //   if (

@@ -1,25 +1,46 @@
 <form action="/app/new-message" class="draft-message-form" method="POST">
   <%# CSRF Token - hidden input for forms %>
-  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-  <!-- TODO - and reminder that js is no longer needed in the modal since the front end is populating it, is this safeguarded? -->
-  <%# if (currentUser) { %> 
-  <h2 class="author-draft-message">By <span id="first-name-new-message"><%#= currentUser.first_name %></span> <span id="last-name-new-message"><%#= currentUser.last_name %></span></h2>
-  <%# } %>
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+  <h2 class="author-draft-message">
+    By <span id="first-name-new-message"></span>
+    <span id="last-name-new-message"></span>
+  </h2>
   <label class="bold capitalize" for="topic-new-message">Message Topic</label>
   <select
     id="topic-new-message"
     class="topic-draft-message uppercase"
     name="topic_id"
     required
-  >
-  </select>
+  ></select>
   <label class="bold capitalize" for="title-new-message">Message Title</label>
-  <input id="title-new-message" class="title-draft-message word-breaker" type="text" name="title" required />
+  <input
+    id="title-new-message"
+    class="title-draft-message word-breaker"
+    type="text"
+    name="title"
+    required
+  />
   <div class="element-container-col-start-center">
-    <label class="bold capitalize" for="body-new-message">Message Body <span id="max-char-count-new-message" class="max-char-count-draft-message" aria-live="polite"></span></label>
-    <textarea id="body-new-message" class="body-draft-message" type="text" name="body" maxlength="700" required></textarea>
+    <label class="bold capitalize" for="body-new-message"
+      >Message Body
+      <span
+        id="max-char-count-new-message"
+        class="max-char-count-draft-message"
+        aria-live="polite"
+      ></span
+    ></label>
+    <textarea
+      id="body-new-message"
+      class="body-draft-message"
+      type="text"
+      name="body"
+      maxlength="700"
+      required
+    ></textarea>
     <div class="button-container-row-space-evenly">
-      <button class="button-default wide-button" type="submit">submit new message</button>
+      <button class="button-default wide-button" type="submit">
+        submit new message
+      </button>
     </div>
   </div>
 </form>

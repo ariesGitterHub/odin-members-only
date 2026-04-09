@@ -46,7 +46,7 @@ button:hover,
 .wide-button {
   width: var(--width-default-percent);
   /* the padding setting below keeps the button-default settings above from letting the left and right "button" ends from pushing beyond where they should be at  */
-  padding: 0; 
+  padding: 0;
 }
 
 .narrow-button {
@@ -102,9 +102,54 @@ button:hover,
 }
 
 .submit-button {
-box-shadow: var(--box-shadow-green);
+  box-shadow: var(--box-shadow-green);
 }
 
+/* All generic message related classes from new-message.ejs, reply-message.ejs, edit-message.ejs */
+
+.author-draft-message {
+  color: var(--off-black);
+  font-size: var(--font-size-large);
+  margin-bottom: var(--spacer-default);
+}
+
+.reply-name-draft-message {
+  width: fit-content;
+  background-color: var(--off-white);
+  color: var(--off-red);
+  border: var(--border-highlight);
+  border-radius: var(--border-radius-default);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  margin: var(--spacer-default) 0;
+  padding: var(--spacer-default);
+  text-transform: uppercase;
+}
+
+.topic-draft-message,
+.title-draft-message,
+.body-draft-message {
+  font-size: var(--font-size-default);
+}
+
+.title-draft-message {
+  outline: none; /* Remove the default focus outline (optional, use with caution) */
+}
+
+.body-draft-message {
+  width: 100%; /* Make the textarea span full width */
+  height: 180px; /* Set a fixed height, adjust as needed */
+  line-height: 1.5; /* Control line height for readability */
+  outline: none; /* Remove the default focus outline (optional, use with caution) */
+  margin: 0;
+  padding: 3px;
+}
+
+.topic-draft-message:focus,
+.title-draft-message:focus,
+.body-draft-message:focus {
+  border: var(--border-highlight);
+}
 
 /* DIV containers */
 
@@ -143,7 +188,6 @@ box-shadow: var(--box-shadow-green);
   justify-content: center;
 }
 
-
 .element-container-col-start-center {
   display: flex;
   flex-direction: column;
@@ -152,7 +196,7 @@ box-shadow: var(--box-shadow-green);
 }
 
 /* --row-based */
-.element-container-row-center-start  {
+.element-container-row-center-start {
   display: flex;
   align-items: center;
   justify-content: start;
@@ -196,7 +240,7 @@ box-shadow: var(--box-shadow-green);
   text-transform: uppercase;
 }
 
-/* -- miscellaneous containers */
+/* Miscellaneous containers */
 .password-rules-container {
   width: var(--width-default-percent);
   display: flex;
@@ -212,6 +256,7 @@ box-shadow: var(--box-shadow-green);
 }
 
 /* Emoji/avatar related */
+
 .avatar-container {
   width: var(--width-default-percent);
   display: flex;
@@ -228,11 +273,6 @@ box-shadow: var(--box-shadow-green);
   box-shadow: var(--box-shadow-gray);
   color: var(--avatar-color-fg);
 }
-
-/* .avatar-background {
-  background: linear-gradient(5deg, var(--avatar-bg-bottom, var(--off-gray)), var(--avatar-bg-top, var(--off-white)));
-  color: var(--avatar-fg, var(--off-black));
-} */
 
 .avatar-container-size-small {
   height: var(--avatar-circle-small-h-w);
@@ -261,7 +301,8 @@ box-shadow: var(--box-shadow-green);
   font-size: var(--avatar-emoji-largest-size);
 }
 
-.emoji-size-small:hover, .emoji-size-large:hover {
+.emoji-size-small:hover,
+.emoji-size-large:hover {
   transform: scale(1.1);
 }
 
@@ -271,16 +312,21 @@ box-shadow: var(--box-shadow-green);
 }
 
 /* FORM related */
+
 .card form {
   width: var(--width-default-percent);
 }
 
-label, .pseudo-label {
+label,
+.pseudo-label {
   width: var(--width-default-percent);
   text-transform: capitalize;
 }
 
-input, .pseudo-input, textarea, select {
+input,
+.pseudo-input,
+textarea,
+select {
   width: var(--width-default-percent);
   border: var(--border-default);
   font-weight: var(--font-weight-medium);
@@ -288,12 +334,14 @@ input, .pseudo-input, textarea, select {
   padding: var(--spacer-small);
 }
 
-input, select {
+input,
+select {
   height: var(--button-default-h);
 }
 
-input, textarea{
-background-color: var(--white);
+input,
+textarea {
+  background-color: var(--white);
 }
 
 input::placeholder {
@@ -310,13 +358,13 @@ select {
 }
 
 textarea {
-  /* height: 200px; */
   font-family: var(--font-text);
   resize: vertical; /* Allows vertical resizing, remove if not needed */
-  white-space: pre-line
+  white-space: pre-line;
 }
 
 /* LIST related */
+
 li {
   width: var(--width-default-percent);
   list-style: none;
@@ -328,6 +376,7 @@ li:last-child {
 }
 
 /* UI Messages */
+
 .ui-message {
   width: var(--width-default-percent);
   font-size: var(--message-body-size);
@@ -336,17 +385,15 @@ li:last-child {
 }
 
 .ui-message-bubble {
-  /* max-width: var(--max-width); */
   max-width: var(--width-default-percent);
   background-color: var(--off-white);
-  /* border: var(--border-default); */
-  /* border: var(--border-off-white); */
   border-radius: var(--border-radius-default);
   color: var(--off-black);
   padding: var(--spacer-default);
 }
 
-/* ERROR and success messages */
+/* Error and success messages */
+
 .error-message {
   color: var(--error-color);
   font-family: var(--font-error);
@@ -368,6 +415,7 @@ li:last-child {
 }
 
 /* Toggle slider */
+
 /* Switch styling */
 .switch {
   position: relative;

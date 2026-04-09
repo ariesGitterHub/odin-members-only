@@ -24,4 +24,3 @@ function formatShortDate(date) {
 }
 
 module.exports = { calculateAge, formatShortDate };
-

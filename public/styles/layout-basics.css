@@ -37,7 +37,9 @@ main {
 }
 
 /* Global Page and Modal Classes */
+
 /* -- Titles and Subtitles */
+
 .page-title {
   display: inline-block;
   background: linear-gradient(180deg, var(--off-red), var(--off-black));
@@ -84,6 +86,7 @@ main {
 }
 
 /* -- Card */
+
 .card {
   height: fit-content;
   width: var(--card-width);
@@ -96,7 +99,6 @@ main {
   box-shadow: var(--box-shadow-black);
   margin: var(--spacer-default);
   padding: var(--spacer-biggest);
-  /* transition: width 0.3s ease, height 0.3s ease, margin 0.3s ease, padding 0.3s ease; */
 }
 
 .admin-card {
@@ -114,17 +116,18 @@ main {
   border: var(--border-guest-card);
 }
 
-  /* on admin panel, used to grab via js */
+/* This is only used on admin.ejs, but keep it here with other card types */
 .user-card {
   background-color: var(--white);
 }
 
 /* -- Profile Data, using dl, dt, & dd special elements, and their related classes */
-.profile-data-container, .profile-data-dl {
+
+.profile-data-container,
+.profile-data-dl {
   width: var(--width-default-percent);
   font-size: var(--font-size-default);
   margin-top: var(--spacer-medium);
-  /* margin-bottom: var(--spacer-big); */
 }
 
 .profile-data-dl div {
@@ -147,7 +150,7 @@ main {
   padding-left: var(--spacer-small);
 }
 
-.neighbor-relevant-data, .app-relevant-data {
- margin-bottom: 2px;
+.neighbor-relevant-data,
+.app-relevant-data {
+  margin-bottom: 2px;
 }
-

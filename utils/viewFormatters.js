@@ -48,7 +48,7 @@ function addChineseZodiacSigns(users, getChineseZodiacFull) {
   }));
 }
 
-// I'm getting the first letter of the first name now
+// NOTE - This was previously used in the old set up where guest level permission statuses (i.e., lowest) were assigned the first letter of the first name as their avatar, all without touching the db. I later changed course and went in another direction.
 // function addAvatarFields(items, avatarTypeDefault) {
 //   return items.map((item) => ({
 //     ...item,
@@ -62,7 +62,6 @@ function addChineseZodiacSigns(users, getChineseZodiacFull) {
 
 module.exports = {
   addBirthdateFields,
-  // addDateFields,
   addSessionCreateDateFields,
   addSessionUpdateDateFields,
   addSessionLastLoginDateFields,
