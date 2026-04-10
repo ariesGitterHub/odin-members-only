@@ -42,8 +42,6 @@ export function formActionsFromModals() {
       const topicName = button.dataset.topicName;
       const targetId = button.dataset.targetId;
 
-      console.log("You are looking for this number:", targetId);
-
       if (deleteUserForm) {
         deleteUserForm.action = action;
         deleteUserTargetId.value = targetId;

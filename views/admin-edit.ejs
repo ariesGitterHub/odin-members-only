@@ -46,7 +46,7 @@
                     id="permission-status-admin-edit-page"
                     class="profile-block-select lowercase"
                     name="permission_status"
-                    <%= canPerformHasRole(currentUser, 'changePermissionStatus', formData) ? '' : 'disabled' %>
+                    <%= canPerformHasRole(user, 'changePermissionStatus', formData) ? '' : 'disabled' %>
                     required
                 >
                   <option value="guest" <%= formData?.permission_status === "guest" ? "selected" : "" %>><%= config.guest_emoji %> guest </option>
@@ -60,7 +60,7 @@
                   id="is-active-admin-edit-page"
                   class="profile-block-select lowercase"
                   name="is_active"
-                  <%= canPerformHasRole(currentUser, 'changeIsActive', formData) ? '' : 'disabled' %>
+                  <%= canPerformHasRole(user, 'changeIsActive', formData) ? '' : 'disabled' %>
                   required
               >
                   <option value="false" <%= String(formData?.is_active) === "false" ? "selected" : "" %>>🔴 false</option>
@@ -75,7 +75,7 @@
                   id="verified-by-admin-admin-edit-page"
                   class="profile-block-select lowercase"
                   name="verified_by_admin"
-                  <%= canPerformHasRole(currentUser, 'changeVerifiedByAdmin', formData) ? '' : 'disabled' %>
+                  <%= canPerformHasRole(user, 'changeVerifiedByAdmin', formData) ? '' : 'disabled' %>
                   required
                 >
                 <option value="false" <%= String(formData?.verified_by_admin) === "false" ? "selected" : "" %>>🔴 false</option>
@@ -88,7 +88,7 @@
                 id="invite-sent-admin-edit-page"
                 class="profile-block-select lowercase"
                 name="guest_upgrade_invite"
-                <%= canPerformHasRole(currentUser, 'changeMemberRequest', formData) ? '' : 'disabled' %>
+                <%= canPerformHasRole(user, 'changeMemberRequest', formData) ? '' : 'disabled' %>
                 required
               >
                 <option value="false" <%= String(formData?.guest_upgrade_invite) === "false" ? "selected" : "" %>>🔴 false</option>
@@ -101,7 +101,7 @@
                 id="invite-decision-admin-edit-page"
                 class="profile-block-select lowercase"
                 name="invite_decision"
-                <%= canPerformHasRole(currentUser, 'changeMemberRequest', formData) ? '' : 'disabled' %>
+                <%= canPerformHasRole(user, 'changeMemberRequest', formData) ? '' : 'disabled' %>
                 required
               >
                 <option value="none" <%= formData?.invite_decision === "not_sent" ? "selected" : "" %>>⚪ none</option>

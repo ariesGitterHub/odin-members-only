@@ -22,12 +22,11 @@ const {
 
 async function getMessageBoards(req, res, next) {
   try {
-    // const currentUser = req.user || res.locals.currentUser || null;
-    const currentUser = req.currentUser;
+    const user = req.user;
 
     const topics = await getAllTopics();
     const visibleTopics = topics.filter((topic) =>
-      hasRole(currentUser, topic.required_permission),
+      hasRole(user, topic.required_permission),
     );
 
     res.render("message-boards", {
@@ -55,11 +54,11 @@ async function getTopicPage(req, res, next) {
       return res.status(404).render("404");
     }
 
-    // Ensure currentUser is defined (guests may be undefined)
-    const currentUser = req.currentUser;
+    // Ensure user is defined (guests may be undefined)
+    const user = req.user;
 
     // Authorization check based on DB permission
-    if (!hasRole(currentUser, topic.required_permission)) {
+    if (!hasRole(user, topic.required_permission)) {
       const err = new Error("Forbidden: insufficient permission status.");
       err.status = 403;
       return next(err);
@@ -87,7 +86,7 @@ async function getTopicPage(req, res, next) {
       config: siteSettings,
       topic,
       messages: messagesWithExpiry,
-      currentUser,
+      user,
       errors: [],
     });
   } catch (err) {
@@ -136,9 +135,9 @@ async function postNewMessage(req, res, next) {
   const { topic_id, title, body } = req.body;
 
   // Assuming you're using session-based authentication
-  const currentUserId = req.currentUser.id;
+  const userId = req.user.id;
 
-  if (!currentUserId) {
+  if (!userId) {
     return res.status(401).send("User is not logged in.");
   }
 
@@ -151,7 +150,7 @@ async function postNewMessage(req, res, next) {
     }
 
     const newMessage = await insertMessage(
-      currentUserId,
+      userId,
       topic_id,
       title,
       body,
@@ -187,8 +186,8 @@ async function postEditMessage(req, res, next) {
     }
 
     // Get the currently logged-in user ID
-    const currentUserId = req.currentUser.id;
-    if (!currentUserId) {
+    const userId = req.user.id;
+    if (!userId) {
       return res.status(401).send("User is not logged in.");
     }
 
@@ -197,9 +196,9 @@ async function postEditMessage(req, res, next) {
     if (!message) {
       return res.status(404).send("Message not found.");
     }
-    console.log("Updated message with is_edited!:", message.is_edited);
+
     // Check if the logged-in user is the author of the message
-    if (message.user_id !== currentUserId) {
+    if (message.user_id !== userId) {
       return res.status(403).send("You are not the author of this message.");
     }
 
@@ -209,9 +208,6 @@ async function postEditMessage(req, res, next) {
       title,
       body,
     );
-
-    // Log updated message data to ensure it's correctly updated
-    console.log("Updated message with is_edited2:", message.is_edited);
 
     // Pass the updated message with 'is_edited' to the template
     res.redirect(`/app/message-boards/${message.topic_slug}`);
@@ -229,16 +225,14 @@ async function postReplyMessage(req, res, next) {
 
     const prefixedTitle = `↪ ${messageTitle}`;
 
-    console.log("Received adjusted messageTitle:", prefixedTitle);
-
     // Validate form data
     if (!targetId || !body) {
       return res.status(400).send("Missing required data.");
     }
 
     // Get the currently logged-in user ID
-    const currentUserId = req.currentUser.id;
-    if (!currentUserId) {
+    const userId = req.user.id;
+    if (!userId) {
       return res.status(401).send("User is not logged in.");
     }
 
@@ -251,7 +245,7 @@ async function postReplyMessage(req, res, next) {
     // Insert the new reply message
 
     const replyMessage = await insertMessage(
-      currentUserId,
+      userId,
       parentMessage.topic_id,
       prefixedTitle,
       body,
@@ -272,8 +266,6 @@ async function postReplyMessage(req, res, next) {
 
 async function deleteUserMessage(req, res, next) {
   try {
-    console.log("Delete user message body sanity:", req.body);
-    // slug was undefined for use in redirect, I forgot to extract it from req.body!!!!
     const { targetId, topicSlug } = req.body;
     const rowsUpdated = await softDeleteMessageById(targetId);
     if (rowsUpdated === 0) return res.status(404).send("Message not found");
@@ -287,9 +279,9 @@ async function deleteUserMessage(req, res, next) {
 
 async function postLikeMessageToggle(req, res, next) {
   const { message_id, slug } = req.body;
-  const currentUserId = req.currentUser.id;
+  const userId = req.user.id;
   try {
-    await toggleLike(message_id, currentUserId);
+    await toggleLike(message_id, userId);
 
     res.redirect(`/app/message-boards/${slug}`);
   } catch (err) {
@@ -302,10 +294,10 @@ async function postLikeMessageToggle(req, res, next) {
 
 const getTopicNamesForDropdown = async (req, res, next) => {
   try {
-    const currentUser = req.currentUser;
+    const user = req.user;
     const topics = await getTopicNames(); // returns [{id, name, required_permission}, ...]
     const visibleTopics = topics.filter((topic) =>
-      hasRole(currentUser, topic.required_permission),
+      hasRole(user, topic.required_permission),
     );
     res.json(visibleTopics); // Must be an array
   } catch (err) {
@@ -318,7 +310,7 @@ const getTopicNamesForDropdown = async (req, res, next) => {
 const getMessagesForTopic = async (req, res) => {
   const messages = await getValidMessagesByTopic(
     req.params.topicId,
-    req.currentUser.id,
+    req.user.id,
   );
   const threaded = buildThreadedMessages(messages);
   res.json(threaded);

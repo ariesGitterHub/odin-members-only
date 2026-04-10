@@ -1,8 +1,10 @@
 import {
-  fetchUserData,
+  // fetchUserData,
+  fetchUserId,
   fetchMessageData,
   fetchTopicNameData,
-  fetchCurrentUserData,
+  // fetchFullUserData,
+  fetchModalData,
 } from "./dataFetchers.js";
 
 import { handleEmojiOpen } from "./emojiFunctions.js";
@@ -41,12 +43,11 @@ export function attachCloseModalListener() {
   });
 }
 
-// Attach openModal/handleModalOpen listener -> TODO - temp import handleEmojiOpen from emojiFunctions.js in here
+// Attach openModal/handleModalOpen listener
 export function attachOpenModalListener() {
   document.querySelectorAll("[data-target-id]").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const { targetId, section, title } = e.currentTarget.dataset;
-      console.log("Magic Number is:", targetId);
       handleModalOpen(targetId, section, title);
       handleEmojiOpen(targetId, section, title);
     });
@@ -58,44 +59,44 @@ export function attachOpenModalListener() {
 // Open modal with an event
 export async function handleModalOpen(targetId, sectionId, titleId) {
   try {
-    console.log("handleModalOpen targetId:", targetId); // Debugging line
-
     // Check if targetId exists (not null or undefined)
     if (targetId != null && targetId !== "") {
       if (sectionId === "modal-new-message") {
-        const currentUser = await fetchCurrentUserData(targetId);
+        // const fullUser = await fetchFullUserData(targetId);
+        const user = await fetchModalData(targetId);
         const topic = await fetchTopicNameData();
-        populateNewMessage(currentUser);
+        populateNewMessage(user);
         populateNewMessageWithTopics(topic);
         openModal(sectionId, titleId);
       }
 
       if (sectionId === "modal-reply-message") {
-        const currentUser = await fetchCurrentUserData(targetId);
+        // const fullUser = await fetchFullUserData(targetId);
+        const user = await fetchModalData(targetId);
         const message = await fetchMessageData(targetId);
-        populateReplyMessage(currentUser, message);
+        populateReplyMessage(user, message);
         openModal(sectionId, titleId);
       }
 
       if (sectionId === "modal-edit-message") {
-        const currentUser = await fetchCurrentUserData(targetId);
+        // const fullUser = await fetchFullUserData(targetId);
+        const user = await fetchModalData(targetId);
         const message = await fetchMessageData(targetId);
-        populateEditMessage(currentUser, message);
+        populateEditMessage(user, message);
         openModal(sectionId, titleId);
       }
 
       if (sectionId === "modal-warning-account-deletion") {
-        const user = await fetchUserData(targetId);
+        // const user = await fetchUserData(targetId);
+        const user = await fetchUserId(targetId);
         populateWarningAccountDeletion(user);
         openModal(sectionId, titleId);
-        console.log("modal-warning-account-deletion");
       }
 
       if (sectionId === "modal-warning-message-deletion") {
         const message = await fetchMessageData(targetId);
         populateWarningMessageDeletion(message);
         openModal(sectionId, titleId);
-        console.log("modal-warning-message-deletion");
       }
     }
   } catch (err) {
@@ -106,14 +107,13 @@ export async function handleModalOpen(targetId, sectionId, titleId) {
 
 // *** MODAL POPULATORS ***
 
-// Populates the new-message.ejs partial modal with currentUser data
+// Populates the new-message.ejs partial modal with user data
 function populateNewMessage(user) {
   const firstName = document.getElementById("first-name-new-message");
   const lastName = document.getElementById("last-name-new-message");
   const title = document.getElementById("title-new-message");
   const body = document.getElementById("body-new-message");
 
-  // TODO - Does this actually clear the fields?
   firstName.innerHTML = "";
   lastName.innerHTML = "";
   title.innerHTML = "";
@@ -151,7 +151,7 @@ function populateNewMessageWithTopics(topics) {
   select.required = true;
 }
 
-// Populates the reply-message.ejs partial modal with currentUser data
+// Populates the reply-message.ejs partial modal with user data
 function populateReplyMessage(user, message) {
   const firstName = document.getElementById("first-name-reply-message");
   const lastName = document.getElementById("last-name-reply-message");
@@ -169,7 +169,7 @@ function populateReplyMessage(user, message) {
   body.value = `💬 To "${message.first_name} ${message.last_name}" ➤ `;
 }
 
-// Populates the edit-message.ejs partial modal with currentUser data
+// Populates the edit-message.ejs partial modal with user data
 function populateEditMessage(user, message) {
   const firstName = document.getElementById("first-name-edit-message");
   const lastName = document.getElementById("last-name-edit-message");

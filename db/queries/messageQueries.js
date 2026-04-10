@@ -213,8 +213,7 @@ const getTopicBySlug = async (slug) => {
 //       m.created_at,
 //       m.expires_at,
 //       m.is_sticky,
-//       -- below is new TODO - get rid of ml-user and that table code
-//         ml.user_id AS is_liked_by_user_id,
+//       ml.user_id AS is_liked_by_user_id,
 //       u.first_name,
 //       u.last_name,
 //       u.permission_status,
@@ -311,9 +310,6 @@ const updateMessage = async (targetId, title, body) => {
     if (result.rowCount === 0) {
       throw new Error("No message found with that ID.");
     }
-
-    console.log("Updated message with ID:", result.rows[0].id); // Log the updated message ID
-
     await client.query("COMMIT"); // Commit the transaction
     return result.rows[0]; // Return the updated message (optional)
   } catch (err) {

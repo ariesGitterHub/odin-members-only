@@ -15,8 +15,7 @@ require("dotenv").config(); // Load environment variables
 //   process.exit(1); // Exit safely
 // });
 
-const passport = require("passport");
-require("./config/passport")(passport); // This initializes the Passport strategies
+require("./config/passport"); // This initializes the Passport strategies
 
 // *** Imports at the top
 const express = require("express");
@@ -24,9 +23,10 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser"); // Required for cookie-based token storage
 const path = require("node:path");
 const session = require("express-session");
+const passport = require("passport");
 const helmet = require("helmet");
 
-// const { runRetentionJobs } = require("./jobs/retentionJobs"); // TODO - FOR DEV ONLY
+const { runRetentionJobs } = require("./jobs/retentionJobs"); // TODO - FOR DEV ONLY
 const {
   csrfProtection,
   csrfTokenMiddleware,
@@ -36,15 +36,15 @@ const {
 const setPermissions = require("./middleware/setPermissions");
 const appRouter = require("./routes/appRouter");
 
-// const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 // *** Create the app
 const app = express();
 
 // Use the 'dev' format to log HTTP requests
-// if (process.env.NODE_ENV === "development") {
-//   app.use(morgan("dev"));
-// }
+if (process.NODE_EV === "development") {
+  app.use(morgan("dev"));
+}
 
 // *** Express-rate-limit middleware
 
@@ -94,10 +94,6 @@ const sessionConfig = {
 // Apply session middleware with dynamic configuration
 app.use(session(sessionConfig));
 
-// *** Passport Middleware setup (after session)
-app.use(passport.initialize());
-app.use(passport.session());
-
 // *** CSRF middleware
 app.use(csrfProtection); // CSRF protection middleware to validate tokens
 
@@ -112,11 +108,11 @@ app.use((req, res, next) => {
   next();
 });
 
+// *** Passport Middleware setup (after session)
+app.use(passport.initialize());
+app.use(passport.session());
+
 // *** Custom global middleware
-app.use((req, res, next) => {
-  res.locals.user = req.user || null;
-  next();
-});
 // app.use(setFullUser);
 app.use(setPermissions);
 
@@ -130,10 +126,10 @@ app.get("/", (req, res) => {
 app.use("/app", appRouter);
 
 // *** Log unmathed routes (optional)
-// app.use((req, res, next) => {
-//   console.log("❌ Fell through:", req.method, req.originalUrl);
-//   next();
-// });
+app.use((req, res, next) => {
+  console.log("❌ Fell through:", req.method, req.originalUrl);
+  next();
+});
 
 // *** CSRF Error Handling Middleware
 app.use(csrfErrorHandler); // CSRF error handler that sends 403 on CSRF errors
@@ -149,20 +145,16 @@ app.use((req, res, next) => {
 app.use(require("./middleware/errorMiddleware")); // Handle both 404 and other errors here
 
 // *** Start cron jobs
-// require("./cron/retentionScheduler"); // <-- this schedules the daily retention job
+require("./cron/retentionScheduler"); // <-- this schedules the daily retention job
 
-// (async () => {
-//   try {
-//     await runRetentionJobs(); // ensures any missed deletions happen on startup
-//     console.log("Retention job run on server start");
-//   } catch (err) {
-//     console.error("Error running retention job on startup:", err);
-//   }
-// })();
-
-// Extracting app.listen into server.js
-
-module.exports = app;
+(async () => {
+  try {
+    await runRetentionJobs(); // ensures any missed deletions happen on startup
+    console.log("Retention job run on server start");
+  } catch (err) {
+    console.error("Error running retention job on startup:", err);
+  }
+})();
 
 // *** Start Server
 // app.listen(PORT, (error) => {
@@ -171,11 +163,10 @@ module.exports = app;
 //   } console.log(`Listening on port ${PORT}!`);
 // });
 
-// Use this instead of above for app.listen
-// const server = app.listen(PORT, () => {
-//   console.log(`👂 Listening on port ${PORT}`);
-// });
+const server = app.listen(PORT, () => {
+  console.log(`👂 Listening on port ${PORT}`);
+});
 
-// server.on("error", (err) => {
-//   console.error("Something went wrong starting the server:", err);
-// });
+server.on("error", (err) => {
+  console.error("Something went wrong starting the server:", err);
+});

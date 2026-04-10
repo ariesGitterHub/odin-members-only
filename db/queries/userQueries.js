@@ -1,9 +1,62 @@
 const pool = require("../pool");
 const bcrypt = require("bcryptjs");
 
-// QUERY: GET ALL USERS
+// DELETE - QUERY: GET ALL USERS
 
-const getUsers = async () => {
+// const getUsers = async () => {
+//   const { rows } = await pool.query(`
+//     SELECT
+//       u.id,
+//       u.email,
+//       u.first_name,
+//       u.last_name,
+//       u.birthdate,
+//       u.permission_status,
+//       u.verified_by_admin,
+//       u.guest_upgrade_invite,
+//       u.invite_decision,
+//       u.is_active,
+//       u.created_at,
+//       u.updated_at,
+//       u.last_login_at,
+//       up.avatar_type,
+//       up.avatar_color_fg,
+//       up.avatar_color_bg_top,
+//       up.avatar_color_bg_bottom,
+//       up.phone,
+//       up.street_address,
+//       up.apt_unit,
+//       up.city,
+//       up.us_state,
+//       up.zip_code,
+//       up.notes,
+//       COUNT(m.id) AS message_count
+//     FROM users u
+//     LEFT JOIN user_profiles up ON u.id = up.user_id
+//     LEFT JOIN messages m ON u.id = m.user_id AND m.is_deleted = false
+//     GROUP BY u.id, up.user_id
+//     /*  ORDER BY 
+//       CASE 
+//         WHEN u.permission_status = 'admin' THEN 0
+//         ELSE 1
+//       END,
+//       u.last_name,  -- Sort by last name in alphabetical order
+//       u.first_name; -- If last names are the same, then by first name
+//     */
+//     -- GROUP BY u.id, up.id
+//     ORDER BY
+//     (u.permission_status = 'admin') DESC,
+//     u.last_name,
+//     u.first_name;
+      
+//   `);
+
+//   return rows;
+// };
+
+
+// QUERY: GET ALL USERS FOR ADMIN
+const getUsersForAdmin = async () => {
   const { rows } = await pool.query(`
     SELECT
       u.id,
@@ -53,6 +106,146 @@ const getUsers = async () => {
 
   return rows;
 };
+
+// QUERY: GET ALL MEMBER USERS FOR MEMBER DIRECTORY
+// const getUsersForMemberDirectory = async () => {
+//   const { rows } = await pool.query(`
+//     SELECT
+//       u.id,
+//       u.email,
+//       u.first_name,
+//       u.last_name,
+//       u.birthdate,
+//       up.avatar_type,
+//       up.avatar_color_fg,
+//       up.avatar_color_bg_top,
+//       up.avatar_color_bg_bottom,
+//       up.phone,
+//       up.street_address,
+//       up.apt_unit,
+//       up.city,
+//       up.us_state,
+//       up.zip_code
+//     FROM users u
+//     LEFT JOIN user_profiles up ON u.id = up.user_id
+//     ORDER BY
+//     u.last_name,
+//     u.first_name;
+//   `);
+
+//   return rows;
+// };
+
+const getUsersForMemberDirectory = async () => {
+  const { rows } = await pool.query(`
+    SELECT
+      u.id,
+      u.email,
+      u.first_name,
+      u.last_name,
+      u.birthdate,
+      u.permission_status,
+      up.avatar_type,
+      up.avatar_color_fg,
+      up.avatar_color_bg_top,
+      up.avatar_color_bg_bottom,
+      up.phone,
+      up.street_address,
+      up.apt_unit,
+      up.city,
+      up.us_state,
+      up.zip_code
+    FROM users u
+    LEFT JOIN user_profiles up ON u.id = up.user_id
+    WHERE u.permission_status IN ('member', 'admin')
+    ORDER BY
+      u.last_name,
+      u.first_name;
+  `);
+
+  return rows;
+};
+
+// QUERY: GET USER FOR MEMBER INVITE
+const getUserForMemberInvite = async (userId) => {
+  const { rows } = await pool.query(
+    `
+    SELECT
+      u.id,
+      u.email,
+      u.first_name,
+      u.last_name,
+      u.permission_status,
+      u.verified_by_admin,
+      u.guest_upgrade_invite,
+      u.invite_decision,
+      up.phone,
+      up.street_address,
+      up.apt_unit,
+      up.city,
+      up.us_state,
+      up.zip_code
+    FROM users u
+    LEFT JOIN user_profiles up ON u.id = up.user_id     
+    WHERE u.id = $1
+  `,
+    [userId],
+  );
+
+  return rows[0];
+};
+
+// QUERY: GET LIMITED USER DATA FOR MODALS
+const getUserForModalData = async (userId) => {
+  const { rows } = await pool.query(
+    `
+    SELECT
+      u.id,
+      up.avatar_type,
+      up.avatar_color_fg,
+      up.avatar_color_bg_top,
+      up.avatar_color_bg_bottom
+    FROM users u
+    LEFT JOIN user_profiles up ON u.id = up.user_id     
+    WHERE u.id = $1
+  `,
+    [userId],
+  );
+
+  return rows[0];
+};
+
+// QUERY: GET USER PROFILE DATA
+const getUserProfileData = async (targetId) => {
+  const { rows } = await pool.query(
+    `
+    SELECT
+      u.id,
+      u.email,
+      u.first_name,
+      u.last_name,
+      u.birthdate,
+      u.permission_status,
+      up.avatar_type,
+      up.avatar_color_fg,
+      up.avatar_color_bg_top,
+      up.avatar_color_bg_bottom,
+      up.phone,
+      up.street_address,
+      up.apt_unit,
+      up.city,
+      up.us_state,
+      up.zip_code
+    FROM users u
+    LEFT JOIN user_profiles up ON u.id = up.user_id
+    WHERE u.id = $1
+  `,
+    [targetId],
+  );
+
+  return rows[0]; // Returning only the first row (one user)
+};
+
 
 // QUERY: GET USERS BY ID
 
@@ -179,19 +372,11 @@ const insertAdminCreatedUser = async (
   password_hash,
   notes = "Admin created user.",
 ) => {
-  console.log("Starting insertAdminCreatedUser...");
   const client = await pool.connect();
 
   try {
-    console.log("Beginning transaction...");
     await client.query("BEGIN");
 
-    console.log("Inserting into users table:", {
-      first_name,
-      last_name,
-      email,
-      birthdate,
-    });
     const userRes = await client.query(
       `INSERT INTO users
        -- (first_name, last_name, email, birthdate, password_hash, permission_status)
@@ -202,26 +387,17 @@ const insertAdminCreatedUser = async (
     );
 
     const user = userRes.rows[0];
-    console.log("User inserted successfully:", user);
 
     const avatar_type = first_name.charAt(0).toUpperCase();
-    console.log("Generated avatar_type:", avatar_type);
 
-    console.log("Inserting into user_profiles table:", {
-      user_id: user.id,
-      avatar_type,
-      notes,
-    });
     await client.query(
       `INSERT INTO user_profiles (user_id, avatar_type, notes)
        VALUES ($1,$2,$3)`,
       [user.id, avatar_type, notes],
     );
 
-    console.log("Committing transaction...");
     await client.query("COMMIT");
 
-    console.log("insertAdminCreatedUser completed successfully.");
     return user;
   } catch (err) {
     console.error("Error in insertAdminCreatedUser:", err);
@@ -229,7 +405,6 @@ const insertAdminCreatedUser = async (
     throw err;
   } finally {
     client.release();
-    console.log("Database client released.");
   }
 };
 
@@ -259,33 +434,18 @@ const updateAdminEditedUser = async (
   zip_code,
   notes,
 ) => {
-  console.log("Starting updateAdminEditedUser...");
   const client = await pool.connect();
 
   try {
-    console.log("Beginning transaction...");
     await client.query("BEGIN");
 
     // Hash password only if a new password is provided
     let password_hash = null;
     if (password) {
       password_hash = await bcrypt.hash(password, 12);
-      console.log("Password hashed successfully");
     }
 
     // Update users table
-    console.log("Updating users table with sanitized values...", {
-      first_name,
-      last_name,
-      email,
-      birthdate,
-      permission_status,
-      verified_by_admin,
-      guest_upgrade_invite,
-      invite_decision,
-      is_active,
-    });
-
     const userRes = await client.query(
       `UPDATE users
         SET
@@ -323,24 +483,6 @@ const updateAdminEditedUser = async (
 
     const user = userRes.rows[0];
 
-    console.log("Users table updated successfully:", user);
-
-    // Update user_profiles table
-    console.log("Updating user_profiles table with sanitized values...", {
-      user_id: user.id,
-      avatar_type,
-      avatar_color_fg,
-      avatar_color_bg_top,
-      avatar_color_bg_bottom,
-      phone,
-      street_address,
-      apt_unit,
-      city,
-      us_state,
-      zip_code,
-      notes,
-    });
-
     // Update user_profiles table
     await client.query(
       `UPDATE user_profiles
@@ -373,11 +515,7 @@ const updateAdminEditedUser = async (
       ],
     );
 
-    console.log("Committing transaction...");
-
     await client.query("COMMIT");
-
-    console.log("updateAdminEditedUser completed successfully.");
 
     return user;
   } catch (err) {
@@ -386,7 +524,6 @@ const updateAdminEditedUser = async (
     throw err;
   } finally {
     client.release();
-    console.log("Database client released.");
   }
 };
 
@@ -404,30 +541,20 @@ const updateUser = async (
   apt_unit,
   city,
   us_state,
-  zip_code,
+  zip_code
 ) => {
-  console.log("Starting updateUser...");
   const client = await pool.connect();
 
   try {
-    console.log("Beginning transaction...");
     await client.query("BEGIN");
 
     // Hash password only if a new password is provided
     let password_hash = null;
     if (password) {
       password_hash = await bcrypt.hash(password, 12);
-      console.log("Password hashed successfully");
     }
 
     // Update users table
-    console.log("Updating users table with sanitized values...", {
-      first_name,
-      last_name,
-      email,
-      birthdate,
-    });
-
     const userRes = await client.query(
       `UPDATE users
         SET
@@ -453,20 +580,7 @@ const updateUser = async (
       ],
     );
 
-    const currentUser = userRes.rows[0];
-
-    console.log("Users table updated successfully:", currentUser);
-
-    // Update user_profiles table
-    console.log("Updating user_profiles table with sanitized values...", {
-      user_id: currentUser.id,
-      phone,
-      street_address,
-      apt_unit,
-      city,
-      us_state,
-      zip_code,
-    });
+    const user = userRes.rows[0];
 
     // Update user_profiles table
     await client.query(
@@ -486,24 +600,19 @@ const updateUser = async (
         city,
         us_state,
         zip_code,
-        currentUser.id,
+        user.id,
       ],
     );
 
-    console.log("Committing transaction...");
-
     await client.query("COMMIT");
 
-    console.log("updateUser completed successfully.");
-
-    return currentUser;
+    return user;
   } catch (err) {
     console.error("Error in updateUser:", err);
     await client.query("ROLLBACK");
     throw err;
   } finally {
     client.release();
-    console.log("Database client released.");
   }
 };
 
@@ -517,19 +626,10 @@ const updateUserAvatar = async (
   avatar_color_bg_top,
   avatar_color_bg_bottom,
 ) => {
-  console.log("Starting updateUserAvatar...");
   const client = await pool.connect();
 
   try {
-    console.log("Beginning transaction...");
     await client.query("BEGIN");
-
-    console.log("Updating user_profiles avatar...", {
-      avatar_type,
-      avatar_color_fg,
-      avatar_color_bg_top,
-      avatar_color_bg_bottom,
-    });
 
     const userRes = await client.query(
       `UPDATE user_profiles
@@ -549,20 +649,17 @@ const updateUserAvatar = async (
       ],
     );
 
-    const currentUser = userRes.rows[0];
-
-    console.log("Avatar updated successfully:", currentUser);
+    const user = userRes.rows[0];
 
     await client.query("COMMIT");
 
-    return currentUser;
+    return user;
   } catch (err) {
     console.error("Error in updateUserAvatar:", err);
     await client.query("ROLLBACK");
     throw err;
   } finally {
     client.release();
-    console.log("Database client released.");
   }
 };
 
@@ -577,21 +674,14 @@ const updateUserToMember = async (
   apt_unit,
   city,
   us_state,
-  zip_code,
+  zip_code
 ) => {
-  console.log("Starting updateUser...");
   const client = await pool.connect();
 
   try {
-    console.log("Beginning transaction...");
     await client.query("BEGIN");
 
     // Update users table
-    console.log("Updating users table with sanitized values...", {
-      permission_status,
-      invite_decision,
-    });
-
     const userRes = await client.query(
       `UPDATE users
         SET
@@ -606,7 +696,7 @@ const updateUserToMember = async (
       [permission_status, invite_decision, user_id],
     );
 
-    const currentUser = userRes.rows[0];
+    const user = userRes.rows[0];
 
     // Update user_profiles table
     await client.query(
@@ -626,20 +716,19 @@ const updateUserToMember = async (
         city,
         us_state,
         zip_code,
-        currentUser.id,
+        user.id,
       ],
     );
 
     await client.query("COMMIT");
 
-    return currentUser;
+    return user;
   } catch (err) {
     console.error("Error in updateUser:", err);
     await client.query("ROLLBACK");
     throw err;
   } finally {
     client.release();
-    console.log("Database client released.");
   }
 };
 
@@ -681,7 +770,13 @@ const updateLastLogin = async (userId) => {
 };
 
 module.exports = {
-  getUsers,
+  // getUsers,
+  getUsersForAdmin,
+  getUsersForMemberDirectory,
+  getUserForMemberInvite,
+  getUserForModalData,
+  getUserProfileData,
+
   getUserById,
   insertSessionLog,
   insertNewUser,

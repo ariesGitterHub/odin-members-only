@@ -16,12 +16,12 @@ function createRateLimiter(configGetter) {
       } = config;
 
       // Log the values of the four variables
-      console.log("Rate Limiter Config: ", {
-        signup_limit_window_minutes,
-        signup_limit_max_users,
-        login_limit_window_minutes,
-        login_limit_max_users,
-      });
+      // console.log("Rate Limiter Config: ", {
+      //   signup_limit_window_minutes,
+      //   signup_limit_max_users,
+      //   login_limit_window_minutes,
+      //   login_limit_max_users,
+      // });
 
       // Check which route is being hit to apply the correct limiter
       if (req.path === "/sign-up") {

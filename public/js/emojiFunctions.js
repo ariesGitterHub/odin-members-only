@@ -1,19 +1,20 @@
-import { fetchCurrentUserData, fetchEmojiData } from "./dataFetchers.js";
+import { 
+  // fetchFullUserData,
+  fetchModalData,
+  fetchEmojiData
+ } from "./dataFetchers.js";
 import { openModal } from "./modalFunctions.js";
 
-// TODO - MAJOR TODO! Refactor this file
 export async function handleEmojiOpen(targetId, sectionId, titleId) {
   try {
-    console.log("handleModalOpen targetId:", targetId); // Debugging line
-
     // Check if targetId exists (not null or undefined)
     if (targetId != null && targetId !== "") {
       if (sectionId === "modal-change-avatar-user") {
-        const currentUser = await fetchCurrentUserData(targetId);
-        populateChangeAvatar(currentUser);
+        // const fullUser = await fetchFullUserData(targetId);
+        const user = await fetchModalData(targetId);
+        populateChangeAvatar(user);
         openModal(sectionId, titleId);
         initChangeAvatarModal();
-        console.log("modal-change-avatar-user");
       }
     }
   } catch (err) {
@@ -62,6 +63,12 @@ async function populateChangeAvatar(user) {
     currentAvatarElement.textContent = user.avatar_type || "";
     currentAvatarElement.style.color = user.avatar_color_fg || avatarColorFg;
     currentAvatarElement.style.background = `linear-gradient(5deg, ${user.avatar_color_bg_bottom || avatarColorBgBottom}, ${user.avatar_color_bg_top || avatarColorBgTop})`;
+
+    // NEW - Minimal accessibility addition:
+    currentAvatarElement.setAttribute(
+      "aria-label",
+      `Current avatar: ${user.avatar_type || "None"}`,
+    );
   }
 
   const avatarTypeText = document.getElementById(
@@ -107,6 +114,17 @@ function initChangeAvatarModal() {
         ${avatarColorPickerBgb.value},
         ${avatarColorPickerBgt.value}
       )`;
+    // Minimal accessibility addition:
+    const avatarTypeText = document.getElementById(
+      "avatar-type-text-change-avatar",
+    );
+    const selectedText = avatarTypeText
+      ? avatarTypeText.textContent
+      : avatarInput.value;
+    newAvatarElement.setAttribute(
+      "aria-label",
+      `Selected avatar: ${selectedText}`,
+    );
   }
 
   // Attach listeners once
@@ -178,7 +196,7 @@ async function emojiPickerDiv() {
 
     const label = document.createElement("label");
     label.setAttribute("for", `emoji-${index}`);
-    label.setAttribute("aria-labelledby", `emoji-${index}`);
+    // label.setAttribute("aria-labelledby", `emoji-${index}`);
 
     const span = document.createElement("span");
     span.className = "emoji";
@@ -210,6 +228,7 @@ async function emojiPickerDiv() {
       );
 
       avatarTypeText.textContent = selectedText; // Set selected text
+      avatarTypeText.setAttribute("aria-label", selectedText);
       avatarInput.value = selectedEmoji; // Set emoji value
       newAvatarElement.textContent = selectedEmoji; // Update preview
     }

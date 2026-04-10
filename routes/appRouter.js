@@ -48,8 +48,10 @@ const {
 } = require("../controllers/pageControllers");
 
 const {
-  getCurrentUser,
-  getUserDetails,
+  // getfullUser,
+  getModalDataToFrontend,
+  // getUserDetails,
+  getUserId,
   getYourProfilePage,
   deleteYourAccount,
   getEditProfile,
@@ -62,10 +64,13 @@ const appRouter = Router();
 // *** APIs
 
 // ROUTES: CURRENT USER API FOR FRONTEND FETCH
-appRouter.get("/current-user", requireRole("guest"), getCurrentUser);
+// appRouter.get("/current-user", requireRole("guest"), getfullUser);
+// ROUTES: CURRENT USER API FOR MODAL FETCH
+appRouter.get("/modal-fetch", requireRole("guest"), getModalDataToFrontend);
 
 // ROUTES: USER ID API FOR FRONTEND FETCH
-appRouter.get("/user/:id", requireRole("guest"), getUserDetails);
+// appRouter.get("/user/:id", requireRole("guest"), getUserDetails);
+appRouter.get("/user/:id", requireRole("guest"), getUserId);
 
 // ROUTES: MESSAGES API FOR FRONTEND FETCH
 appRouter.get("/message/:id", requireRole("guest"), getMessageDetails);
@@ -91,7 +96,7 @@ appRouter.post("/log-in", rateLimiter, postLogIn);
 
 // ROUTES: LOG OUT BUTTON
 appRouter.post("/log-out", (req, res, next) => {
-    console.log("Logout form submitted, good bye!");
+    console.log("👋 Logout form submitted, good bye!");
     next();
   },
   postLogOut,

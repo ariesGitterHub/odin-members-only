@@ -2,13 +2,14 @@
   "name": "odin-members-only",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "bootstrap.js",
   "scripts": {
     "db:schema": "node -r dotenv/config scripts/db-schema.js",
     "db:seed": "node -r dotenv/config scripts/db-seed.js",
     "db:init": "npm run db:schema && npm run db:seed",
     "db:reset": "node -r dotenv/config scripts/db-reset.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon bootstrap.js"
   },
   "repository": {
     "type": "git",

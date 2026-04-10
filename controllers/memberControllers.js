@@ -1,12 +1,17 @@
 const { usStates } = require("../utils/usStates");
 
-const { getUsers, updateUserToMember } = require("../db/queries/userQueries");
+const { 
+  // getUsers,
+  getUsersForMemberDirectory,
+  getUserForMemberInvite,
+   updateUserToMember
+   } = require("../db/queries/userQueries");
 
 // CONTROLLER: GET MEMBER DIRECTORY PAGE
 
 async function getMemberDirectory(req, res, next) {
   try {
-    const users = await getUsers();
+    const users = await getUsersForMemberDirectory();
 
     res.render("member-directory", {
       title: "Member Directory",
@@ -22,11 +27,11 @@ async function getMemberDirectory(req, res, next) {
 
 async function getMemberInvite(req, res, next) {
   try {
-    const currentUser = req.currentUser;
+  const user = await getUserForMemberInvite(req.user.id);
 
     res.render("member-invite", {
       title: "Member Invite",
-      currentUser,
+      user,
       formData: req.body || {},
       usStates: usStates, // Pass the array to the EJS template
     });
@@ -36,8 +41,8 @@ async function getMemberInvite(req, res, next) {
 }
 
 async function postMemberInviteAccepted(req, res, next) {
-  const currentUserId = req.currentUser.id;
-  const currentUser = req.currentUser;
+  const userId = req.user.id;  
+  const user = await getUserForMemberInvite(userId);
 
   const {
     permission_status,
@@ -60,7 +65,7 @@ async function postMemberInviteAccepted(req, res, next) {
   if (errors.length > 0) {
     return res.render("member-invite", {
       title: "Member Invite",
-      currentUser,
+      user,
       errors,
       formData: req.body || {},
       usStates: usStates, // Pass the array to the EJS template
@@ -72,7 +77,7 @@ async function postMemberInviteAccepted(req, res, next) {
 
     // --- Update the user ---
     await updateUserToMember(
-      currentUserId,
+      userId,
       sanitize(permission_status),
       sanitize(invite_decision),
       sanitize(phone),
@@ -82,21 +87,17 @@ async function postMemberInviteAccepted(req, res, next) {
       sanitize(us_state),
       sanitize(zip_code),
     );
-    console.log("User inserted successfully");
 
     // Redirect after successful creation
     res.redirect("/app/your-profile");
-    console.log("Redirected to /app/your-profile");
   } catch (err) {
     next(err);
   }
 }
 
 async function postMemberInviteDeclined(req, res, next) {
-  console.log("Controller hit!");
-
-  const currentUserId = req.currentUser.id;
-  const currentUser = req.currentUser;
+  const userId = req.user.id;
+  const user = await getUsersForMemberInvite(userId);
 
   const {
     invite_decision, // "declined"
@@ -107,7 +108,7 @@ async function postMemberInviteDeclined(req, res, next) {
   if (errors.length > 0) {
     return res.render("member-invite", {
       title: "Member Invite",
-      currentUser,
+      user,
       errors,
       formData: req.body || {},
       usStates: usStates, // Pass the array to the EJS template
@@ -120,7 +121,7 @@ async function postMemberInviteDeclined(req, res, next) {
     // --- Update the user ---
     // Call the updated version of the function for only the fields you need to update.
     await updateUserToMember(
-      currentUserId, // User ID
+      userId, // User ID
       null, // No change to permission_status
       sanitize(invite_decision), // "declined"
       null, // No change to phone
@@ -130,11 +131,9 @@ async function postMemberInviteDeclined(req, res, next) {
       null, // No change to us_state
       null, // No change to zip_code
     );
-    console.log("User updated successfully");
 
     // Redirect after successful creation
     res.redirect("/app/your-profile");
-    console.log("Redirected to /app/your-profile");
   } catch (err) {
     next(err);
   }

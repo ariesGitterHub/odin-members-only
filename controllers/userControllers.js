@@ -2,7 +2,9 @@ const { validationResult } = require("express-validator");
 const { usStates } = require("../utils/usStates");
 
 const {
+  getUserForModalData,
   getUserById,
+  getUserProfileData,
   updateUser,
   updateUserAvatar,
   deleteUserById,
@@ -10,44 +12,56 @@ const {
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
 
-const {
-  addBirthdateFields,
-} = require("../utils/viewFormatters");
-
+const { addBirthdateFields } = require("../utils/viewFormatters");
 
 // CONTROLLER: GET CURRENT USER
 
 // Frontend fetch - function to fetch current user data for modal
 
-async function getCurrentUser(req, res, next) {
-  try {
-    if (req.currentUser) {
-      // Only send safe fields
-      const safeUser = {
-        id: req.currentUser.id,
-        email: req.currentUser.email,
-        first_name: req.currentUser.first_name,
-        last_name: req.currentUser.last_name,
-        birthdate: req.currentUser.birthdate,
-        permission_status: req.currentUser.permission_status,
-        verified_by_admin: req.currentUser.verified_by_admin,
-        guest_upgrade_invite: req.currentUser.guest_upgrade_invite,
-        invite_decision: req.currentUser.invite_decision,
-        avatar_type: req.currentUser.avatar_type,
-        avatar_color_fg: req.currentUser.avatar_color_fg,
-        avatar_color_bg_top: req.currentUser.avatar_color_bg_top,
-        avatar_color_bg_bottom: req.currentUser.avatar_color_bg_bottom,
-        phone: req.currentUser.phone,
-        street_address: req.currentUser.street_address,
-        apt_unit: req.currentUser.apt_unit,
-        city: req.currentUser.city,
-        us_state: req.currentUser.us_state,
-        zip_code: req.currentUser.zip_code,
-      };
+// async function getfullUser(req, res, next) {
+//   try {
+//     if (req.fullUser) {
+//       // Only send safe fields
+//       const safeUser = {
+//         id: req.fullUser.id,
+//         email: req.fullUser.email,
+//         first_name: req.fullUser.first_name,
+//         last_name: req.fullUser.last_name,
+//         birthdate: req.fullUser.birthdate,
+//         permission_status: req.fullUser.permission_status,
+//         verified_by_admin: req.fullUser.verified_by_admin,
+//         guest_upgrade_invite: req.fullUser.guest_upgrade_invite,
+//         invite_decision: req.fullUser.invite_decision,
+//         avatar_type: req.fullUser.avatar_type,
+//         avatar_color_fg: req.fullUser.avatar_color_fg,
+//         avatar_color_bg_top: req.fullUser.avatar_color_bg_top,
+//         avatar_color_bg_bottom: req.fullUser.avatar_color_bg_bottom,
+//         phone: req.fullUser.phone,
+//         street_address: req.fullUser.street_address,
+//         apt_unit: req.fullUser.apt_unit,
+//         city: req.fullUser.city,
+//         us_state: req.fullUser.us_state,
+//         zip_code: req.fullUser.zip_code,
+//       };
 
-      res.json(safeUser);
+//       res.json(safeUser);
+//     } else {
+//       res.json(null); // or res.status(401).json({ user: null })
+//     }
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
+async function getModalDataToFrontend(req, res, next) {
+  const userId = req.user.id
+  try {
+  const user = await getUserForModalData(userId);
+
+  if (!req.user) {
+      res.json(null);
     } else {
-      res.json(null); // or res.status(401).json({ user: null })
+      res.json(user);
     }
   } catch (err) {
     next(err);
@@ -57,20 +71,42 @@ async function getCurrentUser(req, res, next) {
 
 // CONTROLLER: GET USERS BY ID
 
-// Frontend fetch - function to fetch individual user data for modal
-async function getUserDetails(req, res, next) {
+// // Frontend fetch - function to fetch individual user data for modal
+// async function getUserDetails(req, res, next) {
+//   const targetId = req.params.id; // Get user ID from URL parameter
+//   try {
+//     const user = await getUserById(targetId); // Replace with your actual query
+//   if (!user) {
+//     return res.status(404).render("error", {
+//       message: "User not found"
+//     })
+//   }
+//     if (user.birthdate instanceof Date) {
+//       user.birthdate = user.birthdate.toISOString().split("T")[0];
+//     }
+
+//     if (user) {
+//       res.json(user); // Send user data as JSON
+//     } else {
+//       res.status(404).send("User not found");
+//     }
+//   } catch (err) {
+//     next(err); // Pass error to the error handling middleware
+//   }
+// }
+
+async function getUserId(req, res, next) {
   const targetId = req.params.id; // Get user ID from URL parameter
   try {
-    const user = await getUserById(targetId); // Replace with your actual query
-    if (user.birthdate instanceof Date) {
-      user.birthdate = user.birthdate.toISOString().split("T")[0];
-    }
+    const user = await getUserForModalData(targetId); // Replace with your actual query
+  if (!user) {
+    return res.status(404).render("error", {
+      message: "User not found"
+    })
+  } else {
+      res.json(user); // Send user data as JSON 
+  }
 
-    if (user) {
-      res.json(user); // Send user data as JSON
-    } else {
-      res.status(404).send("User not found");
-    }
   } catch (err) {
     next(err); // Pass error to the error handling middleware
   }
@@ -80,22 +116,33 @@ async function getUserDetails(req, res, next) {
 
 async function getYourProfilePage(req, res, next) {
   if (!req.user) {
-    return res.redirect("/app/log-in"); // No logged-in user
+    return res.redirect("/app/log-in"); // User not logged in
   }
 
-  const currentUser = req.currentUser;
-
-  // Add computed fields: age, formattedBirthdate
-  const currentUserWithBirthdate = addBirthdateFields(
-    [currentUser], // pass as array to reuse your helper
-    calculateAge,
-    formatShortDate,
-  )[0]; // get first element
-
   try {
+    const user = await getUserProfileData(req.user.id); 
+  if (!user) {
+    return res.status(404).render("error", {
+      message: "User not found"
+    });
+  }
+    // Add computed fields: age, formattedBirthdate
+    // const userBirthdate = addBirthdateFields(
+    //   [user], // pass as array to reuse your helper
+    //   calculateAge,
+    //   formatShortDate,
+    // )[0]; // get first element
+
+    const [userBirthdate] = addBirthdateFields(
+      [user], // pass as array to reuse your helper
+      calculateAge,
+      formatShortDate,
+    ); // get first element
+
+
     res.render("your-profile", {
       title: "Your Profile",
-      currentUser: currentUserWithBirthdate,
+      user: userBirthdate,
       errors: [],
       reopenModal: false,
     });
@@ -104,17 +151,17 @@ async function getYourProfilePage(req, res, next) {
   }
 }
 
-
 // CONTROLLER: DELETE VIA USER (your-profile.ejs)
 
 async function deleteYourAccount(req, res, next) {
+  if (!req.user) {
+    return res.redirect("/app/log-in"); // User not logged in
+  }
   try {
-    // TODO - use below as the model!!!!!
-
-    const currentUserId = req.currentUser.id;
+    const userId = req.user.id;
 
     // Perform the deletion for the authenticated user (not a user provided in the body)
-    await deleteUserById(currentUserId);
+    await deleteUserById(userId);
 
     res.redirect("/app");
   } catch (err) {
@@ -122,24 +169,29 @@ async function deleteYourAccount(req, res, next) {
   }
 }
 
-
 // CONTROLLER: EDIT PROFILE PAGE (edit-profile.ejs)
 
 async function getEditProfile(req, res, next) {
+  if (!req.user) {
+    return res.redirect("/app/log-in"); // User not logged in
+  }
   try {
-    const currentUser = req.currentUser;
-
-    //Format birthdate for input/display
-    if (currentUser.birthdate instanceof Date) {
-      currentUser.birthdate = currentUser.birthdate.toISOString().split("T")[0];
+     const user = await getUserProfileData(req.user.id);
+     if (!user) {
+      return res.status(404).render("error", {
+        message: "User not found"
+      });
     }
-    if (!currentUser) return res.status(404).send("User not found");
+    //Format birthdate for input/display
+    if (user.birthdate instanceof Date) {
+      user.birthdate = user.birthdate.toISOString().split("T")[0];
+    }
     res.render("edit-profile", {
       title: "Edit Profile",
-      currentUser,
+      // user,
       usStates: usStates, // Pass the array to the EJS template   ????
       errors: [],
-      formData: currentUser,
+      formData: user,
     }); // Pass user to EJS view
   } catch (err) {
     next(err);
@@ -148,10 +200,11 @@ async function getEditProfile(req, res, next) {
 
 async function postEditProfile(req, res, next) {
 
-  const currentUserId = req.currentUser.id;
-  const currentUser = req.currentUser;
+    if (!req.user) {
+      return res.redirect("/app/log-in"); // User not logged in
+    }
 
-  if (!currentUser) return res.status(404).send("User not found");
+  const userId = req.user.id;
 
   const {
     first_name,
@@ -169,6 +222,10 @@ async function postEditProfile(req, res, next) {
   } = req.body;
 
   try {
+
+      const user = await getUserProfileData(userId);
+
+      if (!user) return res.status(404).send("User not found");
     // --- Run validation from middleware ---
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -183,7 +240,7 @@ async function postEditProfile(req, res, next) {
 
       return res.render("edit-profile", {
         title: "Edit Profile",
-        currentUser,
+        user,
         errors: formattedErrors,
         formData: req.body || {},
         usStates: usStates,
@@ -199,7 +256,7 @@ async function postEditProfile(req, res, next) {
 
     // --- Update user in DB ---
     await updateUser(
-      currentUserId, // ID of the currentUser being edited
+      userId, // ID of the fullUser being edited
       sanitize(first_name),
       sanitize(last_name),
       sanitize(email),
@@ -214,21 +271,16 @@ async function postEditProfile(req, res, next) {
       sanitize(zip_code),
     );
 
-    console.log("User updated successfully");
-
     res.redirect("/app/your-profile");
   } catch (err) {
     next(err);
   }
 }
 
-
 // CONTROLLER: CHANGE AVATAR MODAL (change-avatar.ejs)
 
 async function postYourProfilePageAvatar(req, res, next) {
-  console.log("Controller hit!");
-
-  const currentUserId = req.currentUser.id;
+  const userId = req.user.id;
 
   const {
     avatar_type,
@@ -242,25 +294,25 @@ async function postYourProfilePageAvatar(req, res, next) {
 
     // --- Update the user ---
     await updateUserAvatar(
-      currentUserId,
+      userId,
       sanitize(avatar_type),
       sanitize(avatar_color_fg),
       sanitize(avatar_color_bg_top),
       sanitize(avatar_color_bg_bottom),
     );
-    console.log("User avatar changes inserted successfully");
-
+  
     // Redirect after successful creation
     res.redirect("/app/your-profile");
-    console.log("Redirected to /app/your-profile");
   } catch (err) {
     next(err);
   }
 }
 
 module.exports = {
-  getCurrentUser,
-  getUserDetails,
+  // getfullUser,
+  getModalDataToFrontend,
+  // getUserDetails,
+  getUserId,
   getYourProfilePage,
   deleteYourAccount,
   getEditProfile,

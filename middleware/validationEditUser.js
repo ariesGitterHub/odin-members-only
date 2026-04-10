@@ -54,8 +54,8 @@ const adminEditUserValidator = (userId) => [
   confirmPasswordUpdateValidator,
 ];
 
-const editProfileUserValidator = (currentUserId) => [
-  emailUpdateEditProfileValidator(currentUserId),
+const editProfileUserValidator = (userId) => [
+  emailUpdateEditProfileValidator(userId),
   passwordUpdateValidator,
   confirmPasswordUpdateValidator,
 ];

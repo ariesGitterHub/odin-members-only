@@ -3,7 +3,8 @@ const { validationResult } = require("express-validator");
 const { usStates } = require("../utils/usStates");
 
 const {
-  getUsers,
+  // getUsers,
+  getUsersForAdmin,
   getUserById,
   insertAdminCreatedUser,
   updateAdminEditedUser,
@@ -38,7 +39,7 @@ const {
 // CONTROLLER: ADMIN PAGE (admin.ejs)
 async function getAdminPage(req, res, next) {
   try {
-    const users = await getUsers();
+    const users = await getUsersForAdmin();
     const messages = await getMessages();
     const siteControls = await getAllSiteControls();
 
@@ -215,11 +216,9 @@ async function postAdminCreatePage(req, res, next) {
       password_hash,
       notes,
     );
-    console.log("User inserted successfully");
 
     // Redirect after successful creation
     res.redirect("/app/admin");
-    console.log("Redirected to /app/admin");
   } catch (err) {
     next(err);
   }
@@ -230,7 +229,8 @@ async function postAdminCreatePage(req, res, next) {
 async function getAdminEditPage(req, res, next) {
   try {
     const userId = req.params.id;
-    const user = await getUserById(userId);
+    // const user = await getUserById(userId);
+    const user = await getUsersForAdmin(userId);
     const siteControls = await getAllSiteControls();
 
     //Format birthdate for input/display
@@ -252,10 +252,9 @@ async function getAdminEditPage(req, res, next) {
 }
 
 async function postAdminEditPage(req, res, next) {
-  console.log("Controller hit!");
-
   const userId = parseInt(req.params.id, 10); // the user being edited
-  const user = await getUserById(userId); // fetch target user
+  // const user = await getUserById(userId); // fetch target user
+  const user = await getUsersForAdmin(userId); // fetch target user
   const siteControls = await getAllSiteControls();
 
   if (!user) return res.status(404).send("User not found");
@@ -350,8 +349,6 @@ async function postAdminEditPage(req, res, next) {
       sanitize(zip_code),
       sanitize(notes),
     );
-
-    console.log("User updated successfully");
 
     res.redirect("/app/admin");
   } catch (err) {

@@ -10,69 +10,69 @@
         <h1>your profile</h1>
       </div>
       <div class="card your-profile-card">
-        <% if (!currentUser) { %> 
+        <% if (!user) { %> 
         <p>No current user is logged in.</p>
         <% } else { %>
             <div class="profile-data-container">
               <div class="element-container-row-default margin-bottom">
                 <div 
                   class="avatar-container avatar-container-size-large avatar-background circle margin-bottom " 
-                    <%- include('./partials/avatar-color-data-helper.ejs', { obj: currentUser }) %>
+                    <%- include('./partials/avatar-color-data-helper.ejs', { obj: user }) %>
                   >
                   <span class="emoji emoji-size-large" role="image" aria-label="avatar image">
-                    <%= currentUser.avatar_type %>
+                    <%= user.avatar_type %>
                   </span>
                 </div>           
               </div>
               <dl class="profile-data-dl margin-bottom">
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">name</dt>
-                  <dd class="capitalize"><%= currentUser.first_name %> <%= currentUser.last_name %></dd>
+                  <dd class="capitalize"><%= user.first_name %> <%= user.last_name %></dd>
                 </div>
                 <div class="app-relevant-data">
                   <dt class="capitalize">status</dt>
-                  <dd><%= currentUser.permission_status %></dd>
+                  <dd><%= user.permission_status %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">email</dt>
-                  <dd class="word-breaker"><%= currentUser.email%></dd>
+                  <dd class="word-breaker"><%= user.email%></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">phone</dt>
-                  <dd><%= currentUser.phone || "n/a" %></dd>
+                  <dd><%= user.phone || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">birthdate</dt>
-                  <dd><%= currentUser.formattedBirthdate %> (age: <%= currentUser.age %>)</dd>
+                  <dd><%= user.formattedBirthdate %> (age: <%= user.age %>)</dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">street</dt>
-                  <dd><%= currentUser.street_address || "n/a" %></dd>
+                  <dd><%= user.street_address || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">apt/unit</dt>
-                  <dd><%= currentUser.apt_unit || "n/a" %></dd>
+                  <dd><%= user.apt_unit || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">city</dt>
-                  <dd><%= currentUser.city || "n/a" %></dd>
+                  <dd><%= user.city || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">state</dt>
-                  <dd><%= currentUser.us_state || "n/a" %></dd>
+                  <dd><%= user.us_state || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">zip code</dt>
-                  <dd><%= currentUser.zip_code || "n/a" %></dd>
+                  <dd><%= user.zip_code || "n/a" %></dd>
                 </div>
               </dl>
               <div class="button-container-col">
-                <% if (currentUser && currentUser.permission_status !== "admin") { %>
+                <% if (user && user.permission_status !== "admin") { %>
                   <button 
                     class="button-default wide-button action-target-button"
                     data-section="modal-warning-account-deletion"
                     data-title="modal-title-warning-account-deletion"
-                    data-target-id="<%= currentUser.id %>"
+                    data-target-id="<%= user.id %>"
                     data-action="/app/your-profile/delete-your-account"
                   >
                   delete your account
@@ -83,14 +83,14 @@
                   class="button-default wide-button edit-change-avatar-button" 
                   data-section="modal-change-avatar-user"
                   data-title="modal-title-change-avatar-user"
-                  data-target-id="<%= currentUser.id %>"
+                  data-target-id="<%= user.id %>"
                   >
                   change your avatar
                 </button>
-                <% if (currentUser && currentUser.permission_status !== "guest") { %>
+                <% if (user && user.permission_status !== "guest") { %>
                   <a class="button-default wide-button" href="/app/member-directory">member directory</a>
                 <% } %>
-                <a class="button-default wide-button <%= canPerformHasRole(currentUser, 'guest-members-upgrade') ? '' : 'hidden' %>" href="/app/member-invite">member invitation</a>
+                <a class="button-default wide-button <%= canPerformHasRole(user, 'guest-members-upgrade') ? '' : 'hidden' %>" href="/app/member-invite">member invitation</a>
               </div>
             </div>
           <% } %>

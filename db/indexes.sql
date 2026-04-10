@@ -48,7 +48,7 @@ CREATE INDEX idx_message_likes_user_id
 CREATE UNIQUE INDEX IF NOT EXISTS unique_message_like 
 ON message_likes (message_id, user_id);
 
--- TODO delete if I go back to flat reply threads
+-- NOTE -  delete if I go back to flat reply threads
 -- CREATE INDEX idx_messages_thread_path ON messages(thread_path);
 -- a composite index may be more effective than a single-column index on thread_path alone.
 CREATE INDEX idx_messages_topic_thread_path

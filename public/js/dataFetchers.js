@@ -1,7 +1,13 @@
-// Fetch data ith user.id
-export async function fetchUserData(targetId) {
+// Fetch data with user.id
+// export async function fetchUserData(targetId) {
+//   const response = await fetch(`/app/user/${targetId}`);
+//   if (!response.ok) throw new Error("Failed to fetch user");
+//   return await response.json();
+// }
+// Fetch data with user.id
+export async function fetchUserId(targetId) {
   const response = await fetch(`/app/user/${targetId}`);
-  if (!response.ok) throw new Error("Failed to fetch user");
+  if (!response.ok) throw new Error("Failed to fetch user id");
   return await response.json();
 }
 
@@ -19,12 +25,11 @@ export async function fetchTopicNameData(targetId) {
   return await response.json();
 }
 
-// Fetch data with currentUser.id
-export async function fetchCurrentUserData(targetId) {
-  const response = await fetch("/app/current-user");
-  if (!response.ok) throw new Error("Failed to fetch current user");
+// Fetch data with fullUser.id, TODO - FIX!!!! make this 
+export async function fetchModalData(targetId) {
+  const response = await fetch("/app/modal-fetch");
+  if (!response.ok) throw new Error("Failed to fetch user for modal");
   const user = await response.json();
-  console.log("Current user:", user);
   return user;
 }
 

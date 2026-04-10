@@ -30,13 +30,25 @@ export async function messageBodyCharCounter() {
     maxCharCount.textContent = `(${initialLength}/${maxChars})`;
 
     // Add input event listener
+    // bodyMessage.addEventListener("input", () => {
+    //   const currentLength = bodyMessage.value.length;
+    //   maxCharCount.textContent = `(${currentLength}/${maxChars})`;
+
+    //   // Truncate input if it exceeds the limit
+    //   if (currentLength > maxChars) {
+    //     bodyMessage.value = bodyMessage.value.substring(0, maxChars);
+    //   }
+    // });
+
+    // Better code for a screen reader, see like beolw
     bodyMessage.addEventListener("input", () => {
       const currentLength = bodyMessage.value.length;
-      maxCharCount.textContent = `(${currentLength}/${maxChars})`;
 
-      // Truncate input if it exceeds the limit
       if (currentLength > maxChars) {
         bodyMessage.value = bodyMessage.value.substring(0, maxChars);
+        maxCharCount.textContent = `(${maxChars}/${maxChars})`; // screen reader announces max reached
+      } else {
+        maxCharCount.textContent = `(${currentLength}/${maxChars})`;
       }
     });
   });

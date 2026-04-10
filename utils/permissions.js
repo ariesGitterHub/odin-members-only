@@ -16,7 +16,7 @@ function hasRole(user, requiredRole) {
 // Authorization guard
 function requireRole(requiredRole) {
   return function (req, res, next) {
-    const user = req.user; // Use req.user (instead of const user = res.locals.currentUser;) as Passport attaches the user to req object
+    const user = req.user; // Use req.user (instead of const user = res.locals.fullUser;) as Passport attaches the user to req object
 
     if (!user) {
       return res.status(401).redirect("/app/log-in");

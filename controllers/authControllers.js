@@ -14,11 +14,6 @@ const {
 
 async function getSignUp(req, res, next) {
   try {
-    console.log(
-      "Rendering sign-up form with CSRF token:",
-      res.locals.csrfToken,
-    );
-
     if (await isMaintenanceMode()) {
       return res.redirect("/");
     }
@@ -77,8 +72,6 @@ async function postSignUp(req, res, next) {
 
 async function getLogIn(req, res, next) {
   try {
-    console.log("getLogIn - CSRF Token:", req.csrfToken()); // Log the token
-
     res.render("log-in", {
       title: "Log In",
       errors: [],
@@ -103,7 +96,6 @@ async function postLogIn(req, res, next) {
     }
 
     try {
-      console.log("postLogIn - Received CSRF Token:", req.body._csrf);
       if ((await isMaintenanceMode()) && user.permission_status !== "admin") {
         return res.redirect("/");
       }

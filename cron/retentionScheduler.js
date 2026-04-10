@@ -5,7 +5,6 @@ const { runRetentionJobs } = require("../jobs/retentionJobs");
 cron.schedule(
   "0 2 * * *",
   async () => {
-    console.log("Starting daily retention job...");
     try {
       await runRetentionJobs();
     } catch (err) {

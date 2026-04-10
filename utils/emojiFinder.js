@@ -8,8 +8,6 @@ function emojiNameFinder(selectedEmoji) {
   return emojiMap[selectedEmoji] ?? "emoji name not found.";
 }
 
-console.log(emojiNameFinder("🦁"));
-
 module.exports = {
   emojiNameFinder,
 };
