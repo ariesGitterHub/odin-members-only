@@ -201,6 +201,7 @@ const getUserForModalData = async (userId) => {
     `
     SELECT
       u.id,
+      u.email,
       up.avatar_type,
       up.avatar_color_fg,
       up.avatar_color_bg_top,
@@ -250,7 +251,7 @@ const getUserProfileData = async (targetId) => {
 // QUERY: GET USERS BY ID
 
 // BELOW exposes data, see in appRouter.js and on localhost:XXXX/app/user/1
-const getUserById = async (targetId) => {
+const getUserByIdForAdmin = async (targetId) => {
   const { rows } = await pool.query(
     `
     SELECT
@@ -777,7 +778,8 @@ module.exports = {
   getUserForModalData,
   getUserProfileData,
 
-  getUserById,
+  // getUserById,
+  getUserByIdForAdmin,
   insertSessionLog,
   insertNewUser,
   insertAdminCreatedUser,

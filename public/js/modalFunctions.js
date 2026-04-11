@@ -187,10 +187,10 @@ function populateEditMessage(user, message) {
 
 // Populates the warning-account-deletion.ejs partial modal with user data
 function populateWarningAccountDeletion(user) {
-  document.getElementById("first-name-warning-account-deletion").innerText =
-    user.first_name;
-  document.getElementById("last-name-warning-account-deletion").innerText =
-    user.last_name;
+  // document.getElementById("first-name-warning-account-deletion").innerText =
+  //   user.first_name;
+  // document.getElementById("last-name-warning-account-deletion").innerText =
+  //   user.last_name;
   document.getElementById("email-warning-account-deletion").innerText =
     user.email;
 }

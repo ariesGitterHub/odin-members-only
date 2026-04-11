@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const { usStates } = require("../utils/usStates");
+const passwordRules = require("../config/passwordRules"); 
 
 const {
   getUserForModalData,
@@ -192,6 +193,7 @@ async function getEditProfile(req, res, next) {
       usStates: usStates, // Pass the array to the EJS template   ????
       errors: [],
       formData: user,
+      passwordRules,
     }); // Pass user to EJS view
   } catch (err) {
     next(err);
@@ -244,6 +246,7 @@ async function postEditProfile(req, res, next) {
         errors: formattedErrors,
         formData: req.body || {},
         usStates: usStates,
+        passwordRules,
         csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
       });
     }

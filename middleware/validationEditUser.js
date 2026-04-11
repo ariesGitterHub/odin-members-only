@@ -1,37 +1,40 @@
 const { check } = require("express-validator");
 const { checkIfEmailExists } = require("../db/queries/userQueries");
+const passwordRules = require("../config/passwordRules");
 
 const emailUpdateAdminEditValidator = () =>
   check("email")
     .isEmail()
     .withMessage("Invalid email format")
     .custom(async (email, { req }) => {
-      const targetId = req.params.id; 
+      const targetId = req.params.id;
       const existingUser = await checkIfEmailExists(email, targetId);
       if (existingUser.length > 0) throw new Error("Email is already taken.");
       return true;
     });
 
-  const emailUpdateEditProfileValidator = () =>
-    check("email")
-      .isEmail()
-      .withMessage("Invalid email format")
-      .custom(async (email, { req }) => {
-        const targetId = req.user.id;
-        const existingUser = await checkIfEmailExists(email, targetId);
-        if (existingUser.length > 0)
-          throw new Error("Email is already taken.");
-        return true;
-      });
+const emailUpdateEditProfileValidator = () =>
+  check("email")
+    .isEmail()
+    .withMessage("Invalid email format")
+    .custom(async (email, { req }) => {
+      const targetId = req.user.id;
+      const existingUser = await checkIfEmailExists(email, targetId);
+      if (existingUser.length > 0) throw new Error("Email is already taken.");
+      return true;
+    });
 
 const passwordUpdateValidator = check("password")
   .optional({ checkFalsy: true })
   .custom((value) => {
-    const hasMinLength = value.length >= 16;
+    const hasMinLength = value.length >= passwordRules.minLength;
     const hasLower = /[a-z]/.test(value);
     const hasUpper = /[A-Z]/.test(value);
     const hasNumber = /\d/.test(value);
-    const hasSpecial = /[@$!%*?&]/.test(value);
+    // const hasSpecial = /[@$!%*?&]/.test(value);
+    const hasSpecial = new RegExp("[" + passwordRules.specialChars + "]").test(
+      value,
+    ); // Fixed this line to correctly use the specialChars rule.
     if (!(hasMinLength && hasLower && hasUpper && hasNumber && hasSpecial)) {
       throw new Error("weak password, see below.");
     }
@@ -48,8 +51,8 @@ const confirmPasswordUpdateValidator = check("confirm_password")
   });
 
 // Dynamic array for update
-const adminEditUserValidator = (userId) => [
-  emailUpdateAdminEditValidator(userId),
+const adminEditUserValidator = (userProfileId) => [
+  emailUpdateAdminEditValidator(userProfileId),
   passwordUpdateValidator,
   confirmPasswordUpdateValidator,
 ];

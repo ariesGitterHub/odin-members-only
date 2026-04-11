@@ -1,7 +1,9 @@
 const { check } = require("express-validator");
 const { checkIfEmailExistsForSignUp } = require("../db/queries/userQueries.js");
+const passwordRules = require('../config/passwordRules');
 
-// Use on any form that has email, password, and confirm_password
+const expectedAnswer = process.env.INVITE_CODE;
+
 const emailValidator = check("email")
   .isEmail()
   .withMessage("Invalid email format")
@@ -15,11 +17,15 @@ const emailValidator = check("email")
 
 const passwordValidator = [
   check("password").custom((value) => {
-    const hasMinLength = value.length >= 16;
+    const hasMinLength = value.length >= passwordRules.minLength;
     const hasLower = /[a-z]/.test(value);
     const hasUpper = /[A-Z]/.test(value);
     const hasNumber = /\d/.test(value);
-    const hasSpecial = /[@$!%*?&]/.test(value);
+    // const hasSpecial = /new RegExp [passwordRules.specialChar]/.test(value);
+    const hasSpecial = new RegExp("[" + passwordRules.specialChars + "]").test(
+      value,
+    ); // Fixed this line to correctly use the specialChars rule.
+
     if (!(hasMinLength && hasLower && hasUpper && hasNumber && hasSpecial)) {
       throw new Error("weak password, see below.");
     }
@@ -41,14 +47,25 @@ const confirmPasswordValidator = check("confirm_password").custom(
   },
 );
 
+// Validator for the invite code that will prevent bots from signing up
+const inviteCodeValidator = check("invite_code")
+  .custom((value) => {
+    if (value.toLowerCase() !== expectedAnswer.toLowerCase()) {
+      throw new Error("Incorrect invite code");
+    }
+    return true;
+  });
+
 // Export them individually or as groups
 module.exports = {
   emailValidator,
   passwordValidator,
   confirmPasswordValidator,
+  inviteCodeValidator,
   createUserValidator: [
     emailValidator,
     passwordValidator,
     confirmPasswordValidator,
+    inviteCodeValidator
   ],
 };

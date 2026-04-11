@@ -1,4 +1,6 @@
 const { getAllSiteControls } = require("../db/queries/appConfigQueries");
+const passwordRules = require('../config/passwordRules'); 
+ 
 
 // CONTROLLER: INDEX (index.ejs)
 
@@ -39,6 +41,7 @@ async function getInfo(req, res, next) {
       // user: req.user, // Not needed here
       // errors: [], // Not needed here
       config: siteSettings,
+      passwordRules,
     });
   } catch (err) {
     next(err);

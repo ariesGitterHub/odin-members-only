@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const { validationResult } = require("express-validator");
+const passwordRules = require("../config/passwordRules"); 
 
 const { isMaintenanceMode } = require("../utils/isMaintenanceMode");
 
@@ -21,6 +22,7 @@ async function getSignUp(req, res, next) {
     res.render("sign-up", {
       title: "Sign Up",
       errors: [],
+      passwordRules,
       formData: req.body || {},
     });
   } catch (err) {
@@ -52,6 +54,7 @@ async function postSignUp(req, res, next) {
         title: "Sign Up",
         errors: formattedErrors,
         formData: req.body || {},
+        passwordRules,
         csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
       });
     }

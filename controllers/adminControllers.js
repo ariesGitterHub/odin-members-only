@@ -1,11 +1,13 @@
 const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const { usStates } = require("../utils/usStates");
+const passwordRules = require("../config/passwordRules"); 
 
 const {
   // getUsers,
   getUsersForAdmin,
-  getUserById,
+  // getUserById,
+  getUserByIdForAdmin,
   insertAdminCreatedUser,
   updateAdminEditedUser,
   deleteUserById,
@@ -38,6 +40,7 @@ const {
 
 // CONTROLLER: ADMIN PAGE (admin.ejs)
 async function getAdminPage(req, res, next) {
+
   try {
     const users = await getUsersForAdmin();
     const messages = await getMessages();
@@ -163,6 +166,7 @@ async function getAdminCreatePage(req, res, next) {
       title: "Admin Create",
       errors: [],
       formData: req.body || {},
+      passwordRules,
     }); // Just render an empty form
   } catch (err) {
     next(err);
@@ -198,6 +202,7 @@ async function postAdminCreatePage(req, res, next) {
         title: "Admin Create",
         errors: formattedErrors,
         formData: req.body || {},
+        passwordRules,
         csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
       });
     }
@@ -227,24 +232,30 @@ async function postAdminCreatePage(req, res, next) {
 // CONTROLLER: ADMIN EDIT PAGE (admin-edit.ejs)
 
 async function getAdminEditPage(req, res, next) {
+
+  const user = req.user; // current user, to avoid header from displaying the data of the user whose profile the admin is looking at.
+
   try {
-    const userId = req.params.id;
+    const userProfileId = req.params.id;
     // const user = await getUserById(userId);
-    const user = await getUsersForAdmin(userId);
+    // const user = await getUsersForAdmin(userId);
+    const userProfile = await getUserByIdForAdmin(userProfileId); // The profile of the user the admin is looking at, avoids collision with header's use of "user".
     const siteControls = await getAllSiteControls();
 
     //Format birthdate for input/display
-    if (user.birthdate instanceof Date) {
-      user.birthdate = user.birthdate.toISOString().split("T")[0];
+    if (userProfile.birthdate instanceof Date) {
+      userProfile.birthdate = userProfile.birthdate.toISOString().split("T")[0];
     }
-    if (!user) return res.status(404).send("User not found");
+    if (!userProfile) return res.status(404).send("User profile not found");
     res.render("admin-edit", {
       title: "Admin Edit",
       user,
+      userProfile,
       usStates: usStates, // Pass the array to the EJS template
       config: siteControls,
       errors: [],
-      formData: user,
+      formData: userProfile,
+      passwordRules,
     }); // Pass user to EJS view
   } catch (err) {
     next(err);
@@ -252,12 +263,15 @@ async function getAdminEditPage(req, res, next) {
 }
 
 async function postAdminEditPage(req, res, next) {
-  const userId = parseInt(req.params.id, 10); // the user being edited
-  // const user = await getUserById(userId); // fetch target user
-  const user = await getUsersForAdmin(userId); // fetch target user
+  const user = req.user; // current user, to avoid header from displaying the data of the user whose profile the admin is looking at.
+
+  const userProfileId = parseInt(req.params.id, 10); // the user being edited
+  // const user = await getUserById(userId); 
+  // const user = await getUsersForAdmin(userId); 
+  const userProfile = await getUserByIdForAdmin(userProfileId); // // The profile of the user the admin is looking at, avoids collision with header's use of "user".
   const siteControls = await getAllSiteControls();
 
-  if (!user) return res.status(404).send("User not found");
+  if (!userProfile) return res.status(404).send("User profile not found");
 
   const {
     first_name,
@@ -300,10 +314,12 @@ async function postAdminEditPage(req, res, next) {
       return res.render("admin-edit", {
         title: "Admin Edit",
         user,
+        userProfile,
         config: siteControls,
         errors: formattedErrors,
         formData: req.body || {},
         usStates: usStates,
+        passwordRules,
         csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
       });
     }
@@ -325,7 +341,7 @@ async function postAdminEditPage(req, res, next) {
 
     // Update user in DB
     await updateAdminEditedUser(
-      userId, // ID of the user being edited
+      userProfileId, // ID of the user being edited
       sanitize(first_name),
       sanitize(last_name),
       sanitize(email),

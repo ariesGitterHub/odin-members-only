@@ -11,9 +11,9 @@
       </div>
       <div class="card">
         <div class="page-title uppercase">
-          <h1><%=user.first_name%> <%=user.last_name%></h1>
+          <h1><%=userProfile.first_name%> <%=userProfile.last_name%></h1>
         </div>
-        <form action="/app/admin-edit/<%= user.id %>" method="POST">
+        <form action="/app/admin-edit/<%= userProfile.id %>" method="POST">
           <%# CSRF Token - hidden input for forms %>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <label class="capitalize" for="first-name-admin-edit-page">

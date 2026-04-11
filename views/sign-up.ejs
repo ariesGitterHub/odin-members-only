@@ -64,6 +64,22 @@
             required
           />
           <div class="element-container-row-start-center">
+            <label for="invite-code-sign-up">invite code</label>
+            <% if (errors && errors.some(e => e.param === 'invite_code')) { %>
+              <% errors.filter(e => e.param === 'invite_code').forEach(e => { %>
+                <span class="error-message">[<%= e.msg %>]</span>
+              <% }) %>
+            <% } %>
+          </div>
+          <input
+            id="invite-code-sign-up"
+            type="text"            
+            name="invite_code"
+            value="<%= formData?.invite_code || '' %>"
+            placeholder="enter invite code"
+            required
+          />
+          <div class="element-container-row-start-center">
             <label for="password-sign-up">password</label>
             <% if (errors && errors.some(e => e.param === 'password')) { %>
               <% errors.filter(e => e.param === 'password').forEach(e => { %>
