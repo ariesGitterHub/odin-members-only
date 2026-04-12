@@ -10,77 +10,75 @@
         <h1>admin panel</h1>
       </div>
       <div class="large-screen-flex-row">
-      <% if (users.length === 0) { %> 
-        <p>There are no current users.</p>
-        <% } else { users.forEach(function(user) { %>
+      <% userProfiles.forEach(function(userProfile) { %>
         <div class="card
-          <% if (user && user.permission_status === "admin") { %>
+          <% if (userProfile && userProfile.permission_status === "admin") { %>
             admin-card
-            <% } else if (user && user.permission_status === "member") { %>
+            <% } else if (userProfile && userProfile.permission_status === "member") { %>
             member-card user-card hidden
-            <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === false) { %>
+            <% } else if (userProfile && userProfile.permission_status === "guest" && userProfile.verified_by_admin === true && userProfile.guest_upgrade_invite === false) { %>
             guest-card user-card hidden upgrade-possible
-            <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "none" ) { %>
+            <% } else if (userProfile && userProfile.permission_status === "guest" && userProfile.verified_by_admin === true && userProfile.guest_upgrade_invite === true && userProfile.invite_decision === "none" ) { %>
             guest-card user-card hidden upgrade-no-decision
-            <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "declined" ) { %>
+            <% } else if (userProfile && userProfile.permission_status === "guest" && userProfile.verified_by_admin === true && userProfile.guest_upgrade_invite === true && userProfile.invite_decision === "declined" ) { %>
             guest-card user-card hidden upgrade-declined
-            <% } else if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "accepted" ) { %>
+            <% } else if (userProfile && userProfile.permission_status === "guest" && userProfile.verified_by_admin === true && userProfile.guest_upgrade_invite === true && userProfile.invite_decision === "accepted" ) { %>
             guest-card user-card hidden upgrade-review
             <% }  else { %>
             guest-card user-card hidden
             <% } %>
-          <% if (user && user.is_active === false) { %> 
+          <% if (userProfile && userProfile.is_active === false) { %> 
               dead-account
           <% } %>
           ">
           <div class="element-container-row-center-start margin-bottom">
             <div 
               class="avatar-container avatar-container-size-small avatar-background circle " 
-                <%- include('./partials/avatar-color-data-helper.ejs', { obj: user }) %>  
+                <%- include('./partials/avatar-color-data-helper.ejs', { obj: userProfile }) %>  
               >
               <span class="emoji emoji-size-small" role="image" aria-label="avatar image">
-                <%= user.avatar_type %>
+                <%= userProfile.avatar_type %>
               </span>
             </div>   
-            <h2 class="admin-panel-name italic"><%= user.first_name %> <%= user.last_name %></h2>         
+            <h2 class="admin-panel-name italic"><%= userProfile.first_name %> <%= userProfile.last_name %></h2>         
           </div>
           <div class="admin-quick-view-bar">
             <span>
-              <% if (user && user.permission_status === "admin") { %>
+              <% if (userProfile && userProfile.permission_status === "admin") { %>
                 <p class="emoji"><%= config.admin_emoji %></p>
               <% }
-              else if (user && user.permission_status === "member") { %>
+              else if (userProfile && userProfile.permission_status === "member") { %>
                 <p class="emoji"><%= config.member_emoji %></p>  
               <% } else { %>
                 <p class="emoji"><%= config.guest_emoji %></p>  
               <% } %>
             </span>
             <span>
-            <% if (user && user.verified_by_admin === true) { %>
+            <% if (userProfile && userProfile.verified_by_admin === true) { %>
               <p class="emoji font-color-green">✔</p> 
             <% } else { %>
               <p class="emoji font-color-red">❌</p>  
             <% } %>
             </span>
-            <% if (user.message_count) { %>
+            <% if (userProfile.message_count) { %>
               <span class="font-color-black">
-                <p><%= user.message_count %></p>
+                <p><%= userProfile.message_count %></p>
               </span>
             <% } %>
-            <% if (user.birthdate) { %>
+            <% if (userProfile.birthdate) { %>
               <span class="font-color-black">
-                <p class="emoji font-color-gray"><%= user.zodiacSign %></p>
+                <p class="emoji font-color-gray"><%= userProfile.zodiacSign %></p>
                 /
-                <p class="emoji <%= user.permission_status === 'admin' ? 'font-color-black' : 'font-color-white'%> "><%= user.realZodiacSign %></p>
+                <p class="emoji <%= userProfile.permission_status === 'admin' ? 'font-color-black' : 'font-color-white'%> "><%= userProfile.realZodiacSign %></p>
               </span>
             <% } %>
-            <% if (user.birthdate) { %>
+            <% if (userProfile.birthdate) { %>
               <span class="font-color-black">
-                <p class="emoji"><%= user.chineseZodiacSign %></p>
+                <p class="emoji"><%= userProfile.chineseZodiacSign %></p>
               </span>
             <% } %>
           </div>
-          <% if (user && user.permission_status === "admin" && (config.maintenance_mode || process.env.MAINTENANCE_MODE === "true")) { %> 
+          <% if (userProfile && userProfile.permission_status === "admin" && (config.maintenance_mode || process.env.MAINTENANCE_MODE === "true")) { %> 
             <div class="element-container-col-start-center ui-message ui-message-bubble background-black font-color-white">         
               <% if (config.maintenance_mode) { %>
                 <p><span class="emoji">🚧</span> Maintenance mode set to <span class="font-color-green">true</span> in the admin panel.</p>
@@ -90,18 +88,18 @@
               <% } %>          
             </div>   
           <% } %>
-          <% if (user && user.permission_status === "guest" && user.verified_by_admin === true) { %> 
+          <% if (userProfile && userProfile.permission_status === "guest" && userProfile.verified_by_admin === true) { %> 
             <div class="element-container-col-start-center ui-message ui-message-bubble">                    
-              <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "declined") { %>
+              <% if (userProfile && userProfile.permission_status === "guest" && userProfile.verified_by_admin === true && userProfile.guest_upgrade_invite === true && userProfile.invite_decision === "declined") { %>
               <p><span class="emoji">🚫</span> Guest user declined member status.</p>
               <% } %>            
-              <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "none") { %>
+              <% if (userProfile && userProfile.permission_status === "guest" && userProfile.verified_by_admin === true && userProfile.guest_upgrade_invite === true && userProfile.invite_decision === "none") { %>
               <p><span class="emoji">⚖</span> Pending member status, awaiting guest user decision.</p>
               <% } %>
-              <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === false && user.invite_decision === "none") { %>
+              <% if (userProfile && userProfile.permission_status === "guest" && userProfile.verified_by_admin === true && userProfile.guest_upgrade_invite === false && userProfile.invite_decision === "none") { %>
               <p><span class="emoji">🤔</span> Consider upgrading this guest to member status.</p>
               <% } %>
-              <% if (user && user.permission_status === "guest" && user.verified_by_admin === true && user.guest_upgrade_invite === true && user.invite_decision === "accepted") { %>
+              <% if (userProfile && userProfile.permission_status === "guest" && userProfile.verified_by_admin === true && userProfile.guest_upgrade_invite === true && userProfile.invite_decision === "accepted") { %>
               <p><span class="emoji">😬</span> Review this profile for errors.</p>
               <% } %>
             </div>   
@@ -110,116 +108,116 @@
             <dl class="profile-data-dl margin-bottom">
               <div class="neighbor-relevant-data">
                 <dt class="capitalize">name</dt>
-                <dd class="capitalize"><%= user.first_name %> <%= user.last_name %></dd>
+                <dd class="capitalize"><%= userProfile.first_name %> <%= userProfile.last_name %></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">status</dt>
-                <dd><%= user.permission_status %></dd>
+                <dd><%= userProfile.permission_status %></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">verified</dt>
-                <dd>admin verified = <span class="<%= user.verified_by_admin ? 'font-color-green' : 'font-color-red' %>"><%= user.verified_by_admin %></span></dd>
+                <dd>admin verified = <span class="<%= userProfile.verified_by_admin ? 'font-color-green' : 'font-color-red' %>"><%= userProfile.verified_by_admin %></span></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">upgrade</dt>
-                <dd>invite sent = <span class="<%= user.guest_upgrade_invite ? 'font-color-green' : 'font-color-red' %>"><%= user.guest_upgrade_invite %></span></dd>
+                <dd>invite sent = <span class="<%= userProfile.guest_upgrade_invite ? 'font-color-green' : 'font-color-red' %>"><%= userProfile.guest_upgrade_invite %></span></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">decision</dt>
-                <dd>invite = <%= user.invite_decision %></dd>
+                <dd>invite = <%= userProfile.invite_decision %></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">activity</dt>
-                <dd>active status = <span class="<%= user.is_active ? 'font-color-green' : 'font-color-red' %>"><%= user.is_active%></span></dd>
+                <dd>active status = <span class="<%= userProfile.is_active ? 'font-color-green' : 'font-color-red' %>"><%= userProfile.is_active%></span></dd>
               </div>
               <div class="neighbor-relevant-data">
                 <dt class="capitalize">email</dt>
-                <dd class="word-breaker"><%= user.email%></dd>
+                <dd class="word-breaker"><%= userProfile.email%></dd>
               </div>
-              <div class="<%= user.phone ? '' : 'hidden' %> neighbor-relevant-data">
+              <div class="<%= userProfile.phone ? '' : 'hidden' %> neighbor-relevant-data">
                 <dt class="capitalize">phone</dt>
-                <dd><%= user.phone %></dd>
+                <dd><%= userProfile.phone %></dd>
               </div>
               <div class="neighbor-relevant-data">
                 <dt class="capitalize">birthdate</dt>
-                <dd><%= user.formattedBirthdate %> (age: <%= user.age %>)</dd>
+                <dd><%= userProfile.formattedBirthdate %> (age: <%= userProfile.age %>)</dd>
               </div>
-              <div class="<%= user.street_address ? '' : 'hidden' %> neighbor-relevant-data">
+              <div class="<%= userProfile.street_address ? '' : 'hidden' %> neighbor-relevant-data">
                 <dt class="capitalize">street</dt>
-                <dd><%= user.street_address %></dd>
+                <dd><%= userProfile.street_address %></dd>
               </div>
-              <div class="<%= user.apt_unit ? '' : 'hidden' %> neighbor-relevant-data">
+              <div class="<%= userProfile.apt_unit ? '' : 'hidden' %> neighbor-relevant-data">
                 <dt class="capitalize">apt/unit</dt>
-                <dd><%= user.apt_unit %></dd>
+                <dd><%= userProfile.apt_unit %></dd>
               </div>
-              <div class="<%= user.city ? '' : 'hidden' %> neighbor-relevant-data">
+              <div class="<%= userProfile.city ? '' : 'hidden' %> neighbor-relevant-data">
                 <dt class="capitalize">city</dt>
-                <dd><%= user.city %></dd>
+                <dd><%= userProfile.city %></dd>
               </div>
-              <div class="<%= user.us_state ? '' : 'hidden' %> neighbor-relevant-data">
+              <div class="<%= userProfile.us_state ? '' : 'hidden' %> neighbor-relevant-data">
                 <dt class="capitalize">state</dt>
-                <dd><%= user.us_state %></dd>
+                <dd><%= userProfile.us_state %></dd>
               </div>
-              <div class="<%= user.zip_code ? '' : 'hidden' %> neighbor-relevant-data">
+              <div class="<%= userProfile.zip_code ? '' : 'hidden' %> neighbor-relevant-data">
                 <dt class="capitalize">zip code</dt>
-                <dd><%= user.zip_code %></dd>
+                <dd><%= userProfile.zip_code %></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">count</dt>
-                <dd><%= user.message_count %> posts</dd>
+                <dd><%= userProfile.message_count %> posts</dd>
               </div>
-              <div class="<%= user.avatar_type ? '' : 'hidden' %> app-relevant-data">
+              <div class="<%= userProfile.avatar_type ? '' : 'hidden' %> app-relevant-data">
                 <dt class="capitalize">avatar</dt>
-                <dd><span class="emoji regular"><%= user.avatar_type %></span></dd>
+                <dd><span class="emoji regular"><%= userProfile.avatar_type %></span></dd>
               </div>
-              <div class="<%= user.avatar_color_fg ? '' : 'hidden' %> app-relevant-data">
+              <div class="<%= userProfile.avatar_color_fg ? '' : 'hidden' %> app-relevant-data">
                 <dt class="capitalize">colorFG</dt>
-                <dd><%= user.avatar_color_fg %></dd>
+                <dd><%= userProfile.avatar_color_fg %></dd>
               </div>
-              <div class="<%= user.avatar_color_bg_top ? '' : 'hidden' %> app-relevant-data">
+              <div class="<%= userProfile.avatar_color_bg_top ? '' : 'hidden' %> app-relevant-data">
                 <dt class="capitalize">colorBG↑</dt>
-                <dd><%= user.avatar_color_bg_top %></dd>
+                <dd><%= userProfile.avatar_color_bg_top %></dd>
               </div>
-              <div class="<%= user.avatar_color_bg_bottom ? '' : 'hidden' %> app-relevant-data">
+              <div class="<%= userProfile.avatar_color_bg_bottom ? '' : 'hidden' %> app-relevant-data">
                 <dt class="capitalize">colorBG↓</dt>
-                <dd><%= user.avatar_color_bg_bottom %></dd>
+                <dd><%= userProfile.avatar_color_bg_bottom %></dd>
               </div>
-              <% const notesValue = (user.notes || '').trim(); %>
+              <% const notesValue = (userProfile.notes || '').trim(); %>
               <div class="<%= notesValue ? '' : 'hidden' %> app-relevant-data">
                 <dt class="capitalize">notes</dt>
                 <dd><%= notesValue %></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">created</dt>
-                <dd><%= new Date(user.created_at).toLocaleString() %></dd>
+                <dd><%= new Date(userProfile.created_at).toLocaleString() %></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">updated</dt>
-                <dd><%= new Date(user.updated_at).toLocaleString() %></dd>
+                <dd><%= new Date(userProfile.updated_at).toLocaleString() %></dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">last login</dt>
-                <dd><%= new Date(user.last_login_at).toLocaleString() %></dd>
+                <dd><%= new Date(userProfile.last_login_at).toLocaleString() %></dd>
               </div>
             </dl>
             <div class="button-container-col">
-              <% if (user && user.permission_status !== "admin") { %>
+              <% if (userProfile && userProfile.permission_status !== "admin") { %>
                 <button 
                   class="button-default wide-button action-target-button" 
                   data-section="modal-warning-account-deletion"
                   data-title="modal-title-warning-account-deletion"
-                  data-target-id="<%= user.id %>"
+                  data-target-id="<%= userProfile.id %>"
                   data-action="/app/admin/delete-user-account"
                 >
                   delete this user
                 </button>
               <% } %>
-                <a class="button-default wide-button" href="/app/admin-edit/<%= user.id %>">edit this profile</a>
+                <a class="button-default wide-button" href="/app/admin-edit/<%= userProfile.id %>">edit this profile</a>
             </div>
           </div>
           <br>
           <div class="button-container-col">
-            <% if (user && user.permission_status === "admin") { %>
+            <% if (userProfile && userProfile.permission_status === "admin") { %>
               <a class="button-default wide-button" href="/app/admin-create">create new user</a>
               <button id="site-controls-button" class="button-default wide-button" type="button">open site controls</button>
               <div id="site-controls-div" class="<%= (query.success || query.error) ? '' : 'hidden' %>">
@@ -318,11 +316,11 @@
                 <div class="element-container-col-start-center">
                   <h3 class="uppercase">users</h3>
                   <div class="element-container-col-start-center">
-                    <p class="underline"><%= users.length %> total users</p>  
-                    <p><%= users.filter(user => user.permission_status === "guest").length %> total guests</p>
-                    <p><%= users.filter(user => user.permission_status === "member").length %> total members</p>
-                    <p><%= users.filter(user => user.permission_status === "admin").length %> total admin(s)</p>
-                    <p><%= users.filter(user => user.is_active === false).length %> total inactive</p>                   
+                    <p class="underline"><%= userProfiles.length %> total users</p>  
+                    <p><%= userProfiles.filter(userProfile => userProfile.permission_status === "guest").length %> total guests</p>
+                    <p><%= userProfiles.filter(userProfile => userProfile.permission_status === "member").length %> total members</p>
+                    <p><%= userProfiles.filter(userProfile => userProfile.permission_status === "admin").length %> total admin(s)</p>
+                    <p><%= userProfiles.filter(userProfile => userProfile.is_active === false).length %> total inactive</p>                   
                   </div>                   
                 </div>
                 <div class="element-container-col-start-center">
@@ -343,7 +341,6 @@
           </div>
         </div>
       <% }) %>
-    <% } %>
     </div>
     </main>
     <%- include('./partials/modal-root.ejs') %>

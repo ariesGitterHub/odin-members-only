@@ -41,9 +41,9 @@ WHERE u.email = 'admin@can.org'
 -- App configurations (soft and hard deletes, and maintenance mode)
 -- NOTE: Hard delete is counted from the time of soft delete, not from creation.
 INSERT INTO app_config (key, value) VALUES
-('message_soft_delete_days', '1'),
-('message_hard_delete_days', '2'),
-('session_hard_delete_days', '1'),
+('message_soft_delete_days', '14'),
+('message_hard_delete_days', '28'),
+('session_hard_delete_days', '14'),
 ('signup_limit_window_minutes', '15'),
 ('signup_limit_max_users', '5'),
 ('login_limit_window_minutes', '5'),
@@ -73,7 +73,7 @@ VALUES
   ('businesses', 'Local Businesses', 'Recommend local services or restaurants', 'guest', 110),
   ('introductions', 'Introductions', 'Welcome new neighbors', 'guest', 120),
   ('feedback', 'Feedback', 'Suggestions to improve this site', 'guest', 130),
-  ('members-only', 'Members Only', 'Messages visible only to members', 'member', 140),
+  ('members-only', 'Members Only', 'Messages are only visible to members', 'member', 140),
   ('admin-notes', 'Admin Notes', 'Boring admin stuff', 'admin', 150)
 ON CONFLICT (slug) DO NOTHING;
 

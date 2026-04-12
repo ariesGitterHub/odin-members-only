@@ -88,8 +88,8 @@ export async function handleModalOpen(targetId, sectionId, titleId) {
 
       if (sectionId === "modal-warning-account-deletion") {
         // const user = await fetchUserData(targetId);
-        const user = await fetchUserId(targetId);
-        populateWarningAccountDeletion(user);
+        const userId = await fetchUserId(targetId);
+        populateWarningAccountDeletion(userId);
         openModal(sectionId, titleId);
       }
 

@@ -21,7 +21,6 @@ module.exports = (passport) => {
           }
 
           const user = rows[0];
-
           const isMatch = await bcrypt.compare(password, user.password_hash);
 
           if (!isMatch) {
@@ -41,46 +40,16 @@ module.exports = (passport) => {
     done(null, user.id);
   });
 
-  // DESERIALIZE USER
+  // DESERIALIZE USER (CREATES req.user)
   passport.deserializeUser(async (id, done) => {
     try {
       const { rows } = await pool.query(
-        // `
-        // SELECT
-        //   users.*,
-        //   user_profiles.avatar_type,
-        //   user_profiles.avatar_color_fg,
-        //   user_profiles.avatar_color_bg_top,
-        //   user_profiles.avatar_color_bg_bottom,
-        //   user_profiles.phone,
-        //   user_profiles.street_address,
-        //   user_profiles.apt_unit,
-        //   user_profiles.city,
-        //   user_profiles.us_state,
-        //   user_profiles.zip_code
-        // FROM users
-        // LEFT JOIN user_profiles
-        //   ON users.id = user_profiles.user_id
-        // WHERE users.id = $1
-        // `,
-        //   `
-        //   SELECT
-        //     id,
-        //     email,
-        //     permission_status,
-        //     verified_by_admin,
-        //     guest_upgrade_invite,
-        //     is_active,
-        //     invite_decision
-        //   FROM users
-        //   WHERE id = $1
-        // `,
         `
-      SELECT u.id, u.email, u.permission_status, up.avatar_type
-      FROM users AS u
-      LEFT JOIN user_profiles AS up
-        ON u.id = up.user_id
-      WHERE id = $1
+        SELECT u.id, u.email, u.permission_status, u.verified_by_admin, u.guest_upgrade_invite, u.invite_decision, u.is_active, up.avatar_type
+        FROM users AS u
+        LEFT JOIN user_profiles AS up
+          ON u.id = up.user_id
+        WHERE id = $1
       `,
         [id],
       );

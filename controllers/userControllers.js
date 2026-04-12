@@ -12,7 +12,6 @@ const {
 } = require("../db/queries/userQueries");
 
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
-
 const { addBirthdateFields } = require("../utils/viewFormatters");
 
 // CONTROLLER: GET CURRENT USER
@@ -54,20 +53,38 @@ const { addBirthdateFields } = require("../utils/viewFormatters");
 //   }
 // }
 
-async function getModalDataToFrontend(req, res, next) {
-  const userId = req.user.id
-  try {
-  const user = await getUserForModalData(userId);
+// async function getModalDataToFrontend(req, res, next) {
+//   const userId = req.user.id
+//   try {
+//   const user = await getUserForModalData(userId);
 
-  if (!req.user) {
-      res.json(null);
-    } else {
-      res.json(user);
+//   if (!req.user) {
+//       res.json(null);
+//     } else {
+//       res.json(user);
+//     }
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
+// CONTROLLER: MODAL DATA
+async function getModalDataToFrontend(req, res, next) {
+  try {
+    if (!req.user) {
+      return res.json(null);
     }
+
+    const userId = req.user.id;
+
+    const userData = await getUserForModalData(userId);
+
+    return res.json(userData);
   } catch (err) {
     next(err);
   }
 }
+
 
 
 // CONTROLLER: GET USERS BY ID
@@ -98,14 +115,16 @@ async function getModalDataToFrontend(req, res, next) {
 
 async function getUserId(req, res, next) {
   const targetId = req.params.id; // Get user ID from URL parameter
+
   try {
-    const user = await getUserForModalData(targetId); // Replace with your actual query
-  if (!user) {
+    const userId = await getUserForModalData(targetId); // Replace with your actual query
+
+  if (!userId) {
     return res.status(404).render("error", {
-      message: "User not found"
-    })
+      message: "UserId not found",
+    });
   } else {
-      res.json(user); // Send user data as JSON 
+    res.json(userId); // Send user data as JSON
   }
 
   } catch (err) {
@@ -116,15 +135,18 @@ async function getUserId(req, res, next) {
 // CONTROLLER: YOUR PROFILE PAGE (your-profile.ejs)
 
 async function getYourProfilePage(req, res, next) {
+
+  // const user = req.user // this is global already
+
   if (!req.user) {
     return res.redirect("/app/log-in"); // User not logged in
   }
 
   try {
-    const user = await getUserProfileData(req.user.id); 
-  if (!user) {
+    const userProfile = await getUserProfileData(req.user.id); 
+  if (!userProfile) {
     return res.status(404).render("error", {
-      message: "User not found"
+      message: "User not found",
     });
   }
     // Add computed fields: age, formattedBirthdate
@@ -135,7 +157,7 @@ async function getYourProfilePage(req, res, next) {
     // )[0]; // get first element
 
     const [userBirthdate] = addBirthdateFields(
-      [user], // pass as array to reuse your helper
+      [userProfile], // pass as array to reuse your helper
       calculateAge,
       formatShortDate,
     ); // get first element
@@ -143,7 +165,8 @@ async function getYourProfilePage(req, res, next) {
 
     res.render("your-profile", {
       title: "Your Profile",
-      user: userBirthdate,
+      // user,
+      userProfile: userBirthdate,
       errors: [],
       reopenModal: false,
     });
@@ -158,13 +181,32 @@ async function deleteYourAccount(req, res, next) {
   if (!req.user) {
     return res.redirect("/app/log-in"); // User not logged in
   }
+
+    // Block admins from deleting their own accounts
   try {
-    const userId = req.user.id;
+    // if (req.user.permission_status === "admin") {
+    //   // Instead of rendering directly, throw an error that the error middleware can handle
+    //   const error = new Error("Admins cannot delete their own accounts.");
+    //   error.status = 403;  // Set the status code to 403
+    //   return next(error);  // Pass the error to the next middleware (error middleware)
+    // }
+
+    if (req.user.permission_status === "admin") {
+      const err = new Error("Admins cannot delete their own accounts.");
+      err.status = 403;
+      err.code = "ADMIN_SELF_DELETE_BLOCKED"; // FIX: structured error
+      return next(err);
+    }
+
+
+    // const userId = req.user.id;
 
     // Perform the deletion for the authenticated user (not a user provided in the body)
-    await deleteUserById(userId);
+    // await deleteUserById(userId);
+    await deleteUserById(req.user.id);
 
-    res.redirect("/app");
+    // res.redirect("/app");
+    return res.redirect("/app");
   } catch (err) {
     next(err);
   }
@@ -177,22 +219,24 @@ async function getEditProfile(req, res, next) {
     return res.redirect("/app/log-in"); // User not logged in
   }
   try {
-     const user = await getUserProfileData(req.user.id);
-     if (!user) {
-      return res.status(404).render("error", {
-        message: "User not found"
-      });
-    }
+     const userProfile = await getUserProfileData(req.user.id);
+     if (!userProfile) {
+       return res.status(404).render("error", {
+         message: "User profile not found",
+       });
+     }
     //Format birthdate for input/display
-    if (user.birthdate instanceof Date) {
-      user.birthdate = user.birthdate.toISOString().split("T")[0];
+    if (userProfile.birthdate instanceof Date) {
+      userProfile.birthdate = userProfile.birthdate.toISOString().split("T")[0];
     }
-    res.render("edit-profile", {
+    // res.render("edit-profile", {
+    return res.render("edit-profile", {
       title: "Edit Profile",
       // user,
+      userProfile,
       usStates: usStates, // Pass the array to the EJS template   ????
       errors: [],
-      formData: user,
+      formData: userProfile,
       passwordRules,
     }); // Pass user to EJS view
   } catch (err) {
@@ -225,9 +269,9 @@ async function postEditProfile(req, res, next) {
 
   try {
 
-      const user = await getUserProfileData(userId);
+      const userProfile = await getUserProfileData(userId);
 
-      if (!user) return res.status(404).send("User not found");
+      if (!userProfile) return res.status(404).send("User profile not found");
     // --- Run validation from middleware ---
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -242,7 +286,7 @@ async function postEditProfile(req, res, next) {
 
       return res.render("edit-profile", {
         title: "Edit Profile",
-        user,
+        userProfile,
         errors: formattedErrors,
         formData: req.body || {},
         usStates: usStates,
@@ -274,7 +318,8 @@ async function postEditProfile(req, res, next) {
       sanitize(zip_code),
     );
 
-    res.redirect("/app/your-profile");
+    // res.redirect("/app/your-profile");
+    return res.redirect("/app/your-profile");
   } catch (err) {
     next(err);
   }
@@ -283,6 +328,10 @@ async function postEditProfile(req, res, next) {
 // CONTROLLER: CHANGE AVATAR MODAL (change-avatar.ejs)
 
 async function postYourProfilePageAvatar(req, res, next) {
+  if (!req.user) {
+    return res.redirect("/app/log-in");
+  }
+
   const userId = req.user.id;
 
   const {
@@ -305,7 +354,8 @@ async function postYourProfilePageAvatar(req, res, next) {
     );
   
     // Redirect after successful creation
-    res.redirect("/app/your-profile");
+    // res.redirect("/app/your-profile");
+    return res.redirect("/app/your-profile");
   } catch (err) {
     next(err);
   }

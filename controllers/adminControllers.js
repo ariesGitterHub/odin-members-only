@@ -4,9 +4,7 @@ const { usStates } = require("../utils/usStates");
 const passwordRules = require("../config/passwordRules"); 
 
 const {
-  // getUsers,
   getUsersForAdmin,
-  // getUserById,
   getUserByIdForAdmin,
   insertAdminCreatedUser,
   updateAdminEditedUser,
@@ -42,12 +40,12 @@ const {
 async function getAdminPage(req, res, next) {
 
   try {
-    const users = await getUsersForAdmin();
+    const userProfiles = await getUsersForAdmin();
     const messages = await getMessages();
     const siteControls = await getAllSiteControls();
 
     const usersWithBirthdates = addBirthdateFields(
-      users,
+      userProfiles,
       calculateAge,
       formatShortDate,
     );
@@ -78,11 +76,11 @@ async function getAdminPage(req, res, next) {
 
     res.render("admin", {
       title: "Admin Panel",
-      users: usersWithChineseZodiacSigns,
+      userProfiles: usersWithChineseZodiacSigns,
       messages,
       config: siteControls,
       errors: [],
-      query: req.query, // add this for messages about site settings changes!!!
+      query: req.query, // Add this for messages about site settings changes in admin panel
     });
   } catch (err) {
     next(err);
@@ -119,7 +117,6 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
     ];
 
     const parsedValues = values.map((v) => Number(v));
-
     const hasInvalid = parsedValues.some((v) => Number.isNaN(v) || v < 0);
 
     if (hasInvalid) {
@@ -128,7 +125,7 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
     }
 
     // Handle maintenance_mode separately since it's a boolean
-    const isMaintenanceModeEnabled = maintenance_mode === "on"; // I can adjust this based on your form input
+    const isMaintenanceModeEnabled = maintenance_mode === "on"; // I can adjust this based on my form input
 
     const emojis = [admin_emoji, member_emoji, guest_emoji];
 
@@ -142,7 +139,7 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
       parsedValues[5],
       parsedValues[6],
       parsedValues[7],
-      isMaintenanceModeEnabled, // maintenance_mode as boolean
+      isMaintenanceModeEnabled, // maintenance_mode is boolean
       emojis[0],
       emojis[1],
       emojis[2],
@@ -165,7 +162,7 @@ async function getAdminCreatePage(req, res, next) {
     res.render("admin-create", {
       title: "Admin Create",
       errors: [],
-      formData: req.body || {},
+      formData: {},
       passwordRules,
     }); // Just render an empty form
   } catch (err) {
@@ -188,13 +185,25 @@ async function postAdminCreatePage(req, res, next) {
   try {
     // Run middleware validation results
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       const formattedErrors = [];
       const seen = new Set();
+
+      // errors.array().forEach((err) => {
+      //   if (!seen.has(err.path)) {
+      //     formattedErrors.push({ param: err.path, msg: err.msg });
+      //     seen.add(err.path); // seen ensures only one error per field, so your EJS shows one message for password, not multiple.
+      //   }
+      // });
+
       errors.array().forEach((err) => {
         if (!seen.has(err.path)) {
-          formattedErrors.push({ param: err.path, msg: err.msg });
-          seen.add(err.path); // seen ensures only one error per field, so your EJS shows one message for password, not multiple.
+          formattedErrors.push({
+            field: err.path,
+            message: err.msg,
+          });
+          seen.add(err.path);
         }
       });
 
@@ -210,7 +219,8 @@ async function postAdminCreatePage(req, res, next) {
     // Hash the password before saving
     const password_hash = await bcrypt.hash(password, 12);
 
-    const notes = req.body.notes || "Admin created user.";
+    // const notes = req.body.notes || "Admin created user.";
+    const notesSafe = notes || "Admin created user.";
 
     // Insert the new admin-created user (avatar_type generated inside the function)
     await insertAdminCreatedUser(
@@ -219,11 +229,13 @@ async function postAdminCreatePage(req, res, next) {
       email,
       birthdate,
       password_hash,
-      notes,
+      // notes,
+      notesSafe
     );
 
     // Redirect after successful creation
-    res.redirect("/app/admin");
+    // res.redirect("/app/admin");
+    return res.redirect("/app/admin");
   } catch (err) {
     next(err);
   }
@@ -233,25 +245,26 @@ async function postAdminCreatePage(req, res, next) {
 
 async function getAdminEditPage(req, res, next) {
 
-  const user = req.user; // current user, to avoid header from displaying the data of the user whose profile the admin is looking at.
+// const user = req.user; // NOTE & REMINDER- this is the current user.
 
   try {
     const userProfileId = req.params.id;
-    // const user = await getUserById(userId);
-    // const user = await getUsersForAdmin(userId);
     const userProfile = await getUserByIdForAdmin(userProfileId); // The profile of the user the admin is looking at, avoids collision with header's use of "user".
     const siteControls = await getAllSiteControls();
+
+    if (!userProfile) return res.status(404).send("User profile not found");
 
     //Format birthdate for input/display
     if (userProfile.birthdate instanceof Date) {
       userProfile.birthdate = userProfile.birthdate.toISOString().split("T")[0];
     }
-    if (!userProfile) return res.status(404).send("User profile not found");
+
+    // if (!userProfile) return res.status(404).send("User profile not found");
     res.render("admin-edit", {
       title: "Admin Edit",
-      user,
       userProfile,
-      usStates: usStates, // Pass the array to the EJS template
+      // usStates: usStates, // Pass the array to the EJS template
+      usStates, // Pass the array to the EJS template
       config: siteControls,
       errors: [],
       formData: userProfile,
@@ -263,62 +276,76 @@ async function getAdminEditPage(req, res, next) {
 }
 
 async function postAdminEditPage(req, res, next) {
-  const user = req.user; // current user, to avoid header from displaying the data of the user whose profile the admin is looking at.
-
-  const userProfileId = parseInt(req.params.id, 10); // the user being edited
-  // const user = await getUserById(userId); 
-  // const user = await getUsersForAdmin(userId); 
-  const userProfile = await getUserByIdForAdmin(userProfileId); // // The profile of the user the admin is looking at, avoids collision with header's use of "user".
-  const siteControls = await getAllSiteControls();
-
-  if (!userProfile) return res.status(404).send("User profile not found");
-
-  const {
-    first_name,
-    last_name,
-    email,
-    birthdate,
-    password,
-    confirm_password,
-    permission_status,
-    verified_by_admin,
-    guest_upgrade_invite,
-    invite_decision,
-    is_active,
-    avatar_type,
-    avatar_color_fg,
-    avatar_color_bg_top,
-    avatar_color_bg_bottom,
-    phone,
-    street_address,
-    apt_unit,
-    city,
-    us_state,
-    zip_code,
-    notes,
-  } = req.body;
-
+  // const user = req.user; // current user, to avoid header from displaying the data of the user whose profile the admin is looking at.
+//NEW
   try {
+    const userProfileId = parseInt(req.params.id, 10); // the user being edited
+    // const user = await getUserById(userId); 
+    // const user = await getUsersForAdmin(userId); 
+    const userProfile = await getUserByIdForAdmin(userProfileId); // // The profile of the user the admin is looking at, avoids collision with header's use of "user".
+    const siteControls = await getAllSiteControls();
+
+    if (!userProfile) return res.status(404).send("User profile not found");
+
+    const {
+      first_name,
+      last_name,
+      email,
+      birthdate,
+      password,
+      confirm_password,
+      permission_status,
+      verified_by_admin,
+      guest_upgrade_invite,
+      invite_decision,
+      is_active,
+      avatar_type,
+      avatar_color_fg,
+      avatar_color_bg_top,
+      avatar_color_bg_bottom,
+      phone,
+      street_address,
+      apt_unit,
+      city,
+      us_state,
+      zip_code,
+      notes,
+    } = req.body;
+
+  // try {
     // --- Run validation from middleware ---
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       const formattedErrors = [];
       const seen = new Set();
+
+      // errors.array().forEach((err) => {
+      //   if (!seen.has(err.path)) {
+      //     formattedErrors.push({ param: err.path, msg: err.msg });
+      //     seen.add(err.path);
+      //   }
+      // });
+
       errors.array().forEach((err) => {
         if (!seen.has(err.path)) {
-          formattedErrors.push({ param: err.path, msg: err.msg });
+          formattedErrors.push({
+            field: err.path,
+            message: err.msg,
+          });
           seen.add(err.path);
         }
       });
 
       return res.render("admin-edit", {
         title: "Admin Edit",
-        user,
+        // user,
         userProfile,
         config: siteControls,
         errors: formattedErrors,
         formData: req.body || {},
-        usStates: usStates,
+        // usStates: usStates,
+        usStates,
         passwordRules,
         csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
       });
@@ -366,19 +393,21 @@ async function postAdminEditPage(req, res, next) {
       sanitize(notes),
     );
 
-    res.redirect("/app/admin");
+    // res.redirect("/app/admin");
+    return res.redirect("/app/admin");
   } catch (err) {
     next(err);
   }
 }
 
-// CONTROLLER: DELETE VIA USER (your-profile.ejs) OR DELETE VIA ADMIN (admin.ejs)
+// CONTROLLER: DELETE VIA ADMIN (admin.ejs)
 
 async function deleteUserAccount(req, res, next) {
   try {
     const { targetId } = req.body;
 
     await deleteUserById(targetId);
+    
     res.redirect("/app/admin");
   } catch (err) {
     next(err);

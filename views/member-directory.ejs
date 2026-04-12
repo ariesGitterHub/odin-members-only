@@ -12,54 +12,54 @@
         <h2 class="page-subtitle-off-card uppercase">for trusted neighbors only</h2>
       </div>
       <div class="large-screen-flex-row">
-      <% if (users.length === 0) { %> 
+      <% if (userProfiles.length === 0) { %> 
       <p>There are no current members.</p>
-      <% } else { users.forEach(function(user) { %> 
-          <% if (user && (user.permission_status === "member" || user.permission_status === "admin")) { %> 
+      <% } else { userProfiles.forEach(function(userProfile) { %> 
+          <% if (userProfile && (userProfile.permission_status === "member" || userProfile.permission_status === "admin")) { %> 
           <div class="card member-card">
             <div class="profile-data-container">
               <div class="member-directory-extra-avatar-container avatar-background" 
-                <%- include('./partials/avatar-color-data-helper.ejs', { obj: user }) %>
+                <%- include('./partials/avatar-color-data-helper.ejs', { obj: userProfile }) %>
                 >
                 <div 
                   class="avatar-container avatar-container-size-large">
                   <span class="emoji emoji-size-largest" role="image" aria-label="avatar image">
-                    <%= user.avatar_type %>
+                    <%= userProfile.avatar_type %>
                   </span>
                 </div>           
               </div>
               <dl class="profile-data-dl">
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">name</dt>
-                  <dd class="capitalize"><%= user.first_name %> <%= user.last_name %></dd>
+                  <dd class="capitalize"><%= userProfile.first_name %> <%= userProfile.last_name %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">email</dt>
-                  <dd><%= user.email%></dd>
+                  <dd><%= userProfile.email%></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">phone</dt>
-                  <dd><%= user.phone || "n/a" %></dd>
+                  <dd><%= userProfile.phone || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">street</dt>
-                  <dd><%= user.street_address || "n/a" %></dd>
+                  <dd><%= userProfile.street_address || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">apt/unit</dt>
-                  <dd><%= user.apt_unit || "n/a" %></dd>
+                  <dd><%= userProfile.apt_unit || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">city</dt>
-                  <dd><%= user.city || "n/a" %></dd>
+                  <dd><%= userProfile.city || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">state</dt>
-                  <dd><%= user.us_state || "n/a" %></dd>
+                  <dd><%= userProfile.us_state || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">zip code</dt>
-                  <dd><%= user.zip_code || "n/a" %></dd>
+                  <dd><%= userProfile.zip_code || "n/a" %></dd>
                 </div>
               </dl>
             </div>

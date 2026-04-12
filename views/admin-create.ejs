@@ -37,9 +37,9 @@
             <label class="capitalize" for="email-admin-create-page">
               email
             </label>
-            <% if (errors && errors.some(e => e.param === 'email')) { %>
-              <% errors.filter(e => e.param === 'email').forEach(e => { %>
-                <span class="error-message">[<%= e.msg %>]</span>
+            <% if (errors && errors.some(e => e.field === 'email')) { %>
+              <% errors.filter(e => e.field === 'email').forEach(e => { %>
+                <span class="error-message">[<%= e.message %>]</span>
               <% }) %>
             <% } %>
           </div>            
@@ -63,9 +63,9 @@
           />
           <div class="element-container-row-start-center">
             <label for="password-admin-create-page">password</label>
-            <% if (errors && errors.some(e => e.param === 'password')) { %>
-              <% errors.filter(e => e.param === 'password').forEach(e => { %>
-                <span class="error-message">[<%= e.msg %>]</span>
+            <% if (errors && errors.some(e => e.field === 'password')) { %>
+              <% errors.filter(e => e.field === 'password').forEach(e => { %>
+                <span class="error-message">[<%= e.message %>]</span>
               <% }) %>
             <% } %>
           </div>            
@@ -80,9 +80,9 @@
             <label for="confirm-password-admin-create-page">
               confirm
             </label>
-            <% if (errors && errors.some(e => e.param === 'confirm_password')) { %>
-              <% errors.filter(e => e.param === 'confirm_password').forEach(e => { %>
-                <span class="error-message">[<%= e.msg %>]</span>
+            <% if (errors && errors.some(e => e.field === 'confirm_password')) { %>
+              <% errors.filter(e => e.field === 'confirm_password').forEach(e => { %>
+                <span class="error-message">[<%= e.message %>]</span>
               <% }) %>
             <% } %>
           </div>            

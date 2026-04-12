@@ -40,9 +40,9 @@
           />
           <div class="element-container-row-start-center">
             <label for="email-sign-up">email</label>
-            <% if (errors && errors.some(e => e.param === 'email')) { %>
-              <% errors.filter(e => e.param === 'email').forEach(e => { %>
-                <span class="error-message">[<%= e.msg %>]</span>
+            <% if (errors && errors.some(e => e.field === 'email')) { %>
+              <% errors.filter(e => e.field === 'email').forEach(e => { %>
+                <span class="error-message">[<%= e.message %>]</span>
               <% }) %>
             <% } %>
           </div>
@@ -65,9 +65,9 @@
           />
           <div class="element-container-row-start-center">
             <label for="invite-code-sign-up">invite code</label>
-            <% if (errors && errors.some(e => e.param === 'invite_code')) { %>
-              <% errors.filter(e => e.param === 'invite_code').forEach(e => { %>
-                <span class="error-message">[<%= e.msg %>]</span>
+            <% if (errors && errors.some(e => e.field === 'invite_code')) { %>
+              <% errors.filter(e => e.field === 'invite_code').forEach(e => { %>
+                <span class="error-message">[<%= e.message %>]</span>
               <% }) %>
             <% } %>
           </div>
@@ -81,9 +81,9 @@
           />
           <div class="element-container-row-start-center">
             <label for="password-sign-up">password</label>
-            <% if (errors && errors.some(e => e.param === 'password')) { %>
-              <% errors.filter(e => e.param === 'password').forEach(e => { %>
-                <span class="error-message">[<%= e.msg %>]</span>
+            <% if (errors && errors.some(e => e.field === 'password')) { %>
+              <% errors.filter(e => e.field === 'password').forEach(e => { %>
+                <span class="error-message">[<%= e.message %>]</span>
               <% }) %>
             <% } %>
           </div>
@@ -96,9 +96,9 @@
           />
           <div class="element-container-row-start-center">
             <label for="confirm-password-sign-up">confirm</label> 
-            <% if (errors && errors.some(e => e.param === 'confirm_password')) { %>
-              <% errors.filter(e => e.param === 'confirm_password').forEach(e => { %>
-                <span class="error-message">[<%= e.msg %>]</span>
+            <% if (errors && errors.some(e => e.field === 'confirm_password')) { %>
+              <% errors.filter(e => e.field === 'confirm_password').forEach(e => { %>
+                <span class="error-message">[<%= e.message %>]</span>
               <% }) %>
             <% } %>
           </div>

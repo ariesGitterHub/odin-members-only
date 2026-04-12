@@ -25,8 +25,10 @@ const cookieParser = require("cookie-parser"); // Required for cookie-based toke
 const path = require("node:path");
 const session = require("express-session");
 const helmet = require("helmet");
+const crypto = require("crypto");
 
 // const { runRetentionJobs } = require("./jobs/retentionJobs"); // TODO - FOR DEV ONLY
+const requireUserIsActive = require("./middleware/requireUserIsActive")
 const {
   csrfProtection,
   csrfTokenMiddleware,
@@ -98,6 +100,9 @@ app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
+// *** Check if user is_active
+app.use(requireUserIsActive);
+
 // *** CSRF middleware
 app.use(csrfProtection); // CSRF protection middleware to validate tokens
 
@@ -148,6 +153,10 @@ app.use((req, res, next) => {
 // *** Centralized Error Handling Middleware (Generic Error and 404)
 app.use(require("./middleware/errorMiddleware")); // Handle both 404 and other errors here
 
+// *** Use to generate random codes when needed
+// const secret = crypto.randomBytes(64).toString("hex");
+// console.log(secret);
+
 // *** Start cron jobs
 // require("./cron/retentionScheduler"); // <-- this schedules the daily retention job
 
@@ -161,6 +170,8 @@ app.use(require("./middleware/errorMiddleware")); // Handle both 404 and other e
 // })();
 
 // Extracting app.listen into server.js
+
+
 
 module.exports = app;
 

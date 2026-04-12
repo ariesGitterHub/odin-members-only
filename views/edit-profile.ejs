@@ -42,9 +42,9 @@
               <label class="capitalize" for="email-edit-profile">
               email
               </label> 
-              <% if (errors && errors.some(e => e.param === 'email')) { %>
-              <% errors.filter(e => e.param === 'email').forEach(e => { %>
-                  <span class="error-message">[<%= e.msg %>]</span>
+              <% if (errors && errors.some(e => e.field === 'email')) { %>
+              <% errors.filter(e => e.field === 'email').forEach(e => { %>
+                  <span class="error-message">[<%= e.message %>]</span>
               <% }) %>
               <% } %>
             </div>
@@ -83,9 +83,9 @@
             </div>
             <div class="element-container-row-start-center">
               <label for="password-edit-profile">password</label>  
-              <% if (errors && errors.some(e => e.param === 'password')) { %>
-              <% errors.filter(e => e.param === 'password').forEach(e => { %>
-                  <span class="error-message">[<%= e.msg %>]</span>
+              <% if (errors && errors.some(e => e.field === 'password')) { %>
+              <% errors.filter(e => e.field === 'password').forEach(e => { %>
+                  <span class="error-message">[<%= e.message %>]</span>
               <% }) %>
               <% } %>
             </div>
@@ -97,9 +97,9 @@
             />
             <div class="element-container-row-start-center">
               <label for="confirm-password-edit-profile">confirm</label>    
-              <% if (errors && errors.some(e => e.param === 'confirm_password')) { %>
-              <% errors.filter(e => e.param === 'confirm_password').forEach(e => { %>
-                  <span class="error-message">[<%= e.msg %>]</span>
+              <% if (errors && errors.some(e => e.field === 'confirm_password')) { %>
+              <% errors.filter(e => e.field === 'confirm_password').forEach(e => { %>
+                  <span class="error-message">[<%= e.message %>]</span>
               <% }) %>
               <% } %>
             </div>

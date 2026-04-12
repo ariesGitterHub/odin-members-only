@@ -10,47 +10,47 @@
           <h1><%= title %></h1>  
         </div>
         <p><%= error %></p>
-        <%# -- Specific Content for 400 - Bad Request -- %>
-        <% if (status === 400) { %>
-        <% } %>
-        <%# -- Specific Content for 401 - Unauthorized -- %>
+
+        <%# Specific Content for 401 - Unauthorized %>
         <% if (status === 401) { %>
           <div class="button-container-row-space-evenly">
-            <a class="button-default wide-button" href="/app/login">Login</a>
+            <a class="button-default wide-button" href="/app/login">login</a>
           </div>
         <% } %>
-        <%# -- Specific Content for 403 - Forbidden -- %>
+
+        <%# Specific Content for 403 - Forbidden %>
         <% if (status === 403) { %>
+          <% if (status === 403 && code === "ACCOUNT_DISABLED") { %>
+          <br>
+          <div class="element-container-row-center-start">
+            <span class="emoji emoji-size-small margin-right">😖</span><p>Please contact the admin for additional assistance.</p>
+          </div>
+          <% } else if (status === 403) { %>       
           <div class="button-container-row-space-evenly">
-            <a class="button-default wide-button" href="/app">Back to Home</a>
+              <a class="button-default wide-button" href="/app">back to home</a>
+              <% } %>
           </div>
         <% } %>
-        <%# -- Specific Content for 404 - Not Found -- %>
+
+        <%# Specific Content for 404 - Not Found %>
         <% if (status === 404) { %>
           <div class="button-container-row-space-evenly">
-            <a class="button-default wide-button" href="/app">Go Back Home</a>
+            <a class="button-default wide-button" href="/app">back to home</a>
           </div>
         <% } %>
-        <%# -- Specific Content for 405 - Method Not Allowed -- %>
-        <% if (status === 405) { %>
-        <% } %>
-        <%# -- Specific Content for 500 - Internal Server Error -- %>
+
+        <%# Specific Content for 500 - Internal Server Error %>
         <% if (status === 500) { %>
           <div class="button-container-row-space-evenly">
-            <a class="button-default wide-button" href="javascript:history.back()">Go Back</a>
+            <a class="button-default wide-button" href="/app">back to home</a>
           </div>
         <% } %>
-        <%# -- Specific Content for 502 - Bad Gateway -- %>
-        <% if (status === 502) { %>
-        <% } %>
-        <%# -- Specific Content for 503 - Service Unavailable -- %>
-        <% if (status === 503) { %>
-        <% } %>
-        <%# -- Specific Content for 504 - Gateway Timeout -- %>
-        <% if (status === 504) { %>
-        <% } %>
-        <%# -- Specific Content for 429 - Too Many Requests -- %>
-        <% if (status === 429) { %>
+
+        <%# Fallback for other status codes (if any, e.g., 429, 502, etc.) %>
+        <% if (![401, 403, 404, 500].includes(status)) { %>
+          <div class="button-container-row-space-evenly">
+            <a class="button-default wide-button" href="/app">back to home</a>
+          </div>
         <% } %>
       </div>
     </main>

@@ -17,7 +17,7 @@
               <div class="element-container-row-default margin-bottom">
                 <div 
                   class="avatar-container avatar-container-size-large avatar-background circle margin-bottom " 
-                    <%- include('./partials/avatar-color-data-helper.ejs', { obj: user }) %>
+                    <%- include('./partials/avatar-color-data-helper.ejs', { obj: userProfile }) %>
                   >
                   <span class="emoji emoji-size-large" role="image" aria-label="avatar image">
                     <%= user.avatar_type %>
@@ -27,43 +27,43 @@
               <dl class="profile-data-dl margin-bottom">
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">name</dt>
-                  <dd class="capitalize"><%= user.first_name %> <%= user.last_name %></dd>
+                  <dd class="capitalize"><%= userProfile.first_name %> <%= userProfile.last_name %></dd>
                 </div>
                 <div class="app-relevant-data">
                   <dt class="capitalize">status</dt>
-                  <dd><%= user.permission_status %></dd>
+                  <dd><%= userProfile.permission_status %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">email</dt>
-                  <dd class="word-breaker"><%= user.email%></dd>
+                  <dd class="word-breaker"><%= userProfile.email%></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">phone</dt>
-                  <dd><%= user.phone || "n/a" %></dd>
+                  <dd><%= userProfile.phone || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">birthdate</dt>
-                  <dd><%= user.formattedBirthdate %> (age: <%= user.age %>)</dd>
+                  <dd><%= userProfile.formattedBirthdate %> (age: <%= userProfile.age %>)</dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">street</dt>
-                  <dd><%= user.street_address || "n/a" %></dd>
+                  <dd><%= userProfile.street_address || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">apt/unit</dt>
-                  <dd><%= user.apt_unit || "n/a" %></dd>
+                  <dd><%= userProfile.apt_unit || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">city</dt>
-                  <dd><%= user.city || "n/a" %></dd>
+                  <dd><%= userProfile.city || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">state</dt>
-                  <dd><%= user.us_state || "n/a" %></dd>
+                  <dd><%= userProfile.us_state || "n/a" %></dd>
                 </div>
                 <div class="neighbor-relevant-data">
                   <dt class="capitalize">zip code</dt>
-                  <dd><%= user.zip_code || "n/a" %></dd>
+                  <dd><%= userProfile.zip_code || "n/a" %></dd>
                 </div>
               </dl>
               <div class="button-container-col">

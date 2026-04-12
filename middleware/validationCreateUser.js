@@ -2,7 +2,7 @@ const { check } = require("express-validator");
 const { checkIfEmailExistsForSignUp } = require("../db/queries/userQueries.js");
 const passwordRules = require('../config/passwordRules');
 
-const expectedAnswer = process.env.INVITE_CODE;
+const expectedInviteCodeAnswer = process.env.INVITE_CODE;
 
 const emailValidator = check("email")
   .isEmail()
@@ -50,7 +50,7 @@ const confirmPasswordValidator = check("confirm_password").custom(
 // Validator for the invite code that will prevent bots from signing up
 const inviteCodeValidator = check("invite_code")
   .custom((value) => {
-    if (value.toLowerCase() !== expectedAnswer.toLowerCase()) {
+    if (value.toLowerCase() !== expectedInviteCodeAnswer.toLowerCase()) {
       throw new Error("Incorrect invite code");
     }
     return true;
@@ -62,10 +62,15 @@ module.exports = {
   passwordValidator,
   confirmPasswordValidator,
   inviteCodeValidator,
-  createUserValidator: [
+  createUserValidatorSignUp: [
     emailValidator,
     passwordValidator,
     confirmPasswordValidator,
-    inviteCodeValidator
+    inviteCodeValidator,
+  ],
+  createUserValidatorAdminCreate: [
+    emailValidator,
+    passwordValidator,
+    confirmPasswordValidator,
   ],
 };

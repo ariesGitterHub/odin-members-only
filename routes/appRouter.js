@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { requireRole } = require("../utils/permissions");
-const { createUserValidator  } = require("../middleware/validationCreateUser");
+const { createUserValidatorSignUp, createUserValidatorAdminCreate  } = require("../middleware/validationCreateUser");
 const {
   adminEditUserValidator,
   editProfileUserValidator,
@@ -70,7 +70,7 @@ appRouter.get("/modal-fetch", requireRole("guest"), getModalDataToFrontend);
 
 // ROUTES: USER ID API FOR FRONTEND FETCH
 // appRouter.get("/user/:id", requireRole("guest"), getUserDetails);
-appRouter.get("/user/:id", requireRole("guest"), getUserId);
+appRouter.get("/user-id/:id", requireRole("guest"), getUserId);
 
 // ROUTES: MESSAGES API FOR FRONTEND FETCH
 appRouter.get("/message/:id", requireRole("guest"), getMessageDetails);
@@ -88,7 +88,7 @@ appRouter.get("/", getHome);
 
 // ROUTES: SIGN UP PAGE (sign-up.ejs)
 appRouter.get("/sign-up", getSignUp);
-appRouter.post("/sign-up", createUserValidator, rateLimiter, postSignUp);
+appRouter.post("/sign-up", createUserValidatorSignUp, rateLimiter, postSignUp);
 
 // ROUTES: LOG IN PAGE (log-in.ejs)
 appRouter.get("/log-in", getLogIn);
@@ -113,7 +113,7 @@ appRouter.post("/admin/delete-user-account", requireRole("admin"), deleteUserAcc
 
 // ROUTES: ADMIN CREATE PAGE (admin-create.ejs) 
 appRouter.get("/admin-create", requireRole("admin"), getAdminCreatePage);
-appRouter.post("/admin-create", requireRole("admin"), createUserValidator, postAdminCreatePage);
+appRouter.post("/admin-create", requireRole("admin"), createUserValidatorAdminCreate, postAdminCreatePage);
 
 // ROUTES: ADMIN EDIT PAGE (admin-edit.ejs) 
 appRouter.get("/admin-edit/:id", requireRole("admin"), getAdminEditPage);

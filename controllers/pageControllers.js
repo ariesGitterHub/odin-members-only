@@ -19,7 +19,8 @@ async function getHome(req, res, next) {
         // errors: [], // Not needed here
       });
     } else {
-      res.render("index", {
+      // res.render("index", {
+      return res.render("index", {
         title: "Home",
         // user: req.user, // Not needed here
         // errors: [], // Not needed here
@@ -36,7 +37,8 @@ async function getInfo(req, res, next) {
   const siteSettings = await getAllSiteControls();
 
   try {
-    res.render("info", {
+    // res.render("info", {
+    return res.render("info", {
       title: "Site Information",
       // user: req.user, // Not needed here
       // errors: [], // Not needed here
