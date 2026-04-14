@@ -15,6 +15,62 @@
 
 /* -- admin.ejs */
 
+#admin-controls {
+/* width: var(--width-default-percent); */
+width: var(--card-width);
+/* max-width: var(--max-width); */
+margin-bottom: var(--spacer-default);
+}
+
+#admin-controls fieldset {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+  border: var(--border-default);
+  border-radius: var(--border-radius-small);
+  margin-bottom: var(--spacer-default);
+  padding: var(--spacer-default);
+  text-transform: uppercase;
+}
+
+#admin-controls fieldset h3 {
+  margin-top: var(--spacer-default);
+  margin-bottom: var(--spacer-default);
+}
+
+#admin-controls fieldset input {
+  width: 3.75rem;
+  font-size: var(--font-size-default);
+}
+
+/* #admin-controls a, #admin-controls button[type="button"] { */
+#admin-controls a, #admin-controls button[type="button"] {
+  background-color: var(--lt-red);
+  box-shadow: var(--box-shadow-red);
+}
+
+#admin-controls a:hover, #admin-controls button[type="button"]:hover {
+  background-color: var(--dk-red);
+}
+
+.admin-controls button[type="submit"] {
+  background-color: var(--off-white);
+  box-shadow: var(--box-shadow-gray);
+}
+
+.admin-controls button[type="submit"]:hover {
+  background-color: var(--dk-gray);
+}
+
+#site-controls-div, #site-statistics-div {
+  width: 96%;
+  background-color: var(--off-black);
+  border-radius: var(--border-radius-small);
+  color: var(--off-white);
+  padding: var(--spacer-default);
+}
+
 .admin-quick-view-bar {
   width: var(--width-default-percent);
   display: flex;
@@ -43,13 +99,13 @@
   padding: var(--spacer-medium);
 }
 
-.admin-card a, .admin-card button[type="button"] {
-  background-color: var(--lt-red);
-  box-shadow: var(--box-shadow-red);
+.admin-card button {
+  /* background-color: var(--off-black); */
+  /* box-shadow: var(--box-shadow-gray); */
 }
 
-.admin-card a:hover, .admin-card button[type="button"]:hover {
-  background-color: var(--dk-red);
+.admin-card button:hover {
+  /* background-color: var(--off-yellow); */
 }
 
 .admin-card .admin-quick-view-bar span {
@@ -96,14 +152,7 @@
   border: var(--border-inactive-card);
 }
 
-#site-controls-div, #site-statistics-div {
-  width: 96%;
-  background-color: var(--off-black);
-  border-radius: var(--border-radius-small);
-  padding: var(--spacer-default);
-}
-
-.admin-card fieldset {
+/* .admin-card fieldset {
   display: flex;
   flex-direction: column;
   align-self: center;
@@ -123,7 +172,7 @@
 .admin-card fieldset input {
   width: 3.75rem;
   font-size: var(--font-size-default);
-}
+} */
 
 
 /* -- admin-create.ejs */

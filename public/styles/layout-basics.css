@@ -103,17 +103,17 @@ main {
 
 .admin-card {
   background-color: var(--black);
-  border: var(--border-admin-card);
+  border: var(--border-solid-red);
   color: var(--off-white);
 }
 
 .member-card {
   background-color: var(--white);
-  border: var(--border-member-card);
+  border: var(--border-solid-red);
 }
 
 .guest-card {
-  border: var(--border-guest-card);
+  border: var(--border-dashed-red);
 }
 
 /* This is only used on admin.ejs, but keep it here with other card types */

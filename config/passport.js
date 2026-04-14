@@ -17,14 +17,14 @@ module.exports = (passport) => {
           );
 
           if (rows.length === 0) {
-            return done(null, false, { message: "Incorrect email." });
+            return done(null, false, { message: "Invalid email or password." });
           }
 
           const user = rows[0];
           const isMatch = await bcrypt.compare(password, user.password_hash);
 
           if (!isMatch) {
-            return done(null, false, { message: "Incorrect password." });
+            return done(null, false, { message: "Invalid email or password." });
           }
 
           return done(null, user);
