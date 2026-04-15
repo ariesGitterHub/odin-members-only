@@ -1,9 +1,8 @@
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const { validationResult } = require("express-validator");
-const passwordRules = require("../config/passwordRules"); 
+const passwordRules = require("../config/passwordRules");
 const { isMaintenanceMode } = require("../utils/isMaintenanceMode");
-
 const {
   insertSessionLog,
   insertNewUser,
@@ -11,8 +10,7 @@ const {
 } = require("../db/queries/userQueries");
 
 // CONTROLLER: SIGN-UP PAGE (sign-up.ejs)
-
-async function getSignUp(req, res, next) {
+async function getSignUpPage(req, res, next) {
   try {
     if (await isMaintenanceMode()) {
       return res.redirect("/");
@@ -29,48 +27,7 @@ async function getSignUp(req, res, next) {
   }
 }
 
-// async function postSignUp(req, res, next) {
-//   const { first_name, last_name, email, birthdate, password } = req.body;
-
-//   try {
-//     if (await isMaintenanceMode()) {
-//       return res.redirect("/");
-//     }
-
-//     // Run middleware validation results
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       const formattedErrors = [];
-//       const seen = new Set();
-//       errors.array().forEach((err) => {
-//         if (!seen.has(err.path)) {
-//           formattedErrors.push({ param: err.path, msg: err.msg });
-//           seen.add(err.path); // Seen ensures only one error per field, so your EJS shows one message for password, not multiple.
-//         }
-//       });
-
-//       return res.render("sign-up", {
-//         title: "Sign Up",
-//         errors: formattedErrors,
-//         formData: req.body || {},
-//         passwordRules,
-//         csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
-//       });
-//     }
-
-//     // Hash password and insert new user
-//     const password_hash = await bcrypt.hash(password, 12);
-//     await insertNewUser(first_name, last_name, email, birthdate, password_hash);
-
-//     // Redirect after success
-//     res.redirect("/app/log-in");
-//   } catch (err) {
-//     console.error("Error during sign-up:", err);
-//     next(err);
-//   }
-// }
-
-async function postSignUp(req, res, next) {
+async function postSignUpPage(req, res, next) {
   try {
     if (await isMaintenanceMode()) {
       return res.redirect("/");
@@ -101,13 +58,14 @@ async function postSignUp(req, res, next) {
       });
     }
 
-    const sanitize = (v) => (typeof v === "string" ? v.trim() : v);
+       // const sanitize = (v) => (v === "" ? null : v);
+    // const sanitize = (v) => (typeof v === "string" ? v.trim() : v);
+    // const sanitize = (v) =>
+    //   typeof v === "string" ? (v.trim() === "" ? null : v.trim()) : v;
 
-    const first_name = sanitize(req.body.first_name);
-    const last_name = sanitize(req.body.last_name);
-    const email = sanitize(req.body.email);
-    const birthdate = req.body.birthdate;
-    const password = req.body.password;
+    // const first_name = sanitize(req.body.first_name);
+    // const last_name = sanitize(req.body.last_name);
+    const { first_name, last_name, email, birthdate, password } = req.body;
 
     const password_hash = await bcrypt.hash(password, 12);
 
@@ -121,7 +79,6 @@ async function postSignUp(req, res, next) {
 }
 
 // CONTROLLER: LOG-IN PAGE (log-in.ejs)
-
 async function getLogIn(req, res, next) {
   try {
     res.render("log-in", {
@@ -141,8 +98,12 @@ async function postLogIn(req, res, next) {
     if (!user) {
       return res.render("log-in", {
         title: "Log In",
-        // errors: [info.message || "Invalid email or password"],
-        errors: [{ field: "auth", message: info.message || "Invalid email or password" }],
+        errors: [
+          {
+            field: "auth",
+            message: info.message || "Invalid email or password",
+          },
+        ],
         formData: req.body || {},
         csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
       });
@@ -190,7 +151,6 @@ async function postLogIn(req, res, next) {
 }
 
 // CONTROLLER: LOG-OUT
-
 async function postLogOut(req, res, next) {
   try {
     req.logout((err) => {
@@ -205,8 +165,8 @@ async function postLogOut(req, res, next) {
 }
 
 module.exports = {
-  getSignUp,
-  postSignUp,
+  getSignUpPage,
+  postSignUpPage,
   getLogIn,
   postLogIn,
   postLogOut,

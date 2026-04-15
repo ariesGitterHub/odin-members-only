@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const { usStates } = require("../utils/usStates");
 const passwordRules = require("../config/passwordRules"); 
-
 const {
   getUsersForAdmin,
   getUserByIdForAdmin,
@@ -10,22 +9,17 @@ const {
   updateAdminEditedUser,
   deleteUserById,
 } = require("../db/queries/userQueries");
-
 const {
   getAllSiteControls,
   updateAllSiteControls,
 } = require("../db/queries/appConfigQueries");
-
 const { getMessages } = require("../db/queries/messageQueries");
-
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
-
 const {
   getZodiacSign,
   getRealZodiacSign,
   getChineseZodiacFull,
 } = require("../utils/zodiacSigns");
-
 const {
   addBirthdateFields,
   addSessionCreateDateFields,
@@ -38,7 +32,6 @@ const {
 
 // CONTROLLER: ADMIN PAGE (admin.ejs)
 async function getAdminPage(req, res, next) {
-
   try {
     const userProfiles = await getUsersForAdmin();
     const messages = await getMessages();
@@ -104,7 +97,6 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
       guest_emoji,
     } = req.body;
 
-    // Basic validation
     const values = [
       message_soft_delete_days,
       message_hard_delete_days,
@@ -139,24 +131,21 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
       parsedValues[5],
       parsedValues[6],
       parsedValues[7],
-      isMaintenanceModeEnabled, // maintenance_mode is boolean
+      isMaintenanceModeEnabled,
       emojis[0],
       emojis[1],
       emojis[2],
     );
 
-    // ✅ Redirect on success
     return res.redirect("/app/admin?success=site-settings-updated");
   } catch (err) {
     console.error("Error updating site settings:", err);
 
-    // Pass to global error handler
     return next(err);
   }
 }
 
 // CONTROLLER: ADMIN CREATE PAGE (admin-create.ejs)
-
 async function getAdminCreatePage(req, res, next) {
   try {
     res.render("admin-create", {
@@ -170,16 +159,66 @@ async function getAdminCreatePage(req, res, next) {
   }
 }
 
+// async function postAdminCreatePage(req, res, next) {
+//   const {
+//     first_name,
+//     last_name,
+//     email,
+//     birthdate,
+//     password,
+//     confirm_password,
+//     notes,
+//   } = req.body;
+//   const errors = [];
+
+//   try {
+//     // Run middleware validation results
+//     const errors = validationResult(req);
+
+//     if (!errors.isEmpty()) {
+//       const formattedErrors = [];
+//       const seen = new Set();
+
+//       errors.array().forEach((err) => {
+//         if (!seen.has(err.path)) {
+//           formattedErrors.push({
+//             field: err.path,
+//             message: err.msg,
+//           });
+//           seen.add(err.path);
+//         }
+//       });
+
+//       return res.render("admin-create", {
+//         title: "Admin Create",
+//         errors: formattedErrors,
+//         formData: req.body || {},
+//         passwordRules,
+//         csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
+//       });
+//     }
+
+//     // Hash the password before saving
+//     const password_hash = await bcrypt.hash(password, 12);
+
+//     const notesSafe = notes || "Admin created user.";
+
+//     await insertAdminCreatedUser(
+//       first_name,
+//       last_name,
+//       email,
+//       birthdate,
+//       password_hash,
+//       notesSafe
+//     );
+
+//     return res.redirect("/app/admin");
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
 async function postAdminCreatePage(req, res, next) {
-  const {
-    first_name,
-    last_name,
-    email,
-    birthdate,
-    password,
-    confirm_password,
-    notes,
-  } = req.body;
   const errors = [];
 
   try {
@@ -189,13 +228,6 @@ async function postAdminCreatePage(req, res, next) {
     if (!errors.isEmpty()) {
       const formattedErrors = [];
       const seen = new Set();
-
-      // errors.array().forEach((err) => {
-      //   if (!seen.has(err.path)) {
-      //     formattedErrors.push({ param: err.path, msg: err.msg });
-      //     seen.add(err.path); // seen ensures only one error per field, so your EJS shows one message for password, not multiple.
-      //   }
-      // });
 
       errors.array().forEach((err) => {
         if (!seen.has(err.path)) {
@@ -216,37 +248,39 @@ async function postAdminCreatePage(req, res, next) {
       });
     }
 
+      const {
+        first_name,
+        last_name,
+        email,
+        birthdate,
+        password,
+        confirm_password,
+        notes,
+      } = req.body;
+
     // Hash the password before saving
     const password_hash = await bcrypt.hash(password, 12);
 
-    // const notes = req.body.notes || "Admin created user.";
     const notesSafe = notes || "Admin created user.";
 
-    // Insert the new admin-created user (avatar_type generated inside the function)
     await insertAdminCreatedUser(
       first_name,
       last_name,
       email,
       birthdate,
       password_hash,
-      // notes,
-      notesSafe
+      notesSafe,
     );
 
-    // Redirect after successful creation
-    // res.redirect("/app/admin");
     return res.redirect("/app/admin");
   } catch (err) {
     next(err);
   }
 }
 
+
 // CONTROLLER: ADMIN EDIT PAGE (admin-edit.ejs)
-
 async function getAdminEditPage(req, res, next) {
-
-// const user = req.user; // NOTE & REMINDER- this is the current user.
-
   try {
     const userProfileId = req.params.id;
     const userProfile = await getUserByIdForAdmin(userProfileId); // The profile of the user the admin is looking at, avoids collision with header's use of "user".
@@ -259,33 +293,169 @@ async function getAdminEditPage(req, res, next) {
       userProfile.birthdate = userProfile.birthdate.toISOString().split("T")[0];
     }
 
-    // if (!userProfile) return res.status(404).send("User profile not found");
     res.render("admin-edit", {
       title: "Admin Edit",
       userProfile,
-      // usStates: usStates, // Pass the array to the EJS template
-      usStates, // Pass the array to the EJS template
+      usStates,
       config: siteControls,
       errors: [],
       formData: userProfile,
       passwordRules,
-    }); // Pass user to EJS view
+    }); 
   } catch (err) {
     next(err);
   }
 }
 
+// async function postAdminEditPage(req, res, next) {
+//   try {
+//     const userProfileId = parseInt(req.params.id, 10); // the user being edited
+//     const userProfile = await getUserByIdForAdmin(userProfileId); // // The profile of the user the admin is looking at, avoids collision with header's use of "user".
+//     const siteControls = await getAllSiteControls();
+
+//     if (!userProfile) return res.status(404).send("User profile not found");
+
+//     const {
+//       first_name,
+//       last_name,
+//       email,
+//       birthdate,
+//       password,
+//       confirm_password,
+//       permission_status,
+//       verified_by_admin,
+//       guest_upgrade_invite,
+//       invite_decision,
+//       is_active,
+//       avatar_type,
+//       avatar_color_fg,
+//       avatar_color_bg_top,
+//       avatar_color_bg_bottom,
+//       phone,
+//       street_address,
+//       apt_unit,
+//       city,
+//       us_state,
+//       zip_code,
+//       notes,
+//     } = req.body;
+
+//     // Run validation from middleware
+//     const errors = validationResult(req);
+
+//     if (!errors.isEmpty()) {
+//       const formattedErrors = [];
+//       const seen = new Set();
+
+//       errors.array().forEach((err) => {
+//         if (!seen.has(err.path)) {
+//           formattedErrors.push({
+//             field: err.path,
+//             message: err.msg,
+//           });
+//           seen.add(err.path);
+//         }
+//       });
+
+//       return res.render("admin-edit", {
+//         title: "Admin Edit",
+//         userProfile,
+//         config: siteControls,
+//         errors: formattedErrors,
+//         formData: req.body || {},
+//         usStates,
+//         passwordRules,
+//         csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
+//       });
+//     }
+
+//     // Sanitize fields
+//     // const sanitize = (v) => (v === "" ? null : v);
+//     // const sanitize = (v) => (typeof v === "string" ? v.trim() : v);
+//     const sanitize = (v) =>
+//       typeof v === "string" ? (v.trim() === "" ? null : v.trim()) : v;
+
+//     const toBool = (v) => {
+//       if (v === undefined || v === null) return null;
+//       if (typeof v === "boolean") return v;
+//       return v === "true";
+//     };
+
+//     const safeVerifiedByAdmin = toBool(verified_by_admin);
+//     const safeGuestUpgradeInvite = toBool(guest_upgrade_invite);
+//     const safeIsActive = toBool(is_active);
+
+//     // If updateAdminEditedUser function tries to hash or validate an empty string, it may fail silently or throw, which could redirect to login depending on error handling.
+//     const passwordToUpdate = password ? password : null;
+
+//     await updateAdminEditedUser(
+//       userProfileId,
+//       sanitize(first_name),
+//       sanitize(last_name),
+//       sanitize(email),
+//       sanitize(birthdate),
+//       //   password, // hashed inside updateAdminEditedUser if provided
+//       passwordToUpdate,
+//       permission_status,
+//       safeVerifiedByAdmin,
+//       safeGuestUpgradeInvite,
+//       invite_decision,
+//       safeIsActive,
+//       sanitize(avatar_type),
+//       sanitize(avatar_color_fg),
+//       sanitize(avatar_color_bg_top),
+//       sanitize(avatar_color_bg_bottom),
+//       sanitize(phone),
+//       sanitize(street_address),
+//       sanitize(apt_unit),
+//       sanitize(city),
+//       sanitize(us_state),
+//       sanitize(zip_code),
+//       sanitize(notes),
+//     );
+
+//     return res.redirect("/app/admin");
+//   } catch (err) {
+//     next(err);
+//   }
+// }
+
 async function postAdminEditPage(req, res, next) {
-  // const user = req.user; // current user, to avoid header from displaying the data of the user whose profile the admin is looking at.
-//NEW
   try {
     const userProfileId = parseInt(req.params.id, 10); // the user being edited
-    // const user = await getUserById(userId); 
-    // const user = await getUsersForAdmin(userId); 
     const userProfile = await getUserByIdForAdmin(userProfileId); // // The profile of the user the admin is looking at, avoids collision with header's use of "user".
     const siteControls = await getAllSiteControls();
 
     if (!userProfile) return res.status(404).send("User profile not found");
+
+    // Run validation from middleware
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const formattedErrors = [];
+      const seen = new Set();
+
+      errors.array().forEach((err) => {
+        if (!seen.has(err.path)) {
+          formattedErrors.push({
+            field: err.path,
+            message: err.msg,
+          });
+          seen.add(err.path);
+        }
+      });
+console.log(req.body);
+      return res.render("admin-edit", {
+        title: "Admin Edit",
+        userProfile,
+        config: siteControls,
+        errors: formattedErrors,
+        formData: req.body || {},
+        usStates,
+        passwordRules,
+        csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
+      });
+    }
 
     const {
       first_name,
@@ -312,88 +482,37 @@ async function postAdminEditPage(req, res, next) {
       notes,
     } = req.body;
 
-  // try {
-    // --- Run validation from middleware ---
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      const formattedErrors = [];
-      const seen = new Set();
-
-      // errors.array().forEach((err) => {
-      //   if (!seen.has(err.path)) {
-      //     formattedErrors.push({ param: err.path, msg: err.msg });
-      //     seen.add(err.path);
-      //   }
-      // });
-
-      errors.array().forEach((err) => {
-        if (!seen.has(err.path)) {
-          formattedErrors.push({
-            field: err.path,
-            message: err.msg,
-          });
-          seen.add(err.path);
-        }
-      });
-
-      return res.render("admin-edit", {
-        title: "Admin Edit",
-        // user,
-        userProfile,
-        config: siteControls,
-        errors: formattedErrors,
-        formData: req.body || {},
-        // usStates: usStates,
-        usStates,
-        passwordRules,
-        csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
-      });
-    }
-
-    // --- Sanitize fields ---
-    const sanitize = (v) => (v === "" ? null : v);
-    const toBool = (v) => {
-      if (v === undefined || v === null) return null;
-      if (typeof v === "boolean") return v;
-      return v === "true";
-    };
-
-    const safeVerifiedByAdmin = toBool(verified_by_admin);
-    const safeGuestUpgradeInvite = toBool(guest_upgrade_invite);
-    const safeIsActive = toBool(is_active);
 
     // If updateAdminEditedUser function tries to hash or validate an empty string, it may fail silently or throw, which could redirect to login depending on error handling.
     const passwordToUpdate = password ? password : null;
 
-    // Update user in DB
     await updateAdminEditedUser(
-      userProfileId, // ID of the user being edited
-      sanitize(first_name),
-      sanitize(last_name),
-      sanitize(email),
-      sanitize(birthdate),
+      userProfileId,
+      first_name,
+      last_name,
+      email,
+      birthdate,
       //   password, // hashed inside updateAdminEditedUser if provided
       passwordToUpdate,
       permission_status,
-      safeVerifiedByAdmin,
-      safeGuestUpgradeInvite,
+      verified_by_admin,
+      guest_upgrade_invite,
       invite_decision,
-      safeIsActive,
-      sanitize(avatar_type),
-      sanitize(avatar_color_fg),
-      sanitize(avatar_color_bg_top),
-      sanitize(avatar_color_bg_bottom),
-      sanitize(phone),
-      sanitize(street_address),
-      sanitize(apt_unit),
-      sanitize(city),
-      sanitize(us_state),
-      sanitize(zip_code),
-      sanitize(notes),
+      is_active,
+      avatar_type,
+      avatar_color_fg,
+      avatar_color_bg_top,
+      avatar_color_bg_bottom,
+      phone,
+      street_address,
+      apt_unit,
+      city,
+      us_state,
+      zip_code,
+      notes,
     );
 
-    // res.redirect("/app/admin");
+    // console.log(req.body);
     return res.redirect("/app/admin");
   } catch (err) {
     next(err);
@@ -401,7 +520,6 @@ async function postAdminEditPage(req, res, next) {
 }
 
 // CONTROLLER: DELETE VIA ADMIN (admin.ejs)
-
 async function deleteUserAccount(req, res, next) {
   try {
     const { targetId } = req.body;

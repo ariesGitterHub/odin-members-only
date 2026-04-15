@@ -4,6 +4,9 @@ const passwordRules = require("../config/passwordRules");
 
 const emailUpdateAdminEditValidator = () =>
   check("email")
+    // Sanitize by trimming and normalizing the email
+    .trim() // Trim spaces before validation
+    .normalizeEmail() // Normalize email to lowercase and remove unnecessary characters
     .isEmail()
     .withMessage("Invalid email format")
     .custom(async (email, { req }) => {
@@ -15,6 +18,9 @@ const emailUpdateAdminEditValidator = () =>
 
 const emailUpdateEditProfileValidator = () =>
   check("email")
+    // Sanitize by trimming and normalizing the email
+    .trim() // Trim spaces before validation
+    .normalizeEmail() // Normalize email to lowercase and remove unnecessary characters
     .isEmail()
     .withMessage("Invalid email format")
     .custom(async (email, { req }) => {

@@ -397,7 +397,11 @@ margin-bottom: var(--spacer-default);
 
 /* -- member-directory.ejs */
 
-.member-card .neighbor-relevant-data {
+.member-directory-card {
+  background-color: var(--white);
+}
+
+.member-directory-card .neighbor-relevant-data {
   background-color: var(--off-white);
 }
 

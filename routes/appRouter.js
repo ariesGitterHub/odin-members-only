@@ -5,9 +5,8 @@ const {
   adminEditUserValidator,
   editProfileUserValidator,
 } = require("../middleware/validationEditUser");
-
+const sanitizeUserFields  = require("../middleware/sanitizeUserFields");
 const rateLimiter = require("../middleware/rateLimiters");
-
 const {
   getAdminPage,
   postNewSiteSettingsAdminPage,
@@ -17,9 +16,7 @@ const {
   postAdminEditPage,
   deleteUserAccount,
 } = require("../controllers/adminControllers");
-
-const { getSignUp, postSignUp, getLogIn, postLogIn, postLogOut } = require("../controllers/authControllers");
-
+const { getSignUpPage, postSignUpPage, getLogIn, postLogIn, postLogOut } = require("../controllers/authControllers");
 const {
   getMessageBoards,
   getTopicPage,
@@ -34,31 +31,25 @@ const {
   getTopicNamesForDropdown,
   getMessagesForTopic,
 } = require("../controllers/messageControllers");
-
 const {
   getMemberDirectory,
   getMemberInvite,
   postMemberInviteAccepted,
   postMemberInviteDeclined,
 } = require("../controllers/memberControllers");
-
 const {
   getHome,
   getInfo,
 } = require("../controllers/pageControllers");
-
 const {
-  // getfullUser,
   getModalDataToFrontend,
-  // getUserDetails,
   getUserId,
   getYourProfilePage,
   deleteYourAccount,
-  getEditProfile,
-  postEditProfile,
+  getEditProfilePage,
+  postEditProfilePage,
   postYourProfilePageAvatar,
 } = require("../controllers/userControllers");
-
 const appRouter = Router();
 
 // *** APIs
@@ -87,8 +78,17 @@ appRouter.get("/", getHome);
 // *** Auth
 
 // ROUTES: SIGN UP PAGE (sign-up.ejs)
-appRouter.get("/sign-up", getSignUp);
-appRouter.post("/sign-up", createUserValidatorSignUp, rateLimiter, postSignUp);
+appRouter.get("/sign-up", getSignUpPage);
+appRouter.post(
+  "/sign-up",
+  createUserValidatorSignUp,
+   sanitizeUserFields([
+    { name: 'first_name', type: 'string' },
+    { name: 'last_name', type: 'string' }
+  ]),
+  rateLimiter,
+  postSignUpPage,
+);
 
 // ROUTES: LOG IN PAGE (log-in.ejs)
 appRouter.get("/log-in", getLogIn);
@@ -112,12 +112,41 @@ appRouter.post("/admin/config/site-controls", requireRole("admin"), postNewSiteS
 appRouter.post("/admin/delete-user-account", requireRole("admin"), deleteUserAccount);
 
 // ROUTES: ADMIN CREATE PAGE (admin-create.ejs) 
+const adminCreateFields = [
+  { name: "first_name", type: "string" },
+  { name: "last_name", type: "string" },
+  { name: "birthdate", type: "string" },
+  { name: "notes", type: "string" },
+];
+
 appRouter.get("/admin-create", requireRole("admin"), getAdminCreatePage);
-appRouter.post("/admin-create", requireRole("admin"), createUserValidatorAdminCreate, postAdminCreatePage);
+appRouter.post("/admin-create", requireRole("admin"), createUserValidatorAdminCreate, sanitizeUserFields(adminCreateFields), postAdminCreatePage);
 
 // ROUTES: ADMIN EDIT PAGE (admin-edit.ejs) 
+const adminEditFields = [
+  { name: "first_name", type: "string" },
+  { name: "last_name", type: "string" },
+  // { name: "birthdate", type: "string" },
+  // { name: "permission_status", type: "string" },
+  // { name: "verified_by_admin", type: "boolean" }, // Boolean field
+  // { name: "guest_upgrade_invite", type: "boolean" }, // Boolean field
+  // { name: "invite_decision", type: "string" },
+  // { name: "is_active", type: "boolean" }, // Boolean field
+  // { name: "avatar_type", type: "avatar" },
+  // { name: "avatar_color_fg", type: "avatar" },
+  // { name: "avatar_color_bg_top", type: "avatar" },
+  // { name: "avatar_color_bg_bottom", type: "avatar" },
+  // { name: "phone", type: "phone" },
+  // { name: "street_address", type: "string" },
+  // { name: "apt_unit", type: "string" },
+  // { name: "city", type: "string" },
+  // { name: "us_state", type: "string" }, 
+  // { name: "zip_code", type: "string" },
+  // { name: "notes", type: "string" },
+];
+
 appRouter.get("/admin-edit/:id", requireRole("admin"), getAdminEditPage);
-appRouter.post("/admin-edit/:id", requireRole("admin"), adminEditUserValidator(), postAdminEditPage);
+appRouter.post("/admin-edit/:id", requireRole("admin"), adminEditUserValidator(), sanitizeUserFields(adminEditFields), postAdminEditPage);
 
 
 // *** Info
@@ -129,7 +158,25 @@ appRouter.get("/info", requireRole("guest"), getInfo);
 // *** Message Related
 
 // ROUTES: NEW MESSAGE MODAL (new-message.ejs)
-appRouter.post("/new-message", requireRole("guest"), postNewMessage);
+const newMessageFields = [
+  { name: "title", type: "string" },
+  { name: "body", type: "string" },
+  { name: "topic_id", type: "number" },
+];
+appRouter.post("/new-message", requireRole("guest"), sanitizeUserFields(newMessageFields), postNewMessage);
+
+// ROUTES: EDIT MESSAGE MODAL (edit-message.ejs)
+const editMessageFields = [
+  { name: "title", type: "string" },
+  { name: "body", type: "string" },
+];
+appRouter.post("/message-boards/edit-message", requireRole("guest"), sanitizeUserFields(editMessageFields), postEditMessage);
+
+// ROUTES: REPLY MESSAGE MODAL (reply-message.ejs)
+const replyMessageFields = [
+  { name: "body", type: "string" },
+];
+appRouter.post("/message-boards/reply-message", requireRole("guest"), sanitizeUserFields(replyMessageFields), postReplyMessage);
 
 // ROUTES: TOPICS API USED NEW MESSAGE DROPDOWN 
 appRouter.get("/topics", requireRole("guest"), getTopicNamesForDropdown);
@@ -146,11 +193,6 @@ appRouter.post("/message-boards/sticky-message", requireRole("guest"), postStick
 // ROUTES: DELETE MESSAGE MODAL (warning-message-deletion.ejs)
 appRouter.post("/message-boards/delete-message", requireRole("guest"), deleteUserMessage);
 
-// ROUTES: EDIT MESSAGE MODAL (edit-message.ejs)
-appRouter.post("/message-boards/edit-message", requireRole("guest"), postEditMessage);
-
-// ROUTES: REPLY MESSAGE MODAL (reply-message.ejs)
-appRouter.post("/message-boards/reply-message", requireRole("guest"), postReplyMessage);
 
 // ROUTE: THREAD_PATH API FOR REPLY MESSAGES (?)
 // NOTE - getMessagesForTopic is used with threaded paths that get my messages replies to order properly; I experimented with commenting this out and message replies still ordered correctly, but leaving this in in case something else is relying on it.
@@ -169,18 +211,43 @@ appRouter.get("/your-profile", requireRole("guest"), getYourProfilePage);
 appRouter.post("/your-profile/delete-your-account", requireRole("guest"), deleteYourAccount);
 
 // ROUTE: EDIT PROFILE PAGE (edit-profile.ejs)
-appRouter.get("/edit-profile", requireRole("guest"), getEditProfile);
-appRouter.post("/edit-profile", requireRole("guest"), editProfileUserValidator(), postEditProfile);
+const editProfileFields = [
+  { name: "first_name", type: "string" },
+  { name: "last_name", type: "string" },
+  { name: "birthdate", type: "string" },
+  { name: "phone", type: "phone" },
+  { name: "street_address", type: "string" },
+  { name: "apt_unit", type: "string" },
+  { name: "city", type: "string" },
+  { name: "us_state", type: "string" },
+  { name: "zip_code", type: "string" },
+];
+appRouter.get("/edit-profile", requireRole("guest"), getEditProfilePage);
+appRouter.post("/edit-profile", requireRole("guest"), editProfileUserValidator(), sanitizeUserFields(editProfileFields), postEditProfilePage);
 
 // ROUTES: CHANGE AVATAR MODAL (change-avatar.ejs)
-appRouter.post("/your-profile/change-avatar", requireRole("guest"), postYourProfilePageAvatar);
+const avatarFields = [
+  { name: "avatar_type", type: "avatar" },
+  { name: "avatar_color_fg", type: "avatar" },
+  { name: "avatar_color_bg_top", type: "avatar" },
+  { name: "avatar_color_bg_bottom", type: "avatar" },
+];
+appRouter.post("/your-profile/change-avatar", requireRole("guest"), sanitizeUserFields(avatarFields), postYourProfilePageAvatar);
 
 // ROUTE: MEMBER DIRECTORY PAGE (member-directory.ejs) 
 appRouter.get("/member-directory", requireRole("member"), getMemberDirectory);
 
 // ROUTE: MEMBER INVITATION PAGE (member-invite.ejs) 
+const memberInviteAcceptedFields = [
+  { name: "phone", type: "phone" },
+  { name: "street_address", type: "string" },
+  { name: "apt_unit", type: "string" },
+  { name: "city", type: "string" },
+  { name: "us_state", type: "string" },
+  { name: "zip_code", type: "string" },
+];
 appRouter.get("/member-invite", requireRole("guest"), getMemberInvite);
-appRouter.post("/member-invite/accepted", requireRole("guest"), postMemberInviteAccepted);
+appRouter.post("/member-invite/accepted", requireRole("guest"), sanitizeUserFields(memberInviteAcceptedFields), postMemberInviteAccepted);
 appRouter.post("/member-invite/declined", requireRole("guest"), postMemberInviteDeclined);
 
 module.exports = appRouter;

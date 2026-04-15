@@ -16,7 +16,7 @@
       <p>There are no current members.</p>
       <% } else { userProfiles.forEach(function(userProfile) { %> 
           <% if (userProfile && (userProfile.permission_status === "member" || userProfile.permission_status === "admin")) { %> 
-          <div class="card member-card">
+          <div class="card member-directory-card">
             <div class="profile-data-container">
               <div class="member-directory-extra-avatar-container avatar-background" 
                 <%- include('./partials/avatar-color-data-helper.ejs', { obj: userProfile }) %>

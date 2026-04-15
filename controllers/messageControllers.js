@@ -1,8 +1,6 @@
 const { hasRole } = require("../utils/permissions");
 const { buildThreadedMessages } = require("../utils/threadUtils");
-
 const { getAllSiteControls } = require("../db/queries/appConfigQueries");
-
 const {
   getMessageById,
   getTopicById,
@@ -19,18 +17,14 @@ const {
 } = require("../db/queries/messageQueries");
 
 // CONTROLLER: GET MESSAGE BOARD PAGE
-
 async function getMessageBoards(req, res, next) {
   try {
     const user = req.user;
-
     const topics = await getAllTopics();
-
     const visibleTopics = topics.filter((topic) =>
       hasRole(user, topic.required_permission),
     );
 
-    // res.render("message-boards", {
     return res.render("message-boards", {
       title: "Message Boards",
       topics: visibleTopics,
@@ -42,11 +36,9 @@ async function getMessageBoards(req, res, next) {
 }
 
 // CONTROLLER: GET MESSAGE BOARD TOPIC PAGE
-
 async function getTopicPage(req, res, next) {
   try {
     const { slug } = req.params;
-
     const siteSettings = await getAllSiteControls();
 
     // Get topic info
@@ -56,7 +48,6 @@ async function getTopicPage(req, res, next) {
       return res.status(404).render("404");
     }
 
-    // Ensure user is defined (guests may be undefined)
     const user = req.user;
 
     // Authorization check based on DB permission
@@ -83,7 +74,6 @@ async function getTopicPage(req, res, next) {
       };
     });
 
-    // res.render("topic", {
     return res.render("topic", {
       title: topic.name,
       config: siteSettings,
@@ -94,26 +84,11 @@ async function getTopicPage(req, res, next) {
     });
   } catch (err) {
     console.error("Error in getTopicPage:", err);
-    next(err); // properly forward the error
+    next(err); 
   }
 }
 
 // // CONTROLLER: MESSAGE DETAILS
-
-// async function getMessageDetails(req, res, next) {
-//   const targetId = req.params.id;
-//   try {
-//     const message = await getMessageById(targetId);
-
-//     if (message) {
-//       res.json(message); // Send user data as JSON
-//     } else {
-//       res.status(404).send("Message not found");
-//     }
-//   } catch (err) {
-//     next(err);
-//   }
-// }
 
 async function getMessageDetails(req, res, next) {
   try {
@@ -130,21 +105,6 @@ async function getMessageDetails(req, res, next) {
 }
 
 // CONTROLLER: GET MAX CHARS FOR USE IN FRONTEND FILE miscFunctions.js VIA FETCH IN dataFetchers.js
-
-// async function getMaxMessageChars(req, res, next) {
-//   try {
-//     const config = await getAllSiteControls();
-
-//     if (config && typeof config.max_message_chars !== "undefined") {
-//       res.json({ maxChars: config.max_message_chars });
-//     } else {
-//       res.status(404).send("Maximum message characters not found");
-//     }
-//   } catch (err) {
-//     next(err);
-//   }
-// }
-
 async function getMaxMessageChars(req, res, next) {
   try {
     const config = await getAllSiteControls();
@@ -160,8 +120,6 @@ async function getMaxMessageChars(req, res, next) {
 }
 
 // CONTROLLER: NEW MESSAGE (new-message.ejs)
-
-// Use below to model postReplyMessage
 async function postNewMessage(req, res, next) {
   try {
     if (!req.user) {
@@ -170,14 +128,6 @@ async function postNewMessage(req, res, next) {
   const userId = req.user.id;
   const { topic_id, title, body } = req.body;
 
-  // Assuming you're using session-based authentication
-  
-
-  // if (!userId) {
-  //   return res.status(401).send("User is not logged in.");
-  // }
-
-  // try {
     // Get topic info
     const topic = await getTopicById(topic_id);
 
@@ -191,7 +141,7 @@ async function postNewMessage(req, res, next) {
       title,
       body,
     );
-    // res.redirect(`/app/message-boards/${topic.slug}`);
+
     return res.redirect(`/app/message-boards/${topic.slug}`);
   } catch (err) {
     next(err);
@@ -199,12 +149,10 @@ async function postNewMessage(req, res, next) {
 }
 
 // CONTROLLER: STICKY MESSAGE TOGGLE (message-boards/topic slug)
-
 async function postStickyMessageToggle(req, res, next) {
   try {
     const { message_id, slug } = req.body;
     await stickyMessageById(message_id);
-    // res.redirect(`/app/message-boards/${slug}`);
     return res.redirect(`/app/message-boards/${slug}`);
   } catch (err) {
     next(err);
@@ -212,10 +160,8 @@ async function postStickyMessageToggle(req, res, next) {
 }
 
 // CONTROLLER: POST EDITED MESSAGE (edit-message.ejs)
-
 async function postEditMessage(req, res, next) {
   try {
-
     if (!req.user) {
       return res.status(401).send("User not logged in");
     }
@@ -227,33 +173,23 @@ async function postEditMessage(req, res, next) {
       return res.status(400).send("Missing required data.");
     }
 
-    // Get the currently logged-in user ID
-    // const userId = req.user.id;
-    // if (!userId) {
-    //   return res.status(401).send("User is not logged in.");
-    // }
-
-    // Fetch the message from the database
-    const message = await getMessageById(targetId); // assume a DB query helper
+    const message = await getMessageById(targetId);
     if (!message) {
       return res.status(404).send("Message not found.");
     }
 
     // Check if the logged-in user is the author of the message
-    // if (message.user_id !== userId) {
     if (message.user_id !== req.user.id) {
       return res.status(403).send("You are not the author of this message.");
     }
 
-    // Update the message in the database
     const updatedMessage = await updateMessage(
-      targetId, // message_id
+      targetId,
       title,
       body,
     );
 
     // Pass the updated message with 'is_edited' to the template
-    // res.redirect(`/app/message-boards/${message.topic_slug}`);
     return res.redirect(`/app/message-boards/${message.topic_slug}`);
   } catch (err) {
     next(err);
@@ -261,7 +197,6 @@ async function postEditMessage(req, res, next) {
 }
 
 // CONTROLLER: POST REPLY MESSAGE (reply-message.ejs)
-
 async function postReplyMessage(req, res, next) {
   try {
     if (!req.user) {
@@ -270,8 +205,6 @@ async function postReplyMessage(req, res, next) {
 
     // Extract form data
     const { targetId, messageTitle, body } = req.body;
-
-    // const prefixedTitle = `↪ ${messageTitle}`;
 
     // Validate form data
     if (!targetId || !body) {
@@ -293,8 +226,6 @@ async function postReplyMessage(req, res, next) {
 
      const prefixedTitle = `↪ ${messageTitle}`;
 
-    // Insert the new reply message
-
     const replyMessage = await insertMessage(
       userId,
       parentMessage.topic_id,
@@ -307,7 +238,6 @@ async function postReplyMessage(req, res, next) {
     await incrementReplyCount(parentMessage.message_id);
 
     // Redirect back to the topic page
-    // res.redirect(`/app/message-boards/${parentMessage.topic_slug}`);
     return res.redirect(`/app/message-boards/${parentMessage.topic_slug}`);
   } catch (err) {
     next(err);
@@ -315,19 +245,16 @@ async function postReplyMessage(req, res, next) {
 }
 
 // CONTROLLER: DELETE MESSAGE
-
 async function deleteUserMessage(req, res, next) {
   try {
     const { targetId, topicSlug } = req.body;
 
     const rowsUpdated = await softDeleteMessageById(targetId);
-    
-    // if (rowsUpdated === 0) return res.status(404).send("Message not found");
 
     if (!rowsUpdated) {
       return res.status(404).send("Message not found");
     }
-    // res.redirect(`/app/message-boards/${topicSlug}`);
+
     return res.redirect(`/app/message-boards/${topicSlug}`);
   } catch (err) {
     next(err);
@@ -335,21 +262,16 @@ async function deleteUserMessage(req, res, next) {
 }
 
 // CONTROLLER: POST LIKE (FROM BUTTON CLICK)
-
 async function postLikeMessageToggle(req, res, next) {
-
   try {
-
     if (!req.user) {
       return res.status(401).send("User not logged in");
     }
 
     const { message_id, slug } = req.body;
-    // const userId = req.user.id;
 
     await toggleLike(message_id, req.user.id);
 
-    // res.redirect(`/app/message-boards/${slug}`);
     return res.redirect(`/app/message-boards/${slug}`);
   } catch (err) {
     console.error(err);
@@ -358,7 +280,6 @@ async function postLikeMessageToggle(req, res, next) {
 }
 
 // GET TOPIC NAMES FOR NEW MESSAGE
-
 const getTopicNamesForDropdown = async (req, res, next) => {
   try {
     const user = req.user;
@@ -366,7 +287,7 @@ const getTopicNamesForDropdown = async (req, res, next) => {
     const visibleTopics = topics.filter((topic) =>
       hasRole(user, topic.required_permission),
     );
-    // res.json(visibleTopics); // Must be an array
+
     return res.json(visibleTopics); // Must be an array
   } catch (err) {
     next(err);
@@ -374,16 +295,6 @@ const getTopicNamesForDropdown = async (req, res, next) => {
 };
 
 // CONTROLLER: GET MESSAGES FOR A TOPIC USING THREAD PATH (buildThreadedMessages)
-
-// const getMessagesForTopic = async (req, res) => {
-//   const messages = await getValidMessagesByTopic(
-//     req.params.topicId,
-//     req.user.id,
-//   );
-//   const threaded = buildThreadedMessages(messages);
-//   res.json(threaded);
-// };
-
 async function getMessagesForTopic(req, res, next) {
   try {
     const messages = await getValidMessagesByTopic(

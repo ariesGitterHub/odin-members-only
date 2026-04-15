@@ -116,12 +116,10 @@
 
 .parent-message {
   background-color: var(--white);
-  border: var(--border-solid-red);
 }
 
 .child-message {
   background-color: var(--off-white);
-  border: var(--border-dashed-red);
 }
 
 .new-message {

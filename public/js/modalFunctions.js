@@ -166,7 +166,7 @@ function populateReplyMessage(user, message) {
   title.value = message.title;
   title.readOnly = true;
 
-  body.value = `💬 To "${message.first_name} ${message.last_name}" ➤ `;
+  body.value = `💬 to ${message.first_name} ${message.last_name} ➤ `;
 }
 
 // Populates the edit-message.ejs partial modal with user data

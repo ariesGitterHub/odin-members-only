@@ -43,7 +43,7 @@
   --border-solid-red: 0.25rem solid var(--off-red);
   --border-dashed-red: 0.25rem dashed var(--off-red);
   --border-hr-top: 0.125rem solid var(--white);
-  --border-inactive-card: 0.125rem solid var(--off-white);
+  --border-inactive-card: 0.25rem solid var(--off-white);
   --border-default: 0.125rem solid var(--off-gray);
   --border-message: 0.125rem solid var(--off-white);
   --border-message-badge: 0.125rem solid var(--off-gray);
