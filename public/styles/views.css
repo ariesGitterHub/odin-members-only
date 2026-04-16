@@ -6,7 +6,6 @@
 .index-image {
   height: var(--index-image-size);
   width: auto;
-  /* border: var(--border-default); */
   border-radius: var(--border-radius-circle);
   box-shadow: var(--box-shadow-gray);
   margin: var(--spacer-default);
@@ -16,9 +15,7 @@
 /* -- admin.ejs */
 
 #admin-controls {
-/* width: var(--width-default-percent); */
 width: var(--card-width);
-/* max-width: var(--max-width); */
 margin-bottom: var(--spacer-default);
 }
 
@@ -44,7 +41,6 @@ margin-bottom: var(--spacer-default);
   font-size: var(--font-size-default);
 }
 
-/* #admin-controls a, #admin-controls button[type="button"] { */
 #admin-controls a, #admin-controls button[type="button"] {
   background-color: var(--lt-red);
   box-shadow: var(--box-shadow-red);
@@ -99,15 +95,6 @@ margin-bottom: var(--spacer-default);
   padding: var(--spacer-medium);
 }
 
-.admin-card button {
-  /* background-color: var(--off-black); */
-  /* box-shadow: var(--box-shadow-gray); */
-}
-
-.admin-card button:hover {
-  /* background-color: var(--off-yellow); */
-}
-
 .admin-card .admin-quick-view-bar span {
   background-color: var(--off-white);
   color: var(--off-black);
@@ -151,28 +138,6 @@ margin-bottom: var(--spacer-default);
   background-color: var(--account-is-inactive);
   border: var(--border-inactive-card);
 }
-
-/* .admin-card fieldset {
-  display: flex;
-  flex-direction: column;
-  align-self: center;
-  justify-content: center;
-  border: var(--border-default);
-  border-radius: var(--border-radius-small);
-  margin-bottom: var(--spacer-default);
-  padding: var(--spacer-default);
-  text-transform: uppercase;
-}
-
-.admin-card fieldset h3 {
-  margin-top: var(--spacer-default);
-  margin-bottom: var(--spacer-default);
-}
-
-.admin-card fieldset input {
-  width: 3.75rem;
-  font-size: var(--font-size-default);
-} */
 
 
 /* -- admin-create.ejs */
@@ -529,6 +494,4 @@ margin-bottom: var(--spacer-default);
 .page-errors p {
   font-size: var(--font-size-largest);
 }
-
-
 
