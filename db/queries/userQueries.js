@@ -1,60 +1,6 @@
 const pool = require("../pool");
 const bcrypt = require("bcryptjs");
 
-// DELETE - QUERY: GET ALL USERS
-
-// const getUsers = async () => {
-//   const { rows } = await pool.query(`
-//     SELECT
-//       u.id,
-//       u.email,
-//       u.first_name,
-//       u.last_name,
-//       u.birthdate,
-//       u.permission_status,
-//       u.verified_by_admin,
-//       u.guest_upgrade_invite,
-//       u.invite_decision,
-//       u.is_active,
-//       u.created_at,
-//       u.updated_at,
-//       u.last_login_at,
-//       up.avatar_type,
-//       up.avatar_color_fg,
-//       up.avatar_color_bg_top,
-//       up.avatar_color_bg_bottom,
-//       up.phone,
-//       up.street_address,
-//       up.apt_unit,
-//       up.city,
-//       up.us_state,
-//       up.zip_code,
-//       up.notes,
-//       COUNT(m.id) AS message_count
-//     FROM users u
-//     LEFT JOIN user_profiles up ON u.id = up.user_id
-//     LEFT JOIN messages m ON u.id = m.user_id AND m.is_deleted = false
-//     GROUP BY u.id, up.user_id
-//     /*  ORDER BY 
-//       CASE 
-//         WHEN u.permission_status = 'admin' THEN 0
-//         ELSE 1
-//       END,
-//       u.last_name,  -- Sort by last name in alphabetical order
-//       u.first_name; -- If last names are the same, then by first name
-//     */
-//     -- GROUP BY u.id, up.id
-//     ORDER BY
-//     (u.permission_status = 'admin') DESC,
-//     u.last_name,
-//     u.first_name;
-      
-//   `);
-
-//   return rows;
-// };
-
-
 // QUERY: GET ALL USERS FOR ADMIN
 const getUsersForAdmin = async () => {
   const { rows } = await pool.query(`
@@ -108,34 +54,6 @@ const getUsersForAdmin = async () => {
 };
 
 // QUERY: GET ALL MEMBER USERS FOR MEMBER DIRECTORY
-// const getUsersForMemberDirectory = async () => {
-//   const { rows } = await pool.query(`
-//     SELECT
-//       u.id,
-//       u.email,
-//       u.first_name,
-//       u.last_name,
-//       u.birthdate,
-//       up.avatar_type,
-//       up.avatar_color_fg,
-//       up.avatar_color_bg_top,
-//       up.avatar_color_bg_bottom,
-//       up.phone,
-//       up.street_address,
-//       up.apt_unit,
-//       up.city,
-//       up.us_state,
-//       up.zip_code
-//     FROM users u
-//     LEFT JOIN user_profiles up ON u.id = up.user_id
-//     ORDER BY
-//     u.last_name,
-//     u.first_name;
-//   `);
-
-//   return rows;
-// };
-
 const getUsersForMemberDirectory = async () => {
   const { rows } = await pool.query(`
     SELECT
@@ -247,10 +165,7 @@ const getUserProfileData = async (targetId) => {
   return rows[0]; // Returning only the first row (one user)
 };
 
-
 // QUERY: GET USERS BY ID
-
-// BELOW exposes data, see in appRouter.js and on localhost:XXXX/app/user/1
 const getUserByIdForAdmin = async (targetId) => {
   const { rows } = await pool.query(
     `
@@ -293,7 +208,6 @@ const getUserByIdForAdmin = async (targetId) => {
 };
 
 // QUERY: INSERT SESSION INFO
-
 const insertSessionLog = async (
   user_id,
   session_token,
@@ -313,7 +227,6 @@ const insertSessionLog = async (
 };
 
 // QUERY: INSERT A NEW USER FROM SIGN UP (sign-up.ejs)
-
 const insertNewUser = async (
   first_name,
   last_name,
@@ -364,7 +277,6 @@ const insertNewUser = async (
 };
 
 // QUERY: INSERT A NEW USER VIA ADMIN (admin-create.ejs)
-
 const insertAdminCreatedUser = async (
   first_name,
   last_name,
@@ -410,7 +322,6 @@ const insertAdminCreatedUser = async (
 };
 
 // QUERY: UPDATE OF A USER VIA ADMIN (admin-edit.ejs)
-
 const updateAdminEditedUser = async (
   user_id,
   first_name,
@@ -529,7 +440,6 @@ const updateAdminEditedUser = async (
 };
 
 // QUERY: UPDATE OF USER PROFILE INFO (NOT ADMIN RELATED DATA) BY A USER (your-profile.ejs/edit-profile.ejs modal)
-
 const updateUser = async (
   user_id,
   first_name,
@@ -542,7 +452,7 @@ const updateUser = async (
   apt_unit,
   city,
   us_state,
-  zip_code
+  zip_code,
 ) => {
   const client = await pool.connect();
 
@@ -594,15 +504,7 @@ const updateUser = async (
          us_state               = COALESCE($5, us_state),
          zip_code               = COALESCE($6, zip_code)
        WHERE user_id = $7;`,
-      [
-        phone,
-        street_address,
-        apt_unit,
-        city,
-        us_state,
-        zip_code,
-        user.id,
-      ],
+      [phone, street_address, apt_unit, city, us_state, zip_code, user.id],
     );
 
     await client.query("COMMIT");
@@ -618,7 +520,6 @@ const updateUser = async (
 };
 
 // QUERY: UPDATE OF A USER'S AVATAR BY A USER (your-profile.ejs/change-avatar.ejs modal)
-
 // Only updating one table. Only use transactions when updating multiple tables.
 const updateUserAvatar = async (
   user_id,
@@ -665,7 +566,6 @@ const updateUserAvatar = async (
 };
 
 // QUERY: UPDATE OF A USER FROM A GUEST TO A MEMBER (member-invite.ejs)
-
 const updateUserToMember = async (
   user_id,
   permission_status,
@@ -675,7 +575,7 @@ const updateUserToMember = async (
   apt_unit,
   city,
   us_state,
-  zip_code
+  zip_code,
 ) => {
   const client = await pool.connect();
 
@@ -710,15 +610,7 @@ const updateUserToMember = async (
          us_state               = COALESCE($5, us_state),
          zip_code               = COALESCE($6, zip_code)
        WHERE user_id = $7;`,
-      [
-        phone,
-        street_address,
-        apt_unit,
-        city,
-        us_state,
-        zip_code,
-        user.id,
-      ],
+      [phone, street_address, apt_unit, city, us_state, zip_code, user.id],
     );
 
     await client.query("COMMIT");
@@ -734,13 +626,11 @@ const updateUserToMember = async (
 };
 
 // QUERY: DELETE USER ACCOUNT BY A USER (your-profile.ejs) OR DELETE USER ACCOUNT VIA ADMIN (admin.ejs)
-
 const deleteUserById = async (targetId) => {
   await pool.query("DELETE FROM users WHERE id = $1", [targetId]);
 };
 
 //QUERY: CHECK IF EMAIL ALREADY EXISTS IN THE DB AT SIGN UP (PREVENTS USING CODE BELOW THAT DOES NOT WORK WELL WITH NEW USER SITUATIONS)
-
 async function checkIfEmailExistsForSignUp(email) {
   const result = await pool.query(`SELECT id FROM users WHERE email = $1`, [
     email,
@@ -750,7 +640,6 @@ async function checkIfEmailExistsForSignUp(email) {
 }
 
 // QUERY: CHECK IF EMAIL ALREADY EXISTS IN THE DB (SET UP TO NOT AFFECT USER EDITS TO SAME ENTRY)
-
 async function checkIfEmailExists(email, targetId) {
   const result = await pool.query(
     `SELECT id FROM users
@@ -763,7 +652,6 @@ async function checkIfEmailExists(email, targetId) {
 }
 
 //QUERY: UPDATE USER's LAST LOGIN
-
 const updateLastLogin = async (userId) => {
   await pool.query("UPDATE users SET last_login_at = NOW() WHERE id = $1", [
     userId,
@@ -771,14 +659,11 @@ const updateLastLogin = async (userId) => {
 };
 
 module.exports = {
-  // getUsers,
   getUsersForAdmin,
   getUsersForMemberDirectory,
   getUserForMemberInvite,
   getUserForModalData,
   getUserProfileData,
-
-  // getUserById,
   getUserByIdForAdmin,
   insertSessionLog,
   insertNewUser,

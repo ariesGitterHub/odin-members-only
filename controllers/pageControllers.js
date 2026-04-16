@@ -1,7 +1,7 @@
 const { getAllSiteControls } = require("../db/queries/appConfigQueries");
-const passwordRules = require('../config/passwordRules'); 
+const passwordRules = require("../config/passwordRules");
 
-// CONTROLLER: INDEX (index.ejs)
+// CONTROLLER: INDEX (index.ejs or maintenance.ejs)
 async function getHome(req, res, next) {
   try {
     const siteSettings = await getAllSiteControls();
@@ -27,7 +27,7 @@ async function getHome(req, res, next) {
 async function getInfo(req, res, next) {
   try {
     const siteSettings = await getAllSiteControls();
-  
+
     return res.render("info", {
       title: "Site Information",
       config: siteSettings,

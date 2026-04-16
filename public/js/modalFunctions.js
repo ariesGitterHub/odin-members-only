@@ -1,9 +1,7 @@
 import {
-  // fetchUserData,
   fetchUserId,
   fetchMessageData,
   fetchTopicNameData,
-  // fetchFullUserData,
   fetchModalData,
 } from "./dataFetchers.js";
 
@@ -34,8 +32,7 @@ export function closeModal() {
   document.getElementById("modal").classList.add("hidden");
 }
 
-// *** EVENT LISTENER ATTACHERS
-
+// EVENT LISTENER ATTACHERS
 // Attach closeModal listener
 export function attachCloseModalListener() {
   document.querySelectorAll("[data-close-modal]").forEach((el) => {
@@ -54,8 +51,7 @@ export function attachOpenModalListener() {
   });
 }
 
-// *** EVENT HANDLERS ***
-
+// EVENT HANDLERS
 // Open modal with an event
 export async function handleModalOpen(targetId, sectionId, titleId) {
   try {
@@ -105,8 +101,7 @@ export async function handleModalOpen(targetId, sectionId, titleId) {
   }
 }
 
-// *** MODAL POPULATORS ***
-
+// MODAL POPULATORS
 // Populates the new-message.ejs partial modal with user data
 function populateNewMessage(user) {
   const firstName = document.getElementById("first-name-new-message");
@@ -187,10 +182,6 @@ function populateEditMessage(user, message) {
 
 // Populates the warning-account-deletion.ejs partial modal with user data
 function populateWarningAccountDeletion(user) {
-  // document.getElementById("first-name-warning-account-deletion").innerText =
-  //   user.first_name;
-  // document.getElementById("last-name-warning-account-deletion").innerText =
-  //   user.last_name;
   document.getElementById("email-warning-account-deletion").innerText =
     user.email;
 }

@@ -16,7 +16,7 @@ const {
   postAdminEditPage,
   deleteUserAccount,
 } = require("../controllers/adminControllers");
-const { getSignUpPage, postSignUpPage, getLogIn, postLogIn, postLogOut } = require("../controllers/authControllers");
+const { getSignUpPage, postSignUpPage, getLogInPage, postLogInPage, postLogOut } = require("../controllers/authControllers");
 const {
   getMessageBoards,
   getTopicPage,
@@ -52,15 +52,12 @@ const {
 } = require("../controllers/userControllers");
 const appRouter = Router();
 
-// *** APIs
+// APIs
 
-// ROUTES: CURRENT USER API FOR FRONTEND FETCH
-// appRouter.get("/current-user", requireRole("guest"), getfullUser);
 // ROUTES: CURRENT USER API FOR MODAL FETCH
 appRouter.get("/modal-fetch", requireRole("guest"), getModalDataToFrontend);
 
 // ROUTES: USER ID API FOR FRONTEND FETCH
-// appRouter.get("/user/:id", requireRole("guest"), getUserDetails);
 appRouter.get("/user-id/:id", requireRole("guest"), getUserId);
 
 // ROUTES: MESSAGES API FOR FRONTEND FETCH
@@ -69,13 +66,12 @@ appRouter.get("/message/:id", requireRole("guest"), getMessageDetails);
 // ROUTES: CONFIG MAX CHARS API FOR FRONTEND FETCH
 appRouter.get("/config/max-chars", requireRole("guest"), getMaxMessageChars);
 
-
-// *** Index/Maintenance
+// Index/Maintenance
 
 // ROUTES: INDEX/HOME (index.ejs), ALSO USED FOR MAINTENANCE (maintenance.ejs)
 appRouter.get("/", getHome);
 
-// *** Auth
+// Auth
 
 // ROUTES: SIGN UP PAGE (sign-up.ejs)
 appRouter.get("/sign-up", getSignUpPage);
@@ -91,8 +87,8 @@ appRouter.post(
 );
 
 // ROUTES: LOG IN PAGE (log-in.ejs)
-appRouter.get("/log-in", getLogIn);
-appRouter.post("/log-in", rateLimiter, postLogIn);
+appRouter.get("/log-in", getLogInPage);
+appRouter.post("/log-in", rateLimiter, postLogInPage);
 
 // ROUTES: LOG OUT BUTTON
 appRouter.post("/log-out", (req, res, next) => {
@@ -102,7 +98,7 @@ appRouter.post("/log-out", (req, res, next) => {
   postLogOut,
 );
 
-// *** Admin Related
+// Admin Related
 
 // ROUTES: ADMIN PAGE (admin.ejs) 
 appRouter.get("/admin", requireRole("admin"), getAdminPage);
@@ -126,36 +122,34 @@ appRouter.post("/admin-create", requireRole("admin"), createUserValidatorAdminCr
 const adminEditFields = [
   { name: "first_name", type: "string" },
   { name: "last_name", type: "string" },
-  // { name: "birthdate", type: "string" },
-  // { name: "permission_status", type: "string" },
-  // { name: "verified_by_admin", type: "boolean" }, // Boolean field
-  // { name: "guest_upgrade_invite", type: "boolean" }, // Boolean field
-  // { name: "invite_decision", type: "string" },
-  // { name: "is_active", type: "boolean" }, // Boolean field
-  // { name: "avatar_type", type: "avatar" },
-  // { name: "avatar_color_fg", type: "avatar" },
-  // { name: "avatar_color_bg_top", type: "avatar" },
-  // { name: "avatar_color_bg_bottom", type: "avatar" },
-  // { name: "phone", type: "phone" },
-  // { name: "street_address", type: "string" },
-  // { name: "apt_unit", type: "string" },
-  // { name: "city", type: "string" },
-  // { name: "us_state", type: "string" }, 
-  // { name: "zip_code", type: "string" },
-  // { name: "notes", type: "string" },
+  { name: "birthdate", type: "string" },
+  { name: "permission_status", type: "string" },
+  // { name: "verified_by_admin", type: "boolean" }, // This failed, see comments in middleware/sanitizerUserFields.js
+  // { name: "guest_upgrade_invite", type: "boolean" }, // This failed, see comments in middleware/sanitizerUserFields.js
+  { name: "invite_decision", type: "string" },
+  // { name: "is_active", type: "boolean" }, // This failed, see comments in middleware/sanitizerUserFields.js
+  { name: "avatar_type", type: "string" },
+  { name: "avatar_color_fg", type: "string" },
+  { name: "avatar_color_bg_top", type: "string" },
+  { name: "avatar_color_bg_bottom", type: "string" },
+  { name: "phone", type: "phone" },
+  { name: "street_address", type: "string" },
+  { name: "apt_unit", type: "string" },
+  { name: "city", type: "string" },
+  { name: "us_state", type: "string" },
+  { name: "zip_code", type: "string" },
+  { name: "notes", type: "string" },
 ];
 
 appRouter.get("/admin-edit/:id", requireRole("admin"), getAdminEditPage);
 appRouter.post("/admin-edit/:id", requireRole("admin"), adminEditUserValidator(), sanitizeUserFields(adminEditFields), postAdminEditPage);
 
-
-// *** Info
+// Info
 
 // ROUTES: SITE INFO PAGE (info.ejs)
 appRouter.get("/info", requireRole("guest"), getInfo);
 
-
-// *** Message Related
+// Message Related
 
 // ROUTES: NEW MESSAGE MODAL (new-message.ejs)
 const newMessageFields = [
@@ -193,7 +187,6 @@ appRouter.post("/message-boards/sticky-message", requireRole("guest"), postStick
 // ROUTES: DELETE MESSAGE MODAL (warning-message-deletion.ejs)
 appRouter.post("/message-boards/delete-message", requireRole("guest"), deleteUserMessage);
 
-
 // ROUTE: THREAD_PATH API FOR REPLY MESSAGES (?)
 // NOTE - getMessagesForTopic is used with threaded paths that get my messages replies to order properly; I experimented with commenting this out and message replies still ordered correctly, but leaving this in in case something else is relying on it.
 appRouter.get('/topics/:topicId/messages', getMessagesForTopic);
@@ -201,8 +194,7 @@ appRouter.get('/topics/:topicId/messages', getMessagesForTopic);
 // ROUTES: LIKE MESSAGE (message-boards.ejs by topic slug)
 appRouter.post("/message-boards/like-message", postLikeMessageToggle);
 
-
-// *** User Related
+// User Related
 
 // ROUTES: YOUR PROFILE PAGE (your-profile.ejs)
 appRouter.get("/your-profile", requireRole("guest"), getYourProfilePage);
@@ -227,10 +219,10 @@ appRouter.post("/edit-profile", requireRole("guest"), editProfileUserValidator()
 
 // ROUTES: CHANGE AVATAR MODAL (change-avatar.ejs)
 const avatarFields = [
-  { name: "avatar_type", type: "avatar" },
-  { name: "avatar_color_fg", type: "avatar" },
-  { name: "avatar_color_bg_top", type: "avatar" },
-  { name: "avatar_color_bg_bottom", type: "avatar" },
+  { name: "avatar_type", type: "string" },
+  { name: "avatar_color_fg", type: "string" },
+  { name: "avatar_color_bg_top", type: "string" },
+  { name: "avatar_color_bg_bottom", type: "string" },
 ];
 appRouter.post("/your-profile/change-avatar", requireRole("guest"), sanitizeUserFields(avatarFields), postYourProfilePageAvatar);
 

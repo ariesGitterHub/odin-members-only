@@ -10,13 +10,11 @@ async function checkMaintenanceMode(req, res, next) {
       (process.env.MAINTENANCE_MODE === "true" &&
         req.user &&
         !hasRole("admin")) ||
-      (config.maintenance_mode &&
-        req.user &&
-        !hasRole("admin"))
+      (config.maintenance_mode && req.user && !hasRole("admin"))
     ) {
       return res.redirect("/");
     }
-    
+
     next();
   } catch (err) {
     console.error("Error checking maintenance mode:", err);

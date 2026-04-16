@@ -22,9 +22,6 @@
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <div class="element-container-row-start-center">
            <label for="email-log-in"> email </label>           
-           <!-- <%# if (errors && errors.some(e => e.includes('email'))) { %>
-            <span class="error-message">[<%#= errors.find(e => e.includes('email')) %>]</span>
-          <%# } %> -->
             <% if (errors && errors.some(e => e.field === 'auth')) { %>
               <% errors.filter(e => e.field === 'auth').forEach(e => { %>
                 <span class="error-message">[<%= e.message %>]</span>
@@ -41,9 +38,6 @@
           />
           <div class="element-container-row-start-center">
             <label for="password-log-in"> password </label> 
-            <!-- <%# if (errors && errors.some(e => e.includes('password'))) { %>
-            <span class="error-message">[<%#= errors.find(e => e.includes('password')) %>]</span>
-            <%# } %>            -->
             <% if (errors && errors.some(e => e.field === 'auth')) { %>
               <% errors.filter(e => e.field === 'auth').forEach(e => { %>
                 <span class="error-message">[<%= e.message %>]</span>

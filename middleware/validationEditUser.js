@@ -8,7 +8,9 @@ const emailUpdateAdminEditValidator = () =>
     .trim() // Trim spaces before validation
     .normalizeEmail() // Normalize email to lowercase and remove unnecessary characters
     .isEmail()
-    .withMessage("Invalid email format")
+    .withMessage("Invalid email format") // Ensure it's a valid email
+    .isLength({ min: 1 })
+    .withMessage("Email cannot be empty") // Ensure email is not empty
     .custom(async (email, { req }) => {
       const targetId = req.params.id;
       const existingUser = await checkIfEmailExists(email, targetId);
@@ -22,7 +24,9 @@ const emailUpdateEditProfileValidator = () =>
     .trim() // Trim spaces before validation
     .normalizeEmail() // Normalize email to lowercase and remove unnecessary characters
     .isEmail()
-    .withMessage("Invalid email format")
+    .withMessage("Invalid email format") // Ensure it's a valid email
+    .isLength({ min: 1 })
+    .withMessage("Email cannot be empty") // Ensure email is not empty
     .custom(async (email, { req }) => {
       const targetId = req.user.id;
       const existingUser = await checkIfEmailExists(email, targetId);

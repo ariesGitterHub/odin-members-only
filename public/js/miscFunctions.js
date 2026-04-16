@@ -40,7 +40,7 @@ export async function messageBodyCharCounter() {
     //   }
     // });
 
-    // Better code for a screen reader, see like beolw
+    // Better code for a screen reader, see like below
     bodyMessage.addEventListener("input", () => {
       const currentLength = bodyMessage.value.length;
 

@@ -15,7 +15,7 @@ require("dotenv").config(); // Load environment variables
 //   process.exit(1); // Exit safely
 // });
 
-require("./config/passport"); // This initializes the Passport strategies
+require("../config/passport"); // This initializes the Passport strategies
 
 // *** Imports at the top
 const express = require("express");
@@ -26,15 +26,15 @@ const session = require("express-session");
 const passport = require("passport");
 const helmet = require("helmet");
 
-const { runRetentionJobs } = require("./jobs/retentionJobs"); // TODO - FOR DEV ONLY
+const { runRetentionJobs } = require("../jobs/retentionJobs"); // TODO - FOR DEV ONLY
 const {
   csrfProtection,
   csrfTokenMiddleware,
   csrfErrorHandler,
-} = require("./middleware/csrfMiddleware"); // Import CSRF middleware
+} = require("../middleware/csrfMiddleware"); // Import CSRF middleware
 // const setFullUser = require("./middleware/setFullUser"); // Import the middleware
-const setPermissions = require("./middleware/setPermissions");
-const appRouter = require("./routes/appRouter");
+const setPermissions = require("../middleware/setPermissions");
+const appRouter = require("../routes/appRouter");
 
 const PORT = process.env.PORT || 3000;
 
@@ -142,10 +142,10 @@ app.use((req, res, next) => {
 });
 
 // *** Centralized Error Handling Middleware (Generic Error and 404)
-app.use(require("./middleware/errorMiddleware")); // Handle both 404 and other errors here
+app.use(require("../middleware/errorMiddleware")); // Handle both 404 and other errors here
 
 // *** Start cron jobs
-require("./cron/retentionScheduler"); // <-- this schedules the daily retention job
+require("../cron/retentionScheduler"); // <-- this schedules the daily retention job
 
 (async () => {
   try {

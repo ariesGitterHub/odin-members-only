@@ -1,8 +1,8 @@
-import { 
+import {
   // fetchFullUserData,
   fetchModalData,
-  fetchEmojiData
- } from "./dataFetchers.js";
+  fetchEmojiData,
+} from "./dataFetchers.js";
 import { openModal } from "./modalFunctions.js";
 
 export async function handleEmojiOpen(targetId, sectionId, titleId) {
@@ -196,7 +196,6 @@ async function emojiPickerDiv() {
 
     const label = document.createElement("label");
     label.setAttribute("for", `emoji-${index}`);
-    // label.setAttribute("aria-labelledby", `emoji-${index}`);
 
     const span = document.createElement("span");
     span.className = "emoji";

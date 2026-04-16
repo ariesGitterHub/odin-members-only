@@ -58,13 +58,6 @@ async function postSignUpPage(req, res, next) {
       });
     }
 
-       // const sanitize = (v) => (v === "" ? null : v);
-    // const sanitize = (v) => (typeof v === "string" ? v.trim() : v);
-    // const sanitize = (v) =>
-    //   typeof v === "string" ? (v.trim() === "" ? null : v.trim()) : v;
-
-    // const first_name = sanitize(req.body.first_name);
-    // const last_name = sanitize(req.body.last_name);
     const { first_name, last_name, email, birthdate, password } = req.body;
 
     const password_hash = await bcrypt.hash(password, 12);
@@ -79,7 +72,7 @@ async function postSignUpPage(req, res, next) {
 }
 
 // CONTROLLER: LOG-IN PAGE (log-in.ejs)
-async function getLogIn(req, res, next) {
+async function getLogInPage(req, res, next) {
   try {
     res.render("log-in", {
       title: "Log In",
@@ -91,7 +84,7 @@ async function getLogIn(req, res, next) {
   }
 }
 
-async function postLogIn(req, res, next) {
+async function postLogInPage(req, res, next) {
   passport.authenticate("local", async (err, user, info) => {
     if (err) return next(err);
 
@@ -114,7 +107,7 @@ async function postLogIn(req, res, next) {
         return res.redirect("/");
       }
 
-      console.log("🎈 User authenticated!");
+      console.log("🎈 User authenticated!"); // Keep because it is fun!
 
       // Update last login
       await updateLastLogin(user.id);
@@ -167,7 +160,7 @@ async function postLogOut(req, res, next) {
 module.exports = {
   getSignUpPage,
   postSignUpPage,
-  getLogIn,
-  postLogIn,
+  getLogInPage,
+  postLogInPage,
   postLogOut,
 };

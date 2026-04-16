@@ -84,14 +84,17 @@ async function getTopicPage(req, res, next) {
     });
   } catch (err) {
     console.error("Error in getTopicPage:", err);
-    next(err); 
+    next(err);
   }
 }
 
-// // CONTROLLER: MESSAGE DETAILS
-
+// CONTROLLER: MESSAGE DETAILS - TODO - this needs permission_status restrictions
 async function getMessageDetails(req, res, next) {
   try {
+    if (!req.user) {
+      return res.redirect("/app/log-in");
+    }
+
     const message = await getMessageById(req.params.id);
 
     if (!message) {
@@ -125,8 +128,8 @@ async function postNewMessage(req, res, next) {
     if (!req.user) {
       return res.status(401).send("User is not logged in");
     }
-  const userId = req.user.id;
-  const { topic_id, title, body } = req.body;
+    const userId = req.user.id;
+    const { topic_id, title, body } = req.body;
 
     // Get topic info
     const topic = await getTopicById(topic_id);
@@ -135,12 +138,7 @@ async function postNewMessage(req, res, next) {
       return res.status(404).send("Topic not found.");
     }
 
-    const newMessage = await insertMessage(
-      userId,
-      topic_id,
-      title,
-      body,
-    );
+    const newMessage = await insertMessage(userId, topic_id, title, body);
 
     return res.redirect(`/app/message-boards/${topic.slug}`);
   } catch (err) {
@@ -183,11 +181,7 @@ async function postEditMessage(req, res, next) {
       return res.status(403).send("You are not the author of this message.");
     }
 
-    const updatedMessage = await updateMessage(
-      targetId,
-      title,
-      body,
-    );
+    const updatedMessage = await updateMessage(targetId, title, body);
 
     // Pass the updated message with 'is_edited' to the template
     return res.redirect(`/app/message-boards/${message.topic_slug}`);
@@ -224,7 +218,7 @@ async function postReplyMessage(req, res, next) {
       return res.status(404).send("Parent message not found.");
     }
 
-     const prefixedTitle = `↪ ${messageTitle}`;
+    const prefixedTitle = `↪ ${messageTitle}`;
 
     const replyMessage = await insertMessage(
       userId,

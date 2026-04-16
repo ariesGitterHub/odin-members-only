@@ -1,10 +1,8 @@
 -- Enum for user permission status
 CREATE TYPE permission_status_enum AS ENUM ('guest', 'member', 'admin');
 
-
 -- Enum for user member invites
 CREATE TYPE invite_decision_enum AS ENUM ('none', 'accepted', 'declined');
-
 
 -- Users
 CREATE TABLE users (
@@ -24,7 +22,6 @@ CREATE TABLE users (
   last_login_at TIMESTAMPTZ
 );
 
-
 -- User Profiles
 CREATE TABLE user_profiles (
   user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
@@ -43,14 +40,12 @@ CREATE TABLE user_profiles (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-
 -- App configurations for soft and hard deletes
 CREATE TABLE app_config (
   key TEXT PRIMARY KEY,
   value TEXT NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
-
 
 -- Topics 
 CREATE TABLE topics (
@@ -63,7 +58,6 @@ CREATE TABLE topics (
   is_locked BOOLEAN NOT NULL DEFAULT false,
   sort_order INTEGER DEFAULT 0
 );
-
 
 -- Messages
 CREATE TABLE messages (
@@ -87,7 +81,6 @@ CREATE TABLE messages (
   deleted_at TIMESTAMPTZ
 );
 
-
 -- Message Likes
 CREATE TABLE message_likes (
   message_id INTEGER NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
@@ -95,7 +88,6 @@ CREATE TABLE message_likes (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   PRIMARY KEY (message_id, user_id)
 );
-
 
 -- Trigger function to update like_count
 CREATE OR REPLACE FUNCTION update_like_count()
@@ -114,13 +106,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
 -- Trigger on message_likes table
 CREATE TRIGGER trigger_like_count
 AFTER INSERT OR DELETE ON message_likes
 FOR EACH ROW
 EXECUTE FUNCTION update_like_count();
-
 
 -- Trigger function to update reply_count
 CREATE OR REPLACE FUNCTION update_reply_count()
@@ -138,7 +128,6 @@ BEGIN
   RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
-
 
 -- Sessions
 CREATE TABLE sessions (

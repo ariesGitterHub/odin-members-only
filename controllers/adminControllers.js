@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const { usStates } = require("../utils/usStates");
-const passwordRules = require("../config/passwordRules"); 
+const passwordRules = require("../config/passwordRules");
 const {
   getUsersForAdmin,
   getUserByIdForAdmin,
@@ -139,8 +139,6 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
 
     return res.redirect("/app/admin?success=site-settings-updated");
   } catch (err) {
-    console.error("Error updating site settings:", err);
-
     return next(err);
   }
 }
@@ -159,68 +157,7 @@ async function getAdminCreatePage(req, res, next) {
   }
 }
 
-// async function postAdminCreatePage(req, res, next) {
-//   const {
-//     first_name,
-//     last_name,
-//     email,
-//     birthdate,
-//     password,
-//     confirm_password,
-//     notes,
-//   } = req.body;
-//   const errors = [];
-
-//   try {
-//     // Run middleware validation results
-//     const errors = validationResult(req);
-
-//     if (!errors.isEmpty()) {
-//       const formattedErrors = [];
-//       const seen = new Set();
-
-//       errors.array().forEach((err) => {
-//         if (!seen.has(err.path)) {
-//           formattedErrors.push({
-//             field: err.path,
-//             message: err.msg,
-//           });
-//           seen.add(err.path);
-//         }
-//       });
-
-//       return res.render("admin-create", {
-//         title: "Admin Create",
-//         errors: formattedErrors,
-//         formData: req.body || {},
-//         passwordRules,
-//         csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
-//       });
-//     }
-
-//     // Hash the password before saving
-//     const password_hash = await bcrypt.hash(password, 12);
-
-//     const notesSafe = notes || "Admin created user.";
-
-//     await insertAdminCreatedUser(
-//       first_name,
-//       last_name,
-//       email,
-//       birthdate,
-//       password_hash,
-//       notesSafe
-//     );
-
-//     return res.redirect("/app/admin");
-//   } catch (err) {
-//     next(err);
-//   }
-// }
-
 async function postAdminCreatePage(req, res, next) {
-  const errors = [];
-
   try {
     // Run middleware validation results
     const errors = validationResult(req);
@@ -248,15 +185,15 @@ async function postAdminCreatePage(req, res, next) {
       });
     }
 
-      const {
-        first_name,
-        last_name,
-        email,
-        birthdate,
-        password,
-        confirm_password,
-        notes,
-      } = req.body;
+    const {
+      first_name,
+      last_name,
+      email,
+      birthdate,
+      password,
+      confirm_password,
+      notes,
+    } = req.body;
 
     // Hash the password before saving
     const password_hash = await bcrypt.hash(password, 12);
@@ -277,7 +214,6 @@ async function postAdminCreatePage(req, res, next) {
     next(err);
   }
 }
-
 
 // CONTROLLER: ADMIN EDIT PAGE (admin-edit.ejs)
 async function getAdminEditPage(req, res, next) {
@@ -301,128 +237,15 @@ async function getAdminEditPage(req, res, next) {
       errors: [],
       formData: userProfile,
       passwordRules,
-    }); 
+    });
   } catch (err) {
     next(err);
   }
 }
 
-// async function postAdminEditPage(req, res, next) {
-//   try {
-//     const userProfileId = parseInt(req.params.id, 10); // the user being edited
-//     const userProfile = await getUserByIdForAdmin(userProfileId); // // The profile of the user the admin is looking at, avoids collision with header's use of "user".
-//     const siteControls = await getAllSiteControls();
-
-//     if (!userProfile) return res.status(404).send("User profile not found");
-
-//     const {
-//       first_name,
-//       last_name,
-//       email,
-//       birthdate,
-//       password,
-//       confirm_password,
-//       permission_status,
-//       verified_by_admin,
-//       guest_upgrade_invite,
-//       invite_decision,
-//       is_active,
-//       avatar_type,
-//       avatar_color_fg,
-//       avatar_color_bg_top,
-//       avatar_color_bg_bottom,
-//       phone,
-//       street_address,
-//       apt_unit,
-//       city,
-//       us_state,
-//       zip_code,
-//       notes,
-//     } = req.body;
-
-//     // Run validation from middleware
-//     const errors = validationResult(req);
-
-//     if (!errors.isEmpty()) {
-//       const formattedErrors = [];
-//       const seen = new Set();
-
-//       errors.array().forEach((err) => {
-//         if (!seen.has(err.path)) {
-//           formattedErrors.push({
-//             field: err.path,
-//             message: err.msg,
-//           });
-//           seen.add(err.path);
-//         }
-//       });
-
-//       return res.render("admin-edit", {
-//         title: "Admin Edit",
-//         userProfile,
-//         config: siteControls,
-//         errors: formattedErrors,
-//         formData: req.body || {},
-//         usStates,
-//         passwordRules,
-//         csrfToken: req.csrfToken(), // Even though this is global for GET, putting this here explicitly to handle errors when validationCreateUser or validationEditUser catches an incorrect email, password, or confirm_password is used; without this here a 500 error pops off!
-//       });
-//     }
-
-//     // Sanitize fields
-//     // const sanitize = (v) => (v === "" ? null : v);
-//     // const sanitize = (v) => (typeof v === "string" ? v.trim() : v);
-//     const sanitize = (v) =>
-//       typeof v === "string" ? (v.trim() === "" ? null : v.trim()) : v;
-
-//     const toBool = (v) => {
-//       if (v === undefined || v === null) return null;
-//       if (typeof v === "boolean") return v;
-//       return v === "true";
-//     };
-
-//     const safeVerifiedByAdmin = toBool(verified_by_admin);
-//     const safeGuestUpgradeInvite = toBool(guest_upgrade_invite);
-//     const safeIsActive = toBool(is_active);
-
-//     // If updateAdminEditedUser function tries to hash or validate an empty string, it may fail silently or throw, which could redirect to login depending on error handling.
-//     const passwordToUpdate = password ? password : null;
-
-//     await updateAdminEditedUser(
-//       userProfileId,
-//       sanitize(first_name),
-//       sanitize(last_name),
-//       sanitize(email),
-//       sanitize(birthdate),
-//       //   password, // hashed inside updateAdminEditedUser if provided
-//       passwordToUpdate,
-//       permission_status,
-//       safeVerifiedByAdmin,
-//       safeGuestUpgradeInvite,
-//       invite_decision,
-//       safeIsActive,
-//       sanitize(avatar_type),
-//       sanitize(avatar_color_fg),
-//       sanitize(avatar_color_bg_top),
-//       sanitize(avatar_color_bg_bottom),
-//       sanitize(phone),
-//       sanitize(street_address),
-//       sanitize(apt_unit),
-//       sanitize(city),
-//       sanitize(us_state),
-//       sanitize(zip_code),
-//       sanitize(notes),
-//     );
-
-//     return res.redirect("/app/admin");
-//   } catch (err) {
-//     next(err);
-//   }
-// }
-
 async function postAdminEditPage(req, res, next) {
   try {
-    const userProfileId = parseInt(req.params.id, 10); // the user being edited
+    const userProfileId = parseInt(req.params.id, 10); // Params Id of the user being edited
     const userProfile = await getUserByIdForAdmin(userProfileId); // // The profile of the user the admin is looking at, avoids collision with header's use of "user".
     const siteControls = await getAllSiteControls();
 
@@ -444,7 +267,7 @@ async function postAdminEditPage(req, res, next) {
           seen.add(err.path);
         }
       });
-console.log(req.body);
+
       return res.render("admin-edit", {
         title: "Admin Edit",
         userProfile,
@@ -482,6 +305,16 @@ console.log(req.body);
       notes,
     } = req.body;
 
+    // Sanitize fields here since Boolean sanitization not working as expected in middleware/sanitizeUserFields.js
+    const toBool = (v) => {
+      if (v === undefined || v === null) return null;
+      if (typeof v === "boolean") return v;
+      return v === "true";
+    };
+
+    const safeVerifiedByAdmin = toBool(verified_by_admin);
+    const safeGuestUpgradeInvite = toBool(guest_upgrade_invite);
+    const safeIsActive = toBool(is_active);
 
     // If updateAdminEditedUser function tries to hash or validate an empty string, it may fail silently or throw, which could redirect to login depending on error handling.
     const passwordToUpdate = password ? password : null;
@@ -495,10 +328,13 @@ console.log(req.body);
       //   password, // hashed inside updateAdminEditedUser if provided
       passwordToUpdate,
       permission_status,
-      verified_by_admin,
-      guest_upgrade_invite,
+      // verified_by_admin, // Using below since Boolean sanitization not working as expected in middleware/sanitizeUserFields.js
+      safeVerifiedByAdmin,
+      // guest_upgrade_invite, // Using below since Boolean sanitization not working as expected in middleware/sanitizeUserFields.js
+      safeGuestUpgradeInvite,
       invite_decision,
-      is_active,
+      // is_active, // Using below since Boolean sanitization not working as expected in middleware/sanitizeUserFields.js
+      safeIsActive,
       avatar_type,
       avatar_color_fg,
       avatar_color_bg_top,
@@ -512,7 +348,6 @@ console.log(req.body);
       notes,
     );
 
-    // console.log(req.body);
     return res.redirect("/app/admin");
   } catch (err) {
     next(err);
@@ -525,7 +360,7 @@ async function deleteUserAccount(req, res, next) {
     const { targetId } = req.body;
 
     await deleteUserById(targetId);
-    
+
     res.redirect("/app/admin");
   } catch (err) {
     next(err);

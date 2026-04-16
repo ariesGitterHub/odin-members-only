@@ -1,7 +1,6 @@
 const pool = require("../pool");
 
 // QUERY: GET ALL MESSAGES
-
 const getMessages = async () => {
   const query = `
     SELECT *
@@ -18,7 +17,6 @@ const getMessages = async () => {
 };
 
 // QUERY: GET MESSAGES BY ID
-
 const getMessageById = async (targetId) => {
   const query = `
   SELECT 
@@ -53,10 +51,10 @@ const getMessageById = async (targetId) => {
   const res = await pool.query(query, [targetId]);
 
   if (res.rowCount === 0) {
-    return null; // not found
+    return null; // Not found
   }
 
-  return res.rows[0]; // the message object
+  return res.rows[0]; // The message object
 };
 
 // QUERY: GET TOPICS BY ID
@@ -74,7 +72,6 @@ const getTopicById = async (topic_id) => {
 };
 
 // QUERY: GET TOPIC LIST FOR DROPDOWN IN NEW MESSAGE (new-message.ejs)
-
 const getTopicNames = async () => {
   const { rows } = await pool.query(`
     SELECT id, name, required_permission
@@ -87,7 +84,6 @@ const getTopicNames = async () => {
 };
 
 // QUERY: INSERT INTO NEW MESSAGE (new-message.ejs) OR REPLY MESSAGE (reply-message.ejs)
-
 const insertMessage = async (
   user_id,
   topic_id,
@@ -145,7 +141,6 @@ const insertMessage = async (
 
       // Set proper thread_path
       // Update thread_path after insert (this could be done at insert time, depending on DB)
-
       const threadPath = `${parentPath}/${messageId}`;
       await client.query(`UPDATE messages SET thread_path = $1 WHERE id = $2`, [
         threadPath,
@@ -163,7 +158,6 @@ const insertMessage = async (
 };
 
 // QUERY: TOPICS FOR MESSAGE BOARD (message-boards.ejs)
-
 const getAllTopics = async () => {
   const { rows } = await pool.query(`
     SELECT
@@ -182,7 +176,6 @@ const getAllTopics = async () => {
 };
 
 // QUERY TOPIC SLUGS FOR MESSAGE BOARD TOPIC ROUTES (topic.ejs and message-card.ejs)
-
 const getTopicBySlug = async (slug) => {
   const query = `
     SELECT *
@@ -246,7 +239,6 @@ const getTopicBySlug = async (slug) => {
 // };
 
 // QUERY: MESSAGES BY TOPIC (topic.ejs and message-card.ejs) - THREAD PATH APPROACH
-
 // This uses the thread path approach; contrast with simple, flat threads above
 const getValidMessagesByTopic = async (topicId, userId, limit = 50) => {
   const query = `
@@ -292,7 +284,6 @@ const getValidMessagesByTopic = async (topicId, userId, limit = 50) => {
 };
 
 // QUERY: UPDATE MESSAGE (edit-message.ejs)
-
 const updateMessage = async (targetId, title, body) => {
   const client = await pool.connect();
   const queryText = `
@@ -322,7 +313,6 @@ const updateMessage = async (targetId, title, body) => {
 };
 
 // QUERY: STICKY BUTTON FOR MESSAGES (message-card.ejs)
-
 const stickyMessageById = async (message_id) => {
   const client = await pool.connect();
   try {
@@ -343,7 +333,6 @@ const stickyMessageById = async (message_id) => {
 };
 
 // QUERY: DELETE MESSAGE BUTTON BY USER OR ADMIN (message-card.ejs)
-
 const softDeleteMessageById = async (targetId) => {
   const query = `
     UPDATE messages
@@ -357,7 +346,6 @@ const softDeleteMessageById = async (targetId) => {
 };
 
 // QUERY: REPLY MESSAGE BUTTON INCREMENTOR (message-card.ejs)
-
 const incrementReplyCount = async (parent_message_id) => {
   const client = await pool.connect();
   try {
@@ -378,7 +366,6 @@ const incrementReplyCount = async (parent_message_id) => {
 };
 
 // QUERY: LIKE MESSAGE BUTTON (message-card.ejs)
-
 const toggleLike = async (messageId, userId) => {
   const client = await pool.connect();
   try {

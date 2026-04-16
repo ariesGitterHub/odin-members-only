@@ -1,10 +1,4 @@
 // Fetch data with user.id
-// export async function fetchUserData(targetId) {
-//   const response = await fetch(`/app/user/${targetId}`);
-//   if (!response.ok) throw new Error("Failed to fetch user");
-//   return await response.json();
-// }
-// Fetch data with user.id
 export async function fetchUserId(targetId) {
   const response = await fetch(`/app/user-id/${targetId}`);
   if (!response.ok) throw new Error("Failed to fetch user id");

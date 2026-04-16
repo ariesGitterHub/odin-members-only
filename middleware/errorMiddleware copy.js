@@ -15,7 +15,11 @@ module.exports = (err, req, res, next) => {
   } else if (status === 401) {
     title = "401 - Unauthorized";
     message = err.message || "You must be logged in to access this page.";
-  } else if (status === 403 && err.message && err.message.includes("disabled")) {
+  } else if (
+    status === 403 &&
+    err.message &&
+    err.message.includes("disabled")
+  ) {
     title = "403 - Forbidden";
     message =
       err.message || "Your account is disabled. Please contact support."; // Custom error if user.is_active is false

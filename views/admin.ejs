@@ -6,136 +6,129 @@
   <body>
     <%- include('./partials/header.ejs') %>
     <main>
-    <%# userProfiles.forEach(function(userProfile) { %>  
       <div class="page-title-off-card uppercase">
         <h1>admin panel</h1>
       </div>
       <div id="admin-controls" class="element-container-col-default flex-gap">
-        <!-- <div class="button-container-col"> -->
-          <%# if (userProfile && userProfile.permission_status === "admin") { %>
-            <a class="button-default wide-button admin-control-button" href="/app/admin-create">create new user</a>
-            <button id="site-controls-button" class="button-default wide-button" type="button">open site controls</button>
-            <div id="site-controls-div" class="<%= (query.success || query.error) ? '' : 'hidden' %>">
-              <% if (query.success === "site-settings-updated") { %>
-                <div class="element-container-row-default success-message">[site settings saved.]</div>
-              <% } %>
-              <% if (query.error === "invalid-input") { %>
-                <div class="element-container-row-default error-message">[site changes failed.]</div>
-              <% } %>
-              <form id="site-controls-form" action="/app/admin/config/site-controls" method="POST">
-                <%# CSRF Token - hidden input for forms %>
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <fieldset>
-                  <h3>message retention</h3>
-                  <div class="element-container-row-default flex-gap">                  
-                    <label>soft delete (days):</label>
-                    <input class="text-align-right" type="number" name="message_soft_delete_days" value="<%= config.message_soft_delete_days %>" min="0" />
-                  </div>
-                  <div class="element-container-row-default flex-gap">                  
-                    <label>hard delete (days):</label>
-                    <input class="text-align-right" type="number" name="message_hard_delete_days" value="<%= config.message_hard_delete_days %>" min="0" />
-                  </div>
-                </fieldset>
-                <fieldset>
-                  <h3>session retention</h3>
-                  <div class="element-container-row-default flex-gap">                  
-                    <label>hard delete (days):</label>
-                    <input class="text-align-right" type="number" name="session_hard_delete_days" value="<%= config.session_hard_delete_days %>" min="0" />
-                  </div>
-                </fieldset>
-                <fieldset>
-                  <h3>sign-up rate limit</h3>
-                  <div class="element-container-row-default flex-gap">                  
-                    <label>window (minutes):</label>
-                    <input class="text-align-right" type="number" name="signup_limit_window_minutes" value="<%= config.signup_limit_window_minutes %>" min="0" />
-                  </div>
-                    <div class="element-container-row-default flex-gap">                  
-                    <label>maximum users:</label>
-                    <input class="text-align-right" type="number" name="signup_limit_max_users" value="<%= config.signup_limit_max_users %>" min="0" />
-                  </div>
-                </fieldset>
-                <fieldset>
-                  <h3>log-in rate limit</h3>
-                  <div class="element-container-row-default flex-gap">                  
-                    <label>window (minutes):</label>
-                    <input class="text-align-right" type="number" name="login_limit_window_minutes" value="<%= config.login_limit_window_minutes %>" min="0" />
-                  </div>
-                    <div class="element-container-row-default flex-gap">                  
-                    <label>maximum users:</label>
-                    <input class="text-align-right" type="number" name="login_limit_max_users" value="<%= config.login_limit_max_users %>" min="0" />
-                  </div>
-                </fieldset>
-                <fieldset>
-                  <h3>Message Limit</h3>
-                  <div class="element-container-row-default flex-gap">                  
-                    <label>maximum characters:</label>
-                    <input class="text-align-right" type="number" name="max_message_chars" value="<%= config.max_message_chars %>" min="100" />
-                  </div>
-                </fieldset>
-                <fieldset>
-                  <h3>Maintenance Mode</h3>
-                  <div class="element-container-row-default">
-                    <label for="maintenance_mode" hidden>save to enable changes</label>
-                    <p class="uppercase margin-right <%= config.maintenance_mode ? 'font-color-gray' : 'font-color-red' %>"><%= config.maintenance_mode ? '---' : 'off' %></p>
-                    <label class="switch">
-                      <input type="checkbox" name="maintenance_mode" value="on" <% if(config.maintenance_mode) { %>checked<% } %> />
-                      <span class="slider round"></span>
-                    </label>
-                    <p class="uppercase margin-left <%= config.maintenance_mode ? 'font-color-green' : 'font-color-gray' %>"><%= config.maintenance_mode ? 'on' : '---' %></p>
-                  </div>
-                </fieldset>
-                <fieldset>
-                  <h3>Permission Emojis</h3>
-                  <div class="element-container-row-space-evenly flex-gap">
-                    <div class="element-container-col-default">
-                      <label for="admin_emoji">Admin</label>
-                      <input class="text-align-center" type="text" name="admin_emoji" value="<%= config.admin_emoji %>">
-                    </div>
-                    <div class="element-container-col-default">
-                      <label for="member_emoji">Member</label>
-                      <input class="text-align-center" type="text" name="member_emoji" value="<%= config.member_emoji %>">
-                    </div>
-                    <div class="element-container-col-default">
-                      <label for="guest_emoji">Guest</label>
-                      <input class="text-align-center" type="text" name="guest_emoji" value="<%= config.guest_emoji %>">
-                    </div>
-                  </div>
-                </fieldset>
-                <div class="button-container-col">
-                  <button class="button-default wide-button" type="submit">save site settings</button>                  
+        <a class="button-default wide-button admin-control-button" href="/app/admin-create">create new user</a>
+        <button id="site-controls-button" class="button-default wide-button" type="button">open site controls</button>
+        <div id="site-controls-div" class="<%= (query.success || query.error) ? '' : 'hidden' %>">
+          <% if (query.success === "site-settings-updated") { %>
+            <div class="element-container-row-default success-message">[site settings saved.]</div>
+          <% } %>
+          <% if (query.error === "invalid-input") { %>
+            <div class="element-container-row-default error-message">[site changes failed.]</div>
+          <% } %>
+          <form id="site-controls-form" action="/app/admin/config/site-controls" method="POST">
+            <%# CSRF Token - hidden input for forms %>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <fieldset>
+              <h3>message retention</h3>
+              <div class="element-container-row-default flex-gap">                  
+                <label>soft delete (days):</label>
+                <input class="text-align-right" type="number" name="message_soft_delete_days" value="<%= config.message_soft_delete_days %>" min="0" />
+              </div>
+              <div class="element-container-row-default flex-gap">                  
+                <label>hard delete (days):</label>
+                <input class="text-align-right" type="number" name="message_hard_delete_days" value="<%= config.message_hard_delete_days %>" min="0" />
+              </div>
+            </fieldset>
+            <fieldset>
+              <h3>session retention</h3>
+              <div class="element-container-row-default flex-gap">                  
+                <label>hard delete (days):</label>
+                <input class="text-align-right" type="number" name="session_hard_delete_days" value="<%= config.session_hard_delete_days %>" min="0" />
+              </div>
+            </fieldset>
+            <fieldset>
+              <h3>sign-up rate limit</h3>
+              <div class="element-container-row-default flex-gap">                  
+                <label>window (minutes):</label>
+                <input class="text-align-right" type="number" name="signup_limit_window_minutes" value="<%= config.signup_limit_window_minutes %>" min="0" />
+              </div>
+                <div class="element-container-row-default flex-gap">                  
+                <label>maximum users:</label>
+                <input class="text-align-right" type="number" name="signup_limit_max_users" value="<%= config.signup_limit_max_users %>" min="0" />
+              </div>
+            </fieldset>
+            <fieldset>
+              <h3>log-in rate limit</h3>
+              <div class="element-container-row-default flex-gap">                  
+                <label>window (minutes):</label>
+                <input class="text-align-right" type="number" name="login_limit_window_minutes" value="<%= config.login_limit_window_minutes %>" min="0" />
+              </div>
+                <div class="element-container-row-default flex-gap">                  
+                <label>maximum users:</label>
+                <input class="text-align-right" type="number" name="login_limit_max_users" value="<%= config.login_limit_max_users %>" min="0" />
+              </div>
+            </fieldset>
+            <fieldset>
+              <h3>Message Limit</h3>
+              <div class="element-container-row-default flex-gap">                  
+                <label>maximum characters:</label>
+                <input class="text-align-right" type="number" name="max_message_chars" value="<%= config.max_message_chars %>" min="100" />
+              </div>
+            </fieldset>
+            <fieldset>
+              <h3>Maintenance Mode</h3>
+              <div class="element-container-row-default">
+                <label for="maintenance_mode" hidden>save to enable changes</label>
+                <p class="uppercase margin-right <%= config.maintenance_mode ? 'font-color-gray' : 'font-color-red' %>"><%= config.maintenance_mode ? '---' : 'off' %></p>
+                <label class="switch">
+                  <input type="checkbox" name="maintenance_mode" value="on" <% if(config.maintenance_mode) { %>checked<% } %> />
+                  <span class="slider round"></span>
+                </label>
+                <p class="uppercase margin-left <%= config.maintenance_mode ? 'font-color-green' : 'font-color-gray' %>"><%= config.maintenance_mode ? 'on' : '---' %></p>
+              </div>
+            </fieldset>
+            <fieldset>
+              <h3>Permission Emojis</h3>
+              <div class="element-container-row-space-evenly flex-gap">
+                <div class="element-container-col-default">
+                  <label for="admin_emoji">Admin</label>
+                  <input class="text-align-center" type="text" name="admin_emoji" value="<%= config.admin_emoji %>">
                 </div>
-              </form>
-            </div>
-            <button id="site-statistics-button" class="button-default wide-button" type="button">open site statistics</button>
-            <div id="site-statistics-div" class="element-container-row-space-evenly  hidden">
-              <div class="element-container-col-start-center">
-                <h3 class="uppercase">users</h3>
-                <div class="element-container-col-start-center">
-                  <p class="underline"><%= userProfiles.length %> total users</p>  
-                  <p><%= userProfiles.filter(userProfile => userProfile.permission_status === "guest").length %> total guests</p>
-                  <p><%= userProfiles.filter(userProfile => userProfile.permission_status === "member").length %> total members</p>
-                  <p><%= userProfiles.filter(userProfile => userProfile.permission_status === "admin").length %> total admin(s)</p>
-                  <p><%= userProfiles.filter(userProfile => userProfile.is_active === false).length %> total inactive</p>                   
-                </div>                   
+                <div class="element-container-col-default">
+                  <label for="member_emoji">Member</label>
+                  <input class="text-align-center" type="text" name="member_emoji" value="<%= config.member_emoji %>">
+                </div>
+                <div class="element-container-col-default">
+                  <label for="guest_emoji">Guest</label>
+                  <input class="text-align-center" type="text" name="guest_emoji" value="<%= config.guest_emoji %>">
+                </div>
               </div>
-              <div class="element-container-col-start-center">
-                <h3 class="uppercase">messages</h3>
-                <div class="element-container-col-start-center">
-                  <p class="underline"><%= messages.length %> total messages</p>  
-                  <p><%= messages.filter(message => message.parent_message_id).length %> total replies</p>
-                  <p><%= messages.filter(message => message.is_edited).length %> total edited</p>
-                  <p><%= messages.filter(message => message.is_deleted).length %> total deleted</p>
-                  <p><%= messages.filter(message => message.is_sticky).length %> total pinned</p>                   
-                </div>                   
-              </div>
+            </fieldset>
+            <div class="button-container-col">
+              <button class="button-default wide-button" type="submit">save site settings</button>                  
             </div>
-            <button id="show-guests-button" class="button-default wide-button" type="button">open guest profiles</button>
-            <button id="show-members-button" class="button-default wide-button" type="button">open member profiles</button>
-          <%# } %> 
-          <!-- <button class="button-default wide-button show-profile-button" type="button">open this profile</button> -->
-        <!-- </div> -->
+          </form>
+        </div>
+        <button id="site-statistics-button" class="button-default wide-button" type="button">open site statistics</button>
+        <div id="site-statistics-div" class="element-container-row-space-evenly  hidden">
+          <div class="element-container-col-start-center">
+            <h3 class="uppercase">users</h3>
+            <div class="element-container-col-start-center">
+              <p class="underline"><%= userProfiles.length %> total users</p>  
+              <p><%= userProfiles.filter(userProfile => userProfile.permission_status === "guest").length %> total guests</p>
+              <p><%= userProfiles.filter(userProfile => userProfile.permission_status === "member").length %> total members</p>
+              <p><%= userProfiles.filter(userProfile => userProfile.permission_status === "admin").length %> total admin(s)</p>
+              <p><%= userProfiles.filter(userProfile => userProfile.is_active === false).length %> total inactive</p>                   
+            </div>                   
+          </div>
+          <div class="element-container-col-start-center">
+            <h3 class="uppercase">messages</h3>
+            <div class="element-container-col-start-center">
+              <p class="underline"><%= messages.length %> total messages</p>  
+              <p><%= messages.filter(message => message.parent_message_id).length %> total replies</p>
+              <p><%= messages.filter(message => message.is_edited).length %> total edited</p>
+              <p><%= messages.filter(message => message.is_deleted).length %> total deleted</p>
+              <p><%= messages.filter(message => message.is_sticky).length %> total pinned</p>                   
+            </div>                   
+          </div>
+        </div>
+        <button id="show-guests-button" class="button-default wide-button" type="button">open guest profiles</button>
+        <button id="show-members-button" class="button-default wide-button" type="button">open member profiles</button>
       </div>
-      
       <div class="large-screen-flex-row">
       <% userProfiles.forEach(function(userProfile) { %>
         <div class="card

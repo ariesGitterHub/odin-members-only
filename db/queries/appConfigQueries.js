@@ -1,7 +1,6 @@
 const pool = require("../pool");
 
 // QUERY: GET CONFIG SETTINGS
-
 const getAllSiteControls = async () => {
   const keysToFetch = [
     "message_soft_delete_days",
@@ -43,7 +42,6 @@ const getAllSiteControls = async () => {
 };
 
 // QUERY: UPDATE CONFIG SETTINGS
-
 const updateAllSiteControls = async (
   messageSoft,
   messageHard,

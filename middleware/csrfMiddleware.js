@@ -13,9 +13,9 @@ const csrfProtection = csurf({
 const csrfTokenMiddleware = (req, res, next) => {
   // Add the CSRF token to res.locals for all GET requests
   if (req.method === "GET") {
-    res.locals.csrfToken = req.csrfToken();  // Store CSRF token in locals
+    res.locals.csrfToken = req.csrfToken(); // Store CSRF token in locals
   }
-  next();  // Proceed to the next middleware
+  next(); // Proceed to the next middleware
 };
 
 // Custom error handler for CSRF errors
