@@ -58,7 +58,6 @@ export async function handleModalOpen(targetId, sectionId, titleId) {
     // Check if targetId exists (not null or undefined)
     if (targetId != null && targetId !== "") {
       if (sectionId === "modal-new-message") {
-        // const fullUser = await fetchFullUserData(targetId);
         const user = await fetchModalData(targetId);
         const topic = await fetchTopicNameData();
         populateNewMessage(user);
@@ -67,7 +66,6 @@ export async function handleModalOpen(targetId, sectionId, titleId) {
       }
 
       if (sectionId === "modal-reply-message") {
-        // const fullUser = await fetchFullUserData(targetId);
         const user = await fetchModalData(targetId);
         const message = await fetchMessageData(targetId);
         populateReplyMessage(user, message);
@@ -75,7 +73,6 @@ export async function handleModalOpen(targetId, sectionId, titleId) {
       }
 
       if (sectionId === "modal-edit-message") {
-        // const fullUser = await fetchFullUserData(targetId);
         const user = await fetchModalData(targetId);
         const message = await fetchMessageData(targetId);
         populateEditMessage(user, message);
@@ -83,7 +80,6 @@ export async function handleModalOpen(targetId, sectionId, titleId) {
       }
 
       if (sectionId === "modal-warning-account-deletion") {
-        // const user = await fetchUserData(targetId);
         const userId = await fetchUserId(targetId);
         populateWarningAccountDeletion(userId);
         openModal(sectionId, titleId);

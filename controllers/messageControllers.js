@@ -89,22 +89,48 @@ async function getTopicPage(req, res, next) {
 }
 
 // CONTROLLER: MESSAGE DETAILS - TODO - this needs permission_status restrictions
+
 async function getMessageDetails(req, res, next) {
   try {
-    if (!req.user) {
+    // Ensure the user is authenticated
+    if (!req.user || !req.user.permission_status) {
       return res.redirect("/app/log-in");
     }
 
+    // Fetch the message by ID (including the required permission from the topic)
     const message = await getMessageById(req.params.id);
 
+    // If message not found, return 404
     if (!message) {
       return res.status(404).send("Message not found");
     }
 
+    // Enum values for permission_status (adjust if you have more)
+    const requiredPermission = message.required_permission; // from message.topic
+    const userPermission = req.user.permission_status; // from user session or JWT
+
+    // Check if the user's permission status matches the required permission for the message
+    if (!isPermissionValid(userPermission, requiredPermission)) {
+      return res.status(403).send("Permission status is insufficient");
+    }
+
+    // If the user has the required permission, return the message
     return res.json(message);
   } catch (err) {
-    next(err);
+    next(err); // Pass the error to the next middleware (error handler)
   }
+}
+
+// Helper function to check if the user's permission is sufficient
+function isPermissionValid(userPermission, requiredPermission) {
+  // You can adjust the logic here depending on how your permissions are ranked
+  const permissionHierarchy = ["guest", "member", "admin"]; // assuming 'admin' > 'member' > 'guest'
+
+  // Check if the user's permission rank is >= required permission rank
+  return (
+    permissionHierarchy.indexOf(userPermission) >=
+    permissionHierarchy.indexOf(requiredPermission)
+  );
 }
 
 // CONTROLLER: GET MAX CHARS FOR USE IN FRONTEND FILE miscFunctions.js VIA FETCH IN dataFetchers.js

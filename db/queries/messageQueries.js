@@ -40,7 +40,8 @@ const getMessageById = async (targetId) => {
     u.last_name,
     u.email,
     t.name AS topic_name,
-    t.slug AS topic_slug
+    t.slug AS topic_slug,
+    t.required_permission
   FROM messages m
   JOIN users u ON m.user_id = u.id 
   LEFT JOIN topics t ON m.topic_id = t.id 
