@@ -16,3 +16,6 @@ node_modules/
 
 # Environment variables
 .env
+
+# Keep old seed file, but remove from git 
+other/seed - old.sql
