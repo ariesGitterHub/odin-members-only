@@ -1,5 +1,6 @@
 // *** FIRST!
 require("dotenv").config(); // Load environment variables
+// const bcrypt = require("bcryptjs"); // Uncomment out if using to make a hash, see far below
 
 // *** Global process error handlers (uncaught sync errors + unhandled promise rejections)
 
@@ -20,25 +21,21 @@ require("./config/passport")(passport); // This initializes the Passport strateg
 
 // *** Imports at the top
 const express = require("express");
-const morgan = require("morgan");
+// const morgan = require("morgan");
 const cookieParser = require("cookie-parser"); // Required for cookie-based token storage
 const path = require("node:path");
 const session = require("express-session");
 const helmet = require("helmet");
 const crypto = require("crypto");
 
-// const { runRetentionJobs } = require("./jobs/retentionJobs"); // TODO - FOR DEV ONLY
 const requireUserIsActive = require("./middleware/requireUserIsActive")
 const {
   csrfProtection,
   csrfTokenMiddleware,
   csrfErrorHandler,
 } = require("./middleware/csrfMiddleware"); // Import CSRF middleware
-// const setFullUser = require("./middleware/setFullUser"); // Import the middleware
 const setPermissions = require("./middleware/setPermissions");
 const appRouter = require("./routes/appRouter");
-
-// const PORT = process.env.PORT || 3000;
 
 // *** Create the app
 const app = express();
@@ -48,8 +45,6 @@ const app = express();
 //   app.use(morgan("dev"));
 // }
 
-// *** Express-rate-limit middleware
-
 //CORS is not needed at all. My fetch/ajax requests from main.js to my backend routes are same-origin, so they won’t be blocked by the browser. I don’t need the cors middleware unless I (big IF too, later) serve my frontend from a completely separate domain or port.
 
 // *** App.config - boilerplate app configurations
@@ -57,7 +52,7 @@ app.use(express.static(__dirname + "/public"));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-// *** Middleware tp parse body
+// *** Middleware to parse body
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -122,6 +117,7 @@ app.use((req, res, next) => {
   res.locals.user = req.user || null;
   next();
 });
+
 // app.use(setFullUser);
 app.use(setPermissions);
 
@@ -153,40 +149,11 @@ app.use((req, res, next) => {
 // *** Centralized Error Handling Middleware (Generic Error and 404)
 app.use(require("./middleware/errorMiddleware")); // Handle both 404 and other errors here
 
-// *** Use to generate random codes when needed
+// *** Use to generate random codes when needed - comment out and keep
 // const secret = crypto.randomBytes(64).toString("hex");
 // console.log(secret);
 
-// *** Start cron jobs
-// require("./cron/retentionScheduler"); // <-- this schedules the daily retention job
-
-// (async () => {
-//   try {
-//     await runRetentionJobs(); // ensures any missed deletions happen on startup
-//     console.log("Retention job run on server start");
-//   } catch (err) {
-//     console.error("Error running retention job on startup:", err);
-//   }
-// })();
-
-// Extracting app.listen into server.js
-
-
+// *** Use to generate a hash when needed - comment out and keep
+// bcrypt.hash("ENTER DESIRED PASSWORD HERE", 12).then(console.log);
 
 module.exports = app;
-
-// *** Start Server
-// app.listen(PORT, (error) => {
-//   if (error) {
-//     throw error;
-//   } console.log(`Listening on port ${PORT}!`);
-// });
-
-// Use this instead of above for app.listen
-// const server = app.listen(PORT, () => {
-//   console.log(`👂 Listening on port ${PORT}`);
-// });
-
-// server.on("error", (err) => {
-//   console.error("Something went wrong starting the server:", err);
-// });

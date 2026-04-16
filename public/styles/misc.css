@@ -23,7 +23,6 @@
   background-color: var(--lt-yellow);
 }
 
-
 /* Font color */
 
 .font-color-black {
@@ -46,13 +45,11 @@
   color: var(--off-red);
 }
 
-
 /* Font size */
 
 .font-size-small {
   font-size: var(--font-size-small);
 }
-
 
 /* Font style */
 
@@ -64,7 +61,6 @@
   text-decoration: underline;
 }
 
-
 /* Font weight */
 
 .bold {
@@ -74,7 +70,6 @@
 .regular {
   font-weight: var(--font-weight-light);
 }
-
 
 /* Font align */
 
@@ -86,14 +81,12 @@
   text-align: center;
 }
 
-
 /* Special text styling */
 
 .red-letter {
   color: var(--off-red);
   font-weight: var(--font-weight-heavy);
 }
-
 
 /* Word breakers to prevent field stretching by long single words like emails */
 
@@ -102,7 +95,6 @@
   overflow-wrap: break-word; /* Ensures long words also break if they overflow */
   word-break: break-all; /* Forces breaking of very long words */
 }
-
 
 /* Special border options */
 
@@ -135,11 +127,10 @@
   padding: var(--spacer-small);
 }
 
-
 /* Special spacing */
 
 .flex-gap {
-gap: var(--spacer-default);
+  gap: var(--spacer-default);
 }
 
 .flex-space-between {
@@ -163,9 +154,8 @@ gap: var(--spacer-default);
 }
 
 .width-full {
-  width: var(--width-default-percentage)
+  width: var(--width-default-percentage);
 }
-
 
 /* Force uniform emoji pointers in change-avatar.ejs */
 
@@ -176,7 +166,6 @@ input[type="radio"],
 input[type="color"] {
   cursor: pointer !important;
 }
-
 
 /* Make hidden */
 

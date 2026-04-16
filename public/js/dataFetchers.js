@@ -19,7 +19,7 @@ export async function fetchTopicNameData(targetId) {
   return await response.json();
 }
 
-// Fetch data with fullUser.id, TODO - FIX!!!! make this 
+// Fetch data with limited modal data
 export async function fetchModalData(targetId) {
   const response = await fetch("/app/modal-fetch");
   if (!response.ok) throw new Error("Failed to fetch user for modal");

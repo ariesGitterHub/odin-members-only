@@ -17,7 +17,7 @@ CREATE INDEX idx_messages_topic_created
   ON messages(topic_id, created_at DESC)
   WHERE is_deleted = false;
 
--- Speeds up expiration cleanup jobs
+-- Speeds up expiration cleanup jobs - No long needed, keep for reference
 -- CREATE INDEX idx_messages_expires
 --   ON messages(expires_at);
 
@@ -59,7 +59,7 @@ ON messages(topic_id, thread_path);
 CREATE INDEX idx_sessions_token
   ON sessions(session_token);
 
--- Speeds up session expiration cleanup
+-- Speeds up session expiration cleanup - No long needed, keep for reference
 -- CREATE INDEX idx_sessions_expires
 --   ON sessions(expires_at);
 

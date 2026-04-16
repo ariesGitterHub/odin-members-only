@@ -1,6 +1,5 @@
 /* UNIQUE TO ONE VIEW (GLOBAL CASES GO IN LAYOUT-BASICS.CSS) */
 
-
 /* -- index.ejs and maintenance.ejs*/
 
 .index-image {
@@ -11,12 +10,11 @@
   margin: var(--spacer-default);
 }
 
-
 /* -- admin.ejs */
 
 #admin-controls {
-width: var(--card-width);
-margin-bottom: var(--spacer-default);
+  width: var(--card-width);
+  margin-bottom: var(--spacer-default);
 }
 
 #admin-controls fieldset {
@@ -41,12 +39,14 @@ margin-bottom: var(--spacer-default);
   font-size: var(--font-size-default);
 }
 
-#admin-controls a, #admin-controls button[type="button"] {
+#admin-controls a,
+#admin-controls button[type="button"] {
   background-color: var(--lt-red);
   box-shadow: var(--box-shadow-red);
 }
 
-#admin-controls a:hover, #admin-controls button[type="button"]:hover {
+#admin-controls a:hover,
+#admin-controls button[type="button"]:hover {
   background-color: var(--dk-red);
 }
 
@@ -59,7 +59,8 @@ margin-bottom: var(--spacer-default);
   background-color: var(--dk-gray);
 }
 
-#site-controls-div, #site-statistics-div {
+#site-controls-div,
+#site-statistics-div {
   width: 96%;
   background-color: var(--off-black);
   border-radius: var(--border-radius-small);
@@ -139,11 +140,9 @@ margin-bottom: var(--spacer-default);
   border: var(--border-inactive-card);
 }
 
-
 /* -- admin-create.ejs */
 
 /* NONE */
-
 
 /* -- admin-edit.ejs */
 
@@ -156,7 +155,6 @@ margin-bottom: var(--spacer-default);
   min-width: fit-content;
 }
 
-
 /* -- info.ejs */
 
 .info-list {
@@ -167,9 +165,9 @@ margin-bottom: var(--spacer-default);
 }
 
 .info-list .info-button::before {
-    counter-increment: info-btn-counter; /* Increment counter */
-    content: counter(info-btn-counter) ". "; /* Display number */
-    font-weight: bold;
+  counter-increment: info-btn-counter; /* Increment counter */
+  content: counter(info-btn-counter) ". "; /* Display number */
+  font-weight: bold;
 }
 
 .info-list-card {
@@ -184,9 +182,7 @@ margin-bottom: var(--spacer-default);
   padding: var(--spacer-medium);
 }
 
-
 /* -- new-message.ejs, reply-message.ejs, edit-message.ejs; Moved to components*/
-
 
 /* -- message-boards.ejs */
 
@@ -225,7 +221,6 @@ margin-bottom: var(--spacer-default);
   border-top: var(--border-hr-top);
 }
 
-
 /* -- topic.ejs */
 
 .topic-card {
@@ -235,7 +230,6 @@ margin-bottom: var(--spacer-default);
   gap: var(--spacer-biggest);
   margin: var(--spacer-biggest);
 }
-
 
 /* -- message-card.ejs */
 
@@ -344,7 +338,6 @@ margin-bottom: var(--spacer-default);
 
 /* .message-button - see components.css */
 
-
 /* -- your-profile.ejs */
 
 .your-profile-card {
@@ -379,7 +372,6 @@ margin-bottom: var(--spacer-default);
   border-radius: var(--border-radius-default);
   padding: var(--spacer-big);
 }
-
 
 /* -- change-avatar.ejs */
 
@@ -484,7 +476,6 @@ margin-bottom: var(--spacer-default);
   font-weight: var(--font-weight-heavy);
 }
 
-
 /* -- error-page.ejs */
 
 .page-errors h1 {
@@ -494,4 +485,3 @@ margin-bottom: var(--spacer-default);
 .page-errors p {
   font-size: var(--font-size-largest);
 }
-
