@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "bootstrap.js",
-"scripts": {
-  "start": "node bootstrap.js",
-  "dev": "nodemon bootstrap.js",
-  "db:init": "node -r dotenv/config db.init.js",
-  "postinstall": "npm run db:init"
-},
+  "scripts": {
+    "db:schema": "node -r dotenv/config scripts/db-schema.js",
+    "db:seed": "node -r dotenv/config scripts/db-seed.js",
+    "db:init": "npm run db:schema && npm run db:seed",
+    "db:reset": "node -r dotenv/config scripts/db-reset.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon bootstrap.js",
+    "start": "node bootstrap.js",
+  
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ariesGitterHub/odin-members-only.git"
