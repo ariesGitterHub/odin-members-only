@@ -3,7 +3,7 @@ const app = require("./app");
 const { runRetentionJobs } = require("./jobs/retentionJobs");
 require("./cron/retentionScheduler");
 
-console.log("DATABASE_URL:", process.env.DATABASE_URL);
+// console.log("DATABASE_URL:", process.env.DATABASE_URL);
 
 const PORT = process.env.PORT || 3000;
 
