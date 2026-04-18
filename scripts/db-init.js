@@ -2,6 +2,12 @@ const fs = require("fs/promises");
 const { Client } = require("pg");
 const { exec } = require("child_process");
 
+
+if (!process.env.DATABASE_URL) {
+  console.log("DATABASE_URL not set, skipping DB init");
+  process.exit(0);
+}
+
 // Initialize client
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
