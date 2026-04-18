@@ -1,23 +1,11 @@
 -- Enum for user permission status
-DO $$
-BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'permission_status_enum') THEN
-    CREATE TYPE permission_status_enum AS ENUM ('guest', 'member', 'admin');
-  END IF;
-END
-$$;
+CREATE TYPE permission_status_enum AS ENUM ('guest', 'member', 'admin');
 
 -- Enum for user member invites
-DO $$
-BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'invite_decision_enum') THEN
-    CREATE TYPE invite_decision_enum AS ENUM ('none', 'accepted', 'declined');
-  END IF;
-END
-$$;
+CREATE TYPE invite_decision_enum AS ENUM ('none', 'accepted', 'declined');
 
 -- Users
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   email TEXT NOT NULL UNIQUE,
   password_hash TEXT NOT NULL,
@@ -35,7 +23,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- User Profiles
-CREATE TABLE IF NOT EXISTS user_profiles (
+CREATE TABLE user_profiles (
   user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
   avatar_type TEXT,
   avatar_color_fg TEXT,
@@ -53,14 +41,14 @@ CREATE TABLE IF NOT EXISTS user_profiles (
 );
 
 -- App configurations for soft and hard deletes
-CREATE TABLE IF NOT EXISTS app_config (
+CREATE TABLE app_config (
   key TEXT PRIMARY KEY,
   value TEXT NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- Topics 
-CREATE TABLE IF NOT EXISTS topics (
+CREATE TABLE topics (
   id SERIAL PRIMARY KEY,
   slug TEXT NOT NULL UNIQUE,
   name TEXT NOT NULL,
@@ -72,7 +60,7 @@ CREATE TABLE IF NOT EXISTS topics (
 );
 
 -- Messages
-CREATE TABLE IF NOT EXISTS messages (
+CREATE TABLE messages (
   id SERIAL PRIMARY KEY,
   parent_message_id INTEGER,
   -- NOTE below is the thread_path set up for ordering reply messages - delete if I return to flat reply threads
@@ -94,7 +82,7 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 
 -- Message Likes
-CREATE TABLE IF NOT EXISTS message_likes (
+CREATE TABLE message_likes (
   message_id INTEGER NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -119,16 +107,10 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Trigger on message_likes table
-DO $$
-BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_trigger WHERE tgname = 'trigger_like_count') THEN
-    CREATE TRIGGER trigger_like_count
-    AFTER INSERT OR DELETE ON message_likes
-    FOR EACH ROW
-    EXECUTE FUNCTION update_like_count();
-  END IF;
-END
-$$;
+CREATE TRIGGER trigger_like_count
+AFTER INSERT OR DELETE ON message_likes
+FOR EACH ROW
+EXECUTE FUNCTION update_like_count();
 
 -- Trigger function to update reply_count
 CREATE OR REPLACE FUNCTION update_reply_count()
@@ -148,7 +130,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Sessions
-CREATE TABLE IF NOT EXISTS sessions (
+CREATE TABLE sessions (
   id SERIAL PRIMARY KEY,
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   session_token TEXT NOT NULL UNIQUE,
