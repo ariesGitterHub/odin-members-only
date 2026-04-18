@@ -1,0 +1,50 @@
+<form id="edit-message-form" class="draft-message-form" method="POST">
+  <%# CSRF Token - hidden input for forms %>
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+  <input id="edit-message-target-id" type="hidden" name="targetId" />
+  <input id="edit-message-topic-name" type="hidden" name="topicName" />
+  <input id="edit-message-topic-slug" type="hidden" name="topicSlug" />
+  <h2 class="author-draft-message">
+    By <span id="first-name-edit-message"></span>
+    <span id="last-name-edit-message"></span>
+  </h2>
+  <label class="bold capitalize" for="topic-edit-message">Message Topic</label>
+  <input
+    id="topic-edit-message"
+    class="topic-draft-message uppercase"
+    name="topic_name"
+    required
+  />
+  <label class="bold capitalize" for="title-edit-message">Message Title</label>
+  <input
+    id="title-edit-message"
+    class="title-draft-message word-breaker"
+    type="text"
+    name="title"
+    required
+  />
+  <div class="element-container-col-start-center">
+    <label class="bold capitalize" for="body-edit-message"
+      >Message Body
+      <span
+        id="max-char-count-edit-message"
+        class="max-char-count-draft-message"
+        aria-live="polite"
+        aria-atomic="true"
+      ></span
+    ></label>
+    <textarea
+      id="body-edit-message"
+      class="body-draft-message"
+      type="text"
+      name="body"
+      maxlength="700"
+      required
+    ></textarea>
+    <div class="button-container-row-space-evenly">
+      <button class="button-default wide-button" type="submit">
+        submit edited message
+      </button>
+    </div>
+  </div>
+</form>

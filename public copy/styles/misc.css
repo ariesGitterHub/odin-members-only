@@ -1,0 +1,181 @@
+/* Font case */
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+.background-black {
+  background-color: var(--off-black);
+}
+
+.background-white {
+  background-color: var(--white);
+}
+
+.background-yellow {
+  background-color: var(--lt-yellow);
+}
+
+/* Font color */
+
+.font-color-black {
+  color: var(--off-black);
+}
+
+.font-color-white {
+  color: var(--off-white);
+}
+
+.font-color-gray {
+  color: var(--off-gray);
+}
+
+.font-color-green {
+  color: var(--off-green);
+}
+
+.font-color-red {
+  color: var(--off-red);
+}
+
+/* Font size */
+
+.font-size-small {
+  font-size: var(--font-size-small);
+}
+
+/* Font style */
+
+.italic {
+  font-style: italic;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+/* Font weight */
+
+.bold {
+  font-weight: var(--font-weight-heavy);
+}
+
+.regular {
+  font-weight: var(--font-weight-light);
+}
+
+/* Font align */
+
+.text-align-right {
+  text-align: right;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+/* Special text styling */
+
+.red-letter {
+  color: var(--off-red);
+  font-weight: var(--font-weight-heavy);
+}
+
+/* Word breakers to prevent field stretching by long single words like emails */
+
+.word-breaker {
+  word-wrap: break-word; /* Ensures text breaks to the next line if too long */
+  overflow-wrap: break-word; /* Ensures long words also break if they overflow */
+  word-break: break-all; /* Forces breaking of very long words */
+}
+
+/* Special border options */
+
+.border-default {
+  border: var(--border-default);
+}
+
+.circle {
+  border-radius: var(--border-radius-circle);
+}
+
+.parent-message {
+  background-color: var(--white);
+}
+
+.child-message {
+  background-color: var(--off-white);
+}
+
+.new-message {
+  width: var(--width-default-percentage);
+  display: flex;
+  justify-content: center;
+  background-color: var(--lt-orange);
+  border-radius: var(--border-radius-small);
+  color: var(--off-black);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-heavy);
+  margin-bottom: var(--spacer-default);
+  padding: var(--spacer-small);
+}
+
+/* Special spacing */
+
+.flex-gap {
+  gap: var(--spacer-default);
+}
+
+.flex-space-between {
+  justify-content: space-between;
+}
+
+.margin-top-bottom {
+  margin: var(--spacer-default) 0;
+}
+
+.margin-bottom {
+  margin-bottom: var(--spacer-default);
+}
+
+.margin-left {
+  margin-left: var(--spacer-default);
+}
+
+.margin-right {
+  margin-right: var(--spacer-default);
+}
+
+.width-full {
+  width: var(--width-default-percentage);
+}
+
+/* Force uniform emoji pointers in change-avatar.ejs */
+
+input[type="button"],
+input[type="submit"],
+input[type="checkbox"],
+input[type="radio"],
+input[type="color"] {
+  cursor: pointer !important;
+}
+
+/* Make hidden */
+
+.hidden {
+  display: none;
+}
+
+/* I can't recall the last time I had to use !important, 
+but I had elements on admin.ejs that would not get properly hidden. 
+It might have something to do with my use of dt and dd elements; unsure. */
+div.hidden {
+  display: none !important; /* Ensures it's not overridden */
+}

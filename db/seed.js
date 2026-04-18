@@ -2,23 +2,30 @@
 
 // NOTE - use "node db/seed.js" to run this seed, continue to use npm run db:reset to independently run the seed.sql file!
 
-require("dotenv").config(); // Load environment variables from .env file
-// if (process.env.NODE_ENV !== "production") {
-//   require("dotenv").config();
-// }
+require("dotenv").config();
 
-const fs = require("fs");
 const bcrypt = require("bcryptjs");
-const pool = require("./pool"); // Import the existing pool from db/pool.js
+const pool = require("./pool");
 
-// Function to seed the admin user and their profile
 async function seedAdminUserAndProfile() {
-  try {
-    const adminFastPassword = process.env.ADMIN_FAST_PASSWORD; // Loaded from .env
-    const adminFastPasswordHash = await bcrypt.hash(adminFastPassword, 12); 
+  const client = await pool.connect();
 
-    // Query to insert the admin user (safe to re-run, uses `ON CONFLICT`)
-    const adminInsertQuery = `
+  try {
+    const adminPassword = process.env.ADMIN_FAST_PASSWORD;
+
+    if (!adminPassword) {
+      throw new Error(
+        "ADMIN_FAST_PASSWORD is required in environment variables",
+      );
+    }
+
+    const passwordHash = await bcrypt.hash(adminPassword, 12);
+
+    await client.query("BEGIN");
+
+    // Insert admin user safely (parameterized)
+    const userResult = await client.query(
+      `
       INSERT INTO users (
         email,
         password_hash,
@@ -30,49 +37,61 @@ async function seedAdminUserAndProfile() {
         guest_upgrade_invite,
         invite_decision
       )
-      VALUES 
-        ('admin@can.org', 
-         '${adminFastPasswordHash}',  -- Dynamically injected password hash
-         'Admin',
-         '(CAN Board)',
-         '1986-04-20',
-         'admin',
-         true,
-         true,
-         'accepted')
-      ON CONFLICT (email) DO NOTHING;
-    `;
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+      ON CONFLICT (email) DO NOTHING
+      RETURNING id;
+      `,
+      [
+        "admin@can.org",
+        passwordHash,
+        "Admin",
+        "(CAN Board)",
+        "1986-04-20",
+        "admin",
+        true,
+        true,
+        "accepted",
+      ],
+    );
 
-    // Execute the admin insertion
-    await pool.query(adminInsertQuery);
-    console.log("Admin user seeded!");
+    // Get admin ID (handles ON CONFLICT case)
+    const userId =
+      userResult.rows[0]?.id ||
+      (
+        await client.query("SELECT id FROM users WHERE email = $1", [
+          "admin@can.org",
+        ])
+      ).rows[0].id;
 
-    // Query to insert the admin profile (safe to re-run, uses `ON CONFLICT`)
-    const profileInsertQuery = `
+    // Insert profile safely
+    await client.query(
+      `
       INSERT INTO user_profiles (
-        user_id,   
+        user_id,
         avatar_type,
         avatar_color_fg,
         avatar_color_bg_top,
         avatar_color_bg_bottom
       )
-      SELECT u.id, '👑', '#d5ac28', '#962727', '#4a355b'
-      FROM users u
-      WHERE u.email = 'admin@can.org'
+      VALUES ($1,$2,$3,$4,$5)
       ON CONFLICT (user_id) DO NOTHING;
-    `;
+      `,
+      [userId, "👑", "#d5ac28", "#962727", "#4a355b"],
+    );
 
-    // Execute the admin profile insertion
-    await pool.query(profileInsertQuery);
-    console.log("Admin profile seeded!");
-  } catch (error) {
-    console.error("Error seeding admin user and profile:", error);
+    await client.query("COMMIT");
+
+    console.log("Admin user + profile seeded successfully");
+  } catch (err) {
+    await client.query("ROLLBACK");
+    console.error("Seeding failed:", err);
+  } finally {
+    client.release();
   }
 }
 
-// Main function to run all the seeding steps
 async function main() {
-  await seedAdminUserAndProfile(); // Seed the admin user and profile first
+  await seedAdminUserAndProfile();
 }
 
 main().catch((err) => {

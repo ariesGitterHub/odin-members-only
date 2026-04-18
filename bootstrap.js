@@ -1,26 +1,31 @@
 require("dotenv").config();
-// if (process.env.NODE_ENV !== "production") {
-//   require("dotenv").config();
-// }
 
 const app = require("./app");
 
 const { runRetentionJobs } = require("./jobs/retentionJobs");
-require("./cron/retentionScheduler");
 
-// console.log("DATABASE_URL:", process.env.DATABASE_URL);
+// If this file starts a cron scheduler, prefer explicit init
+require("./cron/retentionScheduler");
 
 const PORT = process.env.PORT || 3000;
 
-const server = app.listen(PORT, async () => {
+const server = app.listen(PORT, () => {
   console.log(`👂 Listening on port ${PORT}`);
 
-  try {
-    await runRetentionJobs();
-    console.log("Retention job run on server start");
-  } catch (err) {
-    console.error("Error running retention job on startup:", err);
-  }
+  setImmediate(async () => {
+    try {
+      await runRetentionJobs();
+      console.log("Retention job run on server start");
+    } catch (err) {
+      console.error("Error running retention job on startup:", err);
+    }
+  });
+});
+
+// Graceful shutdown (important for Render restarts)
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received. Shutting down gracefully...");
+  server.close(() => process.exit(0));
 });
 
 server.on("error", (err) => {

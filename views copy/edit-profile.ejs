@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %>
+    <main>
+      <div class="page-title-off-card uppercase">
+        <h1>edit profile</h1>
+      </div>
+      <div class="card">
+          <div class="ui-message">
+            <p>Make updates to your profile here.</p>
+          </div>
+          <form action="/app/edit-profile" method="POST">
+            <%# CSRF Token - hidden input for forms %>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <label class="capitalize" for="first-name-edit-profile">
+              first name
+            </label>
+            <input
+              id="first-name-edit-profile"
+              class="bold"
+              type="text"
+              name="first_name"
+              value="<%= formData?.first_name || '' %>"
+              required
+            />
+            <label class="capitalize" for="last-name-edit-profile">
+              last name
+            </label>
+            <input
+              id="last-name-edit-profile"
+              class="bold"
+              type="text"
+              name="last_name"
+              value="<%= formData?.last_name || '' %>"
+              required
+            />
+            <div class="element-container-row-start-center">
+              <label class="capitalize" for="email-edit-profile">
+              email
+              </label> 
+              <% if (errors && errors.some(e => e.field === 'email')) { %>
+              <% errors.filter(e => e.field === 'email').forEach(e => { %>
+                  <span class="error-message">[<%= e.message %>]</span>
+              <% }) %>
+              <% } %>
+            </div>
+            <input
+              id="email-edit-profile"
+              class="lowercase bold"
+              type="email"
+              name="email"
+              value="<%= formData?.email || '' %>"
+              required
+            />
+            <div class="element-container-row-space-between">
+              <div class="element-container-col-start-center">
+              <label class="capitalize" for="phone-edit-profile">phone</label>
+              <input
+                id="phone-edit-profile"
+                class="bold"
+                type="tel"
+                name="phone"
+                value="<%= formData?.phone || '' %>"
+              />
+              </div>
+              <div class="element-container-col-start-center">
+              <label class="capitalize" for="birthdate-edit-profile">
+                birthdate
+              </label>
+              <input
+                id="birthdate-edit-profile"
+                class="bold"
+                type="date"
+                name="birthdate"
+                value="<%= formData?.birthdate || '' %>"
+                required
+              />
+              </div>
+            </div>
+            <div class="element-container-row-start-center">
+              <label for="password-edit-profile">password</label>  
+              <% if (errors && errors.some(e => e.field === 'password')) { %>
+              <% errors.filter(e => e.field === 'password').forEach(e => { %>
+                  <span class="error-message">[<%= e.message %>]</span>
+              <% }) %>
+              <% } %>
+            </div>
+            <input
+              id="password-edit-profile"
+              type="password"
+              name="password"
+              placeholder="select a password"
+            />
+            <div class="element-container-row-start-center">
+              <label for="confirm-password-edit-profile">confirm</label>    
+              <% if (errors && errors.some(e => e.field === 'confirm_password')) { %>
+              <% errors.filter(e => e.field === 'confirm_password').forEach(e => { %>
+                  <span class="error-message">[<%= e.message %>]</span>
+              <% }) %>
+              <% } %>
+            </div>
+            <input
+              id="confirm-password-edit-profile"
+              type="password"
+              name="confirm_password"
+              placeholder="re-enter chosen password"
+            />
+            <div class="background-yellow border-default margin-top-bottom">
+              <%- include('./partials/password-rules.ejs') %>
+            </div>
+            <label class="capitalize" for="street-address-edit-profile">
+              street address
+            </label>
+            <input
+              id="street-address-edit-profile"
+              class="bold"
+              type="text"
+              name="street_address"
+              value="<%= formData?.street_address || '' %>"
+            />
+            <div class="element-container-row-space-between">
+              <div class="element-container-col-start-center">
+                <label class="capitalize" for="apt-unit-edit-profile">
+                  apt/unit
+                </label>
+                <input
+                  id="apt-unit-edit-profile"
+                  class="bold"
+                  type="text"
+                  name="apt_unit"
+                  value="<%= formData?.apt_unit || '' %>"
+                />
+              </div>
+              <div class="element-container-col-start-center">
+                <label class="capitalize" for="us-state-edit-profile">
+                  state
+                </label>
+                <select id="us-state-edit-profile" name="us_state">
+                <option value="" disabled <%= !formData?.us_state ? "selected" : "" %>>Choose state</option>
+                  <% usStates.forEach((state) => { %>
+                    <option value="<%= state.code %>" <%= formData?.us_state === state.code ? "selected" : "" %>>
+                      <%= state.name %>
+                    </option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+            <div class="element-container-row-space-between margin-bottom">
+              <div class="element-container-col-start-center">
+              <label class="capitalize" for="city-edit-profile"> city </label>
+              <input
+                id="city-edit-profile"
+                class="bold"
+                type="text"
+                name="city"
+                value="<%= formData?.city || '' %>"
+              />
+              </div>
+              <div class="element-container-col-start-center">
+              <label class="capitalize" for="zip-code-edit-profile"> zip </label>
+              <input
+                id="zip-code-edit-profile"
+                class="bold"
+                type="text"
+                name="zip_code"
+                value="<%= formData?.zip_code || '' %>"
+              />
+              </div>
+            </div>
+            <div class="button-container-col">
+              <a class="button-default wide-button cancel-button" href="/app/your-profile">cancel changes</a>
+              <button class="button-default wide-button submit-button" type="submit">submit profile changes</button>
+            </div>
+        </form>
+      </div>
+    </main>
+    <%- include('./partials/modal-root.ejs') %>
+    <%- include('./partials/footer.ejs') %>
+  </body>
+</html>

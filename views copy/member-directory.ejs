@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %>
+    <main>
+      <div>
+        <h1 class="page-title-off-card uppercase">member directory</h1>
+        <hr class="topic-hr"> 
+        <h2 class="page-subtitle-off-card uppercase">for trusted neighbors only</h2>
+      </div>
+      <div class="large-screen-flex-row">
+      <% if (userProfiles.length === 0) { %> 
+      <p>There are no current members.</p>
+      <% } else { userProfiles.forEach(function(userProfile) { %> 
+          <% if (userProfile && (userProfile.permission_status === "member" || userProfile.permission_status === "admin")) { %> 
+          <div class="card member-directory-card">
+            <div class="profile-data-container">
+              <div class="member-directory-extra-avatar-container avatar-background" 
+                <%- include('./partials/avatar-color-data-helper.ejs', { obj: userProfile }) %>
+                >
+                <div 
+                  class="avatar-container avatar-container-size-large">
+                  <span class="emoji emoji-size-largest" role="image" aria-label="avatar image">
+                    <%= userProfile.avatar_type %>
+                  </span>
+                </div>           
+              </div>
+              <dl class="profile-data-dl">
+                <div class="neighbor-relevant-data">
+                  <dt class="capitalize">name</dt>
+                  <dd class="capitalize"><%= userProfile.first_name %> <%= userProfile.last_name %></dd>
+                </div>
+                <div class="neighbor-relevant-data">
+                  <dt class="capitalize">email</dt>
+                  <dd><%= userProfile.email%></dd>
+                </div>
+                <div class="neighbor-relevant-data">
+                  <dt class="capitalize">phone</dt>
+                  <dd><%= userProfile.phone || "n/a" %></dd>
+                </div>
+                <div class="neighbor-relevant-data">
+                  <dt class="capitalize">street</dt>
+                  <dd><%= userProfile.street_address || "n/a" %></dd>
+                </div>
+                <div class="neighbor-relevant-data">
+                  <dt class="capitalize">apt/unit</dt>
+                  <dd><%= userProfile.apt_unit || "n/a" %></dd>
+                </div>
+                <div class="neighbor-relevant-data">
+                  <dt class="capitalize">city</dt>
+                  <dd><%= userProfile.city || "n/a" %></dd>
+                </div>
+                <div class="neighbor-relevant-data">
+                  <dt class="capitalize">state</dt>
+                  <dd><%= userProfile.us_state || "n/a" %></dd>
+                </div>
+                <div class="neighbor-relevant-data">
+                  <dt class="capitalize">zip code</dt>
+                  <dd><%= userProfile.zip_code || "n/a" %></dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+          <% } %>
+        <% })} %>
+        </div>
+    </main>
+    <%- include('./partials/modal-root.ejs') %>
+    <%- include('./partials/footer.ejs') %>
+  </body>
+</html>

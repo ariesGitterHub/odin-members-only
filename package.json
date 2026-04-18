@@ -6,8 +6,10 @@
   "scripts": {
     "start": "node bootstrap.js",
     "dev": "nodemon bootstrap.js",
-    "db:init": "node scripts/db-init.js",
-    "prestart": "node scripts/db-init.js"
+    "db:apply": "node scripts/apply-db.js",
+    "db:seed": "node db/seed.js",
+    "db:setup": "npm run db:apply && npm run db:seed",
+    "db:reset": "node scripts/db-reset.js"
   },
   "repository": {
     "type": "git",

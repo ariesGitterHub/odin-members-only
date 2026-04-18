@@ -1,0 +1,67 @@
+<div class="ui-message">
+  <p>
+    Scroll the selection to chose a new emoji avatar, or change avatar color scheme by clicking colors below.
+  </p> 
+</div>
+<div class="element-container-row-default ">
+  <form action="/app/your-profile/change-avatar" method="POST"> 
+    <%# CSRF Token - hidden input for forms %>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div class="change-avatar-hide-element element-container-col-start-center">
+      <div class="element-container-row-space-evenly">
+        <div class="element-container-col-start-center">
+          <p class="capitalize">current</p>
+          <span id="current-avatar-change-avatar" class="emoji preview-current"></span>        
+        </div>
+        <div class="element-container-col-start-center">
+          <p class="capitalize">preview</p>
+          <span id="new-avatar-change-avatar" class="emoji preview-new"></span>        
+        </div>
+      </div>
+      <label for="avatar-type-change-avatar">
+        avatar (current selection)
+      </label>
+      <input
+        id="avatar-type-change-avatar"      
+        type="text"
+        name="avatar_type"
+        hidden
+      />      
+      <div class="pseudo-input capitalize" tabindex="0">
+         <p id="avatar-type-text-change-avatar" aria-live="polite" aria-atomic="true"></p>
+      </div>
+      <p class="pseudo-label">click to select a new avatar below</p>
+      <div id="emoji-panel-change-avatar" class="emoji-panel-change-avatar">
+        <div id="emoji-list-change-avatar" class="emoji-list-change-avatar"></div>
+      </div>
+      </div>
+      <label for="avatar-color-fg-change-avatar">
+        avatar color
+      </label>
+      <input
+        id="avatar-color-fg-change-avatar"   
+        type="color"
+        name="avatar_color_fg"
+      />
+      <label for="avatar-color-bg-top-change-avatar">
+        background color (top)
+      </label>
+      <input
+        id="avatar-color-bg-top-change-avatar"
+        type="color"      
+        name="avatar_color_bg_top"
+      />
+      <label for="avatar-color-bg-bottom-change-avatar">
+        background color (bottom)
+      </label>      
+      <input
+        id="avatar-color-bg-bottom-change-avatar"          
+        type="color"
+        name="avatar_color_bg_bottom"
+      />
+      <div class="button-container-row-space-evenly">
+        <button class="button-default wide-button" type="submit">submit avatar changes</button>
+      </div> 
+    </form> 
+  </div>
+</div>

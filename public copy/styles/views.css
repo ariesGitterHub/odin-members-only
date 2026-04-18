@@ -1,0 +1,487 @@
+/* UNIQUE TO ONE VIEW (GLOBAL CASES GO IN LAYOUT-BASICS.CSS) */
+
+/* -- index.ejs and maintenance.ejs*/
+
+.index-image {
+  height: var(--index-image-size);
+  width: auto;
+  border-radius: var(--border-radius-circle);
+  box-shadow: var(--box-shadow-gray);
+  margin: var(--spacer-default);
+}
+
+/* -- admin.ejs */
+
+#admin-controls {
+  width: var(--card-width);
+  margin-bottom: var(--spacer-default);
+}
+
+#admin-controls fieldset {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+  border: var(--border-default);
+  border-radius: var(--border-radius-small);
+  margin-bottom: var(--spacer-default);
+  padding: var(--spacer-default);
+  text-transform: uppercase;
+}
+
+#admin-controls fieldset h3 {
+  margin-top: var(--spacer-default);
+  margin-bottom: var(--spacer-default);
+}
+
+#admin-controls fieldset input {
+  width: 3.75rem;
+  font-size: var(--font-size-default);
+}
+
+#admin-controls a,
+#admin-controls button[type="button"] {
+  background-color: var(--lt-red);
+  box-shadow: var(--box-shadow-red);
+}
+
+#admin-controls a:hover,
+#admin-controls button[type="button"]:hover {
+  background-color: var(--dk-red);
+}
+
+.admin-controls button[type="submit"] {
+  background-color: var(--off-white);
+  box-shadow: var(--box-shadow-gray);
+}
+
+.admin-controls button[type="submit"]:hover {
+  background-color: var(--dk-gray);
+}
+
+#site-controls-div,
+#site-statistics-div {
+  width: 96%;
+  background-color: var(--off-black);
+  border-radius: var(--border-radius-small);
+  color: var(--off-white);
+  padding: var(--spacer-default);
+}
+
+.admin-quick-view-bar {
+  width: var(--width-default-percent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacer-medium);
+  border-radius: var(--border-radius-default);
+  font-size: var(--emoji-quick-view-bar-size);
+  padding: var(--spacer-default);
+}
+
+.admin-card .admin-quick-view-bar {
+  background-color: var(--off-black);
+}
+
+.user-card .admin-quick-view-bar {
+  background-color: var(--off-white);
+}
+
+.admin-quick-view-bar span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--off-gray);
+  border-radius: var(--border-radius-small);
+  padding: var(--spacer-medium);
+}
+
+.admin-card .admin-quick-view-bar span {
+  background-color: var(--off-white);
+  color: var(--off-black);
+}
+
+.user-card .admin-quick-view-bar span {
+  background-color: var(--off-black);
+  color: var(--off-white);
+}
+
+.admin-panel-name {
+  font-size: var(--font-size-largest);
+  margin-left: var(--spacer-default);
+}
+
+.admin-card .neighbor-relevant-data {
+  background-color: var(--off-black);
+}
+
+.user-card .neighbor-relevant-data {
+  background-color: var(--off-white);
+}
+
+.upgrade-possible {
+  background-color: var(--member-status-possible);
+}
+
+.upgrade-no-decision {
+  background-color: var(--member-status-no-decision);
+}
+
+.upgrade-declined {
+  background-color: var(--member-status-declined);
+}
+
+.upgrade-review {
+  background-color: var(--member-status-review);
+}
+
+.dead-account {
+  background-color: var(--account-is-inactive);
+  border: var(--border-inactive-card);
+}
+
+/* -- admin-create.ejs */
+
+/* NONE */
+
+/* -- admin-edit.ejs */
+
+.element-container-row-space-between .emoji {
+  width: 2.75rem;
+  text-align: center;
+}
+
+.profile-block-select {
+  min-width: fit-content;
+}
+
+/* -- info.ejs */
+
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-default);
+  counter-reset: info-btn-counter; /* Initialize counter */
+}
+
+.info-list .info-button::before {
+  counter-increment: info-btn-counter; /* Increment counter */
+  content: counter(info-btn-counter) ". "; /* Display number */
+  font-weight: bold;
+}
+
+.info-list-card {
+  width: var(--width-default-percent);
+}
+
+.info-ul {
+  background-color: var(--lt-yellow);
+  border: var(--border-default);
+  border-radius: var(--border-radius-default);
+  margin: var(--spacer-small) 0;
+  padding: var(--spacer-medium);
+}
+
+/* -- new-message.ejs, reply-message.ejs, edit-message.ejs; Moved to components*/
+
+/* -- message-boards.ejs */
+
+.topic-list {
+  width: var(--width-default-percent);
+}
+
+.topic-list li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.topic-list li a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacer-default);
+}
+
+.topic-count-square {
+  border-radius: var(--border-radius-small);
+  font-weight: var(--font-weight-heavy);
+  padding: var(--spacer-small) var(--spacer-medium);
+}
+
+.topic-title {
+  font-size: var(--font-size-small);
+}
+
+.topic-hr {
+  width: var(--width-default-percent);
+  max-width: 800px;
+  border: 0;
+  border-top: var(--border-hr-top);
+}
+
+/* -- topic.ejs */
+
+.topic-card {
+  width: var(--card-width);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacer-biggest);
+  margin: var(--spacer-biggest);
+}
+
+/* -- message-card.ejs */
+
+.message-card {
+  border-radius: var(--border-radius-default);
+  box-shadow: var(--box-shadow-black);
+  color: var(--off-black);
+  line-height: 1.5;
+  padding: var(--spacer-default);
+}
+
+.message-header {
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  border-top-left-radius: var(--border-radius-default);
+  border-top-right-radius: var(--border-radius-default);
+  margin-bottom: var(--spacer-default);
+}
+
+.message-name-and-title {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.message-name {
+  width: 100%;
+  border-bottom: transparent;
+  border-bottom: transparent;
+  color: var(--off-red);
+  font-size: var(--message-name-size);
+}
+
+.message-title {
+  width: 100%;
+  border-top: var(--border-default);
+  color: var(--off-black);
+  font-size: var(--message-title-size);
+}
+
+/* For message badges to quickly identify who edited, their permission level, and if they are admin verified */
+.message-badge-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: var(--spacer-small);
+  border-top: 0.125rem solid var(--off-gray);
+  color: var(--off-red);
+}
+
+.message-badge-container span {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-heavy);
+  padding: var(--spacer-medium) 0;
+  text-align: center;
+}
+
+.message-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: var(--spacer-small);
+}
+
+.regular-details {
+  border-top: 0.125rem solid var(--off-gray);
+  border-bottom: 0.125rem solid var(--off-gray);
+  color: var(--off-red);
+}
+
+/* Use on message that were made sticky */
+.important-details {
+  background-color: var(--off-red);
+  border: var(--border-default);
+  border-radius: var(--border-radius-default);
+  color: var(--lt-yellow);
+}
+
+.message-details span {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-heavy);
+  padding: var(--spacer-medium) 0;
+  text-align: center;
+}
+
+.message-body {
+  border: transparent;
+  border-radius: var(--border-radius-default);
+  font-size: var(--message-body-size);
+  padding: var(--spacer-big);
+}
+
+.message-footer {
+  border-bottom-left-radius: var(--border-radius-default);
+  border-bottom-right-radius: var(--border-radius-default);
+  padding: var(--spacer-medium);
+}
+.message-button-container {
+  width: var(--width-default-percent);
+  display: flex;
+  justify-content: end;
+  gap: var(--spacer-default);
+}
+
+/* .message-button - see components.css */
+
+/* -- your-profile.ejs */
+
+.your-profile-card {
+  background-color: var(--off-white);
+  color: var(--off-black);
+}
+
+.your-profile-card .neighbor-relevant-data {
+  background-color: var(--white);
+}
+
+.your-profile-card .app-relevant-data {
+  background-color: var(--white);
+}
+
+/* -- member-directory.ejs */
+
+.member-directory-card {
+  background-color: var(--white);
+}
+
+.member-directory-card .neighbor-relevant-data {
+  background-color: var(--off-white);
+}
+
+.member-directory-extra-avatar-container {
+  height: fit-content;
+  width: var(--width-default-percent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-default);
+  padding: var(--spacer-big);
+}
+
+/* -- change-avatar.ejs */
+
+.preview-current,
+.preview-new {
+  height: var(--avatar-preview-current-preview-new-h-w);
+  width: var(--avatar-preview-current-preview-new-h-w);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-default);
+  border-radius: var(--border-radius-circle);
+  font-family: var(--font-emoji);
+  font-size: var(--avatar-emoji-preview-size);
+  padding: var(--spacer-biggest);
+}
+
+.emoji-panel-change-avatar {
+  width: var(--width-default-percent);
+}
+
+.emoji-list-change-avatar {
+  height: var(--emoji-list-change-avatar-picker-h);
+  width: var(--width-default-percent);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-evenly;
+  background-color: var(--white);
+  border: var(--border-default);
+  box-shadow: 0 4px 8px var(--off-black-trans);
+  margin-bottom: var(--spacer-default);
+  overflow-y: auto;
+}
+
+.emoji-option {
+  width: var(--width-default-percent);
+  display: flex;
+  align-items: center;
+  color: var(--off-black);
+  margin-bottom: var(--spacer-default);
+  margin-left: var(--spacer-medium);
+  padding: var(--spacer-default);
+}
+
+/* ---- Hide the default radio button */
+
+.emoji-option input[type="radio"] {
+  display: none;
+}
+
+/* ---- Custom radio button styling */
+
+.emoji-option label {
+  display: flex;
+  align-items: center;
+  transition: color 0.3s;
+}
+
+/* ---- Emoji styling */
+
+.emoji-option .emoji {
+  cursor: pointer;
+  font-size: var(--avatar-emoji-option-size);
+  margin-right: var(--spacer-default);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* ---- Text styling */
+
+.emoji-option p {
+  color: var(--off-black);
+  cursor: pointer;
+  font-size: var(--font-size-large);
+  margin: 0;
+}
+
+.emoji-option:hover {
+  background-color: var(--off-white);
+  border-radius: var(--border-radius-small);
+}
+
+.emoji-option:hover .emoji {
+  transform: scale(1.25);
+}
+
+.emoji-option:hover label {
+  color: var(--off-red);
+}
+
+/* ---- Checked state - when the radio button is selected */
+
+.emoji-option input[type="radio"]:checked + label .emoji {
+  transform: scale(1.25);
+  color: var(--dk-red);
+}
+
+/* ---- Makes the text bold when the radio button is selected */
+
+.emoji-option input[type="radio"]:checked + label p {
+  color: var(--black);
+  font-weight: var(--font-weight-heavy);
+}
+
+/* -- error-page.ejs */
+
+.page-errors h1 {
+  color: var(--off-red);
+}
+
+.page-errors p {
+  font-size: var(--font-size-largest);
+}

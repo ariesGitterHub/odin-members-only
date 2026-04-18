@@ -1,0 +1,31 @@
+<form id="delete-message-form" method="POST">
+  <%# CSRF Token - hidden input for forms %>
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+  <input id="delete-message-target-id" type="hidden" name="targetId" />
+  <input id="delete-message-topic-slug" type="hidden" name="topicSlug" />
+  <div
+    class="element-container-col-start-center ui-message ui-message-bubble background-white"
+  >
+    <div class="element-container-row-center-start">
+      <p>
+        <span class="bold">Deletions are permanent and cannot be undone.</span>
+      </p>
+      <span class="emoji emoji-size-small margin-right">🗑</span>
+    </div>
+    <br />
+    <p>
+      Do you wish to proceed with the deletion of this message posted by "<span
+        id="first-name-warning-message-deletion"
+        class="bold italic"
+      ></span>
+      <span id="last-name-warning-message-deletion" class="bold italic"></span>"
+      (<span id="email-warning-message-deletion" class="bold italic"></span>) in
+      <span id="topic-name-warning-message-deletion"></span>?
+    </p>
+  </div>
+  <div class="button-container-row-space-evenly">
+    <button class="button-default wide-button" type="submit">
+      proceed with deletion
+    </button>
+  </div>
+</form>

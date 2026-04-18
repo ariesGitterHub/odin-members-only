@@ -1,6 +1,9 @@
--- App configurations (soft and hard deletes, and maintenance mode)
--- NOTE: Hard delete is counted from the time of soft delete, not from creation.
-INSERT INTO app_config (key, value) VALUES
+-- =========================
+-- APP CONFIG (SAFE UPSERT)
+-- =========================
+
+INSERT INTO app_config (key, value)
+VALUES
 ('message_soft_delete_days', '14'),
 ('message_hard_delete_days', '28'),
 ('session_hard_delete_days', '14'),
@@ -12,10 +15,16 @@ INSERT INTO app_config (key, value) VALUES
 ('maintenance_mode', 'false'),
 ('admin_emoji', '🔑'),
 ('member_emoji', '⭐'),
-('guest_emoji', '👤');
+('guest_emoji', '👤')
+ON CONFLICT (key) DO UPDATE SET
+value = EXCLUDED.value,
+updated_at = NOW();
 
 
--- Seed default topics (safe to re-run)
+-- =========================
+-- TOPICS (SAFE UPSERT)
+-- =========================
+
 INSERT INTO topics (slug, name, description, required_permission, sort_order)
 VALUES
   ('announcements', 'Announcements', 'Important updates and notices', 'guest', 0),

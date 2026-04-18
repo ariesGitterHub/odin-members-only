@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %>
+    <main>
+      <div class="page-title-off-card uppercase">
+        <h1>site information</h1>
+      </div>
+      <div class="card info-list">
+        <div class="info-list-card">
+          <div class="button-container-col">
+            <button class="button-default info-button">overview</button>
+          </div>
+          <ul class="info-ul info-section hidden">
+            <li>
+              This app is a private neighborhood message board intended to help
+              residents share information in a concise, centralized manner.
+            </li>
+            <li>
+              Access is limited to people who live in the
+              <span class="red-letter">C</span>apital
+              <span class="red-letter">A</span>rea
+              <span class="red-letter">N</span>eigborhood. Non-neighborhood
+              residents may be allowed to participate on an ad hoc basis as
+              <span class="italic">guests</span>, but they will not be given
+              full <span class="italic">member</span> status, which is limited
+              to trusted neighbors, who are, or were, active in the
+              <span class="red-letter">C.A.N.</span> organization.
+            </li>
+            <li>
+              This app is not a commercial product and is provided as-is for
+              community use.
+            </li>
+          </ul>
+        </div>
+        <div class="info-list-card">
+          <div class="button-container-col">
+            <button class="button-default info-button">
+              how to use this app
+            </button>
+          </div>
+          <ul class="info-ul info-section hidden">
+            <li>
+              Create an account using accurate information so your identity can
+              be verified.
+            </li>
+            <li>Browse and post messages by existing topics.</li>
+            <li>
+              Use the app for local announcements, questions, and relevant
+              updates by topic only.
+            </li>
+            <li>
+              Messages are temporary and will automatically expire after a set
+              period days (see below).
+            </li>
+          </ul>
+        </div>
+        <div class="info-list-card">
+          <div class="button-container-col">
+            <button class="button-default info-button">
+              how to send messages
+            </button>
+          </div>
+          <ul class="info-ul info-section hidden">
+            <li>Sign up to join first, then log in.</li>
+            <li>
+              Once logged in, go to the message board and select the most
+              relevant topic for your message.
+            </li>
+            <li>
+              Post a message based on something relevant that you wish to share
+              with your neighbors (see Community Guidelines below).
+            </li>
+          </ul>
+        </div>
+        <div class="info-list-card">
+          <div class="button-container-col">
+            <button class="button-default info-button">
+              community guidelines
+            </button>
+          </div>
+          <ul class="info-ul info-section hidden">
+            <li>Keep messages brief and to the point.</li>
+            <li>Assume messages are visible to all users of this app.</li>
+            <li>Avoid sharing sensitive personal information.</li>
+            <li>
+              Be respectful of others. Do not harass, threaten, or impersonate
+              others.
+            </li>
+            <li>
+              Do not post false, misleading, or intentionally harmful
+              information. Be your best self!
+            </li>
+            <li>
+              Use common sense—this is a shared community space for neighbors.
+            </li>
+            <li>
+              Messages may be removed if they violate any community guidelines.
+            </li>
+          </ul>
+        </div>
+        <div class="info-list-card">
+          <div class="button-container-col">
+            <button class="button-default info-button">
+              message expiration
+            </button>
+          </div>
+          <ul class="info-ul info-section hidden">
+            <li>
+              All messages automatically expire and are deleted after
+              <span class="red-letter"
+                ><%= config.message_soft_delete_days %> days</span
+              >
+              . Expiration dates are provided on all messages, except those
+              messages pinned (for extended duration) by the admin.
+            </li>
+            <li>
+              Expired messages cannot be recovered. This helps keep information
+              current and reduces long-term data retention.
+            </li>
+          </ul>
+        </div>
+        <div class="info-list-card">
+          <div class="button-container-col">
+            <button class="button-default info-button">
+              license information
+            </button>
+          </div>
+          <ul class="info-ul info-section hidden">
+            <li>
+              This app uses the
+              <a class="text-link" href="https://mit-license.org/"
+                >MIT License</a
+              >.
+            </li>
+            <li>
+              The license applies to the app’s source code, not user-generated
+              content.
+            </li>
+          </ul>
+        </div>
+        <div class="info-list-card">
+          <div class="button-container-col">
+            <button class="button-default info-button">
+              terms & conditions
+            </button>
+          </div>
+          <ul class="info-ul info-section hidden">
+            <li>
+              By using this app, you agree to the following terms and all posted
+              guidelines.
+            </li>
+            <li>You are responsible for the content you post.</li>
+            <li>
+              This app is not responsible for user-generated content or actions
+              taken based on it.
+            </li>
+            <li>
+              Member status provides additional benefits and terms which are made available upon receiving a "member invite" notice.
+            </li>
+            <li>Access may be suspended or revoked at any time for misuse.</li>
+            <li>The app may change, pause, or shut down without notice.</li>
+          </ul>
+        </div>
+        <div class="info-list-card">
+          <div class="button-container-col">
+            <button class="button-default info-button">privacy policy</button>
+          </div>
+          <ul class="info-ul info-section hidden">
+            <li>
+              Basic personal information is collected and is used only for
+              internal verification and community purposes.
+            </li>
+            <li>Your information is not sold or shared with third parties.</li>
+            <li>
+              Abuse or misuse of the limited shared data on the Member Directory
+              is grounds for revocation of membership status, and possible account removal.
+            </li>
+            <li>
+              Reasonable steps are taken to keep data secure, but no system is
+              guaranteed.
+            </li>
+            <li>
+              Reasonable attempts will also be made by the admin to keep your data
+              current and/or as accurate as possible.
+            </li>
+            <li>
+              Deleting your account will completely remove your data from this
+              site.
+            </li>
+          </ul>
+        </div>
+        <div class="info-list-card">
+          <div class="button-container-col">
+            <button class="button-default info-button">password rules</button>
+          </div>
+          <ul class="info-ul info-section hidden">
+            <li>
+              Strong passwords are the first line of defense for any secure web
+              site. Please follow the rules below when making your message board
+              password.
+            </li>
+            <%- include('./partials/password-rules.ejs') %>
+          </ul>
+        </div>
+        <div class="info-list-card">
+          <div class="button-container-col">
+            <button class="button-default info-button">attributions</button>
+          </div>
+          <ul class="info-ul info-section hidden">
+            <li>
+              Emoji naming based off of JSON file created by
+              <a
+                class="text-link"
+                href="https://github.com/BehrouzSohrabi/Emoji/blob/main/emoji-list-categories.json?h=1"
+                >Behrouz Sohrabi</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+    <%- include('./partials/modal-root.ejs') %> <%-
+    include('./partials/footer.ejs') %>
+  </body>
+</html>

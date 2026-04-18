@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head.ejs') %>
+  </head>
+  <body>
+    <%- include('./partials/header.ejs') %>
+    <main>
+      <div class="page-title-off-card uppercase"><h1>message boards</h1></div>
+      <div class="card">
+        <ul class="topic-list">
+        <% topics.forEach(topic => { %>
+          <li>
+            <a class="button-default wide-button" href="/app/message-boards/<%= topic.slug %>">
+              <h2 class="topic-title">➤ <%= topic.name %></h2>
+              <% if (topic.message_count > 0) { %>
+              <h2 class="topic-title topic-count-square"><span class="emoji">💬</span><%= topic.message_count%></h2>
+              <% } %>
+            </a>
+          </li>
+        <% }) %>
+        </ul>
+      </div>
+    </main>
+    <%- include('./partials/modal-root.ejs') %>
+    <%- include('./partials/footer.ejs') %>
+  </body>
+</html>
