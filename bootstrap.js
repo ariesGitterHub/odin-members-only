@@ -4,6 +4,7 @@ require("dotenv").config();
 // }
 
 const app = require("./app");
+
 const { runRetentionJobs } = require("./jobs/retentionJobs");
 require("./cron/retentionScheduler");
 
