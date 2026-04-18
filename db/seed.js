@@ -2,10 +2,11 @@
 
 // NOTE - use "node db/seed.js" to run this seed, continue to use npm run db:reset to independently run the seed.sql file!
 
-// require("dotenv").config(); // Load environment variables from .env file
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
+require("dotenv").config(); // Load environment variables from .env file
+// if (process.env.NODE_ENV !== "production") {
+//   require("dotenv").config();
+// }
+
 const fs = require("fs");
 const bcrypt = require("bcryptjs");
 const pool = require("./pool"); // Import the existing pool from db/pool.js

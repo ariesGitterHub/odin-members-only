@@ -1,12 +1,7 @@
-// require("dotenv").config();
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
-
-console.log("NODE_ENV:", process.env.NODE_ENV);
-console.log("DATABASE_URL:", process.env.DATABASE_URL);
-process.exit(0);
-
+require("dotenv").config();
+// if (process.env.NODE_ENV !== "production") {
+//   require("dotenv").config();
+// }
 
 const app = require("./app");
 const { runRetentionJobs } = require("./jobs/retentionJobs");
