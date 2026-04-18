@@ -1,4 +1,13 @@
 require("dotenv").config();
+
+if (process.env.NODE_ENV === "production") {
+  throw new Error("Refusing to run destructive DB scripts in production");
+}
+
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL is missing");
+}
+
 const fs = require("fs/promises");
 const pool = require("../db/pool");
 
@@ -10,7 +19,7 @@ async function run() {
 
     const schema = await fs.readFile("db/schema.sql", "utf8");
     const indexes = await fs.readFile("db/indexes.sql", "utf8");
-    const seed = await fs.readFile("db/seed.sql", "utf8"); // ✅ ADDED
+    const seed = await fs.readFile("db/seed.sql", "utf8");
 
     await client.query("BEGIN");
 
@@ -21,7 +30,7 @@ async function run() {
     await client.query(indexes);
 
     console.log("Running seed.sql...");
-    await client.query(seed); // ✅ NOW HANDLED HERE
+    await client.query(seed);
 
     await client.query("COMMIT");
 
