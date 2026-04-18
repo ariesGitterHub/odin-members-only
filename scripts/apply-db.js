@@ -21,6 +21,10 @@ async function run() {
     const indexes = await fs.readFile("db/indexes.sql", "utf8");
     const seed = await fs.readFile("db/seed.sql", "utf8");
 
+    if (!schema || !indexes || !seed) {
+      throw new Error("Missing schema/indexes/seed files");
+    }
+
     await client.query("BEGIN");
 
     console.log("Running schema...");

@@ -168,14 +168,18 @@ CREATE OR REPLACE FUNCTION update_reply_count()
 RETURNS TRIGGER AS $$
 BEGIN
   IF TG_OP = 'INSERT' THEN
-    UPDATE messages
-    SET reply_count = reply_count + 1
-    WHERE id = NEW.parent_message_id;
+    IF NEW.parent_message_id IS NOT NULL THEN
+      UPDATE messages
+      SET reply_count = reply_count + 1
+      WHERE id = NEW.parent_message_id;
+    END IF;
 
   ELSIF TG_OP = 'DELETE' THEN
-    UPDATE messages
-    SET reply_count = reply_count - 1
-    WHERE id = OLD.parent_message_id;
+    IF OLD.parent_message_id IS NOT NULL THEN
+      UPDATE messages
+      SET reply_count = reply_count - 1
+      WHERE id = OLD.parent_message_id;
+    END IF;
   END IF;
 
   RETURN NULL;
@@ -189,7 +193,7 @@ BEGIN
     CREATE TRIGGER trigger_reply_count
     AFTER INSERT OR DELETE ON messages
     FOR EACH ROW
-    WHEN (NEW.parent_message_id IS NOT NULL OR OLD.parent_message_id IS NOT NULL)
+    -- WHEN (NEW.parent_message_id IS NOT NULL OR OLD.parent_message_id IS NOT NULL)
     EXECUTE FUNCTION update_reply_count();
   END IF;
 END

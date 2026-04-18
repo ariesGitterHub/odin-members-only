@@ -9,7 +9,7 @@
     "db:apply": "node scripts/apply-db.js",
     "db:seed": "node db/seed.js",
     "db:setup": "npm run db:apply && npm run db:seed",
-    "db:reset": "node scripts/db-reset.js"
+    "db:reset": "node scripts/reset-db.js"
   },
   "repository": {
     "type": "git",
