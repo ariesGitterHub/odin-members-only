@@ -6,10 +6,17 @@
       const now = new Date();
       const timeDifference = now - messageDate;  // Difference in milliseconds
       const oneDay = 24 * 60 * 60 * 1000;  // Milliseconds in one day
+
+      const formattedTime = messageDate.toLocaleString("en-US", {
+        timeZone: "America/New_York",
+        dateStyle: "medium",
+        timeStyle: "short"
+      });
       
       if (timeDifference < oneDay) { 
       %>
-        <span class="new-message uppercase">new message (<%= new Date(message.created_at).toLocaleString() %>)</span>
+        <span class="new-message uppercase">new message (<%= formattedTime %>)
+    </span>
       <% } %>
     </p>
   <div class="message-header">
