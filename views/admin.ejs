@@ -10,7 +10,7 @@
         <h1>admin panel</h1>
       </div>
       <div id="admin-controls" class="element-container-col-default flex-gap">
-        <a class="button-default wide-button admin-control-button" href="/app/admin-create">create new user</a>
+        <a class="button-default wide-button" href="/app/admin-create">create new user</a>
         <button id="site-controls-button" class="button-default wide-button" type="button">open site controls</button>
         <div id="site-controls-div" class="<%= (query.success || query.error) ? '' : 'hidden' %>">
           <% if (query.success === "site-settings-updated") { %>

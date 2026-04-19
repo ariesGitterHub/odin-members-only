@@ -83,10 +83,6 @@ button:hover,
   padding: 0 var(--spacer-small);
 }
 
-.admin-control-button {
-  color: var(--off-black);
-}
-
 .close-button {
   height: 2.25rem;
   width: 2.25rem;

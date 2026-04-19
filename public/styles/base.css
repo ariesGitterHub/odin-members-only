@@ -54,7 +54,7 @@
   --box-shadow-green: inset 0.125rem 0.25rem 2rem var(--dk-green);
   --box-shadow-black: 0 1rem 1rem var(--off-black);
 
-  --font-text: "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  --font-text: "Gill Sans MT", "Source Sans 3", "Segoe UI", "Trebuchet MS", sans-serif;
   --font-emoji: "NotoEmoji", sans-serif !important;
   --font-error: monospace;
 
@@ -127,8 +127,8 @@
   --message-details-size: var(--font-size-small);
   --message-body-size: 1.125rem;
 
-  --font-weight-light: 100;
-  --font-weight-medium: 100;
+  --font-weight-light: 200;
+  --font-weight-medium: 400;
   --font-weight-heavy: 600;
 }
 

@@ -43,11 +43,13 @@
 #admin-controls button[type="button"] {
   background-color: var(--lt-red);
   box-shadow: var(--box-shadow-red);
+  color: var(--black);
 }
 
 #admin-controls a:hover,
 #admin-controls button[type="button"]:hover {
   background-color: var(--dk-red);
+  color: var(--lt-yellow);
 }
 
 .admin-controls button[type="submit"] {
