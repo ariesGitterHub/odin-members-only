@@ -12,7 +12,8 @@ const sanitizeUserFields = (fields = []) => {
       //   case "email":
       //     return body(field.name).normalizeEmail().trim().escape().optional();
       // case "phone":
-      //   return body(field.name).optional().trim().escape();
+      //   // return body(field.name).optional().trim().escape();
+      //   return body(field.name).optional().trim();
       case "number":
         return body(field.name).optional().isNumeric().toInt();
       case "date":
