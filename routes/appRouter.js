@@ -132,7 +132,7 @@ const adminEditFields = [
   { name: "avatar_color_fg", type: "string" },
   { name: "avatar_color_bg_top", type: "string" },
   { name: "avatar_color_bg_bottom", type: "string" },
-  { name: "phone", type: "phone" },
+  { name: "phone", type: "number" },
   { name: "street_address", type: "string" },
   { name: "apt_unit", type: "string" },
   { name: "city", type: "string" },
@@ -207,7 +207,7 @@ const editProfileFields = [
   { name: "first_name", type: "string" },
   { name: "last_name", type: "string" },
   { name: "birthdate", type: "string" },
-  { name: "phone", type: "phone" },
+  { name: "phone", type: "number" },
   { name: "street_address", type: "string" },
   { name: "apt_unit", type: "string" },
   { name: "city", type: "string" },
@@ -231,7 +231,7 @@ appRouter.get("/member-directory", requireRole("member"), getMemberDirectory);
 
 // ROUTE: MEMBER INVITATION PAGE (member-invite.ejs) 
 const memberInviteAcceptedFields = [
-  { name: "phone", type: "phone" },
+  { name: "phone", type: "number" },
   { name: "street_address", type: "string" },
   { name: "apt_unit", type: "string" },
   { name: "city", type: "string" },

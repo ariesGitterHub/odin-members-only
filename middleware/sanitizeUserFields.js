@@ -5,17 +5,18 @@ const sanitizeUserFields = (fields = []) => {
   return fields.map((field) => {
     switch (field.type) {
       case "string":
-        return body(field.name).trim().escape().optional();
+        // return body(field.name).trim().escape().optional();
+        return body(field.name).trim().optional(); // .escape() was overkill, Inputs should not be sanitized to that degree
 
       // Not needed, other middleware, validationCreateUser and validationEditUser,  handle this task
       //   case "email":
       //     return body(field.name).normalizeEmail().trim().escape().optional();
-      case "phone":
-        return body(field.name).optional().trim().escape();
+      // case "phone":
+      //   return body(field.name).optional().trim().escape();
       case "number":
         return body(field.name).optional().isNumeric().toInt();
       case "date":
-        return body(field.name).optional().trim().escape(); // Treat birthdate as string for safety
+        return body(field.name).optional().isISO8601(); // better than string sanitizing; // Treat birthdate as string for safety
 
       // Boolean case not working as expected, reverting back to sanitizing in postAdminEditPage controller
       // case "boolean":
@@ -49,7 +50,8 @@ const sanitizeUserFields = (fields = []) => {
       //   }
 
       default:
-        return body(field.name).trim().escape().optional();
+        // return body(field.name).trim().escape().optional();
+        return body(field.name).trim().optional();
     }
   });
 };

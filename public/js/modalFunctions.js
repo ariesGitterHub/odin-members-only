@@ -105,10 +105,16 @@ function populateNewMessage(user) {
   const title = document.getElementById("title-new-message");
   const body = document.getElementById("body-new-message");
 
-  firstName.innerHTML = "";
-  lastName.innerHTML = "";
-  title.innerHTML = "";
-  body.innerHTML = "";
+  // firstName.innerHTML = "";
+  // lastName.innerHTML = "";
+  // title.innerHTML = "";
+  // body.innerHTML = "";
+
+    firstName.innerText = "";
+    lastName.innerText = "";
+
+    title.value = "";
+    body.value = "";
 
   firstName.innerText = user.first_name;
   lastName.innerText = user.last_name;
@@ -119,7 +125,8 @@ function populateNewMessageWithTopics(topics) {
   const select = document.getElementById("topic-new-message");
 
   // Clear existing options
-  select.innerHTML = "";
+  // select.innerHTML = "";
+  select.innerText = "";
 
   // Add placeholder option
   const placeholder = document.createElement("option");

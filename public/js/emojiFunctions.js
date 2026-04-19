@@ -179,7 +179,8 @@ async function emojiPickerDiv() {
   const emojiMapSorted = await loadEmojis(); // Ensure loadEmojis() is already optimized
 
   // Clear any existing options
-  emojiList.innerHTML = "";
+  // emojiList.innerHTML = "";
+  emojiList.innerText = "";
 
   // Create radio button options for each emoji
   emojiMapSorted.forEach((emoji, index) => {
