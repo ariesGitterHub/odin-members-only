@@ -89,7 +89,6 @@ async function getTopicPage(req, res, next) {
 }
 
 // CONTROLLER: MESSAGE DETAILS - This now has permission_status restrictions to lock down message/:id route 
-
 async function getMessageDetails(req, res, next) {
   try {
     // Ensure the user is authenticated

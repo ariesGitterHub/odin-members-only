@@ -224,7 +224,7 @@ button:hover,
   gap: var(--spacer-medium);
 }
 
-.element-container-profile-block {
+/* .element-container-profile-block {
   width: var(--width-default-percent);
   display: flex;
   flex-direction: column;
@@ -238,7 +238,7 @@ button:hover,
   margin: var(--spacer-medium) 0;
   padding: var(--spacer-medium);
   text-transform: uppercase;
-}
+} */
 
 /* Miscellaneous containers */
 .password-rules-container {

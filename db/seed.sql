@@ -1,7 +1,4 @@
--- =========================
 -- APP CONFIG (SAFE UPSERT)
--- =========================
-
 INSERT INTO app_config (key, value)
 VALUES
 ('message_soft_delete_days', '14'),
@@ -20,11 +17,7 @@ ON CONFLICT (key) DO UPDATE SET
 value = EXCLUDED.value,
 updated_at = NOW();
 
-
--- =========================
 -- TOPICS (SAFE UPSERT)
--- =========================
-
 INSERT INTO topics (slug, name, description, required_permission, sort_order)
 VALUES
   ('announcements', 'Announcements', 'Important updates and notices', 'guest', 0),

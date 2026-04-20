@@ -81,7 +81,7 @@ async function seedAdminUserAndProfile() {
 
     await client.query("COMMIT");
 
-    console.log("Admin user + profile seeded successfully");
+    // console.log("Admin user + profile seeded successfully");
   } catch (err) {
     await client.query("ROLLBACK");
     console.error("Seeding failed:", err);

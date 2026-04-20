@@ -59,7 +59,6 @@ const getMessageById = async (targetId) => {
 };
 
 // QUERY: GET TOPICS BY ID
-
 const getTopicById = async (topic_id) => {
   const query = `
     SELECT *

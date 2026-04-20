@@ -1,21 +1,12 @@
--- =========================
 -- USERS
--- =========================
 CREATE INDEX IF NOT EXISTS idx_users_permission_status
   ON users(permission_status);
 
-
--- =========================
 -- USER PROFILES
--- =========================
 CREATE INDEX IF NOT EXISTS idx_user_profiles_user_id
   ON user_profiles(user_id);
 
-
--- =========================
 -- MESSAGES
--- =========================
-
 -- Feed queries (topic timeline)
 CREATE INDEX IF NOT EXISTS idx_messages_topic_created
   ON messages(topic_id, created_at DESC)
@@ -35,11 +26,7 @@ CREATE INDEX IF NOT EXISTS idx_messages_parent_message_id
   ON messages(parent_message_id)
   WHERE parent_message_id IS NOT NULL;
 
-
--- =========================
 -- MESSAGE LIKES
--- =========================
-
 CREATE INDEX IF NOT EXISTS idx_message_likes_message_id
   ON message_likes(message_id);
 
@@ -50,16 +37,10 @@ CREATE INDEX IF NOT EXISTS idx_message_likes_user_id
 CREATE UNIQUE INDEX IF NOT EXISTS unique_message_like
   ON message_likes(message_id, user_id);
 
-
--- =========================
 -- THREADING
--- =========================
 CREATE INDEX IF NOT EXISTS idx_messages_topic_thread_path
   ON messages(topic_id, thread_path);
 
-
--- =========================
 -- SESSIONS (connect-pg-simple)
--- =========================
 CREATE INDEX IF NOT EXISTS idx_sessions_expire
   ON sessions(expire);

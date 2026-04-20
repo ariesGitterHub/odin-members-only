@@ -17,7 +17,7 @@ require("dotenv").config(); // Load environment variables
 // });
 
 const passport = require("passport");
-require("./config/passport")(passport); // This initializes the Passport strategies
+require("../config/passport")(passport); // This initializes the Passport strategies
 
 // *** Imports at the top
 const express = require("express");
@@ -28,14 +28,14 @@ const session = require("express-session");
 const helmet = require("helmet");
 const crypto = require("crypto");
 
-const requireUserIsActive = require("./middleware/requireUserIsActive")
+const requireUserIsActive = require("../middleware/requireUserIsActive")
 const {
   csrfProtection,
   csrfTokenMiddleware,
   csrfErrorHandler,
-} = require("./middleware/csrfMiddleware"); // Import CSRF middleware
-const setPermissions = require("./middleware/setPermissions");
-const appRouter = require("./routes/appRouter");
+} = require("../middleware/csrfMiddleware"); // Import CSRF middleware
+const setPermissions = require("../middleware/setPermissions");
+const appRouter = require("../routes/appRouter");
 
 // *** Create the app
 const app = express();
@@ -147,7 +147,7 @@ app.use((req, res, next) => {
 });
 
 // *** Centralized Error Handling Middleware (Generic Error and 404)
-app.use(require("./middleware/errorMiddleware")); // Handle both 404 and other errors here
+app.use(require("../middleware/errorMiddleware")); // Handle both 404 and other errors here
 
 // *** Use to generate random codes when needed - comment out and keep
 // const secret = crypto.randomBytes(64).toString("hex");
@@ -155,10 +155,5 @@ app.use(require("./middleware/errorMiddleware")); // Handle both 404 and other e
 
 // *** Use to generate a hash when needed - comment out and keep
 // bcrypt.hash("ENTER DESIRED PASSWORD HERE", 12).then(console.log);
-
-
-// const hash = "$2b$12$vNV2Tzy2a35ewGTgX1QUFOw8iCXmGGUH4AvaydOKqCAp7od67pLZW"; // your stored hash
-// bcrypt.compare("1234qwe", hash).then(console.log);
-
 
 module.exports = app;

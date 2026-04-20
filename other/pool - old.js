@@ -21,6 +21,7 @@ if (isProd) {
   });
 } else {
   // Development: use local Postgres
+  // Using the better, cleaner format of DATABASE_URL for both dev and prod now, see ENV, keep this for reference
   pool = new Pool({
     host: process.env.PG_HOST,
     user: process.env.PG_USER,

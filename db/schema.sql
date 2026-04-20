@@ -1,7 +1,4 @@
--- =========================
 -- ENUMS
--- =========================
-
 DO $$
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'permission_status_enum') THEN
@@ -18,11 +15,7 @@ BEGIN
 END
 $$;
 
-
--- =========================
 -- USERS
--- =========================
-
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   email TEXT NOT NULL UNIQUE,
@@ -40,11 +33,7 @@ CREATE TABLE IF NOT EXISTS users (
   last_login_at TIMESTAMPTZ
 );
 
-
--- =========================
 -- USER PROFILES
--- =========================
-
 CREATE TABLE IF NOT EXISTS user_profiles (
   user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
   avatar_type TEXT,
@@ -62,22 +51,14 @@ CREATE TABLE IF NOT EXISTS user_profiles (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-
--- =========================
 -- APP CONFIG
--- =========================
-
 CREATE TABLE IF NOT EXISTS app_config (
   key TEXT PRIMARY KEY,
   value TEXT NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-
--- =========================
 -- TOPICS
--- =========================
-
 CREATE TABLE IF NOT EXISTS topics (
   id SERIAL PRIMARY KEY,
   slug TEXT NOT NULL UNIQUE,
@@ -89,11 +70,7 @@ CREATE TABLE IF NOT EXISTS topics (
   sort_order INTEGER DEFAULT 0
 );
 
-
--- =========================
 -- MESSAGES
--- =========================
-
 CREATE TABLE IF NOT EXISTS messages (
   id SERIAL PRIMARY KEY,
   parent_message_id INTEGER,
@@ -112,11 +89,7 @@ CREATE TABLE IF NOT EXISTS messages (
   deleted_at TIMESTAMPTZ
 );
 
-
--- =========================
 -- MESSAGE LIKES
--- =========================
-
 CREATE TABLE IF NOT EXISTS message_likes (
   message_id INTEGER NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -124,11 +97,7 @@ CREATE TABLE IF NOT EXISTS message_likes (
   PRIMARY KEY (message_id, user_id)
 );
 
-
--- =========================
 -- LIKE COUNT TRIGGER
--- =========================
-
 CREATE OR REPLACE FUNCTION update_like_count()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -159,11 +128,7 @@ BEGIN
 END
 $$;
 
-
--- =========================
 -- REPLY COUNT TRIGGER (FIXED)
--- =========================
-
 CREATE OR REPLACE FUNCTION update_reply_count()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -199,22 +164,14 @@ BEGIN
 END
 $$;
 
-
--- =========================
 -- INDEXES (PRODUCTION PERFORMANCE)
--- =========================
-
 CREATE INDEX IF NOT EXISTS idx_messages_user_id ON messages(user_id);
 CREATE INDEX IF NOT EXISTS idx_messages_topic_id ON messages(topic_id);
 CREATE INDEX IF NOT EXISTS idx_messages_parent_id ON messages(parent_message_id);
 
 CREATE INDEX IF NOT EXISTS idx_message_likes_user_id ON message_likes(user_id);
 
-
--- =========================
 -- SESSIONS TABLE (ONLY USE IF USING connect-pg-simple)
--- =========================
-
 CREATE TABLE IF NOT EXISTS sessions (
   sid TEXT PRIMARY KEY,
   sess JSON NOT NULL,

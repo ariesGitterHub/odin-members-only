@@ -17,19 +17,21 @@ const getAllSiteControls = async () => {
     "guest_emoji",
   ];
 
-//   const { rows } = await pool.query(`
-//   SELECT key, value
-//   FROM app_config
-//   WHERE key IN (${keysToFetch.map((key) => `'${key}'`).join(", ")})
-// `);
-const { rows } = await pool.query(
-  `
+  //   const { rows } = await pool.query(`
+  //   SELECT key, value
+  //   FROM app_config
+  //   WHERE key IN (${keysToFetch.map((key) => `'${key}'`).join(", ")})
+  // `);
+
+  // Better code below
+  const { rows } = await pool.query(
+    `
   SELECT key, value
   FROM app_config
   WHERE key = ANY($1)
   `,
-  [keysToFetch],
-);
+    [keysToFetch],
+  );
 
   // Convert the rows into an object, ensuring to handle the boolean for maintenance_mode
   const config = Object.fromEntries(

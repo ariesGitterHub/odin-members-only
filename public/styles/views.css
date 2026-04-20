@@ -41,8 +41,8 @@
 
 #admin-controls a,
 #admin-controls button[type="button"] {
-  background-color: var(--lt-red);
-  box-shadow: var(--box-shadow-red);
+  background-color: var(--lt-yellow);
+  box-shadow: var(--box-shadow-yellow);
   color: var(--black);
 }
 

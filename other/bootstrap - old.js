@@ -3,10 +3,10 @@ require("dotenv").config();
 //   require("dotenv").config();
 // }
 
-const app = require("./app");
+const app = require("../app");
 
-const { runRetentionJobs } = require("./jobs/retentionJobs");
-require("./cron/retentionScheduler");
+const { runRetentionJobs } = require("../jobs/retentionJobs");
+require("../cron/retentionScheduler");
 
 // console.log("DATABASE_URL:", process.env.DATABASE_URL);
 

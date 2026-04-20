@@ -26,7 +26,7 @@ export async function handleEmojiOpen(targetId, sectionId, titleId) {
 async function populateChangeAvatar(user) {
   // NOTE - Keep this commented out section, it deals with the decision change to let guests chose avatar emojis (because why not!?)
   //Hide fields that are not mean to be used by a "guest"
-  // UPDATE, guests are now allowed to have special avatars; previously only allowed to have the letter of their first name.
+  // UPDATE!, guests are now allowed to have special avatars; previously only allowed to have the letter of their first name.
   // if (user.permission_status === "guest") {
   //   document
   //     .querySelector(".change-avatar-hide-element")

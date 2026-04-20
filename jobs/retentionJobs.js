@@ -50,7 +50,7 @@ const runRetentionJobs = async () => {
     );
 
     await client.query("COMMIT");
-    console.log("✅ Retention jobs completed successfully");
+    console.log("Retention jobs completed successfully");
   } catch (err) {
     await client.query("ROLLBACK");
     console.error("❌ Error running retention jobs:", err);

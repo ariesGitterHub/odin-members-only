@@ -42,10 +42,12 @@ module.exports = (passport) => {
     ),
   );
 
+  // SERIALIZE USER
   passport.serializeUser((user, done) => {
     done(null, user.id);
   });
 
+  // DESERIALIZE USER (CREATES req.user)
   passport.deserializeUser(async (id, done) => {
     try {
       const { rows } = await pool.query(
