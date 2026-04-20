@@ -1,27 +1,19 @@
 # Neighborhood Message App 
-## ...for neighbors ny neighbors
+## ...for neighbors by neighbors
 This project was for a course project that morphed into something practical for everyday use by my local neighborhood organization.
 
 ### Reminder!
-Remember that I am using various scripts (see folder) and package.json scripts for usage. See .ENV for more information.
+See .ENV for more information.
 
-Now using **npm run dev** rather than nodemon app to start server.
+Now using **npm run dev** rather than nodemon app to start server in development.
 
-### For production...in Railway
-I hade to switch to a different package.json. Old file can be renamed and swapped back: currently named "revert back to for DEV - package.json" (clever, I know).
+### Notes for production...
+1. Schema + indexes (migration layer): scripts/apply-db.js
+2. “Post-migration script” - Static seed data: db/seed.sql
+3. “Post-migration script” - Dynamic seed tool: db/seed.js
+4. Dev-only reset tool (but can be used as a prod reset too, as I learned): scripts/db-reset.js
 
-1. RUNS ON RENDER DEPLOY - Schema + indexes (migration layer): scripts/apply-db.js
-2. “Post-migration bootstrap script” - Static seed data: db/seed.sql
-3. “Post-migration bootstrap script” - Dynamic seed tool: db/seed.js
-4. Dev-only reset tool: scripts/db-reset.js
+IMPORTANT REMINDER: after deployment run this in shell on hosting service dashboard: npm run db:setup
 
-Use a single safe command: npm run db:setup. 
-That...
-runs schema
-runs indexes
-runs seed.sql
-runs seed.js
-is safe on re-run
-works identically in dev + prod
+REMEMBER FOR LATER: If I have db issues later on, look at package.json scripts and run those in shell on hosting service. 
 
-IMPORTANT: after deployment run this in Render Dashboard → your service → Shell: npm run db:setup
