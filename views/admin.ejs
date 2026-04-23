@@ -309,15 +309,33 @@
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">created</dt>
-                <dd><%= new Date(userProfile.created_at).toLocaleString() %></dd>
+                <dd><%= new Date(userProfile.created_at).toLocaleString("en-US", {
+                  timeZone: "America/New_York",
+                  dateStyle: "medium",
+                  timeStyle: "short"
+                }) 
+                %>
+                </dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">updated</dt>
-                <dd><%= new Date(userProfile.updated_at).toLocaleString() %></dd>
+                <dd><%= new Date(userProfile.updated_at).toLocaleString("en-US", {
+                  timeZone: "America/New_York",
+                  dateStyle: "medium",
+                  timeStyle: "short"
+                }) 
+                %>
+                </dd>
               </div>
               <div class="app-relevant-data">
                 <dt class="capitalize">last login</dt>
-                <dd><%= new Date(userProfile.last_login_at).toLocaleString() %></dd>
+                <dd><%= new Date(userProfile.last_login_at).toLocaleString("en-US", {
+                  timeZone: "America/New_York",
+                  dateStyle: "medium",
+                  timeStyle: "short"
+                }) 
+                %>
+                </dd>
               </div>
             </dl>
             <div class="button-container-col">
