@@ -129,6 +129,10 @@
 
 /* Special spacing */
 
+.justify-content-center {
+  justify-content: center;
+}
+
 .flex-gap {
   gap: var(--spacer-default);
 }
