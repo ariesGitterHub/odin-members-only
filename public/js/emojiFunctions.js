@@ -19,7 +19,7 @@ export async function handleEmojiOpen(targetId, sectionId, titleId) {
     }
   } catch (err) {
     console.error(err);
-    alert("Failed to load user data");
+    alert("Failed to load user emoji/avatar data due to an Internet connection interruption or expired session issue. Please log back in to remedy.");
   }
 }
 

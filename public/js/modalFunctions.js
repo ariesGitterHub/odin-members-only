@@ -93,7 +93,9 @@ export async function handleModalOpen(targetId, sectionId, titleId) {
     }
   } catch (err) {
     console.error(err);
-    alert("Failed to load user data");
+    alert(
+      "Failed to load user data due to an Internet connection interruption or expired session issue. Please log back in to remedy.",
+    );
   }
 }
 
@@ -164,7 +166,9 @@ function populateReplyMessage(user, message) {
   title.value = message.title;
   title.readOnly = true;
 
-  body.value = `💬 to ${message.first_name} ${message.last_name} ➤ `;
+  // This is changed to just first name. Not counting the admin, users have either a guest or member level of access. But guests are not allowed to see full user names, but members are. The problem -> on reply messages, which uses a modal populated by the frontend, the body.value was injecting both the first and last name. Guests should not be able to see the last name. Now, message-card.ejs uses the backend and logic to allow only members to see full names of posting users. I can't use that same logic below to affect how users see, or not, see data, because the data just gets injected whole hog into body. Because of this, I am just going to remove ${message.last_name} below, rather than straddle to frontend/backend divide.
+  // body.value = `💬 to ${message.first_name} ${message.last_name} ➤ `;
+  body.value = `💬 to ${message.first_name} ➤ `;
 }
 
 // Populates the edit-message.ejs partial modal with user data
