@@ -6,6 +6,7 @@ const emailUpdateAdminEditValidator = () =>
   check("email")
     // Sanitize by trimming and normalizing the email
     .trim() // Trim spaces before validation
+    // Below, normalizeEmail() is commented out to stop unnecessary email transformations, e.g., smith.k@gmail.com becomes smithk@gmail.com. I rather use the user's explicit input here since emails are used as usernames.
     // .normalizeEmail() // Normalize email to lowercase and remove unnecessary characters
     .isEmail()
     .withMessage("Invalid email format") // Ensure it's a valid email
@@ -22,10 +23,11 @@ const emailUpdateEditProfileValidator = () =>
   check("email")
     // Sanitize by trimming and normalizing the email
     .trim() // Trim spaces before validation
+    // Below, normalizeEmail() is commented out to stop unnecessary email transformations, e.g., smith.k@gmail.com becomes smithk@gmail.com. I rather use the user's explicit input here since emails are used as usernames.
     // .normalizeEmail() // Normalize email to lowercase and remove unnecessary characters
     .isEmail()
     .withMessage("Invalid email format") // Ensure it's a valid email
-    .isLength({ min: 1 })
+    // .isLength({ min: 1 })
     .withMessage("Email cannot be empty") // Ensure email is not empty
     .custom(async (email, { req }) => {
       const targetId = req.user.id;
