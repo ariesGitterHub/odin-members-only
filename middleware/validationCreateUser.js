@@ -7,10 +7,10 @@ const expectedInviteCodeAnswer = process.env.INVITE_CODE;
 const emailValidator = check("email")
   // Sanitize by trimming and normalizing the email
   .trim() // Trim spaces before validation
-  .normalizeEmail() // Normalize email to lowercase and remove unnecessary characters
+  // .normalizeEmail() // Normalize email to lowercase and remove unnecessary characters
   .isEmail()
   .withMessage("Invalid email format") // Ensure it's a valid email
-  .isLength({ min: 1 })
+  // .isLength({ min: 1 })
   .withMessage("Email cannot be empty") // Ensure email is not empty
   .custom(async (email) => {
     const existingUser = await checkIfEmailExistsForSignUp(email);
