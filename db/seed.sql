@@ -4,6 +4,8 @@ VALUES
 ('message_soft_delete_days', '14'),
 ('message_hard_delete_days', '28'),
 ('session_hard_delete_days', '14'),
+('last_admin_retention_run', '1970-01-01T00:00:00Z'),
+('run_retention_duration_hours', '12'), 
 ('signup_limit_window_minutes', '15'),
 ('signup_limit_max_users', '5'),
 ('login_limit_window_minutes', '5'),

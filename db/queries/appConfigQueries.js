@@ -6,6 +6,8 @@ const getAllSiteControls = async () => {
     "message_soft_delete_days",
     "message_hard_delete_days",
     "session_hard_delete_days",
+    "last_admin_retention_run", // New
+    "run_retention_duration_hours", // New
     "signup_limit_window_minutes",
     "signup_limit_max_users",
     "login_limit_window_minutes",
@@ -34,16 +36,33 @@ const getAllSiteControls = async () => {
   );
 
   // Convert the rows into an object, ensuring to handle the boolean for maintenance_mode
+  //   const config = Object.fromEntries(
+  //     rows.map((r) => {
+  //       if (r.key === "maintenance_mode") {
+  //         return [r.key, r.value === "true"]; // Convert string to boolean
+  //       } else if (
+  //         ["admin_emoji", "member_emoji", "guest_emoji"].includes(r.key)
+  //       ) {
+  //         return [r.key, r.value]; // Keep emoji as string
+  //       } else {
+  //         return [r.key, Number(r.value)]; // Convert delete days or max chars to numbers
+  //       }
+  //     }),
+  //   );
+
+  //   return config;
+  // };
+
   const config = Object.fromEntries(
     rows.map((r) => {
       if (r.key === "maintenance_mode") {
-        return [r.key, r.value === "true"]; // Convert string to boolean
-      } else if (
-        ["admin_emoji", "member_emoji", "guest_emoji"].includes(r.key)
-      ) {
-        return [r.key, r.value]; // Keep emoji as string
+        return [r.key, r.value === "true"];
+      } else if (["admin_emoji", "member_emoji", "guest_emoji"].includes(r.key)) {
+        return [r.key, r.value];
+      } else if (r.key === "last_admin_retention_run") {
+        return [r.key, r.value ? new Date(r.value) : null];
       } else {
-        return [r.key, Number(r.value)]; // Convert delete days or max chars to numbers
+        return [r.key, Number(r.value)];        
       }
     }),
   );
@@ -51,11 +70,49 @@ const getAllSiteControls = async () => {
   return config;
 };
 
+// QUERY: GET RETENTION CONFIG ONLY (optional convenience)
+const getRetentionConfig = async () => {
+  const keys = ["last_admin_retention_run", "run_retention_duration_hours"];
+
+  const { rows } = await pool.query(
+    `
+    SELECT key, value
+    FROM app_config
+    WHERE key = ANY($1)
+    `,
+    [keys]
+  );
+
+  const config = Object.fromEntries(
+    rows.map((r) => [
+      r.key,
+      r.key === "run_retention_duration_hours"
+        ? Number(r.value)
+        : r.value,
+    ])
+  );
+
+  return config;
+};
+
+// QUERY: UPDATE LAST RUN TIMESTAMP
+const updateLastRetentionRun = async () => {
+  await pool.query(
+    `
+    UPDATE app_config
+    SET value = $1, updated_at = NOW()
+    WHERE key = 'last_admin_retention_run'
+    `,
+    [new Date().toISOString()]
+  );
+};
+
 // QUERY: UPDATE CONFIG SETTINGS
 const updateAllSiteControls = async (
   messageSoft,
   messageHard,
   sessionHard,
+  runRetentionDurationHours, // New
   signupLimitWindowMinutes,
   signupLimitMaxUsers,
   loginLimitWindowMinutes,
@@ -83,6 +140,7 @@ const updateAllSiteControls = async (
     await updateKey("message_soft_delete_days", Number(messageSoft));
     await updateKey("message_hard_delete_days", Number(messageHard));
     await updateKey("session_hard_delete_days", Number(sessionHard));
+    await updateKey("run_retention_duration_hours", Number(runRetentionDurationHours));
     await updateKey(
       "signup_limit_window_minutes",
       Number(signupLimitWindowMinutes),
@@ -111,6 +169,7 @@ const updateAllSiteControls = async (
       messageSoft,
       messageHard,
       sessionHard,
+      runRetentionDurationHours,
       signupLimitWindowMinutes,
       signupLimitMaxUsers,
       loginLimitWindowMinutes,
@@ -130,4 +189,6 @@ const updateAllSiteControls = async (
 module.exports = {
   getAllSiteControls,
   updateAllSiteControls,
+  getRetentionConfig, // New
+  updateLastRetentionRun, // New
 };

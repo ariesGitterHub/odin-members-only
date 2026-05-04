@@ -34,6 +34,12 @@
   margin-bottom: var(--spacer-default);
 }
 
+#admin-controls fieldset .last-admin-login {
+  /* width: 3.75rem; */
+  color: var(--lt-green);
+  font-size: var(--font-size-default);
+}
+
 #admin-controls fieldset input {
   width: 3.75rem;
   font-size: var(--font-size-default);

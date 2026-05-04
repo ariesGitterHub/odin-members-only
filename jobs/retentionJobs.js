@@ -1,5 +1,3 @@
-// NOTE - See /jobs/runProdRetentionJobs for how this file is executed in Render
-
 const pool = require("../db/pool");
 const { getAllSiteControls } = require("../db/queries/appConfigQueries");
 
@@ -35,6 +33,7 @@ const runRetentionJobs = async () => {
       message_soft_delete_days,
       message_hard_delete_days,
       session_hard_delete_days,
+      // run_retention_duration_hours,
     } = retention;
 
     // await client.query("BEGIN"); // NOTE - move the start of the transaction up to include const retention

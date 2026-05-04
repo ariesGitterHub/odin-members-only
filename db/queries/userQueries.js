@@ -208,23 +208,46 @@ const getUserByIdForAdmin = async (targetId) => {
 };
 
 // QUERY: INSERT SESSION INFO
-const insertSessionLog = async (
-  user_id,
-  session_token,
-  ip_address,
-  user_agent,
-) => {
-  const query = `
-    INSERT INTO sessions (user_id, session_token, ip_address, user_agent)
-    VALUES ($1, $2, $3, $4)
-  `;
+
+// const insertSessionLog = async (
+//   user_id,
+//   session_token,
+//   ip_address,
+//   user_agent,
+// ) => {
+//   const query = `
+//     INSERT INTO sessions (user_id, session_token, ip_address, user_agent)
+//     VALUES ($1, $2, $3, $4)
+//   `;
+//   try {
+//     await pool.query(query, [user_id, session_token, ip_address, user_agent]);
+//   } catch (err) {
+//     console.error("Failed to create session log:", err);
+//     throw err;
+//   }
+// };
+
+// NOTE - when refactoring to get dev to work with prod host, I forgot to change this query to line up with the schema.sql code dealing with the session table. Fix:
+
+async function insertSessionLog(userId, sid, ip, userAgent) {
+  const client = await pool.connect();
   try {
-    await pool.query(query, [user_id, session_token, ip_address, user_agent]);
-  } catch (err) {
-    console.error("Failed to create session log:", err);
-    throw err;
+    await client.query(
+      `INSERT INTO sessions (sid, sess, expire)
+       VALUES ($1, $2, NOW() + INTERVAL '7 days')`,
+      [
+        sid,
+        JSON.stringify({
+          user_id: userId,
+          ip,
+          user_agent: userAgent,
+        }),
+      ],
+    );
+  } finally {
+    client.release();
   }
-};
+}
 
 // QUERY: INSERT A NEW USER FROM SIGN UP (sign-up.ejs)
 const insertNewUser = async (

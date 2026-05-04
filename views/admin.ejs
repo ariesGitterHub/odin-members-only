@@ -41,6 +41,19 @@
               </div>
             </fieldset>
             <fieldset>
+              <h3>run retention duration</h3>
+              <p class="capitalize element-container-row-center-start last-admin-login">Last admin login: <%= new Date(config.last_admin_retention_run).toLocaleString("en-US", {
+                  timeZone: "America/New_York",
+                  dateStyle: "medium",
+                  timeStyle: "short"
+                }) 
+                %></p>  
+              <div class="element-container-row-default flex-gap">                
+                <label>run if x hours after last admin login:</label>
+                <input class="text-align-right" type="number" name="run_retention_duration_hours" value="<%= config.run_retention_duration_hours %>" min="0" />
+              </div>
+            </fieldset>
+            <fieldset>
               <h3>sign-up rate limit</h3>
               <div class="element-container-row-default flex-gap">                  
                 <label>window (minutes):</label>

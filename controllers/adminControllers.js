@@ -12,7 +12,11 @@ const {
 const {
   getAllSiteControls,
   updateAllSiteControls,
+  getRetentionConfig,
+  updateLastRetentionRun,
 } = require("../db/queries/appConfigQueries");
+// const { startRetentionScheduler } = require("../jobs/retentionScheduler");
+const { runRetentionJobs } = require("../jobs/retentionJobs");
 const { getMessages } = require("../db/queries/messageQueries");
 const { calculateAge, formatShortDate } = require("../utils/calculateAge");
 const {
@@ -86,6 +90,7 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
       message_soft_delete_days,
       message_hard_delete_days,
       session_hard_delete_days,
+      run_retention_duration_hours,
       signup_limit_window_minutes,
       signup_limit_max_users,
       login_limit_window_minutes,
@@ -101,6 +106,7 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
       message_soft_delete_days,
       message_hard_delete_days,
       session_hard_delete_days,
+      run_retention_duration_hours,
       signup_limit_window_minutes,
       signup_limit_max_users,
       login_limit_window_minutes,
@@ -131,6 +137,7 @@ async function postNewSiteSettingsAdminPage(req, res, next) {
       parsedValues[5],
       parsedValues[6],
       parsedValues[7],
+      parsedValues[8],
       isMaintenanceModeEnabled,
       emojis[0],
       emojis[1],
@@ -367,6 +374,48 @@ async function deleteUserAccount(req, res, next) {
   }
 }
 
+
+// CONTROLLER: RETENTION SCHEDULER FOR EXPIRED MESSAGES AND SESSION INFO
+
+// NOTE - new way to run retention! No longer using cron jobs - now a non cron dependency. The new trigger for retention checks uses the admin login, specifically, see "last_admin_retention_run" and "run_retention_duration_hours" in controllers/appConfigQueries.js, controllers/adminControllers.js, and views/admin.ejs. If admin logs in at 9am and previous login was 7am that day, no retention check with code below, but if next login is after run_retention_duration_hours number, then retention runs. This pattern was used because prod host required extra money for cron jobs, and this method did not pose issues for efficiency.
+
+async function checkAndRunRetention(user) {
+  // Only admins can trigger retention
+  if (!user || user.permission_status !== "admin") return;
+
+  try {
+    const config = await getRetentionConfig();
+    const { last_admin_retention_run, run_retention_duration_hours } = config;
+
+    const now = new Date();
+
+    // If last run is null (never run), treat as old enough to run
+    const lastRunTime = last_admin_retention_run
+      ? new Date(last_admin_retention_run)
+      : new Date(0);
+
+    // Compute next allowed run time
+    const nextRunTime = new Date(
+      lastRunTime.getTime() + run_retention_duration_hours * 60 * 60 * 1000,
+    );
+
+    if (now >= nextRunTime) {
+      console.log("⏱ Retention job triggered by admin login");
+
+      await runRetentionJobs();
+
+      // Only update last run if job actually executed
+      await updateLastRetentionRun();
+    } else {
+      console.log("⏱ Retention job skipped; not enough hours passed");
+    }
+  } catch (err) {
+    console.error("❌ Error in checkAndRunRetention:", err);
+    // Do NOT throw; login flow should not fail because of retention
+  }
+}
+
+
 module.exports = {
   getAdminPage,
   postNewSiteSettingsAdminPage,
@@ -375,4 +424,5 @@ module.exports = {
   getAdminEditPage,
   postAdminEditPage,
   deleteUserAccount,
+  checkAndRunRetention,
 };

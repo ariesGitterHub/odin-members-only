@@ -8,6 +8,7 @@ const {
   insertNewUser,
   updateLastLogin,
 } = require("../db/queries/userQueries");
+const { checkAndRunRetention } = require("./adminControllers");
 
 // CONTROLLER: SIGN-UP PAGE (sign-up.ejs)
 async function getSignUpPage(req, res, next) {
@@ -130,7 +131,24 @@ async function postLogInPage(req, res, next) {
           console.error("Failed to create session log:", logErr);
         }
 
+        // if (user.permission_status === "admin") {
+        //   res.redirect("/app/admin");
+        // } else {
+        //   res.redirect("/app/message-boards");
+        // }
+
+        // New code to check if a retention check should occur. NOTE - 
         if (user.permission_status === "admin") {
+          // Check if retention jobs should run
+          try {
+            await checkAndRunRetention(user);
+          } catch (retentionErr) {
+            console.error(
+              "Error checking/running retention jobs:",
+              retentionErr,
+            );
+          }
+
           res.redirect("/app/admin");
         } else {
           res.redirect("/app/message-boards");
