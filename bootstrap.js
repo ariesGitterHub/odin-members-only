@@ -4,9 +4,8 @@ if (process.env.NODE_ENV !== "production") {
 
 const app = require("./app");
 
-const { runRetentionJobs } = require("./jobs/retentionJobs");
-
 // If this file starts a cron scheduler, prefer explicit init
+// NOTE - use below for DEV, use /jobs/runProdRetentionJobs for Prod using Render dashboard cron job
 require("./cron/retentionScheduler");
 
 const PORT = process.env.PORT || 3000;

@@ -1,3 +1,5 @@
+// NOTE - Use this in Dev, creating a new set up for Prod. See /jobs/runProdRetentionJobs
+
 const cron = require("node-cron");
 const { runRetentionJobs } = require("../jobs/retentionJobs");
 
