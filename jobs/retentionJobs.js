@@ -103,12 +103,19 @@ const runRetentionJobs = async () => {
     //   [session_hard_delete_days],
     // );
 
+    // const sessionDeleteResult = await client.query(
+    //   `
+    //   DELETE FROM sessions
+    //   WHERE created_at <= NOW() - $1 * INTERVAL '1 day';
+    //   `,
+    //   [session_hard_delete_days],
+    // );
+
     const sessionDeleteResult = await client.query(
       `
       DELETE FROM sessions
-      WHERE created_at <= NOW() - $1 * INTERVAL '1 day';
+      WHERE expire <= NOW();
       `,
-      [session_hard_delete_days],
     );
 
     await client.query("COMMIT");
